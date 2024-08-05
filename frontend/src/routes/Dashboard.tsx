@@ -1,4 +1,3 @@
-import React from 'react'
 import TestDetailsTile from '../components/TestDetailsTile/TestDetailsTile'
 
 const Dashboard = () => {
