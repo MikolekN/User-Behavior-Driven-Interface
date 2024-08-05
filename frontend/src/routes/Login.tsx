@@ -1,20 +1,22 @@
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 
-interface FormData {
+interface LoginFormData {
     email: string,
     password: string
 }
 
 const Login = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     defaultValues: {
       email: "",
       password: ""
     },
-      mode: "onChange"
+      mode: "onSubmit"
   })
 
   const onSubmit = handleSubmit(({ email, password }) => {
+    // finish handling login submit by sending it to backend and necessary validation
     console.log(email, password)
   })
 
@@ -38,16 +40,20 @@ const Login = () => {
                 })} 
                 style={{borderColor: errors.email ? "red": ""}}
                 name="email" type="text" className="w-full p-2 border border-gray-300 rounded mt-1 bg-white"/>
-                {errors.email && <p className="text-gray-600">Email is invalid</p>}
+                {errors.email && errors.email.type === "required" && <p className="text-gray-600">Email is required</p>}
+                {errors.email && errors.email.type === "pattern" && <p className="text-gray-600">Email is not valid</p>}
             </div>
             <div>
               <label htmlFor="" className="text-sm font-bold text-gray-600 block">Password</label>
-              <input {...register("password", 
-                {})} 
+              <input 
+                {...register("password", {  })} 
                 name="password" type="password" className="w-full p-2 border border-gray-300 rounded mt-1 bg-white"/>
             </div>
             <div>
               <button className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm">Submit</button>
+            </div>
+            <div>
+                You don't have an account? <Link to="register">Sign Up</Link>
             </div>
           </form>
         </div>
