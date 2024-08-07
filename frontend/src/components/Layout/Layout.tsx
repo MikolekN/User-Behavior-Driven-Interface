@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 interface LayoutProps {
   isLoggedIn: boolean;
   setIsLoggedIn: (loggedIn: boolean) => void;
+  children: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ isLoggedIn, setIsLoggedIn, children }) => {

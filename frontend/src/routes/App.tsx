@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Layout from '../components/Layout/Layout';
 
 const App: React.FC = () => {
