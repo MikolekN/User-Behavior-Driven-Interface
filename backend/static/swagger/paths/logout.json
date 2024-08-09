@@ -1,0 +1,25 @@
+{
+    "get": {
+        "summary": "Logout a user",
+        "responses": {
+            "200": {
+                "description": "Logged out successfully",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "409": {
+                "description": "No user logged in"
+            }
+        }
+    }
+}

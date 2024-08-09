@@ -1,0 +1,22 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "User-Behavior-Driven-Interface Backend API",
+        "version": "1.0.0",
+        "description": "Description of your API"
+    },
+    "paths": {
+        "/login": {
+            "$ref": "./paths/login.json"
+        },
+        "/register": {
+            "$ref": "./paths/register.json"
+        },
+        "/logout": {
+            "$ref": "./paths/logout.json"
+        }
+    },
+    "components": {
+        
+    }
+}
