@@ -31,7 +31,7 @@ const Register = () => {
       password: "",
       confirmPassword: ""
     },
-    mode: "onChange"
+    mode: "onSubmit"
   });
 
   const password = useWatch({
@@ -63,6 +63,7 @@ const Register = () => {
             <label className="text-sm font-semibold text-gray-700 block">Password</label>
             <input
               {...register('password', validateRegisterForm.password)}
+              style={{borderColor: errors.password ? "red": ""}}
               type="password"
               className="w-full p-3 border border-gray-300 rounded-lg mt-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -77,6 +78,7 @@ const Register = () => {
                   matchPasswords: (value: string) => value === password || 'Passwords do not match'
                 }
               })}
+              style={{borderColor: errors.password ? "red": ""}}
               type="password"
               className="w-full p-3 border border-gray-300 rounded-lg mt-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />

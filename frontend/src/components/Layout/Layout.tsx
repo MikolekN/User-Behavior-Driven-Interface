@@ -18,7 +18,6 @@ const Layout: React.FC<LayoutProps> = ({ isLoggedIn, setIsLoggedIn, children }) 
         <nav>
           <ul>
             <li><Link to="/">Home</Link></li>
-            <li><Link to="/dashboard">Dashboard</Link></li>
             {!isLoggedIn && (
               <>
                 <li><Link to="/login">Login</Link></li>
@@ -27,6 +26,7 @@ const Layout: React.FC<LayoutProps> = ({ isLoggedIn, setIsLoggedIn, children }) 
             )}
             {isLoggedIn && (
               <li>
+                <li><Link to="/dashboard">Dashboard</Link></li>
                 <button onClick={handleLogout}>Logout</button>
               </li>
             )}

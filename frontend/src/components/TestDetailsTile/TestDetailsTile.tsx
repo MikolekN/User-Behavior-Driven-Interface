@@ -1,5 +1,6 @@
 import React from 'react';
 import Tile from '../Tile/Tile';
+import './TestDetailsTile.css'
 
 const TestDetailsTile = () => {
   return (
