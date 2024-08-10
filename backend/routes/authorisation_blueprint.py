@@ -5,7 +5,7 @@ from datetime import datetime
 from users.user_repository import UserRepository
 from users.user import User
 
-authorisation_blueprint = Blueprint('authorisation', __name__)
+authorisation_blueprint = Blueprint('authorisation', __name__, url_prefix='/api')
 
 @authorisation_blueprint.route('/login', methods=['POST'])
 def login():
