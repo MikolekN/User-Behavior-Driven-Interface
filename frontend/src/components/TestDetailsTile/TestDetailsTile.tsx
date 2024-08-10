@@ -1,18 +1,15 @@
-import React from 'react'
-import Tile from '../Tile/Tile'
+import React from 'react';
+import Tile from '../Tile/Tile';
+import './TestDetailsTile.css'
 
 const TestDetailsTile = () => {
   return (
-    <Tile title="tytuł">
-        <h3>nagłowek</h3>
-        <p>
-            jakis tekst
-        </p>
-        <button className="bg-white">
-            przycisk
-        </button>
+    <Tile title="Title">
+      <h3>Header</h3>
+      <p>Some text</p>
+      <button className="bg-white">Button</button>
     </Tile>
-  )
-}
+  );
+};
 
-export default TestDetailsTile
+export default TestDetailsTile;
