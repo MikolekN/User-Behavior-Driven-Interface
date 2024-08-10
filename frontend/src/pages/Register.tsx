@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import { useOutletContext, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface RegisterFormData {
   email: string,
@@ -42,8 +41,7 @@ const Register = () => {
     name: "password",
     defaultValue: "",
   });
-
-  const { setUsername }: AuthContext = useOutletContext(); 
+ 
   const navigate = useNavigate();
   const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
 
