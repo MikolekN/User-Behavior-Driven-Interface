@@ -63,8 +63,7 @@ const Register = () => {
       const responseJson = await response.json();
 
       if (response.ok) {
-        setUsername(responseJson.user.login);
-        navigate('/dashboard');
+        navigate('/login');
       }
       else {
         setApiError({
