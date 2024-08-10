@@ -1,10 +1,6 @@
 import React from 'react';
 import { useOutletContext, Navigate } from 'react-router-dom';
-
-interface AuthContext {
-  isLoggedIn: boolean;
-  setIsLoggedIn: (loggedIn: boolean) => void;
-}
+import { AuthContext } from '../context/AuthContext.tsx'
 
 const Home: React.FC = () => {
   const { isLoggedIn }: AuthContext = useOutletContext();

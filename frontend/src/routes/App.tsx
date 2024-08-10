@@ -4,10 +4,11 @@ import Layout from '../components/Layout/Layout';
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // State variable to manage authentication status
+  const [username, setUsername] = useState("");
 
   return (
     <Layout isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}>
-      <Outlet context={{ isLoggedIn, setIsLoggedIn }} />
+      <Outlet context={{ isLoggedIn, setIsLoggedIn, username, setUsername }} />
     </Layout>
   );
 };
