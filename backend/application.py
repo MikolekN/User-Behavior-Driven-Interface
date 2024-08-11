@@ -5,10 +5,12 @@ from flask_login import LoginManager, login_required
 from users.user_repository import UserRepository
 from routes.authorisation_blueprint import authorisation_blueprint
 from flask_swagger_ui import get_swaggerui_blueprint
+from flask_cors import CORS
 # python -m flask --app .\application.py run
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
+CORS(app, origins=["http://localhost:5173"])
 
 SWAGGER_URL = '/swagger'
 API_URL = '/static/swagger/swagger.json'

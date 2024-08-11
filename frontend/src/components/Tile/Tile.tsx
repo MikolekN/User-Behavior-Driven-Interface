@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import './Tile.css';
 
 interface TileData {
@@ -8,8 +8,8 @@ interface TileData {
 
 const Tile = ({ children, title }: TileData) => {
   return (
-    <div className="tile">
-      <div className="tile-details">
+    <div className="tile border-2 border-blue-600 border-opacity-20 max-w-sm rounded-lg overflow-hidden">
+      <div className="tile-title">
         <h2>{title}</h2>
       </div>
       {children}

@@ -1,10 +1,12 @@
-import { useForm, useWatch } from 'react-hook-form'
+import { useState } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 interface RegisterFormData {
   email: string,
   password: string,
   confirmPassword: string
-}
+};
 
 const validateRegisterForm = {
   email: {
@@ -39,9 +41,39 @@ const Register = () => {
     name: "password",
     defaultValue: "",
   });
+ 
+  const navigate = useNavigate();
+  const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
 
-  const onSubmit = handleSubmit(({ email, password }) => {
-    console.log(email, password);
+  const onSubmit = handleSubmit(async ({ email, password }) => {
+    try {
+      const response = await fetch("http://127.0.0.1:5000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          login: email,
+          password: password
+        })
+      });
+
+      const responseJson = await response.json();
+
+      if (response.ok) {
+        navigate('/login');
+      }
+      else {
+        setApiError({
+          isError: true,
+          errorMessage: responseJson.message
+        });
+        throw new Error(responseJson.message);
+      }
+    }
+    catch (error) {
+      console.log(error);
+    }
   });
 
   return (
@@ -86,6 +118,9 @@ const Register = () => {
           </div>
           <div>
             <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Submit</button>
+          </div>
+          <div>
+            {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
           </div>
         </form>
       </div>

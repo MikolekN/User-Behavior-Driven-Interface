@@ -1,5 +1,7 @@
-import React from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useOutletContext, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 interface LoginFormData {
   email: string;
@@ -15,9 +17,41 @@ const Login = () => {
     mode: 'onSubmit'
   });
 
-  const onSubmit = handleSubmit(({ email, password }) => {
-    // finish handling login submit by sending it to backend and necessary validation
-    console.log(email, password);
+  const { setIsLoggedIn, setUsername }: AuthContext = useOutletContext(); 
+  const navigate = useNavigate();
+  const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
+
+  const onSubmit = handleSubmit(async ({ email, password }) => {
+    try {
+      const response = await fetch("http://127.0.0.1:5000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          login: email,
+          password: password
+        })
+      });
+
+      const responseJson = await response.json();
+
+      if (response.ok) {
+        setIsLoggedIn(true);
+        setUsername(responseJson.user.login);
+        navigate('/dashboard');
+      }
+      else {
+        setApiError({
+          isError: true,
+          errorMessage: responseJson.message
+        });
+        throw new Error(responseJson.message);
+      }
+    }
+    catch (error) {
+      console.log(error);
+    }
   });
 
   return (
@@ -53,6 +87,9 @@ const Login = () => {
           </div>
           <div>
             <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Submit</button>
+          </div>
+          <div>
+            {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
           </div>
         </form>
       </div>
