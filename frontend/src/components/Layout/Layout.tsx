@@ -36,7 +36,7 @@ const Layout: React.FC<LayoutProps> = ({ isLoggedIn, setIsLoggedIn, username, se
           </ul>
         </nav>
       </header>
-      <main>
+      <main className="grid">
         {children}
       </main>
     </div>

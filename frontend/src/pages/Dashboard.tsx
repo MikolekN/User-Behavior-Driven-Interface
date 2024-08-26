@@ -1,6 +1,6 @@
 import { useOutletContext } from 'react-router-dom';
-import TestDetailsTile from '../components/TestDetailsTile/TestDetailsTile';
 import { AuthContext } from '../context/AuthContext';
+import AccountDetailsTile from '../components/AccountDetailsTile/AccountDetailsTile';
 
 const Dashboard = () => {
   const { username }: AuthContext = useOutletContext();
@@ -9,8 +9,7 @@ const Dashboard = () => {
     <>
       <div>Dashboard</div>
       <p>Hello {username}</p>
-      <TestDetailsTile />
-      <TestDetailsTile />
+      <AccountDetailsTile />
     </>
   );
 };
