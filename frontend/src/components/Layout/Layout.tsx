@@ -10,9 +10,20 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ isLoggedIn, setIsLoggedIn, username, setUsername, children }) => {
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setIsLoggedIn(false);
     setUsername("");
+    await fetch("http://127.0.0.1:5000/api/logout", {
+      method: "GET",
+      credentials: 'include'
+    });
+  };
+  
+  const handleRequest = async () => {
+    await fetch("http://127.0.0.1:5000/", {
+      method: "GET",
+      credentials: 'include'
+    });
   };
 
   return (
@@ -27,12 +38,12 @@ const Layout: React.FC<LayoutProps> = ({ isLoggedIn, setIsLoggedIn, username, se
                 <li><Link to="/register">Register</Link></li>
               </>
             )}
-            {isLoggedIn && (
               <li>
                 <li><Link to="/dashboard">Dashboard</Link></li>
                 <button onClick={handleLogout}>Logout</button>
+                <br />
+                <button onClick={handleRequest}>Request</button>
               </li>
-            )}
           </ul>
         </nav>
       </header>

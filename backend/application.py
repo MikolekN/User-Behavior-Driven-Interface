@@ -10,7 +10,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
-CORS(app, origins=["http://localhost:5173"])
+CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
 
 SWAGGER_URL = '/swagger'
 API_URL = '/static/swagger/swagger.json'
