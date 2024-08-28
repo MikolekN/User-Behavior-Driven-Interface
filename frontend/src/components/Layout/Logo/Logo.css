@@ -1,14 +1,14 @@
 .logo-container {
     display: flex;
-    align-items: center; /* Vertically center the logo and company name */
+    align-items: center;
 }
 
 .logo {
-    width: 64px;
-    height: auto;
-    margin-right: 10px; /* Space between logo and company name */
+    height: 40px;
+    width: auto;
 }
 
 .company-name {
-    font-size: 24px; /* Adjust the size of the company name */
+    font-size: 24px;
+    margin: 0 4px;
 }

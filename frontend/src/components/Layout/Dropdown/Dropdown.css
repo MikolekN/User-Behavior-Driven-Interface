@@ -1,21 +1,21 @@
-.nav-item {
+.dropdown-item {
     position: relative;
 }
 
-.nav-link {
+.dropdown-label {
     cursor: pointer;
     transition: font-weight 0.2s ease;
 }
 
-.nav-link.active {
+.dropdown-label.active {
     font-weight: bold;
 }
 
-.nav-link:hover {
+.dropdown-label:hover {
     font-weight: bold;
 }
 
-.dropdown {
+.dropdown-list {
     display: block;
     white-space: nowrap;
     position: absolute;
@@ -29,7 +29,7 @@
     max-width: max-content;
 }
 
-.dropdown li {
+.dropdown-list-item {
     display: block;
     list-style: none;
     cursor: pointer;
@@ -37,7 +37,12 @@
     margin: 0;
 }
 
-.dropdown li a {
+.dropdown-list-item:hover {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.dropdown-list-item a {
     padding: 8px 16px;
     text-decoration: none;
     color: black;
@@ -45,11 +50,6 @@
     transition: font-weight 0.2s ease;
 }
 
-.dropdown li:hover {
-    background-color: #f0f0f0;
-    font-weight: bold;
-}
-
-.dropdown li a:hover {
+.dropdown-list-item a:hover {
     background-color: #f1f1f1;
 }

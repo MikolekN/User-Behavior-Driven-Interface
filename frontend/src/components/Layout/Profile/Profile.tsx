@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Profile.css';
 import icon from '../../../assets/images/user.png';
 
@@ -23,21 +24,28 @@ const Profile: React.FC<ProfileProps>  = ({ isLoggedIn, setIsLoggedIn, setUserna
     return (
         <div className="profile-container">
             <button className="profile-button" onClick={toggleDropdown}>
-                {/* Replace with your profile icon or avatar */}
                 <img src={icon} alt="Profile" className="profile-icon" />
             </button>
             {dropdownOpen && (
                 <ul className="profile-dropdown">
-                    <li><a href="/profile">Profile</a></li>
                     {!isLoggedIn && (
                         <>
-                            <li><a href="/login" onClick={handleLogout}>Login</a></li>
-                            <li><a href="/register" onClick={handleLogout}>Register</a></li>
+                            <li className='profile-dropdown-option'>
+                                <Link to='/login'>Login</Link>
+                            </li>
+                            <li className='profile-dropdown-option'>
+                                <Link to='/register'>Register</Link>
+                            </li>
                         </>
                     )}
                     {isLoggedIn && (
                         <>
-                            <li><a href="/login" onClick={handleLogout}>Logout</a></li>
+                            <li className='profile-dropdown-option'>
+                                <Link to="/profile">Profile</Link>
+                            </li>
+                            <li className='profile-dropdown-option'>
+                                <Link to='/logout' onClick={handleLogout}>Logout</Link>
+                            </li>
                         </>
                     )}
                 </ul>

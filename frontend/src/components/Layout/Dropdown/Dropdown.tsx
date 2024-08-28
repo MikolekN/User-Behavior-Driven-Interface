@@ -15,18 +15,18 @@ interface DropdownProps {
 const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersistent, onToggle, onHover, onMouseLeave }) => {
   return (
     <li
-      className="nav-item"
+      className="nav-list-option dropdown-item"
       onMouseEnter={onHover}
       onMouseLeave={onMouseLeave}
       onClick={onToggle}
     >
-      <span className={`nav-link ${isPersistent ? 'active' : ''}`}>
+      <span className={`dropdown-label ${isPersistent ? 'active' : ''}`}>
         {title}
       </span>
       {isOpen && (
-        <ul className="dropdown">
+        <ul className="dropdown-list">
           {options.map((option) => (
-            <li key={option.label}>
+            <li className='dropdown-list-item' key={option.label}>
               <Link to={option.path}>{option.label}</Link>
             </li>
           ))}
