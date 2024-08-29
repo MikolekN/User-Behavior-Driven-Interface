@@ -14,7 +14,7 @@ const Layout: React.FC<LayoutProps> = ({ isLoggedIn, setIsLoggedIn, username, se
     setIsLoggedIn(false);
     setUsername("");
     await fetch("http://127.0.0.1:5000/api/logout", {
-      method: "GET",
+      method: "POST",
       credentials: 'include'
     });
   };

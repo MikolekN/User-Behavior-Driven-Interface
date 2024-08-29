@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Response
 from database import Database
 from users.user import User
 from flask_login import LoginManager, login_required
@@ -10,6 +10,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
+
 CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
 
 SWAGGER_URL = '/swagger'
@@ -22,16 +23,20 @@ swaggerui_blueprint = get_swaggerui_blueprint(
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 Database.initialise()
+
 login = LoginManager(app)
 
 @login.user_loader
-def load_user(id):
+def load_user(id: str) -> User | None:
     return UserRepository.find_by_id(id)
 
 app.register_blueprint(authorisation_blueprint)
 
 # temporary placeholder
-@app.route("/")
+@app.route("/", methods=['GET'])
 @login_required
-def hello_world():
-    return "<p>Hello, World!</p>"
+def hello_world() -> Response:
+    return Response("<p>Hello, World!</p>")
+
+if __name__ == "__main__":
+    app.run()
