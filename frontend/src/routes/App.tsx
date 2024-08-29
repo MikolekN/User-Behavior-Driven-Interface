@@ -7,7 +7,7 @@ const App: React.FC = () => {
   const [username, setUsername] = useState("");
 
   return (
-    <Layout isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} username={username} setUsername={setUsername}>
+    <Layout isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUsername={setUsername}>
       <Outlet context={{ isLoggedIn, setIsLoggedIn, username, setUsername }} />
     </Layout>
   );
