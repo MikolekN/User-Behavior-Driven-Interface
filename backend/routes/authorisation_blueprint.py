@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, Response
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 import bcrypt
 from datetime import datetime
 from collections.abc import Mapping
@@ -70,3 +70,12 @@ def register() -> tuple[Response, int]:
 
     sanitized_user = sanitize_user_dict(user)
     return jsonify(message="User registered successfully", user=sanitized_user), 201
+
+@authorisation_blueprint.route('/user', methods=['GET'])
+@login_required
+def get_user() -> tuple[Response, int]:
+    if current_user.is_authenticated:
+        sanitized_user = sanitize_user_dict(current_user)
+        return jsonify(user=sanitized_user), 200
+    else:
+        return jsonify(message="No user logged in"), 401

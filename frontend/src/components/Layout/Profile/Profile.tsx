@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Profile.css';
 import icon from '../../../assets/images/user.png';
+import { useNavigate } from 'react-router-dom';
 
 interface ProfileProps {
     isLoggedIn: boolean;
@@ -10,9 +11,20 @@ interface ProfileProps {
 }
 
 const Profile: React.FC<ProfileProps>  = ({ isLoggedIn, setIsLoggedIn, setUsername }) => {
-    const handleLogout = () => {
+    const navigate = useNavigate();
+    const handleLogout = async () => {
         setIsLoggedIn(false);
         setUsername("");
+        try {
+            await fetch("http://127.0.0.1:5000/api/logout", {
+              method: "POST",
+              credentials: 'include'
+            });
+        }
+        catch (error) {
+        console.log(error);
+        }
+        navigate('/');
     };
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -64,7 +76,7 @@ const Profile: React.FC<ProfileProps>  = ({ isLoggedIn, setIsLoggedIn, setUserna
                                 <Link to="/profile">Profile</Link>
                             </li>
                             <li className='profile-dropdown-option'>
-                                <Link to='/logout' onClick={handleLogout}>Logout</Link>
+                                <Link to='/' onClick={handleLogout}>Logout</Link>
                             </li>
                         </>
                     )}
