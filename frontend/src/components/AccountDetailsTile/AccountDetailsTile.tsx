@@ -3,20 +3,7 @@ import Tile from '../Tile/Tile';
 import './AccountDetailsTile.css';
 import Button from '../utils/Button';
 
-// pozniej przerobimy to na odpytanie api, na ten moment dane są tylko na potrzeby frontend'owe
-const data = {
-    accountName: "Konto dla Młodych",
-    accountNumber: "06 1020 5040 1234 6001 0231 6177",
-    availableFunds: 123.56,
-    balance: 99.12,
-    blockades: 44.00,
-    currency: "PLN"
-};
-
-const availableFunds = data.availableFunds.toFixed(2);
-const balance = data.balance.toFixed(2);
-const blockades = data.blockades.toFixed(2);
-//
+import { data, availableFunds, balance, blockades } from "../../delete/tmpUserData"; // to delete just tmp solution
 
 const AccountDetailsTile = () => {
   return (
