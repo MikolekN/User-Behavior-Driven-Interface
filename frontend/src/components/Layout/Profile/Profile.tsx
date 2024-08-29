@@ -25,19 +25,19 @@ const Profile: React.FC<ProfileProps>  = ({ isLoggedIn, setIsLoggedIn, setUserna
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-        if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
-            toggleDropdown();
-        }
+            if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+                toggleDropdown();
+            }
         };
 
         if (dropdownOpen) {
-        document.addEventListener('mousedown', handleClickOutside);
+            document.addEventListener('mousedown', handleClickOutside);
         } else {
-        document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside);
         }
 
         return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
     });
 
