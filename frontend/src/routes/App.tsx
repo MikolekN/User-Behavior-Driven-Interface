@@ -8,6 +8,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const checkLoginStatus = async () => {
+      setUsername("");
+      setIsLoggedIn(false);
       try {
         const response = await fetch('http://127.0.0.1:5000/api/user', {
           method: 'GET',
@@ -17,21 +19,14 @@ const App: React.FC = () => {
         if (response.ok) {
           const data = await response.json();
           if (data.user) {
-            setUsername("Hallo");
+            setUsername(data.user.login);
             setIsLoggedIn(true);
-          } else {
-            setUsername("");
-            setIsLoggedIn(false);
           }
         } else {
           console.error('Failed to fetch current user:', response.status);
-          setUsername("");
-          setIsLoggedIn(false);
         }
       } catch (error) {
         console.error('Error checking user login status:', error);
-        setUsername("");
-        setIsLoggedIn(false);
       }
     };
 
