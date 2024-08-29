@@ -54,13 +54,49 @@
                 }
             },
             "401": {
-                "description": "Invalid login or password"
+                "description": "Invalid login or password",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "409": {
-                "description": "Already logged in"
+                "description": "Already logged in",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "404": {
-                "description": "User does not exist"
+                "description": "User does not exist",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
