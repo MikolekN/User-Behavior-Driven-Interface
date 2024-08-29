@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Profile.css';
 import icon from '../../../assets/images/user.png';
@@ -21,8 +21,28 @@ const Profile: React.FC<ProfileProps>  = ({ isLoggedIn, setIsLoggedIn, setUserna
         setDropdownOpen(!dropdownOpen);
     };
 
+    const profileRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+        if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+            toggleDropdown();
+        }
+        };
+
+        if (dropdownOpen) {
+        document.addEventListener('mousedown', handleClickOutside);
+        } else {
+        document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+        };
+    });
+
     return (
-        <div className="profile-container">
+        <div className="profile-container" ref={profileRef}>
             <button className="profile-button" onClick={toggleDropdown}>
                 <img src={icon} alt="Profile" className="profile-icon" />
             </button>
