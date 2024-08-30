@@ -41,3 +41,14 @@ class UserRepository:
             raise ValueError("Failed to retrieve the user after insertion.")
         
         return inserted_user
+    
+    @staticmethod
+    def update(user_id: str, updates: dict[str, any]) -> User:
+        query = {'_id': bson.ObjectId(user_id)}
+        result = Database.update_one(UserRepository.COLLECTION, {'_id': user_id}, updates)
+
+        if result.matched_count == 0:
+            return None
+        
+        return UserRepository.find_by_id(user_id)
+        
