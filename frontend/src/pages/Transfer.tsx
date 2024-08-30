@@ -1,9 +1,6 @@
-import React from 'react'
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useOutletContext, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
-import Tile from '../components/Tile/Tile.tsx';
+import { useNavigate } from 'react-router-dom';
 
 import { data, availableFunds } from "../delete/tmpUserData"; // to delete just tmp solution
 
@@ -23,31 +20,40 @@ const Transfer = () => {
         mode: 'onSubmit'
     });
     
-    //const { setIsLoggedIn, setUsername }: AuthContext = useOutletContext(); 
     const navigate = useNavigate();
     const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
     
     const onSubmit = handleSubmit(async ({ recipentAccountNumber, transferTitle, amount }: TransferFromData) => {
+        try {
+            const response = await fetch("http://127.0.0.1:5000/api/transfer", {
+                method: "POST",
+                headers: {
+                   "Content-Type": "application/json" 
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    recipentAccountNumber: recipentAccountNumber,
+                    transferTitle: transferTitle,
+                    amount: amount
+                })
+            })
+            const responseJson = await response.json();
+            console.log(responseJson);
 
-        // separate function maybe
-        let today = new Date();
-        let dd = String(today.getDate()).padStart(2, '0');
-        let mm = String(today.getMonth() + 1).padStart(2, '0');
-        let yyyy = String(today.getFullYear());
-
-        const currentDate = mm + '/' + dd + '/' + yyyy;
-
-
-        const requestData = {
-            fromAccountNumber: data.accountNumber,
-            recipentAccountNumber: recipentAccountNumber,
-            transferTitle: transferTitle,
-            amount: amount,
-            transferDate: currentDate
+            if (response.ok) {
+                navigate('/dashboard');
+            }
+            else {
+                setApiError({
+                    isError: true,
+                    errorMessage: responseJson.message
+                });
+                throw new Error(responseJson.message);
+            }
         }
-
-        // finish logic when backend will be ready
-        console.log(requestData);
+        catch (error) {
+            console.log(error);
+        }
     });
 
     return (
