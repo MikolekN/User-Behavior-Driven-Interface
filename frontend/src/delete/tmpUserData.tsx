@@ -1,7 +1,7 @@
 // pozniej przerobimy to na odpytanie api, na ten moment dane są tylko na potrzeby frontend'owe
 export const data = {
     accountName: "Konto dla Młodych",
-    accountNumber: "06 1020 5040 1234 6001 0231 6177",
+    accountNumber: "06102050401234600102316177",
     availableFunds: 123.56,
     balance: 99.12,
     blockades: 44.00,
