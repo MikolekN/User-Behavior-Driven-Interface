@@ -13,7 +13,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ isLoggedIn, setIsLoggedIn, setUsername, children }) => {
   return (
-    <div>
+    <div className='main-container'>
       <header className="header">
         <Logo/>
 

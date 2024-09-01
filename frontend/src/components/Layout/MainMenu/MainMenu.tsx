@@ -100,11 +100,21 @@ const MainMenu: React.FC<MainMenuProps> = ({ isLoggedIn }) => {
                         onHover={() => handleDropdownHover('finanse')}
                         onMouseLeave={() => handleMouseLeave('finanse')}
                         />
-
-                        <li className='nav-list-option'>
-                            <Link to="\login" onMouseEnter={handleOtherOptionHover}>Obsługa klienta</Link>
-                        </li>
                         
+                        <Dropdown
+                        title="Obsługa klienta"
+                        options={[
+                            { label: 'Czat', path: '/chat' },
+                            { label: 'Najczęściej zadawane pytania', path: '/faq' },
+                            { label: 'Kontakt', path: '/info' },
+                        ]}
+                        isOpen={activeDropdown === 'obsługa_klienta'}
+                        isPersistent={persistentDropdown === 'obsługa_klienta'}
+                        onToggle={() => handleDropdownToggle('obsługa_klienta')}
+                        onHover={() => handleDropdownHover('obsługa_klienta')}
+                        onMouseLeave={() => handleMouseLeave('obsługa_klienta')}
+                        />
+
                         <li className='nav-list-option'>
                             <Link to="\login" onMouseEnter={handleOtherOptionHover}>Panel administratora</Link>
                         </li>

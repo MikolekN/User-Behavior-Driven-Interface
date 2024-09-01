@@ -1,0 +1,35 @@
+.faq-tile {
+    justify-self: center;
+    height: fit-content;
+}
+
+.faq-container {
+    padding: 20px;
+}
+
+.faq-item {
+    margin-bottom: 15px;
+}
+
+.faq-item:last-child {
+    margin-bottom: 0;
+}
+
+.faq-question {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease;
+}
+
+.faq-question:hover {
+    background-color: #f1f1f1;
+}
+
+.faq-answer {
+    padding: 10px;
+    border-left: 4px solid #007bff;
+    background-color: #fefefe;
+}
+  
