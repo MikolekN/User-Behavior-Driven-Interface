@@ -53,6 +53,21 @@
                     }
                 }
             },
+            "400": {
+                "description": "Invalid request payload",
+                "content": {
+                    "application.json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "401": {
                 "description": "Invalid login or password",
                 "content": {

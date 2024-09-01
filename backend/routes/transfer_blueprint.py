@@ -33,7 +33,7 @@ def make_transfer() -> tuple[Response, int]:
     recipent_user = UserRepository.find_by_account_number(data['recipentAccountNumber'])
     
     if not recipent_user:
-        return jsonify(message="User with given account number does not exist"), 409
+        return jsonify(message="User with given account number does not exist"), 404
 
     transfer = Transfer(created=datetime.now(), transfer_from_id=current_user._id,
                         transfer_to_id=recipent_user._id, title=data['transferTitle'], amount=float(data['amount']))
