@@ -17,7 +17,6 @@ class UserRepository:
     def find_by_login(login: str) -> User | None:
         query = {'login': login}
         user_dict = Database.find_one(UserRepository.COLLECTION, query)
-        print(user_dict)
         if user_dict:
             return User.from_dict(user_dict)
         return None

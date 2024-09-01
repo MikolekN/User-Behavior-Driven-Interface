@@ -38,7 +38,6 @@ const Transfer = () => {
                 })
             })
             const responseJson = await response.json();
-            console.log(responseJson);
 
             if (response.ok) {
                 navigate('/dashboard');

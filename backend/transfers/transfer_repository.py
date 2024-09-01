@@ -17,7 +17,6 @@ class TransferRepository:
     def find_by_transfer_from_id(transfer_from_id: str) -> Transfer | None:
         query = {'transfer_from_id': transfer_from_id}
         transfer_dict = Database.find_one(TransferRepository.COLLECTION, query)
-        print(transfer_dict)
         if transfer_dict:
             return Transfer.from_dict(transfer_dict)
         return None
