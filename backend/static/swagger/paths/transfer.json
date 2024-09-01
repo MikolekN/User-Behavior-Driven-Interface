@@ -1,0 +1,77 @@
+{
+    "post": {
+        "summary": "Transfer money",
+        "requestBody": {
+            "content": {
+                "application.json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "recipentAccountNumber": {
+                                "type": "string"
+                            },
+                            "transferTitle": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "recipentAccountNumber",
+                            "transferTitle",
+                            "amount"
+                        ]
+                    }
+                }
+            }
+        },
+        "responses": {
+            "200": {
+                "description": "Successful transfer",
+                "content": {
+                    "application.json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "400": {
+                "description": "Invalid request payload",
+                "content": {
+                    "application.json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "404": {
+                "description": "Recipent account number does not exist",
+                "content": {
+                    "application.json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -14,7 +14,10 @@
         },
         "/logout": {
             "$ref": "./paths/logout.json"
-        }
+        },
+        "/transfer": {
+            "$ref": "./paths/transfer.json"
+        }  
     },
     "components": {
         

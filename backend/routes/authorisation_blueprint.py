@@ -7,6 +7,8 @@ from typing import Any
 from users.user_repository import UserRepository
 from users.user import User
 
+import random
+
 authorisation_blueprint = Blueprint('authorisation', __name__, url_prefix='/api')
 
 def validate_login_data(data: Mapping[str, Any] | None) -> str | None:
@@ -65,7 +67,14 @@ def register() -> tuple[Response, int]:
         return jsonify(message="User already exists"), 409
 
     hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-    user = User(data['login'], hashed_password, created=datetime.now())
+    
+    # na razie dodaję tutaj w konstruktorze dodatkowe dane o użytkowniku dla ułatwienia
+    # trzeba bedzie dogadać jak to finalnie rozwiążemy
+    generated_account_number = ''.join(random.choices('0123456789', k=26))
+
+    user = User(data['login'], hashed_password, created=datetime.now(),
+                account_name='Przykladowa nazwa konta', account_number=generated_account_number,
+                available_funds=2000, blockades=123, balance=77.55, currency='PLN')
     user = UserRepository.insert(user)
 
     sanitized_user = sanitize_user_dict(user)

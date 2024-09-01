@@ -63,7 +63,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ isLoggedIn }) => {
                         <Dropdown
                         title="Przelewy"
                         options={[
-                            { label: 'Wykonaj przelew', path: '/' },
+                            { label: 'Wykonaj przelew', path: '/transfer' },
                             { label: 'Historia przelewów', path: '/' },
                             { label: 'Płatności cykliczne', path: '/' },
                             { label: 'Pożyczki', path: '/' },
