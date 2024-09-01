@@ -1,5 +1,6 @@
-.tile {
+.account-details-tile {
     justify-self: center;
     max-width: 80%;
     width: fit-content;
+    height: fit-content;
 }
