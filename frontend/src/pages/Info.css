@@ -1,0 +1,39 @@
+.info-tile {
+    padding: 20px;
+    justify-self: center;
+    height: fit-content;
+}
+
+.info-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-section {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.info-section h3 {
+    margin-top: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.info-section p {
+    margin: 5px 0;
+}
+
+.info-section ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-section ul li {
+    margin-bottom: 5px;
+}
+  

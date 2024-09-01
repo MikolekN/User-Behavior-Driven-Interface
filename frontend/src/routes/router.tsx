@@ -5,7 +5,9 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Home from "../pages/Home";
 import Transfer from "../pages/Transfer";
-
+import Chat from "../pages/Chat";
+import FAQ from "../pages/FAQ";
+import Info from "../pages/Info";
 
 export const router = createBrowserRouter([
     {
@@ -16,7 +18,10 @@ export const router = createBrowserRouter([
         { path: "/dashboard", element: <Dashboard /> },
         { path: "/login", element: <Login /> },
         { path: "/register", element: <Register /> },
-        { path: "/transfer", element: <Transfer /> }
+        { path: "/transfer", element: <Transfer /> },
+        { path: "/chat", element: <Chat /> },
+        { path: "/faq", element: <FAQ /> },
+        { path: "/info", element: <Info /> }
       ],
     },
 ]);

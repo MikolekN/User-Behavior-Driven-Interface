@@ -7,7 +7,7 @@ import { data, availableFunds, balance, blockades } from "../../delete/tmpUserDa
 
 const AccountDetailsTile = () => {
   return (
-    <Tile title={data.accountName}>
+    <Tile title={data.accountName} className="account-details-tile">
         <div>
             <p>{data.accountNumber}</p>
         </div>
@@ -17,7 +17,7 @@ const AccountDetailsTile = () => {
                 <p>Blockades: {blockades} {data.currency}</p>
             </div>
             <div className="grid p-4">
-                <p className="border-l border-gray-500 pl-8">Avaiable Funds: <br/> {availableFunds} {data.currency}</p>
+                <p className="border-l border-gray-500 pl-8">Available Funds: <br/> {availableFunds} {data.currency}</p>
                 <div className="justify-self-end pt-4 pl-4">
                     <Button>Transfer</Button>
                 </div>
@@ -27,4 +27,4 @@ const AccountDetailsTile = () => {
   )
 }
 
-export default AccountDetailsTile
+export default AccountDetailsTile;
