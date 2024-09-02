@@ -15,6 +15,9 @@
         "/logout": {
             "$ref": "./paths/logout.json"
         },
+        "/user": {
+            "$ref": "./paths/user.json"
+        },
         "/transfer": {
             "$ref": "./paths/transfer.json"
         }  

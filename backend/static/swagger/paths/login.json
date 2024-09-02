@@ -56,7 +56,7 @@
             "400": {
                 "description": "Invalid request payload",
                 "content": {
-                    "application.json": {
+                    "application/json": {
                         "schema": {
                             "type": "object",
                             "properties": {

@@ -1,0 +1,67 @@
+{
+    "get": {
+        "summary": "Get the currently logged-in user's details",
+        "responses": {
+            "200": {
+                "description": "User details retrieved successfully",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "user": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string"
+                                        },
+                                        "login": {
+                                            "type": "string"
+                                        },
+                                        "created": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "account_name": {
+                                            "type": "string"
+                                        },
+                                        "account_number": {
+                                            "type": "string"
+                                        },
+                                        "available_funds": {
+                                            "type": "number"
+                                        },
+                                        "blockades": {
+                                            "type": "number"
+                                        },
+                                        "balance": {
+                                            "type": "number"
+                                        },
+                                        "currency": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "401": {
+                "description": "No user logged in",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
