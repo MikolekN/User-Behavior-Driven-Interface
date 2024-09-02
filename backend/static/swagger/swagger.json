@@ -17,7 +17,10 @@
         },
         "/transfer": {
             "$ref": "./paths/transfer.json"
-        }  
+        },
+        "/transfers": {
+            "$ref": "./paths/transfers.json"
+        }    
     },
     "components": {
         

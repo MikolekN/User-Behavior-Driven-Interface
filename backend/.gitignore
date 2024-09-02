@@ -9,4 +9,3 @@ htmlcov/
 .tox/
 docs/_build/
 config.py
-static/swagger/swagger.json
