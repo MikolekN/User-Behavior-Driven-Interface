@@ -65,6 +65,9 @@ def make_transfer() -> tuple[Response, int]:
     
     if not recipent_user:
         return jsonify(message="User with given account number does not exist"), 404
+    
+    if current_user.available_funds - float(data['amount']) < 0:
+        return jsonify(message="User does not have enough money"), 403
 
     transfer = Transfer(created=datetime.now(), transfer_from_id=current_user._id,
                         transfer_to_id=recipent_user._id, title=data['transferTitle'], amount=float(data['amount']))
