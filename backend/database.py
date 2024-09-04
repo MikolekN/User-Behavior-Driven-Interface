@@ -23,8 +23,11 @@ class Database:
         return Database._get_collection(collection).insert_one(data)
 
     @staticmethod
-    def find(collection: str, query: dict[str, Any]) -> pymongo.cursor.Cursor:
-        return Database._get_collection(collection).find(query)
+    def find(collection: str, query: dict[str, Any], sort_criteria: dict[str, int] = None) -> pymongo.cursor.Cursor:
+        query_result = Database._get_collection(collection).find(query)
+        if sort_criteria:
+            query_result = query_result.sort(sort_criteria)
+        return query_result
 
     @staticmethod
     def find_one(collection: str, query: dict[str, Any]) -> dict[str, Any] | None:

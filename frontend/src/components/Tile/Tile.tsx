@@ -9,9 +9,9 @@ interface TileData {
 
 const Tile = ({ children, title, className = '' }: TileData) => {
   return (
-    <div className={`tile border-2 border-blue-600 border-opacity-20 max-w-sm rounded-lg overflow-hidden ${className}`}>
-      <div className="tile-title">
-        <h2>{title}</h2>
+    <div className={`tile border-2 border-blue-600 border-opacity-20 rounded-lg overflow-hidden ${className}`}>
+      <div className="font-semibold text-2xl mb-6 text-gray-700 tile-title">
+        {title}
       </div>
       {children}
     </div>

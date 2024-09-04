@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Tile from '../Tile/Tile';
 import './AccountDetailsTile.css';
 import Button from '../utils/Button';
@@ -19,7 +20,9 @@ const AccountDetailsTile = () => {
             <div className="grid p-4">
                 <p className="border-l border-gray-500 pl-8">Available Funds: <br/> {availableFunds} {data.currency}</p>
                 <div className="justify-self-end pt-4 pl-4">
-                    <Button>Transfer</Button>
+                    <Link to="/transfer">
+                        <Button>Transfer</Button>
+                    </Link>
                 </div>
             </div>
         </div>

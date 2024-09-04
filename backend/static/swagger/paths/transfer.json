@@ -57,6 +57,21 @@
                     }
                 }
             },
+            "403": {
+                "description": "User does not have enough money",
+                "content": {
+                    "application.json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "404": {
                 "description": "Recipent account number does not exist",
                 "content": {

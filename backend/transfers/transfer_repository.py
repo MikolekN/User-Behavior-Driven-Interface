@@ -28,6 +28,24 @@ class TransferRepository:
         if transfer_dict:
             return Transfer.from_dict(transfer_dict)
         return None
+    
+    @staticmethod
+    def find_all_user_transfers(transfer_from_id: str, transfer_to_id: str) -> Transfer | None:
+        query = {
+            '$or': [
+                {'transfer_from_id': transfer_from_id}, 
+                {'transfer_to_id': transfer_to_id}
+            ]
+        }
+        sort_criteria = [("created", -1)]
+
+        transfers_cursor = Database.find(TransferRepository.COLLECTION, query, sort_criteria)
+        transfers = list(transfers_cursor)
+        
+        if transfers is None:
+            return None
+        
+        return transfers
 
     @staticmethod
     def insert(transfer: Transfer) -> Transfer:
