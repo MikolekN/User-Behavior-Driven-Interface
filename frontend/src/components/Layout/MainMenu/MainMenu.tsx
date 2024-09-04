@@ -64,7 +64,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ isLoggedIn }) => {
                         title="Przelewy"
                         options={[
                             { label: 'Wykonaj przelew', path: '/transfer' },
-                            { label: 'Historia przelewów', path: '/' },
+                            { label: 'Historia przelewów', path: '/transactions/history' },
                             { label: 'Płatności cykliczne', path: '/' },
                             { label: 'Pożyczki', path: '/' },
                         ]}
