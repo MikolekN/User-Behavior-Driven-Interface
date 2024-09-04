@@ -1,5 +1,5 @@
 {
-    "get": {
+    "post": {
         "summary": "Logout a user",
         "responses": {
             "200": {
@@ -18,7 +18,19 @@
                 }
             },
             "409": {
-                "description": "No user logged in"
+                "description": "No user logged in",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
