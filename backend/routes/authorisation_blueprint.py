@@ -74,7 +74,7 @@ def register() -> tuple[Response, int]:
 
     user = User(data['login'], hashed_password, created=datetime.now(),
                 account_name='Przykladowa nazwa konta', account_number=generated_account_number,
-                available_funds=2000, blockades=123, balance=77.55, currency='PLN')
+                available_funds=2000, blockades=0, balance=2000, currency='PLN')
     user = UserRepository.insert(user)
 
     sanitized_user = sanitize_user_dict(user)
