@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Tile from '../Tile/Tile';
 import './TransactionsHistory.css';
 
@@ -15,7 +15,6 @@ interface Transaction {
 };
 
 const TransactionsHistory = () => {
-    const [transactionsHistory, setTransactionsHistory] = useState<Transaction[]>([]);
     const [groupedTransactions, setGroupedTransactions] = useState<GroupedTransactions>({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -39,7 +38,6 @@ const TransactionsHistory = () => {
                 ...transaction,
                 created: formatDate(new Date(transaction.created))
             }));
-            setTransactionsHistory(formattedTransactions);
             const grouped = groupByDate(formattedTransactions);
             setGroupedTransactions(grouped);
             } catch (error) {

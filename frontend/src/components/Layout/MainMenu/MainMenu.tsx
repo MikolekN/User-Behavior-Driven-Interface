@@ -12,30 +12,30 @@ const MainMenu: React.FC<MainMenuProps> = ({ isLoggedIn }) => {
     const [persistentDropdown, setPersistentDropdown] = useState<string | null>(null);
   
     const handleDropdownToggle = (dropdownName: string) => {
-      if (persistentDropdown === dropdownName) {
-        setPersistentDropdown(null);
-        setActiveDropdown(null);
-      } else {
-        setPersistentDropdown(dropdownName);
-        setActiveDropdown(dropdownName);
-      }
+		if (persistentDropdown === dropdownName) {
+			setPersistentDropdown(null);
+			setActiveDropdown(null);
+		} else {
+			setPersistentDropdown(dropdownName);
+			setActiveDropdown(dropdownName);
+		}
     };
   
     const handleDropdownHover = (dropdownName: string) => {
-      setActiveDropdown(dropdownName);
-      if (persistentDropdown !== dropdownName) {
-        setPersistentDropdown(null);
-      }
+		setActiveDropdown(dropdownName);
+		if (persistentDropdown !== dropdownName) {
+			setPersistentDropdown(null);
+		}
     };
   
     const handleMouseLeave = (dropdownName: string) => {
-      if (persistentDropdown !== dropdownName) {
-        setActiveDropdown(null);
-      }
+		if (persistentDropdown !== dropdownName) {
+			setActiveDropdown(null);
+		}
     };
 
     const handleOtherOptionHover = () => {
-        setPersistentDropdown(null);
+    	setPersistentDropdown(null);
         setActiveDropdown(null);
     }
   
