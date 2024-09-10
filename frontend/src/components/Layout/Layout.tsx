@@ -3,28 +3,27 @@ import './Layout.css';
 import Logo from './Logo/Logo.tsx';
 import Profile from './Profile/Profile.tsx';
 import MainMenu from './MainMenu/MainMenu.tsx';
+import { User } from '../utils/User.tsx';
 
 interface LayoutProps {
-  isLoggedIn: boolean;
-  setIsLoggedIn: (loggedIn: boolean) => void;
-  setUsername: (username: string) => void;
+  user: User | null;
+  setUser: (user: User | null) => void;
   children: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ isLoggedIn, setIsLoggedIn, setUsername, children }) => {
+const Layout: React.FC<LayoutProps> = ({ user, setUser, children }) => {
   return (
     <div className='main-container'>
       <header className="header">
         <Logo/>
 
         <MainMenu 
-          isLoggedIn={isLoggedIn}
+          user={user}
         />
 
         <Profile 
-          isLoggedIn={isLoggedIn}
-          setIsLoggedIn={setIsLoggedIn}
-          setUsername={setUsername} 
+          user={user}
+          setUser={setUser}
         />
       </header>
       <main className="grid">

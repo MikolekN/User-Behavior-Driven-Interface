@@ -1,6 +1,6 @@
+import { User } from "../components/utils/User";
+
 export interface AuthContext {
-    isLoggedIn: boolean;
-    setIsLoggedIn: (loggedIn: boolean) => void;
-    username: string;
-    setUsername: (username: string) => void;
+    user: User;
+    setUser: (user: User) => void;
 };

@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-
-import { data, availableFunds } from "../delete/tmpUserData"; // to delete just tmp solution
+import { Navigate, useNavigate, useOutletContext } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import { formValidationRules } from '../components/utils/validationRules';
+import { AuthContext } from '../context/AuthContext';
 
 interface TransferFromData {
     recipentAccountNumber: string;
@@ -15,6 +14,8 @@ interface TransferFromData {
 }
 
 const Transfer = () => {
+    const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
+    const { user }: AuthContext = useOutletContext();
     const { register, handleSubmit, formState: { errors } } = useForm<TransferFromData>({
         defaultValues: {
           recipentAccountNumber: "",
@@ -23,9 +24,9 @@ const Transfer = () => {
         },
         mode: 'onSubmit'
     });
-    
     const navigate = useNavigate();
-    const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
+
+    if (!user) return <Navigate to="/login" />;  
     
     const onSubmit = handleSubmit(async ({ recipentAccountNumber, transferTitle, amount }: TransferFromData) => {
         try {
@@ -68,10 +69,10 @@ const Transfer = () => {
                             <label className="text-sm font-semibold text-gray-700 block">From account</label>
                             <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
                                 <p>
-                                    {data.accountName} {`(${availableFunds} PLN)`}
+                                    {user.accountName} {`(${user.availableFunds} PLN)`}
                                 </p>
                                 <p>
-                                    {data.accountNumber}
+                                    {user.accountNumber}
                                 </p>
                             </div>
                         </div>

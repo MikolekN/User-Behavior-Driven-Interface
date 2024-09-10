@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import "./MainMenu.css"
 import { Link } from 'react-router-dom';
 import Dropdown from '../Dropdown/Dropdown.tsx';
+import { User } from '../../utils/User.tsx';
 
 interface MainMenuProps {
-    isLoggedIn: boolean;
+    user: User | null;
 }
 
-const MainMenu: React.FC<MainMenuProps> = ({ isLoggedIn }) => {
+const MainMenu: React.FC<MainMenuProps> = ({ user }) => {
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [persistentDropdown, setPersistentDropdown] = useState<string | null>(null);
   
@@ -47,7 +48,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ isLoggedIn }) => {
                         <Link to="/" onMouseEnter={handleOtherOptionHover}>Start</Link>
                     </li>
                     
-                    {!isLoggedIn && (
+                    {!user && (
                     <>
                         <li className='nav-list-option'>
                             <Link to="/login">Login</Link>
@@ -58,7 +59,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ isLoggedIn }) => {
                     </>
                     )}
 
-                    {isLoggedIn && (
+                    {user && (
                     <>
                         <Dropdown
                         title="Przelewy"
