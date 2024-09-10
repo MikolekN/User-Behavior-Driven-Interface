@@ -1,7 +1,13 @@
+import { Navigate, useOutletContext } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import './Info.css';
+import { AuthContext } from '../context/AuthContext';
 
 const Info = () => {
+  const { user }: AuthContext = useOutletContext();
+
+  if (!user) return <Navigate to="/login" />
+
   return (
     <Tile title="Informacje Kontaktowe" className="info-tile">
       <div className="info-sections">

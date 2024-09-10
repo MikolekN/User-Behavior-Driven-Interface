@@ -23,7 +23,7 @@ export const router = createBrowserRouter([
         { path: "/chat", element: <Chat /> },
         { path: "/faq", element: <FAQ /> },
         { path: "/info", element: <Info /> },
-        { path: "transactions/history", element: <TransactionsHistory /> }
+        { path: "/transactions/history", element: <TransactionsHistory /> }
       ],
     },
 ]);

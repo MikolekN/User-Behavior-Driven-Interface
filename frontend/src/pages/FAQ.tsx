@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Tile from '../components/Tile/Tile';
 import './FAQ.css';
+import { AuthContext } from '../context/AuthContext';
+import { Navigate, useOutletContext } from 'react-router-dom';
 
 interface FAQItem {
   question: string;
@@ -44,10 +46,12 @@ const faqData: FAQItem[] = [
 
 const FAQ = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
   const toggleAnswer = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
+  const { user }: AuthContext = useOutletContext();
+
+  if (!user) return <Navigate to="/login" />
 
   return (
     <Tile title="FAQ" className="faq-tile">

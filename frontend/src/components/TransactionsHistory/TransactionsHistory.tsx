@@ -1,6 +1,8 @@
 import { Fragment, useEffect, useState } from 'react';
 import Tile from '../Tile/Tile';
 import './TransactionsHistory.css';
+import { AuthContext } from '../../context/AuthContext';
+import { Navigate, useOutletContext } from 'react-router-dom';
 
 interface GroupedTransactions {
     [created: string]: Transaction[]
@@ -18,6 +20,9 @@ const TransactionsHistory = () => {
     const [groupedTransactions, setGroupedTransactions] = useState<GroupedTransactions>({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
+    const { user }: AuthContext = useOutletContext();
+
+    if (!user) return <Navigate to="/login" />
 
     useEffect(() => {
         const fetchTransactions = async () => {
@@ -86,7 +91,7 @@ const TransactionsHistory = () => {
 
     return (
         <Tile title="Transactions History" className="transactions-history-tile">
-            <div className="flex justify-center p-8 overflow-auto relative">
+            <div className="flex justify-center p-8">
                 <table className="table-fixed w-9/12">
                     <tbody>
                         {Object.keys(groupedTransactions)
