@@ -12,7 +12,6 @@ class User(UserMixin):
     created: Optional[datetime] = field(default_factory=datetime.now)
     account_name: str = ''
     account_number: str = ''
-    available_funds: float = ''
     blockades: float = ''
     balance: float = ''
     currency: str = ''
@@ -38,7 +37,6 @@ class User(UserMixin):
             created=datetime.fromisoformat(data['created']) if 'created' in data else None,
             account_name=data.get('account_name', ''),
             account_number=data.get('account_number', ''),
-            available_funds=data.get('available_funds', ''),
             blockades=data.get('blockades', ''),
             balance=data.get('balance', ''),
             currency=data.get('currency', '')
@@ -47,6 +45,9 @@ class User(UserMixin):
     def get_id(self) -> str:
         # Returns the string representation of _id.
         return str(self._id) if self._id else ""
+    
+    def get_available_funds(self) -> float:
+        return float(self.balance) - float(self.blockades)
 
     def __repr__(self) -> str:
        # Returns a string representation of the User instance for debugging.
@@ -54,7 +55,6 @@ class User(UserMixin):
                 f"_id={self._id!r}, created={self.created!r}), "
                 f"account_name={self.account_name!r}, "
                 f"account_number={self.account_number!r}, "
-                f"available_funds={self.available_funds!r}, "
                 f"blockades={self.blockades!r}, "
                 f"balance={self.balance!r}, "
                 f"currency={self.currency!r})")
