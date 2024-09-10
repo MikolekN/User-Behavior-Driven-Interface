@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useOutletContext } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import Button from '../components/utils/Button';
 import '../components/utils/validationRules';
 import { formValidationRules } from '../components/utils/validationRules';
+import { AuthContext } from '../context/AuthContext';
 
 interface RegisterFormData {
   email: string,
@@ -15,6 +16,8 @@ interface RegisterFormData {
 };
 
 const Register = () => {
+  const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
+  const { user }: AuthContext = useOutletContext();
   const { register, control, handleSubmit, formState: { errors } } = useForm<RegisterFormData>({
     defaultValues: {
       email: "",
@@ -23,15 +26,14 @@ const Register = () => {
     },
     mode: "onSubmit"
   });
-
   const password = useWatch({
     control,
     name: "password",
     defaultValue: "",
   });
- 
   const navigate = useNavigate();
-  const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
+
+  if (user) return <Navigate to="/dashboard" />;
 
   const onSubmit = handleSubmit(async ({ email, password }) => {
     try {

@@ -3,9 +3,9 @@ import { useOutletContext, Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext.tsx'
 
 const Home: React.FC = () => {
-  const { isLoggedIn }: AuthContext = useOutletContext();
+  const { user }: AuthContext = useOutletContext();
 
-  if (isLoggedIn) {
+  if (user) {
     return <Navigate to="/dashboard" />;
   } else {
     return <Navigate to="/login" />;

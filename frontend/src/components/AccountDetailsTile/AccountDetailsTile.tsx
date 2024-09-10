@@ -1,23 +1,29 @@
-import { Link } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 import Tile from '../Tile/Tile';
 import './AccountDetailsTile.css';
 import Button from '../utils/Button';
-
-import { data, availableFunds, balance, blockades } from "../../delete/tmpUserData"; // to delete just tmp solution
+import { AuthContext } from '../../context/AuthContext';
 
 const AccountDetailsTile = () => {
+
+    const { user }: AuthContext = useOutletContext();
+
+    if (!user) {
+        return <div>Loading...</div>;
+    }
+
   return (
-    <Tile title={data.accountName} className="account-details-tile">
+    <Tile title={user.accountName} className="account-details-tile">
         <div>
-            <p>{data.accountNumber}</p>
+            <p>{user.accountNumber}</p>
         </div>
         <div className="flex justify-end space-x-4 ml-10">
             <div className="p-4">
-                <p>Balance: {balance} {data.currency}</p>
-                <p>Blockades: {blockades} {data.currency}</p>
+                <p>Balance: {user.balance} {user.currency}</p>
+                <p>Blockades: {user.blockades} {user.currency}</p>
             </div>
             <div className="grid p-4">
-                <p className="border-l border-gray-500 pl-8">Available Funds: <br/> {availableFunds} {data.currency}</p>
+                <p className="border-l border-gray-500 pl-8">Available Funds: <br/> {user.availableFunds} {user.currency}</p>
                 <div className="justify-self-end pt-4 pl-4">
                     <Link to="/transfer">
                         <Button>Transfer</Button>

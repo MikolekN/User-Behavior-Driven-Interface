@@ -72,16 +72,15 @@ def make_transfer() -> tuple[Response, int]:
     if not recipent_user:
         return jsonify(message="User with given account number does not exist"), 404
     
-    if current_user.available_funds - float(data['amount']) < 0:
+    if current_user.get_available_funds() - float(data['amount']) < 0:
         return jsonify(message="User does not have enough money"), 403
 
-    amount = int(float(data['amount']) * 100)
     transfer = Transfer(created=datetime.now(), transfer_from_id=current_user._id,
                         transfer_to_id=recipent_user._id, title=data['transferTitle'], amount=float(data['amount']))
     transfer = TransferRepository.insert(transfer)
 
-    UserRepository.update(current_user._id, {'available_funds': substract(float(current_user.available_funds), float(data['amount']))})
-    UserRepository.update(recipent_user._id, {'available_funds': add(float(recipent_user.available_funds), float(data['amount']))})
+    UserRepository.update(current_user._id, {'balance': substract(float(current_user.balance), float(data['amount']))})
+    UserRepository.update(recipent_user._id, {'balance': add(float(recipent_user.balance), float(data['amount']))})
 
     return jsonify(message="Transfer made successfully"), 200 # maybe add some response json
 
