@@ -23,7 +23,13 @@
         },
         "/transfers": {
             "$ref": "./paths/transfers.json"
-        }    
+        },
+        "/transfers/analysis/monthly": {
+            "$ref": "./paths/transfers_analysis_monthly.json"
+        },
+        "/transfers/analysis/yearly": {
+            "$ref": "./paths/transfers_analysis_yearly.json"
+        }   
     },
     "components": {
         

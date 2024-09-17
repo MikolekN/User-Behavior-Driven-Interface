@@ -1,0 +1,99 @@
+{
+    "post": {
+        "summary": "Get Transfers connected with current user",
+        "requestBody": {
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "year": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": [
+                            "year"
+                        ]
+                    }
+                }
+            }
+        },
+        "responses": {
+            "200": {
+                "description": "Transfers monthly analysis returned successfully",
+                "content": {
+                    "application.json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "transfers": {
+                                    "properties": {
+                                        "interval": {
+                                            "type": "string"
+                                        },
+                                        "income": {
+                                            "type": "integer"
+                                        },
+                                        "outcome": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "400": {
+                "description": "Invalid request payload",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "examples": {
+                            "payload_empty": {
+                                "value": {
+                                    "message": "Request payload is empty"
+                                }
+                            },
+                            "missing_field": {
+                                "value": {
+                                    "message": "Year is required"
+                                }
+                            },
+                            "not_integer": {
+                                "value": {
+                                    "message": "Year has to be of type integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "401": {
+                "description": "No user logged in",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
