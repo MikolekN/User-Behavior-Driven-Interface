@@ -30,21 +30,11 @@ class TransferRepository:
         return None
     
     @staticmethod
-    def find_all_user_transfers(transfer_from_id: str, transfer_to_id: str) -> Transfer | None:
-        query = {
-            '$or': [
-                {'transfer_from_id': transfer_from_id}, 
-                {'transfer_to_id': transfer_to_id}
-            ]
-        }
-        sort_criteria = [("created", -1)]
-
+    def find_transfers(query: dict, sort_criteria: list[tuple[str, int]] = None) -> Transfer | None:
         transfers_cursor = Database.find(TransferRepository.COLLECTION, query, sort_criteria)
         transfers = list(transfers_cursor)
-        
         if transfers is None:
             return None
-        
         return transfers
 
     @staticmethod

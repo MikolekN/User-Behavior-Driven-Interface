@@ -92,8 +92,8 @@ const MainMenu: React.FC<MainMenuProps> = ({ user }) => {
                         <Dropdown
                         title="Finanse"
                         options={[
-                            { label: 'Analizy miesięczne', path: '/' },
-                            { label: 'Analizy roczne', path: '/' },
+                            { label: 'Analizy miesięczne', path: '/transactions/analysis/monthly' },
+                            { label: 'Analizy roczne', path: '/transactions/analysis/yearly' },
                         ]}
                         isOpen={activeDropdown === 'finanse'}
                         isPersistent={persistentDropdown === 'finanse'}
