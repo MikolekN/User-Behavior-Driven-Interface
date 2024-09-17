@@ -9,6 +9,8 @@ import Chat from "../pages/Chat";
 import FAQ from "../pages/FAQ";
 import Info from "../pages/Info";
 import TransactionsHistory from "../components/TransactionsHistory/TransactionsHistory";
+import TransactionsMonthlyAnalysis from "../components/TransactionsAnalysis/TransactionsMonthlyAnalysis";
+import TransactionsYearlyAnalysis from "../components/TransactionsAnalysis/TransactionsYearlyAnalysis";
 
 export const router = createBrowserRouter([
     {
@@ -23,7 +25,9 @@ export const router = createBrowserRouter([
         { path: "/chat", element: <Chat /> },
         { path: "/faq", element: <FAQ /> },
         { path: "/info", element: <Info /> },
-        { path: "/transactions/history", element: <TransactionsHistory /> }
+        { path: "/transactions/history", element: <TransactionsHistory /> },
+        { path: "/transactions/analysis/monthly", element: <TransactionsMonthlyAnalysis /> },
+        { path: "/transactions/analysis/yearly", element: <TransactionsYearlyAnalysis /> }
       ],
     },
 ]);
