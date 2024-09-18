@@ -7,16 +7,16 @@ const colors: string[] = ['#00d800', '#ee0000']; // green, red hex code
 const TransfersAnalysisChart = (props: TransfersAnalysisChartProps) => {
     const chartRef = useRef<HTMLDivElement>(null);
     const [columnWidth, setColumnWidth] = useState<number>(0);
+    const canvasRef = useRef<HTMLCanvasElement>(document.createElement('canvas'));
 
-    const getTextWidth = (text: string, font: string = '24px Arial') => {
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
+    const getTextWidth = useCallback((text: string, font: string = '24px Arial') => {
+        const context = canvasRef.current.getContext('2d');
         if (context) {
             context.font = font;
             return context.measureText(text).width;
         }
         return 0;
-    };
+    }, []);
 
     const calculateColumnWidth = useCallback(() => {
         if (chartRef.current && props.chartData.length > 0) {
@@ -28,7 +28,7 @@ const TransfersAnalysisChart = (props: TransfersAnalysisChartProps) => {
     }, [props.chartData.length]);
 
     useEffect(() => {
-        calculateColumnWidth()
+        calculateColumnWidth();
     }, [calculateColumnWidth]);
 
     useEffect(() => {
@@ -47,10 +47,10 @@ const TransfersAnalysisChart = (props: TransfersAnalysisChartProps) => {
         while (textWidth > columnWidth && shortenedName.length > 1) {
             shortenedName = shortenedName.slice(0, -1);
             textWidth = getTextWidth(shortenedName);
-            console.log(`Shortened to "${shortenedName}", new width: ${textWidth}`);
         }
         if (interval != shortenedName) {
             shortenedName = shortenedName.slice(0, -1) + '.';
+            textWidth = getTextWidth(shortenedName);
         }
         return shortenedName;
     };
