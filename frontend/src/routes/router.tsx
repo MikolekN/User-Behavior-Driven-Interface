@@ -6,7 +6,7 @@ import Register from "../pages/Register";
 import Home from "../pages/Home";
 import Transfer from "../pages/Transfer";
 import Chat from "../pages/Chat";
-import FAQ from "../pages/FAQ";
+import FAQ from "../pages/FAQ/FAQ";
 import Info from "../pages/Info";
 import TransactionsHistory from "../components/TransactionsHistory/TransactionsHistory";
 import TransactionsMonthlyAnalysis from "../components/TransactionsAnalysis/TransactionsMonthlyAnalysis";

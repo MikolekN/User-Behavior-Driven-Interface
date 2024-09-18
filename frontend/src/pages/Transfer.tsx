@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Navigate, useNavigate, useOutletContext } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
@@ -15,25 +15,25 @@ interface TransferFromData {
 
 const Transfer = () => {
     const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
-    const { user }: AuthContext = useOutletContext();
+    const { user, fetchUser } = useContext(AuthContext) || { user: null, fetchUser: () => Promise.resolve() };
     const { register, handleSubmit, formState: { errors } } = useForm<TransferFromData>({
         defaultValues: {
-          recipentAccountNumber: "",
-          transferTitle: "",
-          amount: ""
+            recipentAccountNumber: "",
+            transferTitle: "",
+            amount: ""
         },
         mode: 'onSubmit'
     });
     const navigate = useNavigate();
 
-    if (!user) return <Navigate to="/login" />;  
-    
+    if (!user) return <Navigate to="/login" />;
+
     const onSubmit = handleSubmit(async ({ recipentAccountNumber, transferTitle, amount }: TransferFromData) => {
         try {
             const response = await fetch("http://127.0.0.1:5000/api/transfer", {
                 method: "POST",
                 headers: {
-                   "Content-Type": "application/json" 
+                    "Content-Type": "application/json"
                 },
                 credentials: "include",
                 body: JSON.stringify({
@@ -41,21 +41,20 @@ const Transfer = () => {
                     transferTitle: transferTitle,
                     amount: amount
                 })
-            })
+            });
             const responseJson = await response.json();
 
             if (response.ok) {
+                await fetchUser(); // Tutaj sprawdzić czy await jest potrzebny
                 navigate('/dashboard');
-            }
-            else {
+            } else {
                 setApiError({
                     isError: true,
                     errorMessage: responseJson.message
                 });
                 throw new Error(responseJson.message);
             }
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
         }
     });
@@ -77,7 +76,7 @@ const Transfer = () => {
                             </div>
                         </div>
                         <form className="space-y-6" onSubmit={onSubmit}>
-                            <FormInput 
+                            <FormInput
                                 label="Recipent account number"
                                 fieldType="text"
                                 register={register('recipentAccountNumber', {
@@ -87,7 +86,7 @@ const Transfer = () => {
                                 error={errors.recipentAccountNumber}
                                 className="w-full"
                             />
-                            <FormInput 
+                            <FormInput
                                 label="Title"
                                 fieldType="text"
                                 register={register('transferTitle', {
@@ -96,7 +95,7 @@ const Transfer = () => {
                                 error={errors.transferTitle}
                                 className="w-full"
                             />
-                            <FormInput 
+                            <FormInput
                                 label="Amount"
                                 fieldType="text"
                                 register={register('amount', {

@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
+import { useState, useContext } from 'react';
 import "./MainMenu.css"
 import { Link } from 'react-router-dom';
 import Dropdown from '../Dropdown/Dropdown.tsx';
-import { User } from '../../utils/User.tsx';
+import { AuthContext } from '../../../context/AuthContext.tsx';
 
-interface MainMenuProps {
-    user: User | null;
-}
-
-const MainMenu: React.FC<MainMenuProps> = ({ user }) => {
+const MainMenu = () => {
+    const { user } = useContext(AuthContext) || { user: null, fetchUser: () => Promise.resolve() };
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [persistentDropdown, setPersistentDropdown] = useState<string | null>(null);
   
@@ -36,7 +33,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ user }) => {
     };
 
     const handleOtherOptionHover = () => {
-    	setPersistentDropdown(null);
+        setPersistentDropdown(null);
         setActiveDropdown(null);
     }
   

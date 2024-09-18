@@ -1,9 +1,10 @@
-import { Navigate, useOutletContext } from 'react-router-dom';
+import { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
 import AccountDetailsTile from '../components/AccountDetailsTile/AccountDetailsTile';
 import { AuthContext } from '../context/AuthContext';
 
 const Dashboard = () => {
-  const { user }: AuthContext = useOutletContext();
+  const { user } = useContext(AuthContext) || { user: null, fetchUser: () => Promise.resolve() };
 
   if (!user) return <Navigate to="/login" />;
 
