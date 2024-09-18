@@ -9,7 +9,7 @@ const TransfersAnalysisChart = (props: TransfersAnalysisChartProps) => {
     const [columnWidth, setColumnWidth] = useState<number>(0);
     const canvasRef = useRef<HTMLCanvasElement>(document.createElement('canvas'));
 
-    const getTextWidth = useCallback((text: string, font: string = '24px Arial') => {
+    const getTextWidth = useCallback((text: string, font: string = '20px Inter, system-ui, Avenir, Helvetica, Arial, sans-serif') => {
         const context = canvasRef.current.getContext('2d');
         if (context) {
             context.font = font;
@@ -42,6 +42,9 @@ const TransfersAnalysisChart = (props: TransfersAnalysisChartProps) => {
     }, [calculateColumnWidth]);
 
     const formatMonth = (interval: string) => {
+        if (!props.truncateText) {
+            return interval;
+        }
         let shortenedName = interval;
         let textWidth = getTextWidth(shortenedName);
         while (textWidth > columnWidth && shortenedName.length > 1) {
