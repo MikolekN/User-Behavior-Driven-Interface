@@ -1,0 +1,53 @@
+.dashboard-tile {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.account-number-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.credit-card-icon {
+    width: 20px;
+    height: auto;
+    margin-right: 5px;
+}
+
+.info-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    padding: 10px 20px;
+}
+
+.balance-info-section {
+    display: flex;
+    flex-direction: column;
+    margin: 0 20px;
+    width: fit-content;
+    align-items: center;
+}
+
+.separator {
+    border-top: 1px solid #ddd;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.available-funds {
+    font-weight: 600;
+    color: #333;
+}
+
+.transfer-button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 10px;
+}
