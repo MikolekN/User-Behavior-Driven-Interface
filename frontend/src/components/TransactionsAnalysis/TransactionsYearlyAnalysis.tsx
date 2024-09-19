@@ -33,10 +33,11 @@ const TransactionsAnalysis = () => {
 
     return (
         <div className="flex items-center justify-center">
-            <Tile title="Transactions yearly analysis" className="w-1/2">
+            <Tile title="Transactions yearly analysis" className="w-4/5">
                 <TransfersAnalysisChart chartData={chartData} />
             </Tile>
         </div>
+
     )
 }
 

@@ -49,7 +49,7 @@ const Chat = () => {
     };
 
     return (
-        <div className="flex items-center justify-center">
+        <div className="flex-grow flex flex-col items-center justify-center overflow-hidden h-full max-h-full">
             <Tile title="Czat" className="chat-tile">
                 <div className="chat-container">
                 <div className="message-display">
