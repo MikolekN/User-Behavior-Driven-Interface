@@ -18,10 +18,10 @@ const TransactionsAnalysis = () => {
     useEffect(() => {
         const fetchTransfersAnalysisMonthly = async () => {
             const url = 'http://127.0.0.1:5000/api/transfers/analysis/yearly';
-            const body = { 
+            const body = {
                 startYear: new Date().getUTCFullYear() - 2,
                 endYear: new Date().getUTCFullYear() + 2
-            };   
+            };
             fetchTransfersAnalysisData(url, body, setChartData, setLoading, setError);
         };
 
@@ -32,9 +32,11 @@ const TransactionsAnalysis = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <Tile title="Transactions yearly analysis" className="w-1/2">
-            <TransfersAnalysisChart chartData={chartData} />
-        </Tile>        
+        <div className="flex items-center justify-center">
+            <Tile title="Transactions yearly analysis" className="w-1/2">
+                <TransfersAnalysisChart chartData={chartData} />
+            </Tile>
+        </div>
     )
 }
 

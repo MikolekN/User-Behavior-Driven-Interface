@@ -31,9 +31,11 @@ const TransactionsMonthlyAnalysis = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <Tile title="Transactions monthly analysis" className="w-1/2">
-            <TransfersAnalysisChart chartData={chartData} truncateText={true}/>
-        </Tile>
+        <div className="flex items-center justify-center">
+            <Tile title="Transactions monthly analysis" className="w-1/2">
+                <TransfersAnalysisChart chartData={chartData} truncateText={true}/>
+            </Tile>
+        </div>
     )
 }
 
