@@ -21,11 +21,10 @@ const Layout: React.FC<LayoutProps> = ({ user, setUser, children }) => {
 
         <Profile user={user} setUser={setUser} />
       </header>
-      <main className="content-area">
+      <main className="layout-content-area">
         {children}
       </main>
     </div>
   );
 };
-
 export default Layout;
