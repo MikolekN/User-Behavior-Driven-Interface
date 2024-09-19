@@ -59,10 +59,13 @@ const Profile  = () => {
                     {user && (
                         <>
                             <li className='profile-dropdown-option'>
-                                <Link to="/profile">Profile</Link>
+                                <Link to="/dashboard" onClick={toggleDropdown}>Profile</Link>
                             </li>
                             <li className='profile-dropdown-option'>
-                                <Link to='/' onClick={handleLogout}>Logout</Link>
+                                <Link to='/' onClick={() => {
+                                    toggleDropdown();
+                                    handleLogout();
+                                }}>Logout</Link>
                             </li>
                         </>
                     )}
