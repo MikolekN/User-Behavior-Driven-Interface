@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext.tsx'
 
 const Home: React.FC = () => {
-  const { user } = useContext(AuthContext) || { user: null, fetchUser: () => Promise.resolve() };
+  const { user } = useContext(AuthContext);
 
   if (user) {
     return <Navigate to="/dashboard" />;

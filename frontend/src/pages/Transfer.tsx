@@ -15,7 +15,7 @@ interface TransferFromData {
 
 const Transfer = () => {
     const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
-    const { user, fetchUser } = useContext(AuthContext) || { user: null, fetchUser: () => Promise.resolve() };
+    const { user, fetchUser } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm<TransferFromData>({
         defaultValues: {
             recipentAccountNumber: "",
@@ -45,7 +45,7 @@ const Transfer = () => {
             const responseJson = await response.json();
 
             if (response.ok) {
-                await fetchUser(); // Tutaj sprawdzić czy await jest potrzebny
+                await fetchUser();
                 navigate('/dashboard');
             } else {
                 setApiError({

@@ -14,7 +14,7 @@ interface LoginFormData {
 }
 
 const Login = () => {
-	const { user, login } = useContext(AuthContext) || { user: null, fetchUser: () => Promise.resolve() };
+	const { user, login } = useContext(AuthContext);
 	const navigate = useNavigate();
 	const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
 	const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({

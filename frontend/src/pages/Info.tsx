@@ -5,8 +5,7 @@ import './Info.css';
 import { AuthContext } from '../context/AuthContext';
 
 const Info = () => {
-  const { user } = useContext(AuthContext) || { user: null, fetchUser: () => Promise.resolve() };
-
+  const { user } = useContext(AuthContext);
   if (!user) return <Navigate to="/login" />
 
   return (

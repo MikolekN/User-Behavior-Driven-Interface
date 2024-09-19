@@ -7,12 +7,9 @@ import { FAQData } from './FAQData';
 
 const FAQ = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const toggleAnswer = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
-  const { user } = useContext(AuthContext) || { user: null, fetchUser: () => Promise.resolve() };
-
-  if (!user) return <Navigate to="/login" />
+  const toggleAnswer = (index: number) => { setActiveIndex(activeIndex === index ? null : index); };
+  const { user } = useContext(AuthContext); // Here the user is used only to check for login, maybe there is the way to do this globally so every component won't have to check (like packagaging page classes in a shared parent class that will take care of redirecting based on user login status)?
+  if (!user) return <Navigate to="/login" /> 
 
   return (
     <Tile title="FAQ" className="faq-tile">

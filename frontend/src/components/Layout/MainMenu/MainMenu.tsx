@@ -1,11 +1,11 @@
 import { useState, useContext } from 'react';
-import "./MainMenu.css"
+import './MainMenu.css';
 import { Link } from 'react-router-dom';
 import Dropdown from '../Dropdown/Dropdown.tsx';
 import { AuthContext } from '../../../context/AuthContext.tsx';
 
 const MainMenu = () => {
-    const { user } = useContext(AuthContext) || { user: null, fetchUser: () => Promise.resolve() };
+    const { user } = useContext(AuthContext);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [persistentDropdown, setPersistentDropdown] = useState<string | null>(null);
   

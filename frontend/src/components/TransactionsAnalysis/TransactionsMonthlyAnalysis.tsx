@@ -11,7 +11,7 @@ const TransactionsMonthlyAnalysis = () => {
     const [chartData, setChartData] = useState<ChartData[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
-    const { user } = useContext(AuthContext) || { user: null, fetchUser: () => Promise.resolve() };
+    const { user } = useContext(AuthContext);
     
     useEffect(() => {
         if (!user) return;

@@ -5,8 +5,8 @@ import icon from '../../../assets/images/user.png';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
 
-const Profile  = () => {
-    const { user, logout } = useContext(AuthContext) || { user: null, fetchUser: () => Promise.resolve() };
+const Profile = () => {
+    const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate();
     const [dropdownOpen, setDropdownOpen] = useState(false);    
 

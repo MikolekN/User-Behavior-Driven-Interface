@@ -15,7 +15,7 @@ interface Message {
 const Chat = () => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
-  const { user } = useContext(AuthContext) || { user: null, fetchUser: () => Promise.resolve() };
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     if (!user) return;
@@ -26,7 +26,6 @@ const Chat = () => {
       },
     ]);
   }, [user]);
-
   if (!user) return <Navigate to="/login" />;
 
   const handleSend = () => {

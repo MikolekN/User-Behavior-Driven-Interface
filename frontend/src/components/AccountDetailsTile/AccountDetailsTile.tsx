@@ -6,13 +6,8 @@ import Button from '../utils/Button';
 import { AuthContext } from '../../context/AuthContext';
 
 const AccountDetailsTile = () => {
-
-    const { user } = useContext(AuthContext) || { user: null, fetchUser: () => Promise.resolve() };
-
-    if (!user) {
-        return <div>Loading...</div>;
-    }
-
+    const { user } = useContext(AuthContext);
+    if (!user) return <div>Loading...</div>; // In the future this component will be part of Dashboard.tsx and '!user' condition is handled there
     return (
         <Tile title={user.accountName} className="account-details-tile">
             <div>
