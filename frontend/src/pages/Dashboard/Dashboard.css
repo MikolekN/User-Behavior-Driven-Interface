@@ -1,37 +1,25 @@
 .dashboard-tile {
-    width: 50%;
+    min-width: fit-content;
+    width: 33.33%;
     display: flex;
     flex-direction: column;
     padding: 10px;
-}
-
-.account-number-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.credit-card-icon {
-    width: 20px;
-    height: auto;
-    margin-right: 5px;
 }
 
 .info-container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    position: relative;
     padding: 10px 20px;
 }
 
 .balance-info-section {
+    flex-grow: 1;
+    margin: 0 20px;
     display: flex;
     flex-direction: column;
-    margin: 0 20px;
-    width: fit-content;
     align-items: center;
+    min-width: fit-content;
 }
 
 .separator {
@@ -45,9 +33,25 @@
     color: #333;
 }
 
+.other-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+}
+
+.account-number-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.credit-card-icon {
+    width: 20px;
+    margin-right: 5px;
+}
+
 .transfer-button {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    margin: 10px;
+    display: flex;
+    justify-content: center;
 }
