@@ -12,11 +12,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <MainMenu/>
         <Profile/>
       </header>
-      <main className="grid">
+      <main className="layout-content-area">
         {children}
       </main>
     </div>
   );
 };
-
 export default Layout;

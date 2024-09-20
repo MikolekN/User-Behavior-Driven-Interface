@@ -61,7 +61,7 @@ const Transfer = () => {
 
     return (
         <div className="flex items-center justify-center">
-            <Tile title="Transfer" className="form-tile w-2/5 bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
+            <Tile title="Transfer" className="form-tile w-2/5  bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
                         <div className="mt-8">
