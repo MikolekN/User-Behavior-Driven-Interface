@@ -3,7 +3,6 @@ import { AuthContext } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import Tile from '../../components/Tile/Tile';
 import Button from '../../components/utils/Button';
-import './Dashboard.css';
 import icon from '../../assets/images/credit-card.png';
 
 const Dashboard = () => {
