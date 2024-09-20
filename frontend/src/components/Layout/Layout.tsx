@@ -6,8 +6,8 @@ import MainMenu from './MainMenu/MainMenu.tsx';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className='main-container'>
-      <header className="header">
+    <div className='layout-wrapper'>
+      <header className="layout-header">
         <Logo/>
         <MainMenu/>
         <Profile/>
