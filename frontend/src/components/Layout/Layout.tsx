@@ -13,24 +13,18 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ user, setUser, children }) => {
   return (
-    <div className='main-container'>
-      <header className="header">
-        <Logo/>
+    <div className='layout-wrapper'>
+      <header className="layout-header">
+        <Logo />
 
-        <MainMenu 
-          user={user}
-        />
+        <MainMenu user={user} />
 
-        <Profile 
-          user={user}
-          setUser={setUser}
-        />
+        <Profile user={user} setUser={setUser} />
       </header>
-      <main className="grid">
+      <main className="layout-content-area">
         {children}
       </main>
     </div>
   );
 };
-
 export default Layout;

@@ -1,6 +1,7 @@
 .faq-tile {
     justify-self: center;
     height: fit-content;
+    width: 33.33%;
 }
 
 .faq-container {

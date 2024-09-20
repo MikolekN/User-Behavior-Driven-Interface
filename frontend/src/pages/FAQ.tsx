@@ -54,25 +54,27 @@ const FAQ = () => {
   if (!user) return <Navigate to="/login" />
 
   return (
-    <Tile title="FAQ" className="faq-tile">
-      <div className="faq-container">
-        {faqData.map((item, index) => (
-          <div key={index} className="faq-item">
-            <div
-              className="faq-question cursor-pointer font-bold"
-              onClick={() => toggleAnswer(index)}
-            >
-              Q{index + 1}. {item.question}
-            </div>
-            {activeIndex === index && (
-              <div className="faq-answer mt-2 text-gray-700">
-                {item.answer}
+    <div className="flex items-center justify-center">
+      <Tile title="FAQ" className="faq-tile">
+        <div className="faq-container">
+          {faqData.map((item, index) => (
+            <div key={index} className="faq-item">
+              <div
+                className="faq-question cursor-pointer font-bold"
+                onClick={() => toggleAnswer(index)}
+              >
+                Q{index + 1}. {item.question}
               </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </Tile>
+              {activeIndex === index && (
+                <div className="faq-answer mt-2 text-gray-700">
+                  {item.answer}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </Tile>
+    </div>
   );
 };
 
