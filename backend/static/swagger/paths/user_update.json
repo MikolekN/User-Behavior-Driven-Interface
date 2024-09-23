@@ -1,0 +1,117 @@
+{
+    "patch": {
+      "summary": "Update specific fields of the currently logged-in user's profile",
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "login": {
+                  "type": "string",
+                  "description": "New login (email) for the user"
+                },
+                "account_name": {
+                  "type": "string",
+                  "description": "New account name for the user"
+                },
+                "currency": {
+                  "type": "string",
+                  "description": "New currency preference for the user's account"
+                }
+              },
+              "required": []
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "User data updated successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "User data updated successfully"
+                  },
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "description": "Unique identifier of the user"
+                      },
+                      "login": {
+                        "type": "string",
+                        "description": "Updated login (email) of the user"
+                      },
+                      "account_name": {
+                        "type": "string",
+                        "description": "Updated account name of the user"
+                      },
+                      "currency": {
+                        "type": "string",
+                        "description": "Updated currency of the user's account"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Invalid request payload or invalid field",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Invalid field: <field_name>"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "User not found after update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "User not found after update"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal server error while updating user data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Error updating user data: <error_message>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+}
+  

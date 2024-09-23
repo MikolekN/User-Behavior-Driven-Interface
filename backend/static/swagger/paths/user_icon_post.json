@@ -1,0 +1,71 @@
+{
+    "post": {
+      "summary": "Upload or replace the currently logged-in user's icon",
+      "requestBody": {
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "icon": {
+                  "type": "string",
+                  "format": "binary",
+                  "description": "Image file to upload as the user's icon"
+                }
+              },
+              "required": [
+                "icon"
+              ]
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "User icon uploaded successfully",
+          "content": {
+            "image/png": {
+              "schema": {
+                "type": "string",
+                "format": "binary",
+                "description": "The uploaded and resized user icon"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "File not found in request or file type not allowed",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Icon missing in the request"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Error occurred during image processing",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Image processing failed: <error_message>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+}
+  

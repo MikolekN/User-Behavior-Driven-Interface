@@ -7,7 +7,7 @@
                     "schema": {
                         "type": "object",
                         "properties": {
-                            "login": {
+                            "email": {
                                 "type": "string"
                             },
                             "password": {
@@ -15,7 +15,7 @@
                             }
                         },
                         "required": [
-                            "login",
+                            "email",
                             "password"
                         ]
                     }
@@ -69,7 +69,7 @@
                 }
             },
             "401": {
-                "description": "Invalid login or password",
+                "description": "Invalid login credentials",
                 "content": {
                     "application/json": {
                         "schema": {
