@@ -45,7 +45,7 @@ class User(UserMixin):
             blockades=data.get('blockades', ''),
             balance=data.get('balance', ''),
             currency=data.get('currency', ''),
-            user_icon=data.get('user_icon', ''),
+            user_icon=data.get('user_icon', None),
             role=data.get('role', '')
         )
 
