@@ -73,3 +73,11 @@ class User(UserMixin):
     def __str__(self) -> str:
         # Returns a user-friendly string representation of the User instance.
         return f"User(email={self.email}, created={self.created})"
+    
+    def sanitize_user_dict(self) -> dict[str, Any]:
+        user_dict = self.to_dict()
+        user_dict.pop('password', None)
+        user_dict.pop('user_icon', None)
+        user_dict.pop('_id', None)
+        user_dict.pop('created', None)
+        return user_dict

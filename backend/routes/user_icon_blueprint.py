@@ -1,17 +1,11 @@
-from flask import Blueprint, request, jsonify, Response, current_app, url_for, send_file
-from flask_login import current_user, login_user, logout_user, login_required
-import bcrypt
-from datetime import datetime
-from collections.abc import Mapping
-from typing import Any
+from flask import Blueprint, request, jsonify, Response, current_app, send_file
+from flask_login import current_user, login_required
 from users.user_repository import UserRepository
-from users.user import User
 from werkzeug.datastructures import FileStorage
 from PIL import Image
 
 import uuid
 import os
-from werkzeug.utils import secure_filename
 
 user_icon_blueprint = Blueprint('user_icon', __name__, url_prefix='/api')
 

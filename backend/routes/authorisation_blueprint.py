@@ -18,14 +18,6 @@ def validate_login_data(data: Mapping[str, Any] | None) -> str | None:
         return "Email and password fields are required"
     return None
 
-def sanitize_user_dict(user: User) -> dict[str, Any]:
-    user_dict = user.to_dict()
-    user_dict.pop('password', None)
-    user_dict.pop('user_icon', None)
-    user_dict.pop('_id', None)
-    user_dict.pop('created', None)
-    return user_dict
-
 @authorisation_blueprint.route('/login', methods=['POST'])
 def login() -> tuple[Response, int]:
     if current_user.is_authenticated:
@@ -44,7 +36,7 @@ def login() -> tuple[Response, int]:
         return jsonify(status="error", message="Invalid login credentials"), 401
 
     login_user(user)
-    sanitized_user = sanitize_user_dict(user)
+    sanitized_user = user.sanitize_user_dict()
     return jsonify(message="Logged in successfully", user=sanitized_user), 200
 
 @authorisation_blueprint.route('/logout', methods=['POST'])
@@ -88,15 +80,5 @@ def register() -> tuple[Response, int]:
         role='USER')
     user = UserRepository.insert(user) # teraz przy tworzeniu zapisuje w bazie 'user_icon: null'. Trzeba będzie zrobić, żeby nic nie zapisywał.
 
-    sanitized_user = sanitize_user_dict(user)
+    sanitized_user = user.sanitize_user_dict()
     return jsonify(message="User registered successfully", user=sanitized_user), 201
-
-@authorisation_blueprint.route('/user', methods=['GET'])
-@login_required
-def get_user() -> tuple[Response, int]:
-    if current_user.is_authenticated:
-        current_user = UserRepository.find_by_email(current_user.email)
-        sanitized_user = sanitize_user_dict(current_user)
-        return jsonify(user=sanitized_user), 200
-    else:
-        return jsonify(message="No user logged in"), 401
