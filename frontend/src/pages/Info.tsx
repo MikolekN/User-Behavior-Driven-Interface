@@ -1,11 +1,11 @@
-import { Navigate, useOutletContext } from 'react-router-dom';
+import { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import './Info.css';
 import { AuthContext } from '../context/AuthContext';
 
 const Info = () => {
-  const { user }: AuthContext = useOutletContext();
-
+  const { user } = useContext(AuthContext);
   if (!user) return <Navigate to="/login" />
 
   return (

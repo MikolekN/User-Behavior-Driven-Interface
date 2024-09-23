@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Navigate, useNavigate, useOutletContext } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
@@ -15,7 +15,7 @@ interface TransferFromData {
 
 const Transfer = () => {
     const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
-    const { user }: AuthContext = useOutletContext();
+    const { user, fetchUser } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm<TransferFromData>({
         defaultValues: {
             recipentAccountNumber: "",
@@ -45,6 +45,7 @@ const Transfer = () => {
             const responseJson = await response.json();
 
             if (response.ok) {
+                await fetchUser();
                 navigate('/dashboard');
             } else {
                 setApiError({

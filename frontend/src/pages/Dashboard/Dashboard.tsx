@@ -1,4 +1,5 @@
-import { Navigate, useOutletContext } from 'react-router-dom';
+import { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import Tile from '../../components/Tile/Tile';
@@ -6,7 +7,7 @@ import Button from '../../components/utils/Button';
 import icon from '../../assets/images/credit-card.png';
 
 const Dashboard = () => {
-    const { user }: AuthContext = useOutletContext();
+    const { user } = useContext(AuthContext);
 
     if (!user) return <Navigate to="/login" />;
 
@@ -34,7 +35,7 @@ const Dashboard = () => {
                             </Link>
                         </div>
                     </div>
-                    
+
                 </div>
             </Tile>
         </div>

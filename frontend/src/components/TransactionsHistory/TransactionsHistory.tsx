@@ -1,12 +1,12 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState, useContext } from 'react';
 import Tile from '../Tile/Tile';
 import './TransactionsHistory.css';
 import { AuthContext } from '../../context/AuthContext';
-import { Navigate, useOutletContext } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 interface GroupedTransactions {
     [created: string]: Transaction[]
-};
+}
 
 interface Transaction {
     created: string,
@@ -14,17 +14,17 @@ interface Transaction {
     title: string,
     amount: number,
     income: boolean
-};
+}
 
 const TransactionsHistory = () => {
     const [groupedTransactions, setGroupedTransactions] = useState<GroupedTransactions>({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
-    const { user }: AuthContext = useOutletContext();
+    const { user } = useContext(AuthContext);
 
-    if (!user) return <Navigate to="/login" />
 
     useEffect(() => {
+        if (!user) return;
         const fetchTransactions = async () => {
             try {
                 const response = await fetch('http://127.0.0.1:5000/api/transfers', {
@@ -54,7 +54,9 @@ const TransactionsHistory = () => {
         };
 
         fetchTransactions();
-    }, []);
+    }, [user]);
+    
+    if (!user) return <Navigate to="/login" />
 
     const formatDate = (creationDate: Date) => {
         const month = creationDate.getUTCMonth() + 1

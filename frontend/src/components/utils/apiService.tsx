@@ -1,4 +1,12 @@
-export const fetchTransfersAnalysisData = async (url: string, body: object, setChartData: Function, setLoading: Function, setError: Function) => {
+import { ChartData } from '../utils/types/TransfersAnalysisChartTypes';
+
+export const fetchTransfersAnalysisData = async (
+    url: string, 
+    body: object, 
+    setChartData: (data: ChartData[]) => void, 
+    setLoading: (loading: boolean) => void, 
+    setError: (hasError: boolean) => void
+) => {
     setLoading(true);
     try {
         const response = await fetch(url, {
@@ -14,11 +22,11 @@ export const fetchTransfersAnalysisData = async (url: string, body: object, setC
             throw new Error('Network response was not ok');
         }
 
-        const data = await response.json();
+        const data: { transfers: ChartData[] } = await response.json();
         setChartData(data.transfers);
     } catch (error) {
         setError(true);
-        console.log("Error: ", error);
+        console.error("Error: ", error);
     } finally {
         setLoading(false);
     }

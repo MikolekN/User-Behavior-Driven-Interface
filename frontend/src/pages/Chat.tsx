@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Tile from '../components/Tile/Tile';
 import './Chat.css';
 import send_arrow from '../assets/images/send.png';
-import { Navigate, useOutletContext } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 type MessageType = 'user' | 'system';
@@ -13,38 +13,37 @@ interface Message {
 }
 
 const Chat = () => {
-    const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState<Message[]>([]);
-    const { user }: AuthContext = useOutletContext();
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState<Message[]>([]);
+  const { user } = useContext(AuthContext);
 
-    useEffect(() => {
-        if (!user) return;
-        setMessages([
-            {
-                type: 'system',
-                text: 'Witamy na czacie obsługi klienta! Nie wahaj się zadać pytań, a my chętnie Ci pomożemy.',
-            },
-        ]);
-    }, [user]);
+  useEffect(() => {
+    if (!user) return;
+    setMessages([
+      {
+        type: 'system',
+        text: 'Witamy na czacie obsługi klienta! Nie wahaj się zadać pytań, a my chętnie Ci pomożemy.',
+      },
+    ]);
+  }, [user]);
   
-    if (!user) return <Navigate to="/login" />;
-
+  if (!user) return <Navigate to="/login" />;
     const handleSend = () => {
-    if (message.trim()) {
-        setMessages((prevMessages) => [
-            ...prevMessages,
-            { type: 'user', text: message }
-        ]);
-  
-        setMessage('');
-  
-        setTimeout(() => {
+        if (message.trim()) {
             setMessages((prevMessages) => [
-            ...prevMessages,
-            { type: 'system',
-                text: 'Dziękujemy za wiadomość! Nasz zespół wkrótce się z Tobą skontaktuje.' }
+                ...prevMessages,
+                { type: 'user', text: message }
             ]);
-        }, 500);
+    
+            setMessage('');
+    
+            setTimeout(() => {
+                setMessages((prevMessages) => [
+                ...prevMessages,
+                { type: 'system',
+                    text: 'Dziękujemy za wiadomość! Nasz zespół wkrótce się z Tobą skontaktuje.' }
+                ]);
+            }, 500);
         }
     };
 
