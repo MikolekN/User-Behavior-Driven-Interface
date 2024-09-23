@@ -1,13 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { useOutletContext, useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import Button from '../components/utils/Button';
 import { formValidationRules } from '../components/utils/validationRules';
-import { User } from '../components/utils/User';
 
 interface LoginFormData {
 	email: string;
@@ -15,7 +14,7 @@ interface LoginFormData {
 }
 
 const Login = () => {
-	const { user, setUser }: AuthContext = useOutletContext(); 
+	const { user, login } = useContext(AuthContext);
 	const navigate = useNavigate();
 	const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
 	const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
@@ -30,44 +29,23 @@ const Login = () => {
 
 	const onSubmit = handleSubmit(async ({ email, password }) => {
 		try {
-			const response = await fetch("http://127.0.0.1:5000/api/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					login: email,
-					password: password
-				}),
-				credentials: 'include'
-		});
-
-		const data = await response.json();
-
-			if (response.ok) {
-				console.log(data.user);
-				setUser(new User(
-					data.user.login,
-					data.user.account_name,
-					data.user.account_number,
-					data.user.blockades.toFixed(2),
-					data.user.balance.toFixed(2),
-					data.user.currency)
-				);
-				navigate('/dashboard');
-			}
-			else {
-				setApiError({
-					isError: true,
-					errorMessage: data.message
-				});
-				throw new Error(data.message);
-			}
+			await login(email, password);
+			navigate('/dashboard');
+		} catch (error) {
+			if (error instanceof Error) {
+                setApiError({
+                    isError: true,
+                    errorMessage: error.message
+                });
+            } else {
+                setApiError({
+                    isError: true,
+                    errorMessage: 'An unknown error occurred. Please try again.'
+                });
+            }
+            console.log(error);
 		}
-		catch (error) {
-			console.log(error);
-		}
-  });
+	});
 
   return (
 	<div className="flex items-center justify-center">

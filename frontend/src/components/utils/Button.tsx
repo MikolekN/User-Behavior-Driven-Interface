@@ -4,7 +4,7 @@ interface ButtonProps {
     children: ReactNode | ReactElement;
     onClick?: () => void;
     className?: string
-};
+}
 
 const Button = ({ children, onClick, className = "" }: ButtonProps) => {
   return (

@@ -1,14 +1,11 @@
-.main-container {
+.layout-wrapper {
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
 
-.grid {
-    height: 100%;
-}
-
-.header {
+.layout-header {
+    flex-shrink: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -16,4 +13,10 @@
     position: relative;
     height: 40px;
     margin: 10px 0;
+}
+
+.layout-content-area {
+    display: grid;
+    flex-grow: 1;
+    overflow-y: auto;
 }
