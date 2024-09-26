@@ -1,0 +1,6 @@
+.table-tile {
+    justify-self: center;
+    max-width: 80%;
+    width: 80%;
+    height: fit-content;
+}
