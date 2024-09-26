@@ -1,22 +1,19 @@
 {
     "post": {
         "summary": "Get Transfers connected with current user",
+        "tags": ["Transfers"],
         "requestBody": {
             "content": {
                 "application/json": {
                     "schema": {
                         "type": "object",
                         "properties": {
-                            "startYear": {
-                                "type": "integer"
-                            },
-                            "endYear": {
+                            "year": {
                                 "type": "integer"
                             }
                         },
                         "required": [
-                            "startYear",
-                            "endYear"
+                            "year"
                         ]
                     }
                 }
@@ -69,14 +66,14 @@
                                     "message": "Request payload is empty"
                                 }
                             },
-                            "missing_fields": {
+                            "missing_field": {
                                 "value": {
-                                    "message": "Start Year and End Year are required"
+                                    "message": "Year is required"
                                 }
                             },
-                            "not_integers": {
+                            "not_integer": {
                                 "value": {
-                                    "message": "Start year and / or end year have to be of type integer"
+                                    "message": "Year has to be of type integer"
                                 }
                             }
                         }

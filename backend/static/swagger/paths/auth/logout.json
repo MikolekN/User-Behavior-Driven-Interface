@@ -1,6 +1,7 @@
 {
     "post": {
         "summary": "Logout a user",
+        "tags": ["Auth"],
         "responses": {
             "200": {
                 "description": "Logged out successfully",
