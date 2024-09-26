@@ -41,12 +41,10 @@ class Transfer():
 
     def __repr__(self) -> str:
        # Returns a string representation of the Transfer instance for debugging.
-        return (f"Transfer(login={self.login!r}, password={self.password!r}, "
-                f"_id={self._id!r}, created={self.created!r}), "
-                f"transfer_from_id={self.transfer_from_id!r}, "
-                f"transfer_to_id={self.transfer_to_id!r}, "
-                f"title={self.title!r}, "
-                f"amount={self.amount!r})")
+        return (f"Transfer(_id={self._id}, created={self.created}, "
+                f"transfer_from_id={self.transfer_from_id}, "
+                f"transfer_to_id={self.transfer_to_id}, title='{self.title}', "
+                f"amount={self.amount})")
 
     def __str__(self) -> str:
         # Returns a user-friendly string representation of the Transfer instance.
