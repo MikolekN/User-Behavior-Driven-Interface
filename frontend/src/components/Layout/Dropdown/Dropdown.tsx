@@ -10,9 +10,10 @@ interface DropdownProps {
   onToggle: () => void;
   onHover: () => void;
   onMouseLeave: () => void;
+  onOptionClick: () => void;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersistent, onToggle, onHover, onMouseLeave }) => {
+const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersistent, onToggle, onHover, onMouseLeave, onOptionClick }) => {
   const dropdownRef = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
@@ -47,8 +48,22 @@ const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersisten
       {isOpen && (
         <ul className="dropdown-list">
           {options.map((option) => (
-            <li className="dropdown-list-item" key={option.label}>
-              <Link to={option.path}>{option.label}</Link>
+            <li
+              className="dropdown-list-item"
+              key={option.label}
+              onClick={() => {
+                onOptionClick();
+              }}
+            >
+              <Link 
+                to={option.path}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOptionClick();
+                }}
+              >
+                {option.label}
+              </Link>
             </li>
           ))}
         </ul>

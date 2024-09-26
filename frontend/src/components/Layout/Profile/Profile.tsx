@@ -1,32 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './Profile.css';
 import icon from '../../../assets/images/user.png';
 import { useNavigate } from 'react-router-dom';
-import { User } from '../../utils/User';
+import { AuthContext } from '../../../context/AuthContext';
 
-interface ProfileProps {
-    user: User | null;
-    setUser: (user: User | null) => void;
-}
-
-const Profile: React.FC<ProfileProps>  = ({ user, setUser }) => {
+const Profile = () => {
+    const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate();
-    const handleLogout = async () => {
-        setUser(null);
-        try {
-            await fetch("http://127.0.0.1:5000/api/logout", {
-              method: "POST",
-              credentials: 'include'
-            });
-        }
-        catch (error) {
-        console.log(error);
-        }
-        navigate('/');
-    };
-
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);    
 
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
@@ -52,6 +34,11 @@ const Profile: React.FC<ProfileProps>  = ({ user, setUser }) => {
         };
     });
 
+    const handleLogout = async () => {
+        logout();
+        navigate('/');
+    };
+
     return (
         <div className="profile-container" ref={profileRef}>
             <button className="profile-button" onClick={toggleDropdown}>
@@ -72,10 +59,13 @@ const Profile: React.FC<ProfileProps>  = ({ user, setUser }) => {
                     {user && (
                         <>
                             <li className='profile-dropdown-option'>
-                                <Link to="/profile">Profile</Link>
+                                <Link to="/dashboard" onClick={toggleDropdown}>Profile</Link>
                             </li>
                             <li className='profile-dropdown-option'>
-                                <Link to='/' onClick={handleLogout}>Logout</Link>
+                                <Link to='/' onClick={() => {
+                                    toggleDropdown();
+                                    handleLogout();
+                                }}>Logout</Link>
                             </li>
                         </>
                     )}

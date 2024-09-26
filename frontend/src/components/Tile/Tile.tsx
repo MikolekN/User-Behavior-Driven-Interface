@@ -5,7 +5,7 @@ interface TileData {
   children: ReactNode | ReactElement;
   title: string;
   className?: string;
-};
+}
 
 const Tile = ({ children, title, className = "" }: TileData) => {
   return (

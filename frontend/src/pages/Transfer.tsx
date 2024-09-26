@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Navigate, useNavigate, useOutletContext } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
@@ -15,16 +15,17 @@ interface TransferFromData {
 
 const Transfer = () => {
     const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
-    const { user }: AuthContext = useOutletContext();
+    const { user, fetchUser } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm<TransferFromData>({
         defaultValues: {
-          recipientAccountNumber: "",
-          transferTitle: "",
-          amount: ""
+            recipientAccountNumber: "",
+            transferTitle: "",
+            amount: ""
         },
         mode: 'onSubmit'
     });
     const navigate = useNavigate();
+
 
     if (!user) return <Navigate to="/login" />;  
     
@@ -33,7 +34,7 @@ const Transfer = () => {
             const response = await fetch("http://127.0.0.1:5000/api/transfer", {
                 method: "POST",
                 headers: {
-                   "Content-Type": "application/json" 
+                    "Content-Type": "application/json"
                 },
                 credentials: "include",
                 body: JSON.stringify({
@@ -41,28 +42,27 @@ const Transfer = () => {
                     transferTitle: transferTitle,
                     amount: amount
                 })
-            })
+            });
             const responseJson = await response.json();
 
             if (response.ok) {
+                await fetchUser();
                 navigate('/dashboard');
-            }
-            else {
+            } else {
                 setApiError({
                     isError: true,
                     errorMessage: responseJson.message
                 });
                 throw new Error(responseJson.message);
             }
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
         }
     });
 
     return (
         <div className="flex items-center justify-center">
-            <Tile title="Transfer" className="form-tile w-2/5 bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
+            <Tile title="Transfer" className="form-tile w-2/5  bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
                         <div className="mt-8">
@@ -87,7 +87,7 @@ const Transfer = () => {
                                 error={errors.recipientAccountNumber}
                                 className="w-full"
                             />
-                            <FormInput 
+                            <FormInput
                                 label="Title"
                                 fieldType="text"
                                 register={register('transferTitle', {
@@ -96,7 +96,7 @@ const Transfer = () => {
                                 error={errors.transferTitle}
                                 className="w-full"
                             />
-                            <FormInput 
+                            <FormInput
                                 label="Amount"
                                 fieldType="text"
                                 register={register('amount', {
