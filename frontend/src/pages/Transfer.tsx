@@ -8,7 +8,7 @@ import { formValidationRules } from '../components/utils/validationRules';
 import { AuthContext } from '../context/AuthContext';
 
 interface TransferFromData {
-    recipentAccountNumber: string;
+    recipientAccountNumber: string;
     transferTitle: string;
     amount: string;
 }
@@ -18,7 +18,7 @@ const Transfer = () => {
     const { user }: AuthContext = useOutletContext();
     const { register, handleSubmit, formState: { errors } } = useForm<TransferFromData>({
         defaultValues: {
-          recipentAccountNumber: "",
+          recipientAccountNumber: "",
           transferTitle: "",
           amount: ""
         },
@@ -28,7 +28,7 @@ const Transfer = () => {
 
     if (!user) return <Navigate to="/login" />;  
     
-    const onSubmit = handleSubmit(async ({ recipentAccountNumber, transferTitle, amount }: TransferFromData) => {
+    const onSubmit = handleSubmit(async ({ recipientAccountNumber, transferTitle, amount }: TransferFromData) => {
         try {
             const response = await fetch("http://127.0.0.1:5000/api/transfer", {
                 method: "POST",
@@ -37,7 +37,7 @@ const Transfer = () => {
                 },
                 credentials: "include",
                 body: JSON.stringify({
-                    recipentAccountNumber: recipentAccountNumber,
+                    recipientAccountNumber: recipientAccountNumber,
                     transferTitle: transferTitle,
                     amount: amount
                 })
@@ -69,7 +69,7 @@ const Transfer = () => {
                             <label className="text-sm font-semibold text-gray-700 block">From account</label>
                             <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
                                 <p>
-                                    {user.accountName} {`(${user.availableFunds} PLN)`}
+                                    {user.accountName} {`(${user.availableFunds} {PLN})`}
                                 </p>
                                 <p>
                                     {user.accountNumber}
@@ -78,13 +78,13 @@ const Transfer = () => {
                         </div>
                         <form className="space-y-6" onSubmit={onSubmit}>
                             <FormInput 
-                                label="Recipent account number"
+                                label="Recipient account number"
                                 fieldType="text"
-                                register={register('recipentAccountNumber', {
-                                    required: formValidationRules.recipentAccountNumber.required,
-                                    pattern: formValidationRules.recipentAccountNumber.pattern
+                                register={register('recipientAccountNumber', {
+                                    required: formValidationRules.recipientAccountNumber.required,
+                                    pattern: formValidationRules.recipientAccountNumber.pattern
                                 })}
-                                error={errors.recipentAccountNumber}
+                                error={errors.recipientAccountNumber}
                                 className="w-full"
                             />
                             <FormInput 

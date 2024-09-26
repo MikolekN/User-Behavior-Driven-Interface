@@ -1,12 +1,12 @@
 import { Fragment, useEffect, useState } from 'react';
 import Tile from '../Tile/Tile';
-import './TransactionsHistory.css';
 import { AuthContext } from '../../context/AuthContext';
 import { Navigate, useOutletContext } from 'react-router-dom';
+import '../utils/styles/common.css';
 
 interface GroupedTransactions {
     [created: string]: Transaction[]
-};
+}
 
 interface Transaction {
     created: string,
@@ -14,7 +14,7 @@ interface Transaction {
     title: string,
     amount: number,
     income: boolean
-};
+}
 
 const TransactionsHistory = () => {
     const [groupedTransactions, setGroupedTransactions] = useState<GroupedTransactions>({});
@@ -56,7 +56,7 @@ const TransactionsHistory = () => {
         fetchTransactions();
     }, []);
 
-    const formatDate = (creationDate: Date) => {
+    const formatDate = (creationDate: Date): string => {
         const month = creationDate.getUTCMonth() + 1
         const day = creationDate.getUTCDate();
         const year = creationDate.getUTCFullYear();
@@ -90,7 +90,7 @@ const TransactionsHistory = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <Tile title="Transactions History" className="transactions-history-tile">
+        <Tile title="Transactions History" className="table-tile">
             <div className="flex justify-center p-8">
                 <table className="table-fixed w-9/12">
                     <tbody>
