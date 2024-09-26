@@ -1,0 +1,83 @@
+{
+    "get": {
+        "summary": "Get cyclic payments for current user",
+        "tags": ["Cyclic Payments"],
+        "responses": {
+            "200": {
+                "description": "Cyclic payment list returned successfully",
+                "content": {
+                    "application.json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "cyclic_payment": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "_id": {
+                                                "type": "string"
+                                            },
+                                            "amount": {
+                                               "type": "number",
+                                                "format": "float"
+                                            },
+                                            "cyclic_payment_name": {
+                                                "type": "string"
+                                            },
+                                            "interval": {
+                                                "type": "string"
+                                            },
+                                            "recipient_account_number": {
+                                                "type": "string"
+                                            },
+                                            "start_date": {
+                                                "type": "string"
+                                            },
+                                            "transfer_title": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                        
+                }
+            },
+            "401": {
+                "description": "No user logged in",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "404": {
+                "description": "Cyclic Payments list for current user is empty",
+                "content": {
+                    "application.json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

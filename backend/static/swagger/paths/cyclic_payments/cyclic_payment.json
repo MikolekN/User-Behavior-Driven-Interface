@@ -1,0 +1,154 @@
+{
+    "post": {
+        "summary": "Create cyclic payment",
+        "tags": ["Cyclic Payments"],
+        "requestBody": {
+            "content": {
+                "application.json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "cyclicPaymentName": {
+                                "type": "string"
+                            },
+                            "recipientAccountNumber": {
+                                "type": "string"
+                            },
+                            "transferTitle": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "type": "string"
+                            },
+                            "startDate": {
+                                "type": "string"
+                            },
+                            "interval": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "cyclicPaymentName",
+                            "recipientAccountNumber",
+                            "transferTitle",
+                            "amount",
+                            "startDate",
+                            "interval"
+                        ]
+                    }
+                }
+            }
+        },
+        "responses": {
+            "200": {
+                "description": "Cyclic Payment created successfully",
+                "content": {
+                    "application.json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "cyclic_payment": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string"
+                                        },
+                                        "amount": {
+                                           "type": "number",
+                                            "format": "float"
+                                        },
+                                        "cyclic_payment_name": {
+                                            "type": "string"
+                                        },
+                                        "interval": {
+                                            "type": "string"
+                                        },
+                                        "recipient_account_number": {
+                                            "type": "string"
+                                        },
+                                        "start_date": {
+                                            "type": "string"
+                                        },
+                                        "transfer_title": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "400": {
+                "description": "Invalid request payload",
+                "content": {
+                    "application.json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "examples": {
+                            "payload_empty": {
+                                "value": {
+                                    "message": "Request payload is empty"
+                                }
+                            },
+                            "missing_fields": {
+                                "value": {
+                                    "message": "${Field} is required"
+                                }
+                            },
+                            "amount_positive_number": {
+                                "value": {
+                                    "message": "Amount must be a positive number"
+                                }
+                            },
+                            "date_iso_format": {
+                                "value": {
+                                    "message": "Invalid date format. Expected ISO 8601 format"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "403": {
+                "description": "User does not have enough money",
+                "content": {
+                    "application.json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "404": {
+                "description": "Recipient account number does not exist",
+                "content": {
+                    "application.json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
