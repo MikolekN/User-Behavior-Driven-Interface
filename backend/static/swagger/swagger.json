@@ -5,33 +5,54 @@
         "version": "1.0.0",
         "description": "Description of your API"
     },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Endpoints related to authentication"
+        },
+        {
+            "name": "Transfers",
+            "description": "Endpoints related to money transfers"
+        },
+        {
+            "name": "Cyclic Payments",
+            "description": "Endpoints related to cyclic payments"
+        }
+    ],
     "paths": {
         "/login": {
-            "$ref": "./paths/login.json"
+            "$ref": "./paths/auth/login.json"
         },
         "/register": {
-            "$ref": "./paths/register.json"
+            "$ref": "./paths/auth/register.json"
         },
         "/logout": {
-            "$ref": "./paths/logout.json"
+            "$ref": "./paths/auth/logout.json"
         },
         "/user": {
-            "$ref": "./paths/user.json"
+            "$ref": "./paths/auth/user.json"
         },
         "/transfer": {
-            "$ref": "./paths/transfer.json"
+            "$ref": "./paths/transfers/transfer.json"
         },
         "/transfers": {
-            "$ref": "./paths/transfers.json"
+            "$ref": "./paths/transfers/transfers.json"
         },
         "/transfers/analysis/monthly": {
-            "$ref": "./paths/transfers_analysis_monthly.json"
+            "$ref": "./paths/transfers/transfers_analysis_monthly.json"
         },
         "/transfers/analysis/yearly": {
-            "$ref": "./paths/transfers_analysis_yearly.json"
-        }   
+            "$ref": "./paths/transfers/transfers_analysis_yearly.json"
+        },
+        "/cyclic-payment": {
+            "$ref": "./paths/cyclic_payments/cyclic_payment.json"
+        },
+        "/cyclic-payments": {
+            "$ref": "./paths/cyclic_payments/cyclic_payments.json"
+        },
+        "/cyclic-payment/{id}": {
+            "$ref": "./paths/cyclic_payments/cyclic_payment_id.json"
+        }
     },
-    "components": {
-        
-    }
+    "components": {}
 }
