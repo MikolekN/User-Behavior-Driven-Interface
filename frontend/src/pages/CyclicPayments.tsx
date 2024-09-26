@@ -1,19 +1,21 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import CyclicPaymentList from '../components/CyclicPaymentList/CyclicPaymentList';
 import { AuthContext } from "../context/AuthContext";
-import { Link, Navigate, useOutletContext } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { BackendCyclicPayment, CyclicPayment } from "../components/utils/types/CyclicPayment";
 import Tile from "../components/Tile/Tile";
 import Button from "../components/utils/Button";
 import '../components/utils/styles/common.css';
 
 const CyclicPayments = () => {
+    const { user } = useContext(AuthContext);
     const [cyclicPayments, setCyclicPayments] = useState<CyclicPayment[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
-    const { user }: AuthContext = useOutletContext();
 
     useEffect(() => {
+        if (!user) return;
+        
         const fetchCyclicPayments = async () => {
             try {
                 const response = await fetch('http://127.0.0.1:5000/api/cyclic-payments', {

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Navigate, useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Tile from '../Tile/Tile';
 import FormInput from '../FormInput/FormInput';
 import { formValidationRules } from '../utils/validationRules';
@@ -35,7 +35,7 @@ const CyclicPaymentsForm = () => {
     });
 
     const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
-    const { user }: AuthContext = useOutletContext();
+    const { user } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<CyclicPaymentFromData>({
         defaultValues: {
             recipientAccountNumber: "",
@@ -45,17 +45,11 @@ const CyclicPaymentsForm = () => {
         mode: 'onSubmit'
     });
     const navigate = useNavigate();
-
-    console.log(user)
-    if (!user) return <Navigate to="/login" />;
-    console.log("test")
     
     useEffect(() => {
-        console.log(id);
+        if (!user) return;
+
         if (id) {
-            console.log("useEffect");
-            // stworzyc typ dla cyclicPayment i zainicjalisować go, przypisac wartosci do pol formularza
-            // pobierz dane z get by id i ustaw je jako values
             const fetchCyclicPaymentById = async () => {
                 try {
                     const response = await fetch(`http://127.0.0.1:5000/api/cyclic-payment/${id}`, {
@@ -66,16 +60,7 @@ const CyclicPaymentsForm = () => {
                         credentials: "include"
                     })
                     const responseJson = await response.json();
-
-                    console.log(responseJson.cyclic_payment);
-
-                    const startDate: Date = new Date(responseJson.cyclic_payment.start_date);
-
-                    console.log(startDate);  // Outputs: Date object corresponding to the string
-
                     if (response.ok) {
-                        //navigate('/dashboard');
-                        console.log(responseJson.cyclic_payment);
                         const parsedCyclicPayment: CyclicPayment = {
                             id: responseJson.cyclic_payment._id,
                             amount: responseJson.cyclic_payment.amount,
@@ -86,19 +71,7 @@ const CyclicPaymentsForm = () => {
                             transferTitle: responseJson.cyclic_payment.transfer_title,  // Copy all fields from the response
                             startDate: responseJson.cyclic_payment.start_date ? new Date(responseJson.cyclic_payment.start_date) : null,  // Convert startDate to Date object
                         };
-                        console.log("parCyc = ", parsedCyclicPayment)
                         setCyclicPayment(parsedCyclicPayment);
-                        // setValue("cyclicPaymentName", parsedCyclicPayment.cyclicPaymentName);
-
-                        
-                        // setValue("cyclicPaymentName", parsedCyclicPayment.cyclicPaymentName.toString());
-                        // setValue("recipientAccountNumber", parsedCyclicPayment.recipientAccountNumber);
-                        // setValue("transferTitle", parsedCyclicPayment.transferTitle);
-                        // setValue("amount", parsedCyclicPayment.amount.toString());
-                        // setValue("startDate", parsedCyclicPayment.startDate);
-                        // setValue("interval", parsedCyclicPayment.interval);
-
-                        // console.log("cyc = ", cyclicPayment);
                     }
                     else {
                         setApiError({
@@ -125,14 +98,10 @@ const CyclicPaymentsForm = () => {
         setValue("amount", cyclicPayment.amount.toString());
         setValue("startDate", cyclicPayment.startDate);
         setValue("interval", cyclicPayment.interval);
-
-        console.log(cyclicPayment);
     }, [cyclicPayment])
     
     const onSubmit = handleSubmit(async (data: CyclicPaymentFromData) => {
-        console.log(data)
-        console.log(cyclicPayment);
-        if (!cyclicPayment.id) { // create cyclic payment // check czy dziala poprawnie
+        if (!cyclicPayment.id) {
             try {
                 const response = await fetch("http://127.0.0.1:5000/api/cyclic-payment", {
                     method: "POST",
@@ -150,9 +119,6 @@ const CyclicPaymentsForm = () => {
                     })
                 })
                 const responseJson = await response.json();
-    
-                console.log(responseJson.cyclic_payment);
-    
                 if (response.ok) {
                     navigate('/dashboard');
                 }
@@ -169,7 +135,7 @@ const CyclicPaymentsForm = () => {
                 console.error(error);
             }
         }
-        else { // update cyclic payment
+        else {
             try {
                 const response = await fetch(`http://127.0.0.1:5000/api/cyclic-payment/${id}`, {
                     method: "PUT",
@@ -221,10 +187,10 @@ const CyclicPaymentsForm = () => {
                             <label className="text-sm font-semibold text-gray-700 block">From account</label>
                             <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
                                 <p>
-                                    {user.accountName} {`(${user.availableFunds} PLN)`}
+                                    {user?.accountName} {`(${user?.availableFunds} PLN)`}
                                 </p>
                                 <p>
-                                    {user.accountNumber}
+                                    {user?.accountNumber}
                                 </p>
                             </div>
                         </div>

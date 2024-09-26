@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { CyclicPayment } from "../utils/types/CyclicPayment";
 import Button from "../utils/Button";
@@ -12,7 +12,7 @@ interface CyclicPaymentListProps {
 }
 
 const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
-    const { user }: AuthContext = useOutletContext();
+    const { user } = useContext(AuthContext);
     const [cyclicPayments, setCyclicPayments] = useState<CyclicPayment[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -75,7 +75,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                 <Button>+ Add Cyclic Payment</Button>
             </Link>
             <table className="table-fixed w-11/12 justify-self-center">
-                <thead className="bg-gray-100">
+                <thead className="bg-gray-200">
                     <tr>
                         <th colSpan={2}>Cyclic Payment Name / Receiver</th>
                         <th>Amount</th>
@@ -86,7 +86,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                 <tbody>
                 {cyclicPayments.map((cyclicPayment, idx) => (
                     <>
-                        <tr onClick={() => { toggleAnswer(idx) }}>
+                        <tr onClick={() => { toggleAnswer(idx) }} style={activeIndex === idx ? {"background": "#f2f2f2"} : {}}>
                             <td colSpan={2} className="px-4 py-2 text-center font-bold">
                                 <div>
                                     <span className="block py-1">
@@ -98,7 +98,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                 </div>
                             </td>
                             <td className="px-4 py-2 text-center">
-                                {cyclicPayment.amount} {user.currency}
+                                {cyclicPayment.amount} {user?.currency}
                             </td>
                             <td className="px-4 py-2 text-center">
                                 {formatDate(cyclicPayment.startDate)}
@@ -119,84 +119,84 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                         {activeIndex === idx && (
                             <tr>
                                 <td colSpan={5}>
-                                    <div className="flex flex-col space-y-4">
-                                        <div className="flex justify-between">
-                                            <div className="w-1/2">
-                                                <span className="block py-1">
-                                                    <div>
+                                    <div className="flex flex-col items-center space-y-4 p-4 my-2 border border-gray-300 rounded-lg">
+                                        <div className="flex w-5/6 justify-evenly">
+                                            <div className="w-2/4 pr-4">
+                                                <div className="mb-4">
+                                                    <div className="font-semibold">
                                                         Recipient
-                                                    </div> 
-                                                    <div>
+                                                    </div>
+                                                    <div className="pl-4">
                                                         <i>{cyclicPayment.recipientName}</i>
                                                     </div>
-                                                    <div>
+                                                </div>
+                                                <div className="mb-4">
+                                                    <div className="font-semibold mt-2">
                                                         Recipient Account Number
-                                                    </div> 
-                                                    <div>
+                                                    </div>
+                                                    <div className="pl-4">
                                                         <i>{cyclicPayment.recipientAccountNumber}</i>
                                                     </div>
-                                                </span>
-                                                <span className="block py-1">
-                                                    <div>
+                                                </div>
+                                                <div className="mb-4">
+                                                    <div className="font-semibold">
                                                         From Account
-                                                    </div> 
-                                                    <div className="w-5/6 p-3 border border-gray-300 rounded-lg mt-1 bg-gray-200">
-                                                        <p>
-                                                            {user.accountName} {`(${user.availableFunds} {PLN})`}
-                                                        </p>
-                                                        <p>
-                                                            {user.accountNumber}
-                                                        </p>
                                                     </div>
-                                                </span>
-                                                <span className="block py-1">
-                                                    <div>
+                                                    <div className="pl-4 p-3 border border-gray-300 rounded-lg bg-gray-100">
+                                                        <p>{user?.accountName} ({user?.availableFunds} PLN)</p>
+                                                        <p>{user?.accountNumber}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="mb-4">
+                                                    <div className="font-semibold">
                                                         Title
-                                                    </div> 
-                                                    <div>
+                                                    </div>
+                                                    <div className="pl-4">
                                                         <i>{cyclicPayment.transferTitle}</i>
                                                     </div>
-                                                </span>
+                                                </div>
                                             </div>
-                                            <div className="w-1/2">
-                                                <span className="block py-1">
-                                                    <div>
+                                            <div className="w-1/4 pl-4">
+                                                <div className="mb-4">
+                                                    <div className="font-semibold">
                                                         Amount
-                                                    </div> 
-                                                    <div>
-                                                        <i>{cyclicPayment.amount} {user.currency}</i>
                                                     </div>
-                                                </span>
-                                                <span className="block py-1">
-                                                    <div>
+                                                    <div className="pl-4">
+                                                        <i>{cyclicPayment.amount} {user?.currency}</i>
+                                                    </div>
+                                                </div>
+                                                <div className="mb-4">
+                                                    <div className="font-semibold">
                                                         Start Date
-                                                    </div> 
-                                                    <div>
+                                                    </div>
+                                                    <div className="pl-4">
                                                         <i>{formatDate(cyclicPayment.startDate)}</i>
                                                     </div>
-                                                </span>
-                                                <span className="block py-1">
-                                                    <div>
+                                                </div>
+                                                <div className="mb-4">
+                                                    <div className="font-semibold">
                                                         Repeat
-                                                    </div> 
-                                                    <div>
+                                                    </div>
+                                                    <div className="pl-4">
                                                         <i>{cyclicPayment.interval}</i>
                                                     </div>
-                                                </span>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="flex justify-end space-x-2">
+                                        <div className="flex justify-end space-x-4 w-full">
                                             <Link to={`/edit-cyclic-payment/${cyclicPayment.id}`} className="w-1/6">
-                                                <Button className="w-full mt-1">Edit</Button>
+                                                <Button className="w-full bg-blue-600 hover:bg-blue-700 mt-1">
+                                                    Edit
+                                                </Button>
                                             </Link>
-                                            <Button onClick={() => handleDelete(cyclicPayment.id!)} 
-                                                className="w-1/6 bg-red-600 hover:bg-red-700 focus:ring-red-500 mt-1">
-                                                Delete
+                                            <Button onClick={() => handleDelete(cyclicPayment.id!)}
+                                                className="w-1/6 bg-red-600 hover:bg-red-700 mt-1 ml-10">
+                                                    Delete
                                             </Button>
                                         </div>
                                     </div>
                                 </td>
-                            </tr>
+                          </tr>
                         )}
                     </>
                 ))}
