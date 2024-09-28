@@ -17,19 +17,17 @@ class User(UserMixin):
     currency: str = ''
 
     def to_dict(self) -> Dict[str, Any]:
-        # Converts the User instance to a dictionary suitable for MongoDB insertion.
         user_dict = asdict(self)
         if self._id is None:
-            user_dict.pop('_id', None)  # Remove _id field if it is None, MongoDB will generate it
+            user_dict.pop('_id', None)
         else:
-            user_dict['_id'] = str(self._id)  # Convert ObjectId to string
+            user_dict['_id'] = str(self._id)
         if self.created:
-            user_dict['created'] = self.created.isoformat()  # Convert datetime to ISO format string
+            user_dict['created'] = self.created.isoformat()
         return user_dict
 
     @staticmethod
     def from_dict(data: Dict[str, Any]) -> 'User':
-        # Creates a User instance from a MongoDB document.
         return User(
             _id=bson.ObjectId(data['_id']) if '_id' in data else None,
             login=data.get('login', ''),
@@ -43,14 +41,12 @@ class User(UserMixin):
         )
 
     def get_id(self) -> str:
-        # Returns the string representation of _id.
         return str(self._id) if self._id else ""
     
     def get_available_funds(self) -> float:
         return float(self.balance) - float(self.blockades)
 
     def __repr__(self) -> str:
-       # Returns a string representation of the User instance for debugging.
         return (f"User(login={self.login!r}, password={self.password!r}, "
                 f"_id={self._id!r}, created={self.created!r}), "
                 f"account_name={self.account_name!r}, "
@@ -60,5 +56,4 @@ class User(UserMixin):
                 f"currency={self.currency!r})")
 
     def __str__(self) -> str:
-        # Returns a user-friendly string representation of the User instance.
         return f"User(login={self.login}, created={self.created})"

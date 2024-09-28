@@ -101,7 +101,7 @@ def group_by_date(transfers: dict) -> dict[str, any]:
 
     return groups
 
-def format_grouped_transfers(grouped: dict) -> dict[str, any]: # może tutaj też się obyć bez kopii
+def format_grouped_transfers(grouped: dict) -> dict[str, any]:
     for key in grouped:
         grouped[key] = {
             'income': round(grouped[key]['income'], 2),
@@ -198,7 +198,7 @@ def create_transfer() -> tuple[Response, int]:
     UserRepository.update(current_user._id, {'balance': substract(float(current_user.balance), float(data['amount']))})
     UserRepository.update(recipient_user._id, {'balance': add(float(recipient_user.balance), float(data['amount']))})
 
-    return jsonify(message="Transfer made successfully"), 200 # maybe add some response json
+    return jsonify(message="Transfer made successfully"), 200
 
 @transfer_blueprint.route('/transfers', methods=['GET'])
 @login_required

@@ -3,7 +3,7 @@ from dataclasses import dataclass, field, asdict
 from typing import Optional, Dict, Any
 from datetime import datetime
 
-@dataclass # dodanie amount do blockades i zapisanie cyclic payment
+@dataclass
 class CyclicPayment():
     _id: Optional[bson.ObjectId] = None
     created: Optional[datetime] = field(default_factory=datetime.now)
@@ -30,7 +30,6 @@ class CyclicPayment():
     
     @staticmethod
     def from_dict(data: Dict[str, Any]) -> 'CyclicPayment':
-        # Creates a Transfer instance from a MongoDB document.
         return CyclicPayment(
             _id=bson.ObjectId(data['_id']) if '_id' in data else None,
             created=datetime.fromisoformat(data['created']) if 'created' in data else None,
@@ -46,11 +45,9 @@ class CyclicPayment():
         )
 
     def get_id(self) -> str:
-        # Returns the string representation of _id.
         return str(self._id) if self._id else ""
 
     def __repr__(self) -> str:
-       # Returns a string representation of the Transfer instance for debugging.
         return (f"CyclicPayment(_id={self._id}, created={self.created}, "
                 f"issuer_id={self.issuer_id}, recipient_id={self.recipient_id}, "
                 f"recipient_account_number='{self.recipient_account_number}', "
@@ -60,6 +57,5 @@ class CyclicPayment():
                 f"start_date={self.start_date}, interval='{self.interval}')")
 
     def __str__(self) -> str:
-        # Returns a user-friendly string representation of the Transfer instance.
         return (f"Cyclic Payment: '{self.cyclic_payment_name}' from {self.issuer_id} "
                 f"to {self.recipient_id}: {self.amount} on {self.start_date} (Interval: {self.interval})")
