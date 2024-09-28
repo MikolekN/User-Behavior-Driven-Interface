@@ -5,7 +5,7 @@ import { Link, Navigate } from "react-router-dom";
 import { BackendCyclicPayment, CyclicPayment } from "../components/utils/types/CyclicPayment";
 import Tile from "../components/Tile/Tile";
 import Button from "../components/utils/Button";
-import '../components/utils/styles/common.css';
+import '../components/utils/styles/table.css';
 
 const CyclicPayments = () => {
     const { user } = useContext(AuthContext);
@@ -47,7 +47,7 @@ const CyclicPayments = () => {
                 
             } catch (error) {
                 setError(true);
-                console.log(error);
+                console.error(error);
             } finally {
                 setLoading(false);
             }

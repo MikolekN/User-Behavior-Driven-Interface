@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState, useContext } from 'react';
 import Tile from '../Tile/Tile';
 import { AuthContext } from '../../context/AuthContext';
 import { Navigate } from 'react-router-dom';
-import '../utils/styles/common.css';
+import '../utils/styles/table.css';
 
 interface GroupedTransactions {
     [created: string]: Transaction[]
@@ -47,7 +47,7 @@ const TransactionsHistory = () => {
             setGroupedTransactions(grouped);
             } catch (error) {
                 setError(true);
-                console.log(error);
+                console.error(error);
             } finally {
                 setLoading(false);
             }

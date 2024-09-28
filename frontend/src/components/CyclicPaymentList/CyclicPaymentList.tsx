@@ -5,7 +5,7 @@ import { CyclicPayment } from "../utils/types/CyclicPayment";
 import Button from "../utils/Button";
 import arrowUp from "../../assets/images/chevron-up.svg";
 import arrowDown from "../../assets/images/chevron-down.svg";
-import '../utils/styles/common.css';
+import '../utils/styles/table.css';
 
 interface CyclicPaymentListProps {
     cyclicPaymentsList: CyclicPayment[];
@@ -58,7 +58,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
             const data = await response.json(); // maybe use API message
             } catch (error) {
                 setError(true);
-                console.log(error);
+                console.error(error);
             } finally {
                 setLoading(false);
             }
@@ -70,9 +70,13 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
     }
 
     return (
-        <div className="grid">
-            <Link to={`/create-cyclic-payment/`} className="justify-self-end pr-12 pb-4">
-                <Button>+ Add Cyclic Payment</Button>
+        <div>
+            <Link to={`/create-cyclic-payment/`} className="pr-12 pb-4">
+                <div className="grid">
+                    <Button className="justify-self-end mb-2">
+                        + Add Cyclic Payment
+                    </Button>
+                </div>
             </Link>
             <table className="table-fixed w-11/12 justify-self-center">
                 <thead className="bg-gray-200">

@@ -56,7 +56,7 @@ const Transfer = () => {
                 throw new Error(responseJson.message);
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     });
 
