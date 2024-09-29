@@ -1,5 +1,5 @@
 from flask import Response, request, jsonify, Blueprint
-from flask_login import current_user
+from flask_login import current_user, login_required
 from flask_login import login_required
 from users.user_repository import UserRepository
 
@@ -10,12 +10,9 @@ user_blueprint = Blueprint('user_update', __name__, url_prefix='/api')
 @user_blueprint.route('/user', methods=['GET'])
 @login_required
 def get_user() -> tuple[Response, int]:
-    if current_user.is_authenticated:
-        current_user = UserRepository.find_by_id(current_user._id)
-        sanitized_user = current_user.sanitize_user_dict()
-        return jsonify(user=sanitized_user), 200
-    else:
-        return jsonify(message="No user logged in"), 401
+    user = UserRepository.find_by_id(current_user._id)
+    sanitized_user = user.sanitize_user_dict()
+    return jsonify(user=sanitized_user), 200
 
 @user_blueprint.route("/user/update", methods=['PATCH'])
 @login_required
