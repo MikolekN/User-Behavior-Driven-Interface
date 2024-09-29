@@ -16,7 +16,16 @@
             "$ref": "./paths/logout.json"
         },
         "/user": {
-            "$ref": "./paths/user.json"
+            "$ref": "./paths/user/user.json"
+        },
+        "/user/update": {
+            "$ref": "./paths/user/update.json"
+        },
+        "/user/password": {
+            "$ref": "./paths/user/password.json"
+        },
+        "/user/icon": {
+            "$ref": "./paths/user/icon.json"
         },
         "/transfer": {
             "$ref": "./paths/transfer.json"
@@ -32,6 +41,10 @@
         }   
     },
     "components": {
-        
-    }
+        "schemas": {
+          "User": {
+            "$ref": "./components/user.json"
+        }
+      }
+  }
 }

@@ -1,5 +1,6 @@
 {
     "patch": {
+      "tags": ["User"],
       "summary": "Update specific fields of the currently logged-in user's profile",
       "requestBody": {
         "content": {

@@ -12,7 +12,7 @@ user_icon_blueprint = Blueprint('user_icon', __name__, url_prefix='/api')
 def allowed_file(filename: str) -> bool:
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
-@user_icon_blueprint.route('/user_icon', methods=['POST'])
+@user_icon_blueprint.route('/user/icon', methods=['POST'])
 @login_required
 def upload_user_icon() -> tuple[Response, int]:
     if not os.path.exists(current_app.config['UPLOAD_FOLDER']):
@@ -51,7 +51,7 @@ def upload_user_icon() -> tuple[Response, int]:
 
     return jsonify(message="File type not allowed"), 400
 
-@user_icon_blueprint.route('/user_icon', methods=['GET'])
+@user_icon_blueprint.route('/user/icon', methods=['GET'])
 @login_required
 def get_user_icon() -> tuple[Response, int]:
     user_data = UserRepository.find_by_id(current_user._id)
