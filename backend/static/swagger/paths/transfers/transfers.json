@@ -1,0 +1,85 @@
+{
+    "get": {
+        "summary": "Get Transfers  for current user",
+        "tags": ["Transfers"],
+        "responses": {
+            "200": {
+                "description": "Successful transfers response",
+                "content": {
+                    "application.json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "transfers": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "_id": {
+                                                "type": "string"
+                                            },
+                                            "amount": {
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "created": {
+                                                "type": "string"
+                                            },
+                                            "income": {
+                                                "type": "boolean"
+                                            },
+                                            "issuer_name": {
+                                                "type": "string"
+                                            },
+                                            "title": {
+                                                "type": "string"
+                                            },
+                                            "transfer_from_id": {
+                                                "type": "string"
+                                            },
+                                            "transfer_to_id": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "401": {
+                "description": "No user logged in",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "404": {
+                "description": "Cyclic Payments list for current user is empty",
+                "content": {
+                    "application.json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

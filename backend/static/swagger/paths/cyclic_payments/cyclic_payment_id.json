@@ -1,0 +1,334 @@
+{
+    "get": {
+        "summary": "Get cyclic payment with given id",
+        "tags": ["Cyclic Payments"],
+        "parameters": [
+            {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                },
+                "description": "The Object ID of the cyclic payment",
+                "example": "66eea4b38f55232f6dfa16fe"
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Cyclic Payment returned successfully",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "cyclic_payment": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string"
+                                        },
+                                        "amount": {
+                                           "type": "number",
+                                            "format": "float"
+                                        },
+                                        "cyclic_payment_name": {
+                                            "type": "string"
+                                        },
+                                        "interval": {
+                                            "type": "string"
+                                        },
+                                        "recipient_account_number": {
+                                            "type": "string"
+                                        },
+                                        "start_date": {
+                                            "type": "string"
+                                        },
+                                        "transfer_title": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "400": {
+                "description": "Invalid parameter",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "examples": {
+                            "invalid_object_id": {
+                                "value": {
+                                    "message": "Invalid Object ID"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "404": {
+                "description": "Cyclic Payment with given ID does not exist",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "examples": {
+                            "not_exist": {
+                                "value": {
+                                    "message": "Cyclic Payment with given ID does not exist"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "delete": {
+        "summary": "Delete cyclic payment with given id",
+        "tags": ["Cyclic Payments"],
+        "parameters": [
+            {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                },
+                "description": "The Object ID of the cyclic payment",
+                "example": "66eea4b38f55232f6dfa16fe"
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Cyclic Payment deleted successfully",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "400": {
+                "description": "Invalid parameter",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "examples": {
+                            "invalid_object_id": {
+                                "value": {
+                                    "message": "Invalid Object ID"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "404": {
+                "description": "Cyclic Payment with given ID does not exist",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "examples": {
+                            "not_exist": {
+                                "value": {
+                                    "message": "Cyclic Payment with given ID does not exist"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "put": {
+        "summary": "Update cyclic payment with given id",
+        "tags": ["Cyclic Payments"],
+        "requestBody": {
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "cyclicPaymentName": {
+                                "type": "string"
+                            },
+                            "recipientAccountNumber": {
+                                "type": "string"
+                            },
+                            "transferTitle": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "type": "string"
+                            },
+                            "startDate": {
+                                "type": "string"
+                            },
+                            "interval": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "cyclicPaymentName",
+                            "recipientAccountNumber",
+                            "transferTitle",
+                            "amount",
+                            "startDate",
+                            "interval"
+                        ]
+                    }
+                }
+            }
+        },
+        "parameters": [
+            {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                },
+                "description": "The Object ID of the cyclic payment",
+                "example": "66eea4b38f55232f6dfa16fe"
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Cyclic Payment updated successfully",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "cyclic_payment": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string"
+                                        },
+                                        "amount": {
+                                           "type": "number",
+                                            "format": "float"
+                                        },
+                                        "cyclic_payment_name": {
+                                            "type": "string"
+                                        },
+                                        "interval": {
+                                            "type": "string"
+                                        },
+                                        "recipient_account_number": {
+                                            "type": "string"
+                                        },
+                                        "start_date": {
+                                            "type": "string"
+                                        },
+                                        "transfer_title": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "400": {
+                "description": "Invalid parameter",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "examples": {
+                            "invalid_object_id": {
+                                "value": {
+                                    "message": "Invalid Object ID"
+                                }
+                            },
+                            "empty_payload_body": {
+                                "value": {
+                                    "message": "Request payload is empty"
+                                }
+                            },
+                            "required_cyclic_payment_fields": {
+                                "value": {
+                                    "message": "Fields: '{field_names}' are required"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "404": {
+                "description": "Cyclic Payment with given ID does not exist",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "examples": {
+                            "not_exist": {
+                                "value": {
+                                    "message": "Cyclic Payment with given ID does not exist"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

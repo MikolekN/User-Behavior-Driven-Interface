@@ -1,26 +1,23 @@
 {
     "post": {
-        "summary": "Transfer money",
+        "summary": "Login a user",
+        "tags": ["Auth"],
         "requestBody": {
             "content": {
-                "application.json": {
+                "application/json": {
                     "schema": {
                         "type": "object",
                         "properties": {
-                            "recipentAccountNumber": {
+                            "login": {
                                 "type": "string"
                             },
-                            "transferTitle": {
-                                "type": "string"
-                            },
-                            "amount": {
+                            "password": {
                                 "type": "string"
                             }
                         },
                         "required": [
-                            "recipentAccountNumber",
-                            "transferTitle",
-                            "amount"
+                            "login",
+                            "password"
                         ]
                     }
                 }
@@ -28,14 +25,29 @@
         },
         "responses": {
             "200": {
-                "description": "Successful transfer",
+                "description": "Successful login",
                 "content": {
-                    "application.json": {
+                    "application/json": {
                         "schema": {
                             "type": "object",
                             "properties": {
                                 "message": {
                                     "type": "string"
+                                },
+                                "user": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string"
+                                        },
+                                        "login": {
+                                            "type": "string"
+                                        },
+                                        "created": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -45,7 +57,7 @@
             "400": {
                 "description": "Invalid request payload",
                 "content": {
-                    "application.json": {
+                    "application/json": {
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -57,10 +69,25 @@
                     }
                 }
             },
-            "403": {
-                "description": "User does not have enough money",
+            "401": {
+                "description": "Invalid login or password",
                 "content": {
-                    "application.json": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "409": {
+                "description": "Already logged in",
+                "content": {
+                    "application/json": {
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -73,9 +100,9 @@
                 }
             },
             "404": {
-                "description": "Recipent account number does not exist",
+                "description": "User does not exist",
                 "content": {
-                    "application.json": {
+                    "application/json": {
                         "schema": {
                             "type": "object",
                             "properties": {

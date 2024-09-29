@@ -30,11 +30,13 @@ class TransferRepository:
         return None
     
     @staticmethod
-    def find_transfers(query: dict, sort_criteria: list[tuple[str, int]] = None) -> Transfer | None:
+    def find_transfers(query: dict, sort_criteria: list[tuple[str, int]] = None) -> list[Transfer] | None:
         transfers_cursor = Database.find(TransferRepository.COLLECTION, query, sort_criteria)
         transfers = list(transfers_cursor)
         if transfers is None:
             return None
+        
+        transfers = [Transfer.from_dict(item) for item in transfers]
         return transfers
 
     @staticmethod

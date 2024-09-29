@@ -1,8 +1,8 @@
 import { Fragment, useEffect, useState, useContext } from 'react';
 import Tile from '../Tile/Tile';
-import './TransactionsHistory.css';
 import { AuthContext } from '../../context/AuthContext';
 import { Navigate } from 'react-router-dom';
+import '../utils/styles/table.css';
 
 interface GroupedTransactions {
     [created: string]: Transaction[]
@@ -22,9 +22,9 @@ const TransactionsHistory = () => {
     const [error, setError] = useState(false);
     const { user } = useContext(AuthContext);
 
-
     useEffect(() => {
         if (!user) return;
+        
         const fetchTransactions = async () => {
             try {
                 const response = await fetch('http://127.0.0.1:5000/api/transfers', {
@@ -47,7 +47,7 @@ const TransactionsHistory = () => {
             setGroupedTransactions(grouped);
             } catch (error) {
                 setError(true);
-                console.log(error);
+                console.error(error);
             } finally {
                 setLoading(false);
             }
@@ -58,7 +58,7 @@ const TransactionsHistory = () => {
     
     if (!user) return <Navigate to="/login" />
 
-    const formatDate = (creationDate: Date) => {
+    const formatDate = (creationDate: Date): string => {
         const month = creationDate.getUTCMonth() + 1
         const day = creationDate.getUTCDate();
         const year = creationDate.getUTCFullYear();
@@ -92,7 +92,7 @@ const TransactionsHistory = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <Tile title="Transactions History" className="transactions-history-tile">
+        <Tile title="Transactions History" className="table-tile">
             <div className="flex justify-center p-8">
                 <table className="table-fixed w-9/12">
                     <tbody>

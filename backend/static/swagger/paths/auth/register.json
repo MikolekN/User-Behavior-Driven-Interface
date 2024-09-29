@@ -1,6 +1,7 @@
 {
     "post": {
         "summary": "Register a new user",
+        "tags": ["Auth"],
         "requestBody": {
             "content": {
                 "application/json": {

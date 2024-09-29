@@ -1,6 +1,7 @@
 {
     "get": {
         "summary": "Get the currently logged-in user's details",
+        "tags": ["Auth"],
         "responses": {
             "200": {
                 "description": "User details retrieved successfully",
