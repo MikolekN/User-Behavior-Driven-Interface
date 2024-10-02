@@ -122,9 +122,11 @@ const MainMenu = () => {
                             onOptionClick={() => handleOptionClick()}
                         />
 
+                        {user.role === "ADMIN" && (
                         <li className='nav-list-option'>
                             <Link to="\login" onMouseEnter={handleOtherOptionHover}>Panel administratora</Link>
                         </li>
+                        )}
                     </>
                     )}
                 </ul>

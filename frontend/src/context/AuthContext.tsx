@@ -8,6 +8,7 @@ interface AuthContextProps {
     login: (email: string, password: string) => Promise<void>;
     register: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
+    getIcon: () => Promise<void>;
 }
 
 const defaultContextValue: AuthContextProps = {
@@ -17,6 +18,7 @@ const defaultContextValue: AuthContextProps = {
     login: async () => {},
     register: async () => {},
     logout: async () => {},
+    getIcon: async () => {},
 };
 
 export const AuthContext = createContext<AuthContextProps>(defaultContextValue);
@@ -35,11 +37,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 if (data.user) {
                     setUser(new User(
                         data.user.login,
+                        data.user.email,
                         data.user.account_name,
                         data.user.account_number,
                         data.user.blockades.toFixed(2),
                         data.user.balance.toFixed(2),
-                        data.user.currency
+                        data.user.currency,
+                        data.user.role
                     ));
                 }
             } else {
@@ -57,18 +61,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ login: email, password }),
+                body: JSON.stringify({ email, password }),
                 credentials: 'include'
             });
             const data = await response.json();
             if (response.ok) {
                 setUser(new User(
                     data.user.login,
+                    data.user.email,
                     data.user.account_name,
                     data.user.account_number,
                     data.user.blockades.toFixed(2),
                     data.user.balance.toFixed(2),
-                    data.user.currency
+                    data.user.currency,
+                    data.user.role
                 ));
             } else {
                 throw new Error(data.message);
@@ -113,12 +119,33 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     };
 
+    const getIcon = async () => {
+        if (!user) {
+            return;
+        }
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/user/icon', {
+                method: 'GET',
+                credentials: 'include'
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                console.error(data.message, response.status);
+            }
+            const imageBlob = await response.blob()
+            const imageFile = new File([imageBlob], "user-icon.png", { type: imageBlob.type });
+            user.icon = imageFile;
+        } catch (error) {
+            console.error('Error getting icon:', error);
+        }
+    }
+
     useEffect(() => {
         fetchUser();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, setUser, fetchUser, login, register, logout }}>
+        <AuthContext.Provider value={{ user, setUser, fetchUser, login, register, logout, getIcon }}>
             {children}
         </AuthContext.Provider>
     );

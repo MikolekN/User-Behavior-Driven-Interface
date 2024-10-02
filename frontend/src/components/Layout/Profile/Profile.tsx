@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
 
 const Profile = () => {
-    const { user, logout } = useContext(AuthContext);
+    const { user, logout, getIcon } = useContext(AuthContext);
     const navigate = useNavigate();
     const [dropdownOpen, setDropdownOpen] = useState(false);    
 
@@ -34,6 +34,10 @@ const Profile = () => {
         };
     });
 
+    useEffect(() => {
+        getIcon();
+    });
+
     const handleLogout = async () => {
         logout();
         navigate('/');
@@ -42,7 +46,16 @@ const Profile = () => {
     return (
         <div className="profile-container" ref={profileRef}>
             <button className="profile-button" onClick={toggleDropdown}>
-                <img src={icon} alt="Profile" className="profile-icon" />
+                <img 
+                src={user && user.icon ? URL.createObjectURL(user.icon) : icon} 
+                alt="Profile" 
+                className="profile-icon" 
+                onLoad={() => {
+                    if (user && user.icon) {
+                        URL.revokeObjectURL(URL.createObjectURL(user.icon));
+                    }
+                }}
+                />
             </button>
             {dropdownOpen && (
                 <ul className="profile-dropdown">
