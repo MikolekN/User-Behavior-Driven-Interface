@@ -9,6 +9,7 @@ interface AuthContextProps {
     register: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
     getIcon: () => Promise<void>;
+    sendIcon: (icon: File) => Promise<void>;
 }
 
 const defaultContextValue: AuthContextProps = {
@@ -19,6 +20,7 @@ const defaultContextValue: AuthContextProps = {
     register: async () => {},
     logout: async () => {},
     getIcon: async () => {},
+    sendIcon: async () => {},
 };
 
 export const AuthContext = createContext<AuthContextProps>(defaultContextValue);
@@ -140,12 +142,37 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     }
 
+    const sendIcon = async (icon: File) => {
+        if (!user) {
+            return;
+        }
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/user/icon', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "image/png"
+                },
+                body: icon
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                console.error(data.message, response.status);
+            }
+            const imageBlob = await response.blob()
+            const imageFile = new File([imageBlob], "user-icon.png", { type: imageBlob.type });
+            user.icon = imageFile;
+        } catch (error) {
+            console.error('Error sending icon:', error);
+        }
+    }
+
     useEffect(() => {
         fetchUser();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, setUser, fetchUser, login, register, logout, getIcon }}>
+        <AuthContext.Provider value={{ user, setUser, fetchUser, login, register, logout, getIcon, sendIcon }}>
             {children}
         </AuthContext.Provider>
     );
