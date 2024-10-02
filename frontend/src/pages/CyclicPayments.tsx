@@ -6,6 +6,7 @@ import { BackendCyclicPayment, CyclicPayment } from "../components/utils/types/C
 import Tile from "../components/Tile/Tile";
 import Button from "../components/utils/Button";
 import '../components/utils/styles/table.css';
+import { Alert, AlertTitle } from "@mui/material";
 
 const CyclicPayments = () => {
     const { user } = useContext(AuthContext);
@@ -72,12 +73,15 @@ const CyclicPayments = () => {
                 }
                 {cyclicPayments && !cyclicPayments.length &&
                     <div className="grid">
-                        <div className="p-4">
-                            No Cyclic Payments To Display
-                        </div>
-                        <Link to={`/create-cyclic-payment/`} className="justify-self-center">
+                        <Link to={`/create-cyclic-payment/`} className="justify-self-end p-2">
                             <Button>+ Add Cyclic Payment</Button>
                         </Link>
+                        <Alert severity="info" variant="outlined">
+                            <AlertTitle>
+                                No cyclic payments yet
+                            </AlertTitle>
+                            It looks like you haven't made any cyclic payments. Once you add one, it will appear here for you to review.
+                        </Alert>
                     </div>
                 }
                 {cyclicPayments && cyclicPayments.length > 0 &&
