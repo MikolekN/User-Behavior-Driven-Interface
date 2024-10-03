@@ -47,7 +47,7 @@ def upload_user_icon() -> tuple[Response, int]:
         if current_user.is_authenticated:
             UserRepository.update(current_user._id, {'user_icon': icon_path})
 
-        return send_file(icon_path, mimetype='image/png')
+        return jsonify(message="Icon uploaded successfully"), 200
 
     return jsonify(message="File type not allowed"), 400
 
