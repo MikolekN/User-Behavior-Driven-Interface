@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useCallback } from 'react';
 import './MainMenu.css';
 import { Link } from 'react-router-dom';
 import Dropdown from '../Dropdown/Dropdown.tsx';
@@ -9,15 +9,15 @@ const MainMenu = () => {
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [persistentDropdown, setPersistentDropdown] = useState<string | null>(null);
   
-    const handleDropdownToggle = (dropdownName: string) => {
-		if (persistentDropdown === dropdownName) {
-			setPersistentDropdown(null);
-			setActiveDropdown(null);
-		} else {
-			setPersistentDropdown(dropdownName);
-			setActiveDropdown(dropdownName);
-		}
-    };
+    const handleDropdownToggle = useCallback((dropdownName: string) => {
+        if (persistentDropdown === dropdownName) {
+          setPersistentDropdown(null);
+          setActiveDropdown(null);
+        } else {
+          setPersistentDropdown(dropdownName);
+          setActiveDropdown(dropdownName);
+        }
+    }, [persistentDropdown]);
   
     const handleDropdownHover = (dropdownName: string) => {
 		setActiveDropdown(dropdownName);
