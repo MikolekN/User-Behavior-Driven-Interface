@@ -10,6 +10,7 @@ interface AuthContextProps {
     logout: () => Promise<void>;
     getIcon: () => Promise<void>;
     sendIcon: (icon: File) => Promise<void>;
+    updateUser: (field: string, value: string) => Promise<void>;
 }
 
 const defaultContextValue: AuthContextProps = {
@@ -21,6 +22,7 @@ const defaultContextValue: AuthContextProps = {
     logout: async () => {},
     getIcon: async () => {},
     sendIcon: async () => {},
+    updateUser: async () => {},
 };
 
 export const AuthContext = createContext<AuthContextProps>(defaultContextValue);
@@ -106,6 +108,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     };
 
+    // TODO: better handle errors
+    // Add return types to functions
+
     const logout = async () => {
         try {
             setUser(null);
@@ -133,6 +138,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             if (!response.ok) {
                 const data = await response.json();
                 console.error(data.message, response.status);
+                return;
             }
             const imageBlob = await response.blob()
             const imageFile = new File([imageBlob], "user-icon.png", { type: imageBlob.type });
@@ -158,12 +164,51 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             if (!response.ok) {
                 const data = await response.json();
                 console.error(data.message, response.status);
+                return;
             }
             const imageBlob = await response.blob()
             const imageFile = new File([imageBlob], "user-icon.png", { type: imageBlob.type });
             user.icon = imageFile;
         } catch (error) {
             console.error('Error sending icon:', error);
+        }
+    }
+
+    const updateUser = async (field: string, value: string) => {
+        if (!user) {
+            return;
+        }
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/user/update', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ [field]: value })
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                console.error(data.message, response.status);
+                return;
+            }
+            if (response.ok) {
+                const data = await response.json();
+                if (data.user) {
+                    setUser(new User(
+                        data.user.login,
+                        data.user.email,
+                        data.user.account_name,
+                        data.user.account_number,
+                        data.user.blockades.toFixed(2),
+                        data.user.balance.toFixed(2),
+                        data.user.currency,
+                        data.user.role
+                    ));
+                }
+            }
+        } catch (error) {
+            console.error('Error updating user:', error);
         }
     }
 
@@ -181,7 +226,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }, [user]);
 
     return (
-        <AuthContext.Provider value={{ user, setUser, getUser, login, register, logout, getIcon, sendIcon }}>
+        <AuthContext.Provider value={{ user, setUser, getUser, login, register, logout, getIcon, sendIcon, updateUser }}>
             {children}
         </AuthContext.Provider>
     );
