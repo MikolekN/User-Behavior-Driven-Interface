@@ -1,36 +1,63 @@
 {
     "post": {
-        "summary": "Transfer money",
+        "summary": "Register a new user",
+        "tags": ["Auth"],
         "requestBody": {
             "content": {
-                "application.json": {
+                "application/json": {
                     "schema": {
                         "type": "object",
                         "properties": {
-                            "recipentAccountNumber": {
+                            "email": {
                                 "type": "string"
                             },
-                            "transferTitle": {
-                                "type": "string"
-                            },
-                            "amount": {
+                            "password": {
                                 "type": "string"
                             }
                         },
                         "required": [
-                            "recipentAccountNumber",
-                            "transferTitle",
-                            "amount"
+                            "email",
+                            "password"
                         ]
                     }
                 }
             }
         },
         "responses": {
-            "200": {
-                "description": "Successful transfer",
+            "201": {
+                "description": "User registered successfully",
                 "content": {
-                    "application.json": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "user": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "created": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "409": {
+                "description": "User already exists",
+                "content": {
+                    "application/json": {
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -45,37 +72,7 @@
             "400": {
                 "description": "Invalid request payload",
                 "content": {
-                    "application.json": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "message": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "403": {
-                "description": "User does not have enough money",
-                "content": {
-                    "application.json": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "message": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "404": {
-                "description": "Recipent account number does not exist",
-                "content": {
-                    "application.json": {
+                    "application/json": {
                         "schema": {
                             "type": "object",
                             "properties": {

@@ -1,22 +1,19 @@
 {
     "post": {
-        "summary": "Login a user",
+        "summary": "Get Transfers connected with current user",
+        "tags": ["Transfers"],
         "requestBody": {
             "content": {
                 "application/json": {
                     "schema": {
                         "type": "object",
                         "properties": {
-                            "email": {
-                                "type": "string"
-                            },
-                            "password": {
-                                "type": "string"
+                            "year": {
+                                "type": "integer"
                             }
                         },
                         "required": [
-                            "email",
-                            "password"
+                            "year"
                         ]
                     }
                 }
@@ -24,27 +21,25 @@
         },
         "responses": {
             "200": {
-                "description": "Successful login",
+                "description": "Transfers monthly analysis returned successfully",
                 "content": {
-                    "application/json": {
+                    "application.json": {
                         "schema": {
                             "type": "object",
                             "properties": {
                                 "message": {
                                     "type": "string"
                                 },
-                                "user": {
-                                    "type": "object",
+                                "transfers": {
                                     "properties": {
-                                        "_id": {
+                                        "interval": {
                                             "type": "string"
                                         },
-                                        "login": {
-                                            "type": "string"
+                                        "income": {
+                                            "type": "integer"
                                         },
-                                        "created": {
-                                            "type": "string",
-                                            "format": "date-time"
+                                        "outcome": {
+                                            "type": "integer"
                                         }
                                     }
                                 }
@@ -64,42 +59,29 @@
                                     "type": "string"
                                 }
                             }
+                        },
+                        "examples": {
+                            "payload_empty": {
+                                "value": {
+                                    "message": "Request payload is empty"
+                                }
+                            },
+                            "missing_field": {
+                                "value": {
+                                    "message": "Year is required"
+                                }
+                            },
+                            "not_integer": {
+                                "value": {
+                                    "message": "Year has to be of type integer"
+                                }
+                            }
                         }
                     }
                 }
             },
             "401": {
-                "description": "Invalid login credentials",
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "message": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "409": {
-                "description": "Already logged in",
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "message": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "404": {
-                "description": "User does not exist",
+                "description": "No user logged in",
                 "content": {
                     "application/json": {
                         "schema": {

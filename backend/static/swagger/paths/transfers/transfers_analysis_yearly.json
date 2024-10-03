@@ -1,6 +1,7 @@
 {
     "post": {
         "summary": "Get Transfers connected with current user",
+        "tags": ["Transfers"],
         "requestBody": {
             "content": {
                 "application/json": {

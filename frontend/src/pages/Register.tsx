@@ -51,7 +51,7 @@ const Register = () => {
                 errorMessage: 'An unknown error occurred. Please try again.'
             });
         }
-        console.log(error);
+        console.error(error);
         }
     });
 

@@ -68,7 +68,7 @@ const MainMenu = () => {
                             options={[
                                 { label: 'Wykonaj przelew', path: '/transfer' },
                                 { label: 'Historia przelewów', path: '/transactions/history' },
-                                { label: 'Płatności cykliczne', path: '/' },
+                                { label: 'Płatności cykliczne', path: '/cyclic-payments' },
                                 { label: 'Pożyczki', path: '/' },
                             ]}
                             isOpen={activeDropdown === 'przelewy'}

@@ -7,6 +7,7 @@ from routes.authorisation_blueprint import authorisation_blueprint
 from routes.transfer_blueprint import transfer_blueprint
 from routes.user_icon_blueprint import user_icon_blueprint
 from routes.user_blueprint import user_blueprint
+from routes.cyclic_payment_blueprint import cyclic_payment_blueprint
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_cors import CORS
 # python -m flask --app .\application.py run
@@ -37,6 +38,7 @@ app.register_blueprint(authorisation_blueprint)
 app.register_blueprint(transfer_blueprint)
 app.register_blueprint(user_icon_blueprint)
 app.register_blueprint(user_blueprint)
+app.register_blueprint(cyclic_payment_blueprint)
 
 if __name__ == "__main__":
     app.run()

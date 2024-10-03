@@ -7,6 +7,7 @@ from users.user_repository import UserRepository
 from transfers.transfer_repository import TransferRepository
 from transfers.transfer import Transfer
 from bson import ObjectId
+from helpers.calculations import add, substract
 
 months = ['', 'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień']
 
@@ -15,8 +16,13 @@ transfer_blueprint = Blueprint('transfer', __name__, url_prefix='/api')
 def validate_transfer_data(data: Mapping[str, Any] | None) -> str | None:
     if not data:
         return "Request payload is empty"
-    if 'recipentAccountNumber' not in data or 'transferTitle' not in data or 'amount' not in data:
+    if 'recipientAccountNumber' not in data or 'transferTitle' not in data or 'amount' not in data:
         return "All fields are required"
+    
+    amount = float(data.get('amount'))
+    if amount <= 0:
+        return "Amount must be a positive number"
+
     return None
 
 def validate_get_all_user_transfers_yearly(data: Mapping[str, Any] | None) -> str | None:
@@ -38,13 +44,13 @@ def validate_get_all_user_transfers_monthly(data: Mapping[str, Any] | None) -> s
     return None
 
 def sanitize_transfer_dict(transfer: dict) -> dict[str, any]:
-    serialized_transfer = {}
+    sanitized_transfer_dict = {}
     for key, value in transfer.items():
         if isinstance(value, ObjectId):
-            serialized_transfer[key] = str(value)
+            sanitized_transfer_dict[key] = str(value)
         else:
-            serialized_transfer[key] = value
-    return serialized_transfer
+            sanitized_transfer_dict[key] = value
+    return sanitized_transfer_dict
 
 def set_income_flag(transfer: dict) -> dict[str, any]:
     if 'transfer_from_id' in transfer and transfer['transfer_from_id'] == current_user._id:
@@ -59,12 +65,12 @@ def set_income_flag(transfer: dict) -> dict[str, any]:
 
     return transfer
 
-def serialize_transfer_dict(transfer: dict) -> dict[str, any]:
-    transfer = set_income_flag(transfer)
+def serialize_transfer_dict(transfer: Transfer) -> dict[str, any]:
+    transfer = set_income_flag(transfer.to_dict())
     transfer = sanitize_transfer_dict(transfer)
     return transfer
 
-def serialize_transfers(transfers: dict) -> dict[str, any]:
+def serialize_transfers(transfers: list[Transfer]) -> dict[str, any]:
     serialized_transfers = []
 
     for t in transfers:
@@ -95,7 +101,7 @@ def group_by_date(transfers: dict) -> dict[str, any]:
 
     return groups
 
-def format_grouped_transfers(grouped: dict) -> dict[str, any]: # może tutaj też się obyć bez kopii
+def format_grouped_transfers(grouped: dict) -> dict[str, any]:
     for key in grouped:
         grouped[key] = {
             'income': round(grouped[key]['income'], 2),
@@ -168,37 +174,31 @@ def get_month_from_date(date: datetime) -> str:
 def get_year_from_date(date: datetime) -> str:
     return str(date.year)
 
-def substract(a: float, b: float) -> float:
-    return float(((a * 100) - (b * 100)) / 100)
-
-def add(a: float, b: float) -> float:
-    return float(((a * 100) + (b * 100)) / 100)
-
 @transfer_blueprint.route('/transfer', methods=['POST'])
 @login_required
-def make_transfer() -> tuple[Response, int]:
+def create_transfer() -> tuple[Response, int]:
     data = request.get_json()
     error = validate_transfer_data(data)
 
     if error:
         return jsonify(message=error), 400
     
-    recipent_user = UserRepository.find_by_account_number(data['recipentAccountNumber'])
+    recipient_user = UserRepository.find_by_account_number(data['recipientAccountNumber'])
     
-    if not recipent_user:
+    if not recipient_user:
         return jsonify(message="User with given account number does not exist"), 404
     
     if current_user.get_available_funds() - float(data['amount']) < 0:
         return jsonify(message="User does not have enough money"), 403
 
     transfer = Transfer(created=datetime.now(), transfer_from_id=current_user._id,
-                        transfer_to_id=recipent_user._id, title=data['transferTitle'], amount=float(data['amount']))
+                        transfer_to_id=recipient_user._id, title=data['transferTitle'], amount=float(data['amount']))
     transfer = TransferRepository.insert(transfer)
 
     UserRepository.update(current_user._id, {'balance': substract(float(current_user.balance), float(data['amount']))})
-    UserRepository.update(recipent_user._id, {'balance': add(float(recipent_user.balance), float(data['amount']))})
+    UserRepository.update(recipient_user._id, {'balance': add(float(recipient_user.balance), float(data['amount']))})
 
-    return jsonify(message="Transfer made successfully"), 200 # maybe add some response json
+    return jsonify(message="Transfer made successfully"), 200
 
 @transfer_blueprint.route('/transfers', methods=['GET'])
 @login_required
@@ -211,8 +211,10 @@ def get_all_user_transfers() -> tuple[Response, int]:
     }
     sort_criteria = [("created", -1)]
     transfers = TransferRepository.find_transfers(query, sort_criteria)
+    if not transfers:
+        return jsonify(message="Transfers list for current user is empty"), 404
+    
     serialized_transfers = serialize_transfers(transfers)
-
     return jsonify(message="Transfers returned successfully", transfers=serialized_transfers), 200
 
 @transfer_blueprint.route('/transfers/analysis/monthly', methods=['POST'])
@@ -225,8 +227,7 @@ def get_all_user_transfers_monthly() -> tuple[Response, int]:
         return jsonify(message=error), 400
     
     start_date = f"{data['year']}-01-01T00:00:00"
-    end_date = f"{data['year']}-12-31T23:59:59"
-    
+    end_date = f"{data['year']}-12-31T23:59:59" 
     query = {
         '$or': [
             {'transfer_from_id': current_user._id},
@@ -252,28 +253,19 @@ def get_all_user_transfers_yearly() -> tuple[Response, int]:
 
     if error:
         return jsonify(message=error), 400
-
+    
+    start_date = f"{data['startYear']}-01-01T00:00:00"
+    end_date = f"{data['endYear']}-12-31T23:59:59"
     query = {
         '$or': [
             {'transfer_from_id': current_user._id},
             {'transfer_to_id': current_user._id}
-        ]
-    }
-
-    if 'startYear' in data:
-        start_date = f"{data['startYear']}-01-01T00:00:00"
-        query['created'] = {
-            '$gte': start_date
+        ],
+        'created': {
+            '$gte': start_date,
+            '$lt': end_date
         }
-
-    if 'endYear' in data:
-        end_date = f"{data['endYear']}-12-31T23:59:59"
-        if 'created' in query:
-            query['created']['$lt'] = end_date
-        else:
-            query['created'] = {
-                '$lt': end_date
-            }
+    }
 
     transfers = TransferRepository.find_transfers(query)
     serialized_transfers = serialize_transfers(transfers)

@@ -21,19 +21,17 @@ class User(UserMixin):
 
 
     def to_dict(self) -> Dict[str, Any]:
-        # Converts the User instance to a dictionary suitable for MongoDB insertion.
         user_dict = asdict(self)
         if self._id is None:
-            user_dict.pop('_id', None)  # Remove _id field if it is None, MongoDB will generate it
+            user_dict.pop('_id', None)
         else:
-            user_dict['_id'] = str(self._id)  # Convert ObjectId to string
+            user_dict['_id'] = str(self._id)
         if self.created:
-            user_dict['created'] = self.created.isoformat()  # Convert datetime to ISO format string
+            user_dict['created'] = self.created.isoformat()
         return user_dict
 
     @staticmethod
     def from_dict(data: Dict[str, Any]) -> 'User':
-        # Creates a User instance from a MongoDB document.
         return User(
             _id=bson.ObjectId(data['_id']) if '_id' in data else None,
             login=data.get('login', ''),

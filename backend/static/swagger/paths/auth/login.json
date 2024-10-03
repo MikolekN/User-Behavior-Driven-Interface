@@ -1,6 +1,7 @@
 {
     "post": {
-        "summary": "Register a new user",
+        "summary": "Login a user",
+        "tags": ["Auth"],
         "requestBody": {
             "content": {
                 "application/json": {
@@ -23,8 +24,8 @@
             }
         },
         "responses": {
-            "201": {
-                "description": "User registered successfully",
+            "200": {
+                "description": "Successful login",
                 "content": {
                     "application/json": {
                         "schema": {
@@ -39,7 +40,7 @@
                                         "_id": {
                                             "type": "string"
                                         },
-                                        "email": {
+                                        "login": {
                                             "type": "string"
                                         },
                                         "created": {
@@ -53,8 +54,8 @@
                     }
                 }
             },
-            "409": {
-                "description": "User already exists",
+            "400": {
+                "description": "Invalid request payload",
                 "content": {
                     "application/json": {
                         "schema": {
@@ -68,8 +69,38 @@
                     }
                 }
             },
-            "400": {
-                "description": "Invalid request payload",
+            "401": {
+                "description": "Invalid login credentials",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "409": {
+                "description": "Already logged in",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "404": {
+                "description": "User does not exist",
                 "content": {
                     "application/json": {
                         "schema": {
