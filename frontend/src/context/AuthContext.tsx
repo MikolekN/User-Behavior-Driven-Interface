@@ -168,8 +168,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
 
     useEffect(() => {
-        getUser();
-    }, []);
+        const fetchUser = async () => {
+            if (!user) {
+                try {
+                    await getUser();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        };
+        fetchUser();
+    }, [user]);
 
     return (
         <AuthContext.Provider value={{ user, setUser, getUser, login, register, logout, getIcon, sendIcon }}>
