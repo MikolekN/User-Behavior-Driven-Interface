@@ -4,7 +4,7 @@ import { User } from '../components/utils/User';
 interface AuthContextProps {
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
-    fetchUser: () => Promise<void>;
+    getUser: () => Promise<void>;
     login: (email: string, password: string) => Promise<void>;
     register: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
@@ -15,7 +15,7 @@ interface AuthContextProps {
 const defaultContextValue: AuthContextProps = {
     user: null,
     setUser: () => {},
-    fetchUser: async () => {},
+    getUser: async () => {},
     login: async () => {},
     register: async () => {},
     logout: async () => {},
@@ -28,7 +28,7 @@ export const AuthContext = createContext<AuthContextProps>(defaultContextValue);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
 
-    const fetchUser = async () => {
+    const getUser = async () => {
         try {
             const response = await fetch('http://127.0.0.1:5000/api/user', {
                 method: 'GET',
@@ -168,11 +168,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
 
     useEffect(() => {
-        fetchUser();
+        getUser();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, setUser, fetchUser, login, register, logout, getIcon, sendIcon }}>
+        <AuthContext.Provider value={{ user, setUser, getUser, login, register, logout, getIcon, sendIcon }}>
             {children}
         </AuthContext.Provider>
     );
