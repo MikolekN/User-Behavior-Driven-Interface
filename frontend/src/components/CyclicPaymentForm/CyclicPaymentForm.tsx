@@ -35,7 +35,7 @@ const CyclicPaymentsForm = () => {
     });
 
     const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
-    const { user, fetchUser } = useContext(AuthContext);
+    const { user, getUser } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<CyclicPaymentFromData>({
         defaultValues: {
             recipientAccountNumber: "",
@@ -120,7 +120,7 @@ const CyclicPaymentsForm = () => {
                 })
                 const responseJson = await response.json();
                 if (response.ok) {
-                    fetchUser();
+                    getUser();
                     navigate('/cyclic-payments');
                 }
                 else {
@@ -155,7 +155,7 @@ const CyclicPaymentsForm = () => {
                 })
                 const responseJson = await response.json();
                 if (response.ok) {
-                    fetchUser();
+                    getUser();
                     navigate('/cyclic-payments');
                 }
                 else {

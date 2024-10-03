@@ -11,6 +11,10 @@
             "description": "Endpoints related to authentication"
         },
         {
+            "name": "User",
+            "description": "Endpoints related to user"
+        },
+        {
             "name": "Transfers",
             "description": "Endpoints related to money transfers"
         },
