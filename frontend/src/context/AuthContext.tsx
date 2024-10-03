@@ -11,6 +11,7 @@ interface AuthContextProps {
     getIcon: () => Promise<void>;
     sendIcon: (icon: File) => Promise<void>;
     updateUser: (field: string, value: string) => Promise<void>;
+    updatePassword: (currentPassword: string, newPassword: string) => Promise<void>;
 }
 
 const defaultContextValue: AuthContextProps = {
@@ -23,6 +24,7 @@ const defaultContextValue: AuthContextProps = {
     getIcon: async () => {},
     sendIcon: async () => {},
     updateUser: async () => {},
+    updatePassword: async () => {},
 };
 
 export const AuthContext = createContext<AuthContextProps>(defaultContextValue);
@@ -211,6 +213,29 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             console.error('Error updating user:', error);
         }
     }
+    
+    const updatePassword = async (currentPassword: string, newPassword: string) => {
+        if (!user) {
+            return;
+        }
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/user/password', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ "current_password": currentPassword, "new_password": newPassword})
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                console.error(data.message, response.status);
+                return;
+            }
+        } catch (error) {
+            console.error('Error updating password:', error);
+        }
+    }
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -226,7 +251,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }, [user]);
 
     return (
-        <AuthContext.Provider value={{ user, setUser, getUser, login, register, logout, getIcon, sendIcon, updateUser }}>
+        <AuthContext.Provider value={{ user, setUser, getUser, login, register, logout, getIcon, sendIcon, updateUser, updatePassword }}>
             {children}
         </AuthContext.Provider>
     );
