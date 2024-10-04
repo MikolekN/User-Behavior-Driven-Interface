@@ -41,8 +41,9 @@ export const AuthContext = createContext<AuthContextProps>(defaultContextValue);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
-const getUser = useCallback(async (): Promise<void> => {
+    const getUser = useCallback(async (): Promise<void> => {
         try {
             const { user } = await getUserData();
             if (user) {
@@ -62,8 +63,8 @@ const getUser = useCallback(async (): Promise<void> => {
             console.error('Error fetching user data:', error);
             throw error;
         }
-    }, []);    
-    
+    }, []);
+
     const login = useCallback(async (email: string, password: string): Promise<void> => {
         try {
             const { user } = await loginUser(email, password);
@@ -97,10 +98,13 @@ const getUser = useCallback(async (): Promise<void> => {
 
     const logout = useCallback(async (): Promise<void> => {
         try {
-            setUser(null);
+            setLoading(true);
             await logoutUser();
+            setUser(null);
         } catch (error) {
             console.error('Error logging out:', error);
+        } finally {
+            setLoading(false);
         }
     }, []);
 
@@ -114,8 +118,7 @@ const getUser = useCallback(async (): Promise<void> => {
             console.error('Error fetching icon:', error);
         }
     }, [user]);
-    
-    // TODO: remove sending back the image after upload on backend 
+
     const sendIcon = useCallback(async (icon: File): Promise<void> => {
         if (!user) return;
         try {
@@ -124,7 +127,7 @@ const getUser = useCallback(async (): Promise<void> => {
             console.error('Error uploading icon:', error);
         }
     }, [user]);
-    
+
     const updateUser = useCallback(async (field: string, value: string): Promise<void> => {
         if (!user) return;
         try {
@@ -146,7 +149,7 @@ const getUser = useCallback(async (): Promise<void> => {
             console.error('Error updating user:', error);
         }
     }, [user]);
-        
+
     const updatePassword = useCallback(async (currentPassword: string, newPassword: string): Promise<void> => {
         if (!user) return;
         try {
@@ -155,10 +158,10 @@ const getUser = useCallback(async (): Promise<void> => {
             console.error('Error updating password:', error);
         }
     }, [user]);
-    
+
     useEffect(() => {
         const fetchUser = async (): Promise<void> => {
-            if (!user) {
+            if (!user && !loading) {
                 try {
                     await getUser();
                 } catch (error) {
@@ -167,7 +170,7 @@ const getUser = useCallback(async (): Promise<void> => {
             }
         };
         fetchUser();
-    }, [getUser, user]);
+    }, [getUser, user, loading]);
 
     const authContextValue = useMemo(() => ({
         user,
@@ -181,7 +184,7 @@ const getUser = useCallback(async (): Promise<void> => {
         updateUser,
         updatePassword
     }), [getIcon, getUser, login, logout, register, sendIcon, updatePassword, updateUser, user]);
-    
+
     return (
         <AuthContext.Provider value={authContextValue}>
             {children}
