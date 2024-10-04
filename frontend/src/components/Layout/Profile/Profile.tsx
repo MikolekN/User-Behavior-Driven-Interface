@@ -36,7 +36,7 @@ const Profile = () => {
     });
 
     const handleLogout = async () => {
-        logout();
+        await logout();
         navigate('/');
     };
 
@@ -86,7 +86,7 @@ const Profile = () => {
                     {user && (
                         <>
                             <li className='profile-dropdown-option'>
-                                <Link to="/dashboard" onClick={toggleDropdown}>Profile</Link>
+                                <Link to="/profile" onClick={toggleDropdown}>Profile</Link>
                             </li>
                             <li className='profile-dropdown-option'>
                                 <Link to='/' onClick={() => {

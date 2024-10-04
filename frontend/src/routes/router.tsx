@@ -13,6 +13,7 @@ import TransactionsMonthlyAnalysis from "../components/TransactionsAnalysis/Tran
 import TransactionsYearlyAnalysis from "../components/TransactionsAnalysis/TransactionsYearlyAnalysis";
 import CyclicPaymentsForm from "../components/CyclicPaymentForm/CyclicPaymentForm";
 import CyclicPayments from "../pages/CyclicPayments";
+import Profile from "../pages/Profile";
 
 export const router = createBrowserRouter([
     {
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
             { path: "/create-cyclic-payment", element: <CyclicPaymentsForm key="create"/> },
             { path: "/edit-cyclic-payment/:id", element: <CyclicPaymentsForm key="edit"/> },
             { path: "/cyclic-payments", element: <CyclicPayments /> },
+            { path: "/profile", element: <Profile /> },
             { path: "*", element: <div>404 NOT FOUND</div> }
         ],
     }

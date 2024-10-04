@@ -101,7 +101,7 @@ export const uploadUserIcon = async (icon: File): Promise<void> => {
 
 export const updateUserField = async (field: string, value: string): Promise<UpdateUserResponse> => {
     const response = await fetch(`${API_URL}/user/update`, {
-        method: 'POST',
+        method: 'PATCH',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ [field]: value })
@@ -111,7 +111,7 @@ export const updateUserField = async (field: string, value: string): Promise<Upd
 
 export const updateUserPassword = async (currentPassword: string, newPassword: string): Promise<void> => {
     const response = await fetch(`${API_URL}/user/password`, {
-        method: 'POST',
+        method: 'PATCH',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',

@@ -180,6 +180,13 @@ const CyclicPaymentsForm = () => {
         setDate(dateChange);
     };
 
+    const intervalOptions = [
+        { value: "Every 7 days", label: "Every 7 days" },
+        { value: "Every month", label: "Every month" },
+        { value: "Every 3 months", label: "Every 3 months" },
+        { value: "Every 6 months", label: "Every 6 months" }
+    ];
+
     return (
         <div className="flex items-center justify-center">
             <Tile title="Transfer" className="form-tile w-2/5 bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
@@ -232,12 +239,10 @@ const CyclicPaymentsForm = () => {
                                     />
                                 )}
                             />
-                            <FormSelect 
+                            <FormSelect
                                 label="Interval"
-                                options={["select an option", "every 7 days", "every month", "every 3 months", "every 6 months"]}
-                                register={register('interval', {
-                                    required: formValidationRules.interval.required
-                                })}
+                                options={intervalOptions}
+                                register={register('interval', { required: formValidationRules.interval.required })}
                                 error={errors.interval}
                                 className="w-full"
                             />

@@ -1,39 +1,45 @@
 import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import { ReactNode } from 'react';
 
-interface FormSelectProps {
-	label: string;
-    options: string[];
-	register: UseFormRegisterReturn;
-	error?: FieldError,
-	children?: ReactNode,
-	className?: string
+interface Option {
+    value: string;
+    label: string;
 }
 
-const FormSelect = ({ label, options, register, error, children, className }: FormSelectProps) => {
+interface FormSelectProps {
+    label: string;
+    options: Option[];
+    onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    value?: string;
+    register?: UseFormRegisterReturn;
+    error?: FieldError;
+    defaultOption?: string;
+    children?: ReactNode;
+    className?: string;
+}
+
+const FormSelect = ({ label, options, onChange, value, error, defaultOption = '-- Wybierz opcję --', register, children, className }: FormSelectProps) => {
     return (
         <div>
             <label className="text-sm font-semibold text-gray-700 block">{label}</label>
             <select
-                {...register}
-                style={{ borderColor: error ? 'red' : '' }}
-                className={`${className} p-3 border border-gray-300 rounded-lg mt-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                {...(register ? register : {})}
+                onChange={onChange}
+                value={value}
+                aria-invalid={error ? 'true' : 'false'}
+                className={`${className} p-3 border rounded-lg mt-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? 'border-red-500' : 'border-gray-300'}`}
             >
-                {options.map((option, idx) => (
-                    idx === 0 ? (
-                        <option key={idx} value="">
-                            {option}
-                        </option>
-                    ) :
-                    <option key={idx} value={option}>
-                        {option}
+                <option value="">{defaultOption}</option>
+                {options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                        {option.label}
                     </option>
                 ))}
             </select>
             {children}
             {error && <p className="text-red-600 mt-1 text-sm">{error.message}</p>}
         </div>
-    )
+    );
 }
 
 export default FormSelect;
