@@ -28,6 +28,8 @@ class User(UserMixin):
             user_dict['_id'] = str(self._id)
         if self.created:
             user_dict['created'] = self.created.isoformat()
+        if self.user_icon is None:
+            user_dict.pop('user_icon', None)
         return user_dict
 
     @staticmethod
