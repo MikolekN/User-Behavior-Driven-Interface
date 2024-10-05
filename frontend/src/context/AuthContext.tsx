@@ -113,7 +113,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         try {
             const imageBlob = await getUserIcon();
             const imageFile = new File([imageBlob], "user-icon.png", { type: imageBlob.type });
-            user.icon = imageFile;
+            // user.icon = imageFile;
+            // resetting a user works with useEffect because React uses shallow comparison (React compares the memory reference of objects, not their internal properties)
+            setUser(prevUser => {
+                if (!prevUser) return null;
+                return new User(
+                    prevUser.login,
+                    prevUser.email,
+                    prevUser.accountName,
+                    prevUser.accountNumber,
+                    prevUser.blockades,
+                    prevUser.balance,
+                    prevUser.currency,
+                    prevUser.role,
+                    imageFile
+                );
+            });
         } catch (error) {
             console.error('Error fetching icon:', error);
         }

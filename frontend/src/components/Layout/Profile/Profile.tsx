@@ -58,8 +58,7 @@ const Profile = () => {
         };
     
         fetchIcon();
-    }, [user, getIcon]);
-    
+    }, [user, getIcon, user?.icon]);
 
     return (
         <div className="profile-container" ref={profileRef}>

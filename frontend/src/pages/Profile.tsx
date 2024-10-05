@@ -32,11 +32,76 @@ const UserProfile = () => {
 
     const handleIconSubmit = async () => {
         if (newIcon) {
-            await sendIcon(newIcon);
-            await getIcon();
-            // Profile icon doesnt refresh
-            setNewIcon(null);
+            const processedIcon = await preprocessImage(newIcon);
+            if (processedIcon) {
+                await sendIcon(processedIcon);
+                await getIcon();
+                // Profile icon doesnt refresh
+                setNewIcon(null);
+            }
         }
+    };
+    
+    const preprocessImage = (file: File): Promise<File | null> => {
+        return new Promise((resolve) => {
+            const validExtensions = ['image/png', 'image/jpeg', 'image/jpg'];
+            if (!validExtensions.includes(file.type)) {
+                console.error("Invalid file type. Please upload a PNG or JPG image.");
+                resolve(null);
+                return;
+            }
+    
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+    
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target?.result as string;
+    
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+    
+                    if (width > 120 || height > 120) {
+                        const aspectRatio = width / height;
+                        if (aspectRatio > 1) {
+                            width = 120;
+                            height = 120 / aspectRatio;
+                        } else {
+                            height = 120;
+                            width = 120 * aspectRatio;
+                        }
+                    }
+    
+                    canvas.width = width;
+                    canvas.height = height;
+    
+                    const ctx = canvas.getContext('2d');
+                    ctx?.drawImage(img, 0, 0, width, height);
+    
+                    canvas.toBlob((blob) => {
+                        if (blob) {
+                            const processedFile = new File([blob], file.name, { type: file.type });
+                            resolve(processedFile);
+                        } else {
+                            console.error("Error processing image.");
+                            resolve(null);
+                        }
+                    }, file.type);
+                };
+    
+                img.onerror = () => {
+                    console.error("Error loading image.");
+                    resolve(null);
+                };
+            };
+    
+            reader.onerror = () => {
+                console.error("Error reading file.");
+                resolve(null);
+            };
+        });
     };
 
     const handleUserFieldUpdate = async () => {
