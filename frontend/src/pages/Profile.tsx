@@ -125,6 +125,25 @@ const UserProfile = () => {
         }
     };
 
+    const getUserFieldValue = (field: string): string => {
+        switch (field) {
+            case 'login':
+                return user.login;
+            case 'account_name':
+                return user.accountName;
+            case 'currency':
+                return user.currency;
+            default:
+                return '';
+        }
+    };
+
+    const handleFieldChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedField = e.target.value;
+        setField(selectedField);
+        setValue(getUserFieldValue(selectedField));
+    };
+
     return (
         <div className="flex items-center justify-center">
             <Tile title="Profil użytkownika" className="form-tile w-2/5 bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
@@ -147,7 +166,7 @@ const UserProfile = () => {
                         <FormSelect
                             label="Wybierz pole do zmiany"
                             options={validFields}
-                            onChange={(e) => setField(e.target.value)}
+                            onChange={handleFieldChange}
                             value={field}
                             className="w-full"
                         />
