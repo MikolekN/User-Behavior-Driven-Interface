@@ -37,8 +37,8 @@ const UserProfile = () => {
     const [, setFieldValue] = useState<string>('');
 
     const { handleSubmit: handleSubmitIcon, setValue: setIconValue } = useForm<UserIconData>();
-    const { register: registerField, handleSubmit: handleSubmitField, setValue: setFieldValueForm, formState: { errors }, watch } = useForm<UserFieldData>();
-    const { register: registerPassword, handleSubmit: handleSubmitPassword } = useForm<UserPasswordData>();
+    const { register: registerField, handleSubmit: handleSubmitField, setValue: setFieldValueForm, formState: { errors: fieldErrors }, watch } = useForm<UserFieldData>();
+    const { register: registerPassword, handleSubmit: handleSubmitPassword, formState: { errors: passwordErrors } } = useForm<UserPasswordData>();
     
     const selectedField = watch('field');
 
@@ -196,7 +196,7 @@ const UserProfile = () => {
                             label="Wybierz pole do zmiany"
                             options={validFields}
                             register={registerField('field', { required: 'Należy wybrać pole' })}
-                            error={errors.field}
+                            error={fieldErrors.field}
                             className="w-full"
                         />
                         <FormInput
@@ -220,12 +220,14 @@ const UserProfile = () => {
                             label="Hasło"
                             fieldType="password"
                             register={registerPassword('currentPassword', { required: formValidationRules.password.required })}
+                            error={passwordErrors.currentPassword}
                             className="w-full"
                         />
                         <FormInput
                             label="Nowe hasło"
                             fieldType="password"
                             register={registerPassword('newPassword', { required: formValidationRules.password.required })}
+                            error={passwordErrors.currentPassword}
                             className="w-full"
                         />
                         <div className="flex justify-center">
