@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect, useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import FormInput from '../components/FormInput/FormInput';
@@ -33,11 +33,38 @@ const UserProfile = () => {
     const [apiPasswordError, setApiPasswordError] = useState({ isError: false, errorMessage: "" });
     const { user, getUser, getIcon, sendIcon, updateUser, updatePassword } = useContext(AuthContext);
 
+    const [, setFieldValue] = useState<string>('');
+
     const { handleSubmit: handleSubmitIcon, setValue: setIconValue } = useForm<UserIconData>();
-    const { register: registerField, handleSubmit: handleSubmitField, formState: { errors } } = useForm<UserFieldData>();
+    const { register: registerField, handleSubmit: handleSubmitField, setValue: setFieldValueForm, formState: { errors }, watch } = useForm<UserFieldData>();
     const { register: registerPassword, handleSubmit: handleSubmitPassword } = useForm<UserPasswordData>();
     
+    const selectedField = watch('field');
+
+    const getUserFieldValue = useCallback((field: string): string | undefined => {
+        if (!user) return;
+        switch (field) {
+            case 'login':
+                return user.login;
+            case 'account_name':
+                return user.accountName;
+            case 'currency':
+                return user.currency;
+            default:
+                return '';
+        }
+    }, [user]);
+
+    useEffect(() => {
+        if (selectedField && user) {
+            const currentValue = getUserFieldValue(selectedField);
+            setFieldValue(currentValue!);
+            setFieldValueForm('value', currentValue!);
+        }
+    }, [user, getUserFieldValue, selectedField, setFieldValueForm]);
+
     if (!user) return <Navigate to="/login" />;
+
 
     const onIconSubmit = handleSubmitIcon(async ({ newIcon }) => {
         try {
@@ -132,24 +159,6 @@ const UserProfile = () => {
         }
     });
 
-    // const getUserFieldValue = (field: string): string => {
-    //     switch (field) {
-    //         case 'login':
-    //             return user.login;
-    //         case 'account_name':
-    //             return user.accountName;
-    //         case 'currency':
-    //             return user.currency;
-    //         default:
-    //             return '';
-    //     }
-    // };
-
-    // const handleFieldChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    //     const selectedField = e.target.value;
-    //     setField(selectedField);
-    //     setValue(getUserFieldValue(selectedField));
-    // };
 
     return (
         <div className="flex items-center justify-center">
