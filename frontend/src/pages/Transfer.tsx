@@ -15,7 +15,7 @@ interface TransferFromData {
 
 const Transfer = () => {
     const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
-    const { user, getUser: getUser } = useContext(AuthContext);
+    const { user, getUser } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm<TransferFromData>({
         defaultValues: {
             recipientAccountNumber: "",

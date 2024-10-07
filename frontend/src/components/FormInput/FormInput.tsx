@@ -11,21 +11,14 @@ interface FormInputProps {
     className?: string;
 }
 
-const FormInput = ({ 
-    label, 
-    fieldType, 
-    register, 
-    error, 
-    children, 
-    className 
-}: FormInputProps) => {
+const FormInput = ({ label, fieldType, register, error, children, className }: FormInputProps) => {
     return (
         <div>
             <label className="text-sm font-semibold text-gray-700 block">{label}</label>
             <input
                 {...register}
-                type={fieldType}
                 style={{ borderColor: error ? 'red' : '' }}
+                type={fieldType}
                 className={`${className} p-3 border border-gray-300 rounded-lg mt-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
             {children}

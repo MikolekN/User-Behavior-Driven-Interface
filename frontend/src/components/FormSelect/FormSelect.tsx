@@ -16,14 +16,14 @@ interface FormSelectProps {
     className?: string;
 }
 
-const FormSelect = ({ label, options, error, defaultOption = '-- Wybierz opcję --', register, children, className }: FormSelectProps) => {
+const FormSelect = ({ label, options, register, error, defaultOption = '-- Wybierz opcję --', children, className }: FormSelectProps) => {
     return (
         <div>
             <label className="text-sm font-semibold text-gray-700 block">{label}</label>
             <select
                 {...register}
-                aria-invalid={error ? 'true' : 'false'}
-                className={`${className} p-3 border rounded-lg mt-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? 'border-red-500' : 'border-gray-300'}`}
+                style={{ borderColor: error ? 'red' : '' }}
+                className={`${className} p-3 border border-gray-300 rounded-lg mt-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500`}
             >
                 <option value="">{defaultOption}</option>
                 {options.map((option) => (
