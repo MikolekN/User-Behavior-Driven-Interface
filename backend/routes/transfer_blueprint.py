@@ -1,8 +1,10 @@
+from collections import OrderedDict
+from json import dumps
 from flask import Blueprint, request, jsonify, Response
 from flask_login import current_user, login_required
 from datetime import datetime
 from collections.abc import Mapping
-from typing import Any
+from typing import Any, Callable
 from users.user_repository import UserRepository
 from transfers.transfer_repository import TransferRepository
 from transfers.transfer import Transfer
@@ -78,28 +80,39 @@ def serialize_transfers(transfers: list[Transfer]) -> dict[str, any]:
 
     return serialized_transfers
 
-def format_transfers_date(transfers, func):
+def format_transfers_date(transfers: dict[str, any], func: Callable[[datetime], str]) -> dict[str, any]:
     for t in transfers:
         t['created'] = func(datetime.fromisoformat(t['created']))
     
     return transfers
 
 def group_by_date(transfers: dict) -> dict[str, any]:
-    groups = {}
+    grouped_transfers = {}
 
     for t in transfers:
         date = t['created']
-        if date not in groups:
-            groups[date] = {
+        if date not in grouped_transfers:
+            grouped_transfers[date] = []
+        grouped_transfers[date].append(t)
+
+    return grouped_transfers
+
+def accumulate_tranactions_income_and_outcome(transfers: dict) -> dict[str, any]:
+    accumulated_groups = {}
+
+    for t in transfers:
+        date = t['created']
+        if date not in accumulated_groups:
+            accumulated_groups[date] = {
                 'income': 0,
                 'outcome': 0
             }
         if t.get('income', False):
-            groups[date]['income'] += t['amount']
+            accumulated_groups[date]['income'] += t['amount']
         else:
-            groups[date]['outcome'] += t['amount']
+            accumulated_groups[date]['outcome'] += t['amount']
 
-    return groups
+    return accumulated_groups
 
 def format_grouped_transfers(grouped: dict) -> dict[str, any]:
     for key in grouped:
@@ -130,7 +143,7 @@ def get_response_monthly(transfers: dict) -> dict[str, any]:
     response = response[1:]
     return response
 
-def get_response_yearly(transfers: dict) -> dict[str, any]:
+def get_response_yearly(transfers: dict) -> list[dict[str, any]]:
     response = []
 
     for key, item in transfers.items():
@@ -138,6 +151,17 @@ def get_response_yearly(transfers: dict) -> dict[str, any]:
             'interval': key,
             'income': item['income'],
             'outcome': item['outcome']
+        })
+
+    return response
+
+def get_transfers_history_response(transfers: dict) -> list[dict[str, any]]:
+    response = []
+    
+    for date, transactions in transfers.items():
+        response.append({
+            "date": date,
+            "transactions": transactions
         })
 
     return response
@@ -157,22 +181,32 @@ def set_missing_years(response: dict, start_year: int, end_year: int) -> dict[st
     return response
 
 def get_transfers_analysis_monthly(transfers: dict) -> dict[str, any]:
-    formatted_transfers = format_transfers_date(transfers, get_month_from_date)
-    grouped_transfers = format_grouped_transfers(group_by_date(formatted_transfers))
-    response = get_response_monthly(grouped_transfers)
+    formatted_transfers = format_transfers_date(transfers, get_month_from_datetime)
+    acc_grouped_transfers = format_grouped_transfers(accumulate_tranactions_income_and_outcome(formatted_transfers))
+    response = get_response_monthly(acc_grouped_transfers)
     return response
 
 def get_transfers_analysis_yearly(transfers: dict) -> dict[str, any]:
-    formatted_transfers = format_transfers_date(transfers, get_year_from_date)
-    grouped_transfers = format_grouped_transfers(group_by_date(formatted_transfers))
-    response = get_response_yearly(grouped_transfers)
+    formatted_transfers = format_transfers_date(transfers, get_year_from_datetime)
+    acc_grouped_transfers = format_grouped_transfers(accumulate_tranactions_income_and_outcome(formatted_transfers))
+    response = get_response_yearly(acc_grouped_transfers)
     return response
 
-def get_month_from_date(date: datetime) -> str:
+def get_transactions_history_response(transfers: dict) -> dict[str, any]:
+    formatted_transfers = format_transfers_date(transfers, get_date_from_datetime)
+    grouped_transfers = group_by_date(formatted_transfers)
+    response = get_transfers_history_response(grouped_transfers)
+    return response
+
+def get_month_from_datetime(date: datetime) -> str:
     return str(date.month)
 
-def get_year_from_date(date: datetime) -> str:
+def get_year_from_datetime(date: datetime) -> str:
     return str(date.year)
+
+def get_date_from_datetime(date: datetime) -> str:
+    # date in the format like: "09.09.2024"
+    return date.strftime('%d.%m.%Y')
 
 @transfer_blueprint.route('/transfer', methods=['POST'])
 @login_required
@@ -215,7 +249,9 @@ def get_all_user_transfers() -> tuple[Response, int]:
         return jsonify(message="Transfers list for current user is empty"), 404
     
     serialized_transfers = serialize_transfers(transfers)
-    return jsonify(message="Transfers returned successfully", transfers=serialized_transfers), 200
+    response = get_transactions_history_response(serialized_transfers)
+    
+    return jsonify(message="Transfers returned successfully", transfers=response), 200
 
 @transfer_blueprint.route('/transfers/analysis/monthly', methods=['POST'])
 @login_required
@@ -240,6 +276,9 @@ def get_all_user_transfers_monthly() -> tuple[Response, int]:
     }
 
     transfers = TransferRepository.find_transfers(query)
+    if not transfers:
+        return jsonify(message="Monthly transfers analysis for current user is empty"), 404
+
     serialized_transfers = serialize_transfers(transfers)
     response = get_transfers_analysis_monthly(serialized_transfers)
 
@@ -268,6 +307,9 @@ def get_all_user_transfers_yearly() -> tuple[Response, int]:
     }
 
     transfers = TransferRepository.find_transfers(query)
+    if not transfers:
+        return jsonify(message="Yearly transfers analysis for current user is empty"), 404
+    
     serialized_transfers = serialize_transfers(transfers)
     response = set_missing_years(get_transfers_analysis_yearly(serialized_transfers), data['startYear'], data['endYear'])
 
