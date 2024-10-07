@@ -89,7 +89,7 @@ const CyclicPaymentsForm = () => {
             fetchCyclicPaymentById();
         }
 
-    }, [id])
+    }, [id, user]);
 
     useEffect(() => {
         setValue("cyclicPaymentName", cyclicPayment.cyclicPaymentName);
@@ -98,7 +98,7 @@ const CyclicPaymentsForm = () => {
         setValue("amount", cyclicPayment.amount.toString());
         setValue("startDate", cyclicPayment.startDate);
         setValue("interval", cyclicPayment.interval);
-    }, [cyclicPayment]);
+    }, [cyclicPayment, setValue]);
     
     const onSubmit = handleSubmit(async (data: CyclicPaymentFromData) => {
         if (!cyclicPayment.id) {
@@ -189,7 +189,7 @@ const CyclicPaymentsForm = () => {
                             <label className="text-sm font-semibold text-gray-700 block">From account</label>
                             <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
                                 <p>
-                                    {user?.accountName} {`(${user?.availableFunds} PLN)`}
+                                    {user?.accountName} {`(${user?.availableFunds} ${user?.currency})`}
                                 </p>
                                 <p>
                                     {user?.accountNumber}
@@ -261,7 +261,7 @@ const CyclicPaymentsForm = () => {
                                 className="w-10/12"
                             >
                                 <span className="p-3 bg-gray-300 text-gray-700 border border-gray-300 border-l-0 rounded-lg mt-1 ml-1">
-                                    PLN
+                                    {user?.currency}
                                 </span>
                             </FormInput>
                             <div>
