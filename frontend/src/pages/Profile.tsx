@@ -22,7 +22,7 @@ interface UserPasswordData {
 }
 
 const validFields = [
-    { value: 'login', label: 'Login' },
+    { value: 'login', label: 'Nazwa użytkownika' },
     { value: 'account_name', label: 'Nazwa konta' },
     { value: 'currency', label: 'Waluta' }
 ];
@@ -159,6 +159,10 @@ const UserProfile = () => {
         }
     });
 
+    const getFieldLabel = (field: string) => {
+        const fieldData = validFields.find((item) => item.value === field);
+        return fieldData ? fieldData.label : '';
+    };
 
     return (
         <div className="flex items-center justify-center">
@@ -193,13 +197,13 @@ const UserProfile = () => {
                             className="w-full"
                         />
                         <FormInput
-                            label="New Value"
+                            label={'Nowa ' + getFieldLabel(selectedField).toLocaleLowerCase()}
                             fieldType="text"
                             register={registerField('value', { required: true })}
                             className="w-full"
                         />
                         <div className="flex justify-center">
-                            <Button>Update Field</Button>
+                            <Button>Zmień wartość</Button>
                         </div>
                     </form>
                     {apiFieldError.isError && <p className="text-red-600 mt-1 text-sm">{apiFieldError.errorMessage}</p>}
@@ -208,19 +212,19 @@ const UserProfile = () => {
 
                     <form onSubmit={onPasswordSubmit} className="space-y-4">
                         <FormInput
-                            label="Current Password"
+                            label="Hasło"
                             fieldType="password"
                             register={registerPassword('currentPassword', { required: true })}
                             className="w-full"
                         />
                         <FormInput
-                            label="New Password"
+                            label="Nowe hasło"
                             fieldType="password"
                             register={registerPassword('newPassword', { required: true })}
                             className="w-full"
                         />
                         <div className="flex justify-center">
-                            <Button>Change Password</Button>
+                            <Button>Zmień hasło</Button>
                         </div>
                     </form>
                     {apiPasswordError.isError && <p className="text-red-600 mt-1 text-sm">{apiPasswordError.errorMessage}</p>}
