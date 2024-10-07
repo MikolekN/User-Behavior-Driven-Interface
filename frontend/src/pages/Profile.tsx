@@ -6,6 +6,7 @@ import { AuthContext } from '../context/AuthContext';
 import Button from '../components/utils/Button';
 import FormSelect from '../components/FormSelect/FormSelect';
 import { useForm } from 'react-hook-form';
+import { formValidationRules } from '../components/utils/validationRules';
 
 interface UserIconData {
     newIcon?: File;
@@ -183,11 +184,13 @@ const UserProfile = () => {
                         <div className="flex justify-center">
                             <Button>Wybierz ikonę</Button>
                         </div>
+                        <div>
+                            {apiIconError.isError && <p className="text-red-600 mt-1 text-sm">{apiIconError.errorMessage}</p>}
+                        </div>
                     </form>
-                    {apiIconError.isError && <p className="text-red-600 mt-1 text-sm">{apiIconError.errorMessage}</p>}
-
+    
                     <hr className="border-t border-gray-300 my-4" />
-
+    
                     <form onSubmit={onFieldSubmit} className="space-y-4">
                         <FormSelect
                             label="Wybierz pole do zmiany"
@@ -205,29 +208,33 @@ const UserProfile = () => {
                         <div className="flex justify-center">
                             <Button>Zmień wartość</Button>
                         </div>
+                        <div>
+                            {apiFieldError.isError && <p className="text-red-600 mt-1 text-sm">{apiFieldError.errorMessage}</p>}
+                        </div>
                     </form>
-                    {apiFieldError.isError && <p className="text-red-600 mt-1 text-sm">{apiFieldError.errorMessage}</p>}
-
+    
                     <hr className="border-t border-gray-300 my-4" />
-
+    
                     <form onSubmit={onPasswordSubmit} className="space-y-4">
                         <FormInput
                             label="Hasło"
                             fieldType="password"
-                            register={registerPassword('currentPassword', { required: true })}
+                            register={registerPassword('currentPassword', { required: formValidationRules.password.required })}
                             className="w-full"
                         />
                         <FormInput
                             label="Nowe hasło"
                             fieldType="password"
-                            register={registerPassword('newPassword', { required: true })}
+                            register={registerPassword('newPassword', { required: formValidationRules.password.required })}
                             className="w-full"
                         />
                         <div className="flex justify-center">
                             <Button>Zmień hasło</Button>
                         </div>
+                        <div>
+                            {apiPasswordError.isError && <p className="text-red-600 mt-1 text-sm">{apiPasswordError.errorMessage}</p>}
+                        </div>
                     </form>
-                    {apiPasswordError.isError && <p className="text-red-600 mt-1 text-sm">{apiPasswordError.errorMessage}</p>}
                 </div>
             </Tile>
         </div>
