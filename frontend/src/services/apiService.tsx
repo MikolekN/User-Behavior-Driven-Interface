@@ -1,10 +1,10 @@
-import { ChartData } from '../utils/types/TransfersAnalysisChartTypes';
+import { ChartData } from "../components/utils/types/TransfersAnalysisChartTypes";
 
 export const fetchTransfersAnalysisData = async (
-    url: string, 
-    body: object, 
-    setChartData: (data: ChartData[]) => void, 
-    setLoading: (loading: boolean) => void, 
+    url: string,
+    body: object,
+    setChartData: (data: ChartData[]) => void,
+    setLoading: (loading: boolean) => void,
     setError: (hasError: boolean) => void
 ) => {
     setLoading(true);
