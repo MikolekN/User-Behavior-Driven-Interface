@@ -5,6 +5,21 @@ import FormInput from '../components/FormInput/FormInput';
 import { AuthContext } from '../context/AuthContext';
 import Button from '../components/utils/Button';
 import FormSelect from '../components/FormSelect/FormSelect';
+import { useForm } from 'react-hook-form';
+
+interface UserIconData {
+    newIcon?: File;
+}
+
+interface UserFieldData {
+    field: string;
+    value: string;
+}
+
+interface UserPasswordData {
+    currentPassword: string;
+    newPassword: string;
+}
 
 const validFields = [
     { value: 'login', label: 'Login' },
@@ -13,34 +28,30 @@ const validFields = [
 ];
 
 const UserProfile = () => {
-    const [apiError, setApiError] = useState({ isError: false, errorMessage: "" });
+    const [apiIconError, setApiIconError] = useState({ isError: false, errorMessage: "" });
+    const [apiFieldError, setApiFieldError] = useState({ isError: false, errorMessage: "" });
+    const [apiPasswordError, setApiPasswordError] = useState({ isError: false, errorMessage: "" });
     const { user, getUser, getIcon, sendIcon, updateUser, updatePassword } = useContext(AuthContext);
-    
-    const [newIcon, setNewIcon] = useState<File | null>(null);
-    const [field, setField] = useState<string>('');
-    const [value, setValue] = useState<string>('');
-    const [currentPassword, setCurrentPassword] = useState<string>('');
-    const [newPassword, setNewPassword] = useState<string>('');
 
+    const { handleSubmit: handleSubmitIcon, setValue: setIconValue } = useForm<UserIconData>();
+    const { register: registerField, handleSubmit: handleSubmitField, formState: { errors } } = useForm<UserFieldData>();
+    const { register: registerPassword, handleSubmit: handleSubmitPassword } = useForm<UserPasswordData>();
+    
     if (!user) return <Navigate to="/login" />;
 
-    const handleIconChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files) {
-            setNewIcon(event.target.files[0]);
-        }
-    };
-
-    const handleIconSubmit = async () => {
-        if (newIcon) {
-            const processedIcon = await preprocessImage(newIcon);
-            if (processedIcon) {
-                await sendIcon(processedIcon);
-                await getIcon();
-                // Profile icon doesnt refresh
-                setNewIcon(null);
+    const onIconSubmit = handleSubmitIcon(async ({ newIcon }) => {
+        try {
+            if (newIcon) {
+                const processedIcon = await preprocessImage(newIcon);
+                if (processedIcon) {
+                    await sendIcon(processedIcon);
+                    await getIcon();
+                }
             }
+        } catch (error) {
+            setApiIconError({ isError: true, errorMessage: "Error updating user icon" });
         }
-    };
+    });
     
     const preprocessImage = (file: File): Promise<File | null> => {
         return new Promise((resolve) => {
@@ -104,107 +115,106 @@ const UserProfile = () => {
         });
     };
 
-    const handleUserFieldUpdate = async () => {
+    const onFieldSubmit = handleSubmitField(async ({ field, value }) => {
         try {
             await updateUser(field, value);
             await getUser();
-            setField('');
-            setValue('');
         } catch (error) {
-            setApiError({ isError: true, errorMessage: "Error updating user field" });
+            setApiFieldError({ isError: true, errorMessage: "Error updating user field" });
         }
-    };
+    });
 
-    const handlePasswordUpdate = async () => {
+    const onPasswordSubmit = handleSubmitPassword(async ({ currentPassword, newPassword }) => {
         try {
             await updatePassword(currentPassword, newPassword);
-            setCurrentPassword('');
-            setNewPassword('');
         } catch (error) {
-            setApiError({ isError: true, errorMessage: "Error updating password" });
+            setApiPasswordError({ isError: true, errorMessage: "Error updating password" });
         }
-    };
+    });
 
-    const getUserFieldValue = (field: string): string => {
-        switch (field) {
-            case 'login':
-                return user.login;
-            case 'account_name':
-                return user.accountName;
-            case 'currency':
-                return user.currency;
-            default:
-                return '';
-        }
-    };
+    // const getUserFieldValue = (field: string): string => {
+    //     switch (field) {
+    //         case 'login':
+    //             return user.login;
+    //         case 'account_name':
+    //             return user.accountName;
+    //         case 'currency':
+    //             return user.currency;
+    //         default:
+    //             return '';
+    //     }
+    // };
 
-    const handleFieldChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedField = e.target.value;
-        setField(selectedField);
-        setValue(getUserFieldValue(selectedField));
-    };
+    // const handleFieldChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    //     const selectedField = e.target.value;
+    //     setField(selectedField);
+    //     setValue(getUserFieldValue(selectedField));
+    // };
 
     return (
         <div className="flex items-center justify-center">
             <Tile title="Profil użytkownika" className="form-tile w-2/5 bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
                 <div className="flex flex-col space-y-6">
-                    <div className="space-y-4">
-                        <FormInput
-                            label="Wybierz nową ikonę"
-                            fieldType="file"
-                            onChange={handleIconChange}
-                            className="w-full"
-                        />
-                        <div className="flex justify-center">
-                            <Button onClick={handleIconSubmit}>Wybierz ikonę</Button>
+                    <form onSubmit={onIconSubmit} className="space-y-4">
+                        <div>
+                            <label className="text-sm font-semibold text-gray-700 block">Wybierz nową ikonę</label>
+                            <input
+                                type="file"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    setIconValue("newIcon", file);
+                                }}
+                                className="w-full p-3 border border-gray-300 rounded-lg mt-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
                         </div>
-                    </div>
+                        <div className="flex justify-center">
+                            <Button>Wybierz ikonę</Button>
+                        </div>
+                    </form>
+                    {apiIconError.isError && <p className="text-red-600 mt-1 text-sm">{apiIconError.errorMessage}</p>}
 
                     <hr className="border-t border-gray-300 my-4" />
 
-                    <div className="space-y-4">
+                    <form onSubmit={onFieldSubmit} className="space-y-4">
                         <FormSelect
                             label="Wybierz pole do zmiany"
                             options={validFields}
-                            onChange={handleFieldChange}
-                            value={field}
+                            register={registerField('field', { required: 'Należy wybrać pole' })}
+                            error={errors.field}
                             className="w-full"
                         />
                         <FormInput
                             label="New Value"
                             fieldType="text"
-                            onChange={(e) => setValue(e.target.value)}
-                            value={value}
+                            register={registerField('value', { required: true })}
                             className="w-full"
                         />
                         <div className="flex justify-center">
-                            <Button onClick={handleUserFieldUpdate}>Update Field</Button>
+                            <Button>Update Field</Button>
                         </div>
-                    </div>
+                    </form>
+                    {apiFieldError.isError && <p className="text-red-600 mt-1 text-sm">{apiFieldError.errorMessage}</p>}
 
                     <hr className="border-t border-gray-300 my-4" />
 
-                    <div className="space-y-4">
+                    <form onSubmit={onPasswordSubmit} className="space-y-4">
                         <FormInput
                             label="Current Password"
                             fieldType="password"
-                            onChange={(e) => setCurrentPassword(e.target.value)}
-                            value={currentPassword}
+                            register={registerPassword('currentPassword', { required: true })}
                             className="w-full"
                         />
                         <FormInput
                             label="New Password"
                             fieldType="password"
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            value={newPassword}
+                            register={registerPassword('newPassword', { required: true })}
                             className="w-full"
                         />
                         <div className="flex justify-center">
-                            <Button onClick={handlePasswordUpdate}>Change Password</Button>
+                            <Button>Change Password</Button>
                         </div>
-                    </div>
-
-                    {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
+                    </form>
+                    {apiPasswordError.isError && <p className="text-red-600 mt-1 text-sm">{apiPasswordError.errorMessage}</p>}
                 </div>
             </Tile>
         </div>
