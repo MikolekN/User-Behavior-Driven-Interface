@@ -219,14 +219,15 @@ const UserProfile = () => {
                         <FormInput
                             label="Hasło"
                             fieldType="password"
-                            register={registerPassword('currentPassword', { required: formValidationRules.password.required })}
+                            register={registerPassword('currentPassword', { required: formValidationRules.password.required, validate: formValidationRules.password.validate })}
                             error={passwordErrors.currentPassword}
                             className="w-full"
                         />
                         <FormInput
                             label="Nowe hasło"
                             fieldType="password"
-                            register={registerPassword('newPassword', { required: formValidationRules.password.required })}
+                            register={registerPassword('newPassword', { required: formValidationRules.password.required, validate: formValidationRules.password.validate })}
+                            
                             error={passwordErrors.currentPassword}
                             className="w-full"
                         />
