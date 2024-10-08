@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode, useMemo, useCallback } from 'react';
-import { User } from '../components/utils/User';
+import { mapBackendUserToUser, User } from '../components/utils/User';
 import {
     getUserData,
     loginUser,
@@ -45,9 +45,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const getUser = useCallback(async (): Promise<void> => {
         try {
-            const { user } = await getUserData();
-            if (user) {
-                setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null }));
+            const { user: userData } = await getUserData();
+            if (userData) {
+                const user = mapBackendUserToUser(userData);
+                setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null, email: user.email! }));
             }
         } catch (error) {
             console.error('Error fetching user data:', error);
@@ -57,9 +58,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const login = useCallback(async (email: string, password: string): Promise<void> => {
         try {
-            const { user } = await loginUser(email, password);
+            const { user: userData } = await loginUser(email, password);
             if (user) {
-                setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null }));
+                const user = mapBackendUserToUser(userData);
+                setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null, email: user.email! }));
             }
         } catch (error) {
             console.error('Error during login:', error);
@@ -116,9 +118,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const updateUser = useCallback(async (field: string, value: string): Promise<void> => {
         if (!user) return;
         try {
-            const { user } = await updateUserField(field, value);
+            const { user: userData } = await updateUserField(field, value);
             if (user) {
-                setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null }));
+                const user = mapBackendUserToUser(userData);
+                setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null, email: user.email! }));
             }
         } catch (error) {
             console.error('Error updating user:', error);
