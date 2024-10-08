@@ -117,18 +117,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             // resetting a user works with useEffect because React uses shallow comparison (React compares the memory reference of objects, not their internal properties)
             setUser(prevUser => {
                 if (!prevUser) return null;
-                return new User(
-                    prevUser.login,
-                    prevUser.email,
-                    prevUser.accountName,
-                    prevUser.accountNumber,
-                    prevUser.blockades,
-                    prevUser.balance,
-                    prevUser.currency,
-                    prevUser.role,
-                    imageFile
-                );
-            });
+                return new User({ ...prevUser, icon: imageFile });
+            });            
         } catch (error) {
             console.error('Error fetching icon:', error);
         }
