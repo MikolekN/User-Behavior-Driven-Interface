@@ -44,8 +44,7 @@ def upload_user_icon() -> tuple[Response, int]:
         except Exception as e:
             return jsonify(message=f"Image processing failed: {str(e)}"), 500
 
-        if current_user.is_authenticated:
-            UserRepository.update(current_user._id, {'user_icon': icon_path})
+        UserRepository.update(current_user._id, {'user_icon': icon_path})
 
         return jsonify(message="Icon uploaded successfully"), 200
 

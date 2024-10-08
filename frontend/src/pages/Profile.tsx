@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { formValidationRules } from '../components/utils/validationRules';
 
 interface UserIconData {
-    newIcon?: File;
+    files?: FileList;
 }
 
 interface UserFieldData {
@@ -34,9 +34,7 @@ const UserProfile = () => {
     const [apiPasswordError, setApiPasswordError] = useState({ isError: false, errorMessage: "" });
     const { user, getUser, getIcon, sendIcon, updateUser, updatePassword } = useContext(AuthContext);
 
-    const [, setFieldValue] = useState<string>('');
-
-    const { handleSubmit: handleSubmitIcon, setValue: setIconValue } = useForm<UserIconData>();
+    const { register: registerIcon, handleSubmit: handleSubmitIcon, setValue: setIconValue } = useForm<UserIconData>();
     const { register: registerField, handleSubmit: handleSubmitField, setValue: setFieldValueForm, formState: { errors: fieldErrors }, watch } = useForm<UserFieldData>();
     const { register: registerPassword, handleSubmit: handleSubmitPassword, formState: { errors: passwordErrors } } = useForm<UserPasswordData>();
     
@@ -59,18 +57,16 @@ const UserProfile = () => {
     useEffect(() => {
         if (selectedField && user) {
             const currentValue = getUserFieldValue(selectedField);
-            setFieldValue(currentValue!);
             setFieldValueForm('value', currentValue!);
         }
     }, [user, getUserFieldValue, selectedField, setFieldValueForm]);
 
     if (!user) return <Navigate to="/login" />;
 
-
-    const onIconSubmit = handleSubmitIcon(async ({ newIcon }) => {
+    const onIconSubmit = handleSubmitIcon(async ({ files }) => {
         try {
-            if (newIcon) {
-                const processedIcon = await preprocessImage(newIcon);
+            if (files && files[0]) {
+                const processedIcon = await preprocessImage(files[0]);
                 if (processedIcon) {
                     await sendIcon(processedIcon);
                     await getIcon();
@@ -170,17 +166,12 @@ const UserProfile = () => {
             <Tile title="Profil użytkownika" className="form-tile w-2/5 bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
                 <div className="flex flex-col space-y-6">
                     <form onSubmit={onIconSubmit} className="space-y-4">
-                        <div>
-                            <label className="text-sm font-semibold text-gray-700 block">Wybierz nową ikonę</label>
-                            <input
-                                type="file"
-                                onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    setIconValue("newIcon", file);
-                                }}
-                                className="w-full p-3 border border-gray-300 rounded-lg mt-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
+                        <FormInput
+                            label="Wybierz nową ikonę"
+                            fieldType="file"
+                            register={registerIcon('files')}
+                            className="w-full"
+                        />
                         <div className="flex justify-center">
                             <Button>Wybierz ikonę</Button>
                         </div>
@@ -200,7 +191,7 @@ const UserProfile = () => {
                             className="w-full"
                         />
                         <FormInput
-                            label={'Nowa ' + getFieldLabel(selectedField).toLocaleLowerCase()}
+                            label={'Nowa ' + (selectedField ? getFieldLabel(selectedField).toLocaleLowerCase() : 'wartość')}
                             fieldType="text"
                             register={registerField('value', { required: true })}
                             className="w-full"

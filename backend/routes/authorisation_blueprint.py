@@ -40,10 +40,8 @@ def login() -> tuple[Response, int]:
     return jsonify(message="Logged in successfully", user=sanitized_user), 200
 
 @authorisation_blueprint.route('/logout', methods=['POST'])
+@login_required
 def logout() -> tuple[Response, int]:
-    if not current_user.is_authenticated:
-        return jsonify(message="No user logged in"), 409
-
     logout_user()
     return jsonify(message="Logged out successfully"), 200
 
