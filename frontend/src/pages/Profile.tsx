@@ -161,6 +161,18 @@ const UserProfile = () => {
         return fieldData ? fieldData.label : '';
     };
 
+    const valueValidation = (selectedField: string) => {
+        switch (selectedField) {
+            case 'login':
+                return formValidationRules.userFields.login;
+            case 'account_name':
+                return formValidationRules.userFields.accountName;
+            case 'currency':
+                return formValidationRules.userFields.currency;
+            default:
+                return { required: 'Należy podać nową wartość' };
+        }
+    };
     return (
         <div className="flex items-center justify-center">
             <Tile title="Profil użytkownika" className="form-tile w-2/5 bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
@@ -186,14 +198,14 @@ const UserProfile = () => {
                         <FormSelect
                             label="Wybierz pole do zmiany"
                             options={validFields}
-                            register={registerField('field', { required: 'Należy wybrać pole' })}
+                            register={registerField('field', { required: 'Należy wybrać pole', validate: (value: string) => validFields.some((field) => field.value === value) || 'Należy wybrać poprawne pole' })}
                             error={fieldErrors.field}
                             className="w-full"
                         />
                         <FormInput
                             label={'Nowa ' + (selectedField ? getFieldLabel(selectedField).toLocaleLowerCase() : 'wartość')}
                             fieldType="text"
-                            register={registerField('value', { required: true })}
+                            register={registerField('value', valueValidation(selectedField) )}
                             className="w-full"
                         />
                         <div className="flex justify-center">
