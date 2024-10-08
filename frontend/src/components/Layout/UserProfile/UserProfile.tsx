@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import './Profile.css';
+import './UserProfile.css';
 import defaultIcon from '../../../assets/images/user.png';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';

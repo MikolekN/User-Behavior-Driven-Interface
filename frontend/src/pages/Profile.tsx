@@ -28,13 +28,13 @@ const validFields = [
     { value: 'currency', label: 'Waluta' }
 ];
 
-const UserProfile = () => {
+const ProfilePage = () => {
     const [apiIconError, setApiIconError] = useState({ isError: false, errorMessage: "" });
     const [apiFieldError, setApiFieldError] = useState({ isError: false, errorMessage: "" });
     const [apiPasswordError, setApiPasswordError] = useState({ isError: false, errorMessage: "" });
     const { user, getUser, getIcon, sendIcon, updateUser, updatePassword } = useContext(AuthContext);
 
-    const { register: registerIcon, handleSubmit: handleSubmitIcon, setValue: setIconValue } = useForm<UserIconData>();
+    const { register: registerIcon, handleSubmit: handleSubmitIcon } = useForm<UserIconData>();
     const { register: registerField, handleSubmit: handleSubmitField, setValue: setFieldValueForm, formState: { errors: fieldErrors }, watch } = useForm<UserFieldData>();
     const { register: registerPassword, handleSubmit: handleSubmitPassword, formState: { errors: passwordErrors } } = useForm<UserPasswordData>();
     
@@ -247,4 +247,4 @@ const UserProfile = () => {
     );
 }
 
-export default UserProfile;
+export default ProfilePage;
