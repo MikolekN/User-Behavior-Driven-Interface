@@ -47,17 +47,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         try {
             const { user } = await getUserData();
             if (user) {
-                setUser(prevUser => new User(
-                    user.login,
-                    user.email,
-                    user.account_name,
-                    user.account_number,
-                    user.blockades,
-                    user.balance,
-                    user.currency,
-                    user.role,
-                    prevUser?.icon || null
-                ));
+                setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null }));
             }
         } catch (error) {
             console.error('Error fetching user data:', error);
@@ -69,17 +59,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         try {
             const { user } = await loginUser(email, password);
             if (user) {
-                setUser(prevUser => new User(
-                    user.login,
-                    user.email,
-                    user.account_name,
-                    user.account_number,
-                    user.blockades,
-                    user.balance,
-                    user.currency,
-                    user.role,
-                    prevUser?.icon || null
-                ));
+                setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null }));
             }
         } catch (error) {
             console.error('Error during login:', error);
@@ -138,17 +118,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         try {
             const { user } = await updateUserField(field, value);
             if (user) {
-                setUser(prevUser => new User(
-                    user.login,
-                    user.email,
-                    user.account_name,
-                    user.account_number,
-                    user.blockades,
-                    user.balance,
-                    user.currency,
-                    user.role,
-                    prevUser?.icon || null
-                ));
+                setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null }));
             }
         } catch (error) {
             console.error('Error updating user:', error);
