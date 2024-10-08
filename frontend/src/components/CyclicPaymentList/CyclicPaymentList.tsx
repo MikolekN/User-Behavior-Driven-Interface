@@ -12,7 +12,7 @@ interface CyclicPaymentListProps {
 }
 
 const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
-    const { user } = useContext(AuthContext);
+    const { user, fetchUser } = useContext(AuthContext);
     const [cyclicPayments, setCyclicPayments] = useState<CyclicPayment[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -51,11 +51,14 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                     },
                     credentials: "include"
                 });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            setActiveIndex(null);
-            const data = await response.json(); // maybe use API message
+                if (response.ok) {
+                    setActiveIndex(null);
+                    const data = await response.json(); // maybe use API message
+                    await fetchUser();
+                }
+                else {
+                    throw new Error('Network response was not ok');
+                }
             } catch (error) {
                 setError(true);
                 console.error(error);
