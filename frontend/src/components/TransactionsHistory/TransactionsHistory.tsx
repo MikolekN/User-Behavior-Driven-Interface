@@ -139,7 +139,7 @@ const TransactionsHistory = () => {
                                                     </div>
                                                 </td>
                                                 <td className="text-right px-8 py-2" style={{ color: transaction.income ? 'green' : 'red' }}>
-                                                    { !transaction.income && <span>-</span> }{transaction.amount} PLN
+                                                    { !transaction.income && <span>-</span> }{transaction.amount} ${user.currency}
                                                 </td>
                                             </tr>
                                         ))}
