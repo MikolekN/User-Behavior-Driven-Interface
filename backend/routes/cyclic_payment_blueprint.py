@@ -167,7 +167,8 @@ def delete_cyclic_payment(id) -> tuple[Response, int]:
     if not cyclic_payment:
         return jsonify(message="Cyclic Payment with given ID does not exist"), 404
     
-    UserRepository.update(current_user._id, {'blockades': substract(float(current_user.blockades), float(cyclic_payment.amount))})
+    curr_user = UserRepository.find_by_id(current_user._id)
+    UserRepository.update(curr_user._id, {'blockades': substract(float(curr_user.blockades), float(cyclic_payment.amount))})
 
     CyclicPaymentRepository.delete_by_id(str(id))
  
@@ -187,7 +188,8 @@ def update_cyclic_payment(id) -> tuple[Response, int]:
     
     # clear user blockades by substracting old cyclic payment amount and adding updated cyclic payment amount to the current user blockades
     cyclic_payment = CyclicPaymentRepository.find_by_id(str(id))
-    UserRepository.update(current_user._id, {'blockades': add(substract(float(current_user.blockades), float(cyclic_payment.amount)), float(data["amount"]))})
+    curr_user = UserRepository.find_by_id(current_user._id)
+    UserRepository.update(curr_user._id, {'blockades': add(substract(float(curr_user.blockades), float(cyclic_payment.amount)), float(data["amount"]))})
     
     query, cyclic_payment_content = get_cyclic_payment_update_content_and_query(id, data, recipient_user)
     updated_cyclic_payment = CyclicPaymentRepository.update_by_id(str(id), query, cyclic_payment_content)
