@@ -8,7 +8,7 @@
                     "schema": {
                         "type": "object",
                         "properties": {
-                            "login": {
+                            "email": {
                                 "type": "string"
                             },
                             "password": {
@@ -16,7 +16,7 @@
                             }
                         },
                         "required": [
-                            "login",
+                            "email",
                             "password"
                         ]
                     }
@@ -40,7 +40,7 @@
                                         "_id": {
                                             "type": "string"
                                         },
-                                        "login": {
+                                        "email": {
                                             "type": "string"
                                         },
                                         "created": {

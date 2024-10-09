@@ -1,0 +1,59 @@
+{
+  "get": {
+    "tags": ["User"],
+    "summary": "Get the currently logged-in user's details",
+    "responses": {
+      "200": {
+        "description": "User details retrieved successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                  "login": {
+                      "type": "string"
+                  },
+                  "email": {
+                      "type": "string"
+                  },
+                  "account_name": {
+                      "type": "string"
+                  },
+                  "account_number": {
+                      "type": "string"
+                  },
+                  "blockades": {
+                      "type": "number"
+                  },
+                  "balance": {
+                      "type": "number"
+                  },
+                  "currency": {
+                      "type": "string"
+                  },
+                  "role": {
+                      "type": "string"
+                  }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "No user logged in",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

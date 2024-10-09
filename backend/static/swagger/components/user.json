@@ -1,0 +1,40 @@
+{
+    "type": "object",
+    "properties": {
+    "login": {
+        "type": "string"
+    },
+    "email": {
+        "type": "string"
+    },
+    "account_name": {
+        "type": "string"
+    },
+    "account_number": {
+        "type": "string"
+    },
+    "blockades": {
+        "type": "number"
+    },
+    "balance": {
+        "type": "number"
+    },
+    "currency": {
+        "type": "string"
+    },
+    "role": {
+        "type": "string"
+    }
+    },
+    "required": [
+    "login",
+    "email",
+    "account_name",
+    "account_number",
+    "blockades",
+    "balance",
+    "currency",
+    "role"
+    ]
+}
+  
