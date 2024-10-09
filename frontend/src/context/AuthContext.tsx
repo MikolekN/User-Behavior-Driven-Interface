@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const login = useCallback(async (email: string, password: string): Promise<void> => {
         try {
             const { user: userData } = await loginUser(email, password);
-            if (user) {
+            if (userData) {
                 const user = mapBackendUserToUser(userData);
                 setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null, email: user.email! }));
             }
@@ -119,7 +119,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         if (!user) return;
         try {
             const { user: userData } = await updateUserField(field, value);
-            if (user) {
+            if (userData) {
                 const user = mapBackendUserToUser(userData);
                 setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null, email: user.email! }));
             }
