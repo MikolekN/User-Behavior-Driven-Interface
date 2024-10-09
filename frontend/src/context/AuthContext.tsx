@@ -1,124 +1,170 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { User } from '../components/utils/User';
+import React, { createContext, useState, useEffect, ReactNode, useMemo, useCallback } from 'react';
+import { mapBackendUserToUser, User } from '../components/utils/User';
+import {
+    getUserData,
+    loginUser,
+    registerUser,
+    logoutUser,
+    getUserIcon,
+    uploadUserIcon,
+    updateUserField,
+    updateUserPassword
+} from '../services/authService.ts';
 
 interface AuthContextProps {
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
-    fetchUser: () => Promise<void>;
+    getUser: () => Promise<void>;
     login: (email: string, password: string) => Promise<void>;
     register: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
+    getIcon: () => Promise<void>;
+    sendIcon: (icon: File) => Promise<void>;
+    updateUser: (field: string, value: string) => Promise<void>;
+    updatePassword: (currentPassword: string, newPassword: string) => Promise<void>;
 }
 
 const defaultContextValue: AuthContextProps = {
     user: null,
     setUser: () => {},
-    fetchUser: async () => {},
+    getUser: async () => {},
     login: async () => {},
     register: async () => {},
     logout: async () => {},
+    getIcon: async () => {},
+    sendIcon: async () => {},
+    updateUser: async () => {},
+    updatePassword: async () => {},
 };
 
 export const AuthContext = createContext<AuthContextProps>(defaultContextValue);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
-    const fetchUser = async () => {
+    const getUser = useCallback(async (): Promise<void> => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/user', {
-                method: 'GET',
-                credentials: 'include'
-            });
-            if (response.ok) {
-                const data = await response.json();
-                if (data.user) {
-                    setUser(new User(
-                        data.user.login,
-                        data.user.account_name,
-                        data.user.account_number,
-                        data.user.blockades.toFixed(2),
-                        data.user.balance.toFixed(2),
-                        data.user.currency
-                    ));
-                }
-            } else {
-                console.error('Failed to fetch current user:', response.status);
+            const { user: userData } = await getUserData();
+            if (userData) {
+                const user = mapBackendUserToUser(userData);
+                setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null, email: user.email! }));
             }
         } catch (error) {
             console.error('Error fetching user data:', error);
+            throw error;
         }
-    };
-    
-    const login = async (email: string, password: string) => {
+    }, []);
+
+    const login = useCallback(async (email: string, password: string): Promise<void> => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ login: email, password }),
-                credentials: 'include'
-            });
-            const data = await response.json();
-            if (response.ok) {
-                setUser(new User(
-                    data.user.login,
-                    data.user.account_name,
-                    data.user.account_number,
-                    data.user.blockades.toFixed(2),
-                    data.user.balance.toFixed(2),
-                    data.user.currency
-                ));
-            } else {
-                throw new Error(data.message);
+            const { user: userData } = await loginUser(email, password);
+            if (user) {
+                const user = mapBackendUserToUser(userData);
+                setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null, email: user.email! }));
             }
         } catch (error) {
             console.error('Error during login:', error);
             throw error;
         }
-    };
+    }, []);
 
-    const register = async (email: string, password: string) => {
+    const register = useCallback(async (email: string, password: string): Promise<void> => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ login: email, password })
-            });
-            const data = await response.json();
-            if (!response.ok) {
-                throw new Error(data.message);
-            }
+            await registerUser(email, password);
         } catch (error) {
             console.error('Error during registration:', error);
             throw error;
         }
-    };
-
-    const logout = async () => {
-        try {
-            setUser(null);
-            const response = await fetch('http://127.0.0.1:5000/api/logout', {
-                method: 'POST',
-                credentials: 'include'
-            });
-            if (!response.ok) {
-                console.error('Failed to logout:', response.status);
-            }
-        } catch (error) {
-            console.error('Error logging out:', error);
-        }
-    };
-
-    useEffect(() => {
-        fetchUser();
     }, []);
 
+    const logout = useCallback(async (): Promise<void> => {
+        try {
+            setLoading(true);
+            await logoutUser();
+            setUser(null);
+        } catch (error) {
+            console.error('Error logging out:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const getIcon = useCallback(async (): Promise<void> => {
+        if (!user) return;
+        try {
+            const imageBlob = await getUserIcon();
+            const imageFile = new File([imageBlob], "user-icon.png", { type: imageBlob.type });
+            // user.icon = imageFile;
+            // resetting a user works with useEffect because React uses shallow comparison (React compares the memory reference of objects, not their internal properties)
+            setUser(prevUser => {
+                if (!prevUser) return null;
+                return new User({ ...prevUser, icon: imageFile });
+            });            
+        } catch (error) {
+            console.error('Error fetching icon:', error);
+        }
+    }, [user]);
+
+    const sendIcon = useCallback(async (icon: File): Promise<void> => {
+        if (!user) return;
+        try {
+            await uploadUserIcon(icon);
+        } catch (error) {
+            console.error('Error uploading icon:', error);
+        }
+    }, [user]);
+
+    const updateUser = useCallback(async (field: string, value: string): Promise<void> => {
+        if (!user) return;
+        try {
+            const { user: userData } = await updateUserField(field, value);
+            if (user) {
+                const user = mapBackendUserToUser(userData);
+                setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null, email: user.email! }));
+            }
+        } catch (error) {
+            console.error('Error updating user:', error);
+        }
+    }, [user]);
+
+    const updatePassword = useCallback(async (currentPassword: string, newPassword: string): Promise<void> => {
+        if (!user) return;
+        try {
+            await updateUserPassword(currentPassword, newPassword);
+        } catch (error) {
+            console.error('Error updating password:', error);
+        }
+    }, [user]);
+
+    useEffect(() => {
+        const fetchUser = async (): Promise<void> => {
+            if (!user && !loading) {
+                try {
+                    await getUser();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        };
+        fetchUser();
+    }, [getUser, user, loading]);
+
+    const authContextValue = useMemo(() => ({
+        user,
+        setUser,
+        getUser,
+        login,
+        register,
+        logout,
+        getIcon,
+        sendIcon,
+        updateUser,
+        updatePassword
+    }), [getIcon, getUser, login, logout, register, sendIcon, updatePassword, updateUser, user]);
+
     return (
-        <AuthContext.Provider value={{ user, setUser, fetchUser, login, register, logout }}>
+        <AuthContext.Provider value={authContextValue}>
             {children}
         </AuthContext.Provider>
     );

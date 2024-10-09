@@ -64,4 +64,19 @@ export const formValidationRules = {
             message: 'Interval is required'
         }
     },
+    userFields: {
+        login: {
+            required: 'Należy podać nową nazwę użytkownika',
+        },
+        accountName: {
+            required: 'Należy podać nową nazwę konta',
+        },
+        currency: {
+            required: 'Należy podać nową walutę',
+            pattern: {
+                value: /^[A-Z]{3}$/,
+                message: 'Kod waluty musi składać się z trzech dużych liter (np. USD, EUR)',
+            }
+        }
+    }
 };

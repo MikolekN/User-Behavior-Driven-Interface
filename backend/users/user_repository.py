@@ -14,8 +14,8 @@ class UserRepository:
         return None
 
     @staticmethod
-    def find_by_login(login: str) -> User | None:
-        query = {'login': login}
+    def find_by_email(email: str) -> User | None:
+        query = {'email': email}
         user_dict = Database.find_one(UserRepository.COLLECTION, query)
         if user_dict:
             return User.from_dict(user_dict)
