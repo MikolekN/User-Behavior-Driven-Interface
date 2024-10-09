@@ -35,7 +35,6 @@ const Dashboard = () => {
                             </Link>
                         </div>
                     </div>
-
                 </div>
             </Tile>
         </div>

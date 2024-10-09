@@ -107,7 +107,7 @@ const Transfer = () => {
                                 className="w-10/12"
                             >
                                 <span className="p-3 bg-gray-300 text-gray-700 border border-gray-300 border-l-0 rounded-lg mt-1 ml-1">
-                                    ${user.currency}
+                                    {user.currency}
                                 </span>
                             </FormInput>
                             <div>

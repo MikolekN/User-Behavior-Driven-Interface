@@ -3,9 +3,10 @@ import './TransactionsAnalysis.css';
 import { AuthContext } from '../../context/AuthContext';
 import { Navigate } from 'react-router-dom';
 import Tile from '../Tile/Tile';
-import { fetchTransfersAnalysisData } from '../utils/apiService';
 import TransfersAnalysisChart from '../TransfersAnalysisChart/TransfersAnalysisChart';
 import { ChartData } from '../utils/types/TransfersAnalysisChartTypes';
+import { fetchTransfersAnalysisData } from '../../services/apiService';
+import EmptyResponseInfoAlert from '../EmptyResponseInfoAlert/EmptyResponseInfoAlert';
 
 const TransactionsYearlyAnalysis = () => {
     const [chartData, setChartData] = useState<ChartData[]>([]);
@@ -26,10 +27,20 @@ const TransactionsYearlyAnalysis = () => {
 
         fetchTransfersAnalysisMonthly();
     }, [user]);
-    
+
     if (!user) return <Navigate to="/login" />
+
     if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    
+    if (error) { 
+        return (
+            <EmptyResponseInfoAlert
+                title="Transactions yearly analysis"
+                alertTitle="No transactions history to generate analysis yet"
+                alertMessage="transactions to display in transactions yearly analysis"
+            />
+        );
+    }
 
     return (
         <div className="flex items-center justify-center">

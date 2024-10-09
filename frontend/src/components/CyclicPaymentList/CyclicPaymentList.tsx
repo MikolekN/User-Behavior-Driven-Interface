@@ -150,7 +150,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                         From Account
                                                     </div>
                                                     <div className="pl-4 p-3 border border-gray-300 rounded-lg bg-gray-100">
-                                                        <p>{user?.accountName} ({user?.availableFunds} ${user?.currency})</p>
+                                                        <p>{user?.accountName} ({user?.availableFunds} {user?.currency})</p>
                                                         <p>{user?.accountNumber}</p>
                                                     </div>
                                                 </div>

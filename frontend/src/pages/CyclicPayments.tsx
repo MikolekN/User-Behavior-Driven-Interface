@@ -6,7 +6,7 @@ import { BackendCyclicPayment, CyclicPayment } from "../components/utils/types/C
 import Tile from "../components/Tile/Tile";
 import Button from "../components/utils/Button";
 import '../components/utils/styles/table.css';
-import { Alert, AlertTitle } from "@mui/material";
+import EmptyResponseInfoAlert from "../components/EmptyResponseInfoAlert/EmptyResponseInfoAlert";
 
 const CyclicPayments = () => {
     const { user } = useContext(AuthContext);
@@ -55,9 +55,23 @@ const CyclicPayments = () => {
         };
 
         fetchCyclicPayments();
-    }, []);
+    }, [user]);
 
     if (!user) return <Navigate to="/login" />
+    
+    if (error) { 
+        return (
+            <EmptyResponseInfoAlert
+                title="Cyclic Payments List"
+                alertTitle="No transactions history to generate analysis yet"
+                alertMessage="transactions to display in transactions yearly analysis"
+            >
+                <Link to={`/create-cyclic-payment/`} className="justify-self-end p-2">
+                    <Button>+ Add Cyclic Payment</Button>
+                </Link>
+            </EmptyResponseInfoAlert>
+        );
+    }
 
     return (
         <Tile title="Cyclic Payments List" className="table-tile">
@@ -70,19 +84,6 @@ const CyclicPayments = () => {
                             </div>
                         </td>
                     </tr>
-                }
-                {cyclicPayments && !cyclicPayments.length &&
-                    <div className="grid">
-                        <Link to={`/create-cyclic-payment/`} className="justify-self-end p-2">
-                            <Button>+ Add Cyclic Payment</Button>
-                        </Link>
-                        <Alert severity="info" variant="outlined">
-                            <AlertTitle>
-                                No cyclic payments yet
-                            </AlertTitle>
-                            It looks like you haven't made any cyclic payments. Once you add one, it will appear here for you to review.
-                        </Alert>
-                    </div>
                 }
                 {cyclicPayments && cyclicPayments.length > 0 &&
                     <CyclicPaymentList cyclicPaymentsList={cyclicPayments}/>
