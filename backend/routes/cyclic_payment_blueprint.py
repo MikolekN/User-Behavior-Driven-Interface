@@ -206,7 +206,8 @@ def get_all_user_cyclic_payment() -> tuple[Response, int]:
     query = {
         'issuer_id': current_user._id
     }
-    cyclic_payments = CyclicPaymentRepository.find_cyclic_payments(query)
+    sort_criteria = [("created", -1)]
+    cyclic_payments = CyclicPaymentRepository.find_cyclic_payments(query, sort_criteria)
     if not cyclic_payments:
         return jsonify(message="Cyclic Payments list for current user is empty"), 404
     
