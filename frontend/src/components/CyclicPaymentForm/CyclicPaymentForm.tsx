@@ -120,7 +120,7 @@ const CyclicPaymentsForm = () => {
                 })
                 const responseJson = await response.json();
                 if (response.ok) {
-                    getUser();
+                    await getUser();
                     navigate('/cyclic-payments');
                 }
                 else {
@@ -155,7 +155,7 @@ const CyclicPaymentsForm = () => {
                 })
                 const responseJson = await response.json();
                 if (response.ok) {
-                    getUser();
+                    await getUser();
                     navigate('/cyclic-payments');
                 }
                 else {
