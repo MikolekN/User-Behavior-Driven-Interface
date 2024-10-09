@@ -120,7 +120,8 @@ def create_cyclic_payment() -> tuple[Response, int]:
     if not recipient_user:
         return jsonify(message="User with given account number does not exist"), 404
     
-    if current_user.get_available_funds() - float(data['amount']) < 0:
+    curr_user = UserRepository.find_by_id(current_user._id)
+    if curr_user.get_available_funds() - float(data['amount']) < 0:
         return jsonify(message="User does not have enough money"), 403
     
     cyclic_payment = CyclicPayment(created=datetime.now(), issuer_id=current_user._id, recipient_id=recipient_user._id, 
@@ -132,7 +133,7 @@ def create_cyclic_payment() -> tuple[Response, int]:
 
     # added amount from cyclic payment to the issuer user blockades
     # no action is made at this moment with recipient account 
-    UserRepository.update(current_user._id, {'blockades': add(float(current_user.blockades), float(data['amount']))})
+    UserRepository.update(curr_user._id, {'blockades': add(float(curr_user.blockades), float(data['amount']))})
 
     sanitized_cyclic_payment = sanitize_cyclic_payment_dict(cyclic_payment)
     formatted_cyclic_payment = format_cyclic_payment_dict(sanitized_cyclic_payment)
