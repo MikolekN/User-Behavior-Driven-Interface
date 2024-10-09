@@ -56,7 +56,7 @@ def set_income_flag(transfer: dict) -> dict[str, any]:
     if 'transfer_from_id' in transfer and transfer['transfer_from_id'] == current_user._id:
         transfer['income'] = False
         issuer = UserRepository.find_by_id(transfer['transfer_to_id'])
-        transfer['issuer_name'] = issuer.login
+        transfer['issuer_name'] = issuer.login # Tutaj uznałem, że może zostać login. Jeszcze powiedz Dawid czy się zgadzasz.
 
     elif 'transfer_to_id' in transfer and transfer['transfer_to_id'] == current_user._id:
         transfer['income'] = True

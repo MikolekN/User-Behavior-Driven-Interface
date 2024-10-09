@@ -35,7 +35,7 @@ const CyclicPaymentsForm = () => {
     });
 
     const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
-    const { user, fetchUser } = useContext(AuthContext);
+    const { user, getUser } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<CyclicPaymentFromData>({
         defaultValues: {
             recipientAccountNumber: "",
@@ -120,7 +120,7 @@ const CyclicPaymentsForm = () => {
                 })
                 const responseJson = await response.json();
                 if (response.ok) {
-                    fetchUser();
+                    getUser();
                     navigate('/cyclic-payments');
                 }
                 else {
@@ -155,7 +155,7 @@ const CyclicPaymentsForm = () => {
                 })
                 const responseJson = await response.json();
                 if (response.ok) {
-                    fetchUser();
+                    getUser();
                     navigate('/cyclic-payments');
                 }
                 else {
@@ -179,6 +179,13 @@ const CyclicPaymentsForm = () => {
         });
         setDate(dateChange);
     };
+
+    const intervalOptions = [
+        { value: "Every 7 days", label: "Every 7 days" },
+        { value: "Every month", label: "Every month" },
+        { value: "Every 3 months", label: "Every 3 months" },
+        { value: "Every 6 months", label: "Every 6 months" }
+    ];
 
     return (
         <div className="flex items-center justify-center">
@@ -232,12 +239,10 @@ const CyclicPaymentsForm = () => {
                                     />
                                 )}
                             />
-                            <FormSelect 
+                            <FormSelect
                                 label="Interval"
-                                options={["select an option", "every 7 days", "every month", "every 3 months", "every 6 months"]}
-                                register={register('interval', {
-                                    required: formValidationRules.interval.required
-                                })}
+                                options={intervalOptions}
+                                register={register('interval', { required: formValidationRules.interval.required })}
                                 error={errors.interval}
                                 className="w-full"
                             />

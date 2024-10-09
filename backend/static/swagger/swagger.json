@@ -11,6 +11,10 @@
             "description": "Endpoints related to authentication"
         },
         {
+            "name": "User",
+            "description": "Endpoints related to user"
+        },
+        {
             "name": "Transfers",
             "description": "Endpoints related to money transfers"
         },
@@ -30,7 +34,16 @@
             "$ref": "./paths/auth/logout.json"
         },
         "/user": {
-            "$ref": "./paths/auth/user.json"
+            "$ref": "./paths/user/user.json"
+        },
+        "/user/update": {
+            "$ref": "./paths/user/update.json"
+        },
+        "/user/password": {
+            "$ref": "./paths/user/password.json"
+        },
+        "/user/icon": {
+            "$ref": "./paths/user/icon.json"
         },
         "/transfer": {
             "$ref": "./paths/transfers/transfer.json"
@@ -54,5 +67,11 @@
             "$ref": "./paths/cyclic_payments/cyclic_payment_id.json"
         }
     },
-    "components": {}
+    "components": {
+        "schemas": {
+          "User": {
+            "$ref": "./components/user.json"
+        }
+      }
+  }
 }
