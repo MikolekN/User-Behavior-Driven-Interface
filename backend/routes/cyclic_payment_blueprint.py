@@ -136,6 +136,7 @@ def create_cyclic_payment() -> tuple[Response, int]:
 
     sanitized_cyclic_payment = sanitize_cyclic_payment_dict(cyclic_payment)
     formatted_cyclic_payment = format_cyclic_payment_dict(sanitized_cyclic_payment)
+    
     return jsonify(message="Cyclic Payment created successfully", cyclic_payment=formatted_cyclic_payment), 200
 
 @cyclic_payment_blueprint.route('/cyclic-payment/<id>', methods=['GET'])
@@ -148,11 +149,10 @@ def get_cyclic_payment(id) -> tuple[Response, int]:
     cyclic_payment = CyclicPaymentRepository.find_by_id(str(id))
     if not cyclic_payment:
         return jsonify(message="Cyclic Payment with given ID does not exist"), 404
-    
-    print(cyclic_payment)
  
     sanitized_cyclic_payment = sanitize_cyclic_payment_dict(cyclic_payment)
     formatted_cyclic_payment = format_cyclic_payment_dict(sanitized_cyclic_payment)
+
     return jsonify(message="Get Cyclic Payment by id successfully", cyclic_payment=formatted_cyclic_payment), 200
 
 @cyclic_payment_blueprint.route('/cyclic-payment/<id>', methods=['DELETE'])
@@ -192,6 +192,7 @@ def update_cyclic_payment(id) -> tuple[Response, int]:
         return jsonify(message="Cyclic Payment with given ID does not exist"), 404
 
     sanitized_cyclic_payment = sanitize_cyclic_payment_dict(updated_cyclic_payment)
+
     return jsonify(message="Cyclic Payment updated successfully", cyclic_payment=sanitized_cyclic_payment), 200
 
 @cyclic_payment_blueprint.route('/cyclic-payments', methods=['GET'])
@@ -205,5 +206,5 @@ def get_all_user_cyclic_payment() -> tuple[Response, int]:
         return jsonify(message="Cyclic Payments list for current user is empty"), 404
     
     cyclic_payments = serialize_cyclic_payments(cyclic_payments)
- 
+
     return jsonify(message="Cyclic Payments list retured successfully", cyclic_payments=cyclic_payments), 200
