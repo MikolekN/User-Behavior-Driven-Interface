@@ -152,7 +152,7 @@ const ProfilePage = () => {
             await updateUser(field, value);
             await getUser();
         } catch (error) {
-            setApiFieldError({ isError: true, errorMessage: "Error updating user field" });
+            setApiFieldError({ isError: true, errorMessage: typeof error === 'string' ? error : "Error updating user field" });
         }
     });
 
@@ -160,7 +160,7 @@ const ProfilePage = () => {
         try {
             await updatePassword(currentPassword, newPassword);
         } catch (error) {
-            setApiPasswordError({ isError: true, errorMessage: "Error updating password" });
+            setApiPasswordError({ isError: true, errorMessage: typeof error === 'string' ? error : "Error updating password" });
         }
     });
 
