@@ -72,17 +72,19 @@ const ProfilePage = () => {
                     await getIcon();
                 }
             }
+            setApiIconError({ isError: false, errorMessage: "" });
         } catch (error) {
-            setApiIconError({ isError: true, errorMessage: "Error updating user icon" });
+            setApiIconError({ isError: true, errorMessage: typeof error === 'string' ? error : "Error updating user icon" });
         }
     });
     
     const preprocessImage = (file: File): Promise<File | null> => {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             const validExtensions = ['image/png', 'image/jpeg', 'image/jpg'];
             if (!validExtensions.includes(file.type)) {
-                console.error("Invalid file type. Please upload a PNG or JPG image.");
-                resolve(null);
+                const error = "Invalid file type. Please upload a PNG or JPG image.";
+                console.error(error);
+                reject(error);
                 return;
             }
     
@@ -120,21 +122,27 @@ const ProfilePage = () => {
                             const processedFile = new File([blob], file.name, { type: file.type });
                             resolve(processedFile);
                         } else {
-                            console.error("Error processing image.");
-                            resolve(null);
+                            const error = "Error processing image.";
+                            console.error(error);
+                            reject(error);
+                            return;
                         }
                     }, file.type);
                 };
     
                 img.onerror = () => {
-                    console.error("Error loading image.");
-                    resolve(null);
+                    const error = "Error loading image.";
+                    console.error(error);
+                    reject(error);
+                    return;
                 };
             };
     
             reader.onerror = () => {
-                console.error("Error reading file.");
-                resolve(null);
+                const error = "Error reading file.";
+                console.error(error);
+                reject(error);
+                return;
             };
         });
     };

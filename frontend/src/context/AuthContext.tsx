@@ -85,6 +85,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             setUser(null);
         } catch (error) {
             console.error('Error logging out:', error);
+            throw error;
         } finally {
             setLoading(false);
         }
@@ -103,6 +104,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             });            
         } catch (error) {
             console.error('Error fetching icon:', error);
+            throw error;
         }
     }, [user]);
 
@@ -112,6 +114,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             await uploadUserIcon(icon);
         } catch (error) {
             console.error('Error uploading icon:', error);
+            throw error;
         }
     }, [user]);
 
@@ -125,6 +128,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             }
         } catch (error) {
             console.error('Error updating user:', error);
+            throw error;
         }
     }, [user]);
 
@@ -134,6 +138,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             await updateUserPassword(currentPassword, newPassword);
         } catch (error) {
             console.error('Error updating password:', error);
+            throw error;
         }
     }, [user]);
 
@@ -144,6 +149,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     await getUser();
                 } catch (error) {
                     console.error(error);
+                    throw error;
                 }
             }
         };

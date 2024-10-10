@@ -30,8 +30,9 @@ interface UpdateUserResponse {
 const handleApiResponse = async <T>(response: Response): Promise<T> => {
     const data = await response.json();
     if (!response.ok) {
-        console.error(`Error: ${response.status} - ${response.statusText}`, data.message);
-        throw new Error(data.message || 'API request failed');
+        const message = data.message || 'Something went wrong with the API request.';
+        console.error(`Error: ${response.status} - ${response.statusText}`, message);
+        throw new Error(message);
     }
     return data as T;
 };
