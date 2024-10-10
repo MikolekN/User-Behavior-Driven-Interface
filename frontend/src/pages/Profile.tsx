@@ -36,8 +36,8 @@ const ProfilePage = () => {
     const { user, getUser, updateUser, updatePassword } = useContext(UserContext);
     const { getIcon, sendIcon } = useContext(UserIconContext);
 
-    const { register: registerIcon, handleSubmit: handleSubmitIcon } = useForm<UserIconData>();
-    const { register: registerField, handleSubmit: handleSubmitField, setValue: setFieldValueForm, formState: { errors: fieldErrors }, watch } = useForm<UserFieldData>();
+    const { register: registerIcon, handleSubmit: handleSubmitIcon, setValue: setIconValueForm, formState: { errors: iconErrors } } = useForm<UserIconData>();
+    const { register: registerField, handleSubmit: handleSubmitField, setValue: setFieldValueForm, formState: { errors: fieldErrors }, watch, clearErrors: clearFieldErrors } = useForm<UserFieldData>();
     const { register: registerPassword, handleSubmit: handleSubmitPassword, formState: { errors: passwordErrors } } = useForm<UserPasswordData>();
     
     const selectedField = watch('field');
@@ -59,9 +59,13 @@ const ProfilePage = () => {
     useEffect(() => {
         if (selectedField && user) {
             const currentValue = getUserFieldValue(selectedField);
+            clearFieldErrors();
             setFieldValueForm('value', currentValue!);
         }
-    }, [user, getUserFieldValue, selectedField, setFieldValueForm]);
+        if (user && !selectedField) {
+            setFieldValueForm('value', '');
+        }
+    }, [user, getUserFieldValue, selectedField, setFieldValueForm, clearFieldErrors]);
 
     if (!user) return <Navigate to="/login" />;
 
@@ -143,6 +147,7 @@ const ProfilePage = () => {
                     await getIcon();
                 }
             }
+            setIconValueForm('files', undefined);
             setApiIconError({ isError: false, errorMessage: '' });
         } catch (error) {
             setApiIconError({ isError: true, errorMessage: typeof error === 'string' ? error : 'Error updating user icon' });
@@ -191,7 +196,8 @@ const ProfilePage = () => {
                         <FormInput
                             label="Wybierz nową ikonę"
                             fieldType="file"
-                            register={registerIcon('files')}
+                            register={registerIcon('files', { required: formValidationRules.icon.required })}
+                            error={iconErrors.files}
                             className="w-full"
                         />
                         <div className="flex justify-center">
@@ -216,6 +222,7 @@ const ProfilePage = () => {
                             label={'Nowa ' + (selectedField ? getFieldLabel(selectedField).toLocaleLowerCase() : 'wartość')}
                             fieldType="text"
                             register={registerField('value', valueValidation(selectedField) )}
+                            error={fieldErrors.value}
                             className="w-full"
                         />
                         <div className="flex justify-center">
@@ -240,7 +247,6 @@ const ProfilePage = () => {
                             label="Nowe hasło"
                             fieldType="password"
                             register={registerPassword('newPassword', { required: formValidationRules.password.required, validate: formValidationRules.password.validate })}
-                            
                             error={passwordErrors.currentPassword}
                             className="w-full"
                         />

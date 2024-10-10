@@ -78,5 +78,11 @@ export const formValidationRules = {
                 message: 'Kod waluty musi składać się z trzech dużych liter (np. USD, EUR)',
             }
         }
+    },
+    icon: {
+        required: {
+            value: true,
+            message: 'Icon is required'
+        }
     }
 };
