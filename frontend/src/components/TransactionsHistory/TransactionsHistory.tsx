@@ -5,6 +5,10 @@ import { Navigate } from 'react-router-dom';
 import '../utils/styles/table.css';
 import EmptyResponseInfoAlert from '../EmptyResponseInfoAlert/EmptyResponseInfoAlert';
 
+interface TransfersResponse {
+    transfers: TransactionsHistoryType[];
+}
+
 interface TransactionsHistoryType {
     date: string;
     transactions: Transaction[];
@@ -31,17 +35,17 @@ const TransactionsHistory = () => {
         const fetchTransactions = async () => {
             try {
                 const response = await fetch('http://127.0.0.1:5000/api/transfers', {
-                    method: "GET",
+                    method: 'GET',
                     headers: {
-                    "Content-Type": "application/json" 
+                        'Content-Type': 'application/json' 
                     },
-                    credentials: "include"
+                    credentials: 'include'
                 });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            setGroupedTransactions(data.transfers);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json() as TransfersResponse;
+                setGroupedTransactions(data.transfers);
             } catch (error) {
                 setError(true);
                 console.error(error);
@@ -50,10 +54,10 @@ const TransactionsHistory = () => {
             }
         };
 
-        fetchTransactions();
+        void fetchTransactions();
     }, [user]);
     
-    if (!user) return <Navigate to="/login" />
+    if (!user) return <Navigate to="/login" />;
 
     if (loading) return <div>Loading...</div>;
 
@@ -82,7 +86,7 @@ const TransactionsHistory = () => {
                 {groupedTransactions && groupedTransactions.length > 0 &&
                     <table className="table-fixed w-9/12">
                         <tbody>
-                        {groupedTransactions.map((transaction) => (
+                            {groupedTransactions.map((transaction) => (
                                 <>
                                     <tr className="bg-gray-200">
                                         <td colSpan={2} className="px-4 py-2 font-bold">

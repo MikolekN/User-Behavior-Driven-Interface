@@ -9,7 +9,7 @@ import {
     uploadUserIcon,
     updateUserField,
     updateUserPassword
-} from '../services/authService.ts';
+} from '../services/authService';
 
 interface AuthContextProps {
     user: User | null;
@@ -45,10 +45,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const getUser = useCallback(async (): Promise<void> => {
         try {
-            const { user: userData } = await getUserData();
-            if (userData) {
-                const user = mapBackendUserToUser(userData);
-                setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null, email: user.email! }));
+            const { user: userBackendData } = await getUserData();
+            if (userBackendData) {
+                const userFrontendData = mapBackendUserToUser(userBackendData);
+                setUser(prevUser => new User({ ...userFrontendData, icon: prevUser?.icon || null, email: userFrontendData.email! }));
             }
         } catch (error) {
             console.error('Error fetching user data:', error);
@@ -58,10 +58,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const login = useCallback(async (email: string, password: string): Promise<void> => {
         try {
-            const { user: userData } = await loginUser(email, password);
-            if (userData) {
-                const user = mapBackendUserToUser(userData);
-                setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null, email: user.email! }));
+            const { user: userBackendData } = await loginUser(email, password);
+            if (userBackendData) {
+                const userFrontendData = mapBackendUserToUser(userBackendData);
+                setUser(prevUser => new User({ ...userFrontendData, icon: prevUser?.icon || null, email: userFrontendData.email! }));
             }
         } catch (error) {
             console.error('Error during login:', error);
@@ -95,7 +95,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         if (!user) return;
         try {
             const imageBlob = await getUserIcon();
-            const imageFile = new File([imageBlob], "user-icon.png", { type: imageBlob.type });
+            const imageFile = new File([imageBlob], 'user-icon.png', { type: imageBlob.type });
             // user.icon = imageFile;
             // resetting a user works with useEffect because React uses shallow comparison (React compares the memory reference of objects, not their internal properties)
             setUser(prevUser => {
@@ -121,10 +121,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const updateUser = useCallback(async (field: string, value: string): Promise<void> => {
         if (!user) return;
         try {
-            const { user: userData } = await updateUserField(field, value);
-            if (userData) {
-                const user = mapBackendUserToUser(userData);
-                setUser(prevUser => new User({ ...user, icon: prevUser?.icon || null, email: user.email! }));
+            const { user: userBackendData } = await updateUserField(field, value);
+            if (userBackendData) {
+                const userFrontendData = mapBackendUserToUser(userBackendData);
+                setUser(prevUser => new User({ ...userFrontendData, icon: prevUser?.icon || null, email: userFrontendData.email! }));
             }
         } catch (error) {
             console.error('Error updating user:', error);
@@ -153,7 +153,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 }
             }
         };
-        fetchUser();
+        void fetchUser();
     }, [getUser, user, loading]);
 
     const authContextValue = useMemo(() => ({

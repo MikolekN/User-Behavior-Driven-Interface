@@ -1,17 +1,20 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from 'react';
 import CyclicPaymentList from '../components/CyclicPaymentList/CyclicPaymentList';
-import { AuthContext } from "../context/AuthContext";
-import { Link, Navigate } from "react-router-dom";
-import { BackendCyclicPayment, CyclicPayment } from "../components/utils/types/CyclicPayment";
-import Tile from "../components/Tile/Tile";
-import Button from "../components/utils/Button";
+import { AuthContext } from '../context/AuthContext';
+import { Link, Navigate } from 'react-router-dom';
+import { BackendCyclicPayment, CyclicPayment } from '../components/utils/types/CyclicPayment';
+import Tile from '../components/Tile/Tile';
+import Button from '../components/utils/Button';
 import '../components/utils/styles/table.css';
-import EmptyResponseInfoAlert from "../components/EmptyResponseInfoAlert/EmptyResponseInfoAlert";
+import EmptyResponseInfoAlert from '../components/EmptyResponseInfoAlert/EmptyResponseInfoAlert';
+
+export interface CyclicPaymentResponse {
+    cyclic_payments: BackendCyclicPayment[];
+}
 
 const CyclicPayments = () => {
     const { user } = useContext(AuthContext);
     const [cyclicPayments, setCyclicPayments] = useState<CyclicPayment[]>([]);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
     useEffect(() => {
@@ -20,16 +23,16 @@ const CyclicPayments = () => {
         const fetchCyclicPayments = async () => {
             try {
                 const response = await fetch('http://127.0.0.1:5000/api/cyclic-payments', {
-                    method: "GET",
+                    method: 'GET',
                     headers: {
-                    "Content-Type": "application/json" 
+                        'Content-Type': 'application/json' 
                     },
-                    credentials: "include"
+                    credentials: 'include'
                 });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                const data = await response.json();
+                const data = await response.json() as CyclicPaymentResponse;
                 const formattedCyclicPayments: CyclicPayment[] = [];
                 data.cyclic_payments.forEach((cyclicPayment: BackendCyclicPayment) => {
                     const parsedCyclicPayment: CyclicPayment = {
@@ -45,19 +48,16 @@ const CyclicPayments = () => {
                     formattedCyclicPayments.push(parsedCyclicPayment);
                 });
                 setCyclicPayments(formattedCyclicPayments);
-                
             } catch (error) {
                 setError(true);
                 console.error(error);
-            } finally {
-                setLoading(false);
             }
         };
 
-        fetchCyclicPayments();
+        void fetchCyclicPayments();
     }, [user]);
 
-    if (!user) return <Navigate to="/login" />
+    if (!user) return <Navigate to="/login" />;
     
     if (error) { 
         return (
@@ -66,7 +66,7 @@ const CyclicPayments = () => {
                 alertTitle="No transactions history to generate analysis yet"
                 alertMessage="transactions to display in transactions yearly analysis"
             >
-                <Link to={`/create-cyclic-payment/`} className="justify-self-end p-2">
+                <Link to={'/create-cyclic-payment/'} className="justify-self-end p-2">
                     <Button>+ Add Cyclic Payment</Button>
                 </Link>
             </EmptyResponseInfoAlert>
@@ -90,7 +90,7 @@ const CyclicPayments = () => {
                 }
             </div>
         </Tile>
-    )
+    );
 };
 
 export default CyclicPayments;

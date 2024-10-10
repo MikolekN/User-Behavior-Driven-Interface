@@ -36,6 +36,6 @@ const FormSelect = ({ label, options, register, error, defaultOption = '-- Wybie
             {error && <p className="text-red-600 mt-1 text-sm">{error.message}</p>}
         </div>
     );
-}
+};
 
 export default FormSelect;

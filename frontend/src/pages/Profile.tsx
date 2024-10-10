@@ -29,9 +29,9 @@ const validFields = [
 ];
 
 const ProfilePage = () => {
-    const [apiIconError, setApiIconError] = useState({ isError: false, errorMessage: "" });
-    const [apiFieldError, setApiFieldError] = useState({ isError: false, errorMessage: "" });
-    const [apiPasswordError, setApiPasswordError] = useState({ isError: false, errorMessage: "" });
+    const [apiIconError, setApiIconError] = useState({ isError: false, errorMessage: '' });
+    const [apiFieldError, setApiFieldError] = useState({ isError: false, errorMessage: '' });
+    const [apiPasswordError, setApiPasswordError] = useState({ isError: false, errorMessage: '' });
     const { user, getUser, getIcon, sendIcon, updateUser, updatePassword } = useContext(AuthContext);
 
     const { register: registerIcon, handleSubmit: handleSubmitIcon } = useForm<UserIconData>();
@@ -63,26 +63,11 @@ const ProfilePage = () => {
 
     if (!user) return <Navigate to="/login" />;
 
-    const onIconSubmit = handleSubmitIcon(async ({ files }) => {
-        try {
-            if (files && files[0]) {
-                const processedIcon = await preprocessImage(files[0]);
-                if (processedIcon) {
-                    await sendIcon(processedIcon);
-                    await getIcon();
-                }
-            }
-            setApiIconError({ isError: false, errorMessage: "" });
-        } catch (error) {
-            setApiIconError({ isError: true, errorMessage: typeof error === 'string' ? error : "Error updating user icon" });
-        }
-    });
-    
     const preprocessImage = (file: File): Promise<File | null> => {
         return new Promise((resolve, reject) => {
             const validExtensions = ['image/png', 'image/jpeg', 'image/jpg'];
             if (!validExtensions.includes(file.type)) {
-                const error = "Invalid file type. Please upload a PNG or JPG image.";
+                const error = 'Invalid file type. Please upload a PNG or JPG image.';
                 console.error(error);
                 reject(error);
                 return;
@@ -122,7 +107,7 @@ const ProfilePage = () => {
                             const processedFile = new File([blob], file.name, { type: file.type });
                             resolve(processedFile);
                         } else {
-                            const error = "Error processing image.";
+                            const error = 'Error processing image.';
                             console.error(error);
                             reject(error);
                             return;
@@ -131,7 +116,7 @@ const ProfilePage = () => {
                 };
     
                 img.onerror = () => {
-                    const error = "Error loading image.";
+                    const error = 'Error loading image.';
                     console.error(error);
                     reject(error);
                     return;
@@ -139,7 +124,7 @@ const ProfilePage = () => {
             };
     
             reader.onerror = () => {
-                const error = "Error reading file.";
+                const error = 'Error reading file.';
                 console.error(error);
                 reject(error);
                 return;
@@ -147,12 +132,27 @@ const ProfilePage = () => {
         });
     };
 
+    const onIconSubmit = handleSubmitIcon(async ({ files }) => {
+        try {
+            if (files && files[0]) {
+                const processedIcon = await preprocessImage(files[0]);
+                if (processedIcon) {
+                    await sendIcon(processedIcon);
+                    await getIcon();
+                }
+            }
+            setApiIconError({ isError: false, errorMessage: '' });
+        } catch (error) {
+            setApiIconError({ isError: true, errorMessage: typeof error === 'string' ? error : 'Error updating user icon' });
+        }
+    });
+    
     const onFieldSubmit = handleSubmitField(async ({ field, value }) => {
         try {
             await updateUser(field, value);
             await getUser();
         } catch (error) {
-            setApiFieldError({ isError: true, errorMessage: typeof error === 'string' ? error : "Error updating user field" });
+            setApiFieldError({ isError: true, errorMessage: typeof error === 'string' ? error : 'Error updating user field' });
         }
     });
 
@@ -160,7 +160,7 @@ const ProfilePage = () => {
         try {
             await updatePassword(currentPassword, newPassword);
         } catch (error) {
-            setApiPasswordError({ isError: true, errorMessage: typeof error === 'string' ? error : "Error updating password" });
+            setApiPasswordError({ isError: true, errorMessage: typeof error === 'string' ? error : 'Error updating password' });
         }
     });
 
@@ -185,7 +185,7 @@ const ProfilePage = () => {
         <div className="flex items-center justify-center">
             <Tile title="Profil użytkownika" className="form-tile w-2/5 bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
                 <div className="flex flex-col space-y-6">
-                    <form onSubmit={onIconSubmit} className="space-y-4">
+                    <form onSubmit={(e) => { e.preventDefault(); void onIconSubmit(); }} className="space-y-4">
                         <FormInput
                             label="Wybierz nową ikonę"
                             fieldType="file"
@@ -202,7 +202,7 @@ const ProfilePage = () => {
     
                     <hr className="border-t border-gray-300 my-4" />
     
-                    <form onSubmit={onFieldSubmit} className="space-y-4">
+                    <form onSubmit={(e) => { e.preventDefault(); void onFieldSubmit(); }} className="space-y-4">
                         <FormSelect
                             label="Wybierz pole do zmiany"
                             options={validFields}
@@ -226,7 +226,7 @@ const ProfilePage = () => {
     
                     <hr className="border-t border-gray-300 my-4" />
     
-                    <form onSubmit={onPasswordSubmit} className="space-y-4">
+                    <form onSubmit={(e) => { e.preventDefault(); void onPasswordSubmit(); }} className="space-y-4">
                         <FormInput
                             label="Hasło"
                             fieldType="password"
@@ -253,6 +253,6 @@ const ProfilePage = () => {
             </Tile>
         </div>
     );
-}
+};
 
 export default ProfilePage;

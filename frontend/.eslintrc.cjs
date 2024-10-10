@@ -15,7 +15,7 @@ module.exports = {
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: './tsconfig.app.json',
     tsconfigRootDir: __dirname,
   },
   plugins: ['react-refresh'],
@@ -26,5 +26,8 @@ module.exports = {
     ],
     'semi': [2, 'always'],
     'react/react-in-jsx-scope': 'off',
+    '@typescript-eslint/indent': ['error', 4],
+    '@typescript-eslint/comma-dangle': ['off'],
+    '@typescript-eslint/no-shadow': 'off'
   },
 };

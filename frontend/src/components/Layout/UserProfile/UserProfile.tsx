@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef, useContext, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './UserProfile.css';
 import defaultIcon from '../../../assets/images/user.png';
-import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
 
 const Profile = () => {
@@ -57,17 +56,17 @@ const Profile = () => {
             }
         };
     
-        fetchIcon();
+        void fetchIcon();
     }, [user, getIcon, user?.icon]);
 
     return (
         <div className="profile-container" ref={profileRef}>
             <button className="profile-button" onClick={toggleDropdown}>
                 <img 
-                src={iconSrc} 
-                id="ProfileIcon"
-                alt="Profile" 
-                className="profile-icon"           
+                    src={iconSrc} 
+                    id="ProfileIcon"
+                    alt="Profile" 
+                    className="profile-icon"           
                 />
             </button>
             {dropdownOpen && (
@@ -90,7 +89,7 @@ const Profile = () => {
                             <li className='profile-dropdown-option'>
                                 <Link to='/' onClick={() => {
                                     toggleDropdown();
-                                    handleLogout();
+                                    void handleLogout();
                                 }}>Logout</Link>
                             </li>
                         </>

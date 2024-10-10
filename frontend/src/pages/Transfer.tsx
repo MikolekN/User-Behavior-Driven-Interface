@@ -6,6 +6,7 @@ import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import { formValidationRules } from '../components/utils/validationRules';
 import { AuthContext } from '../context/AuthContext';
+import { isErrorResponse } from '../components/utils/types/ErrorResponse';
 
 interface TransferFromData {
     recipientAccountNumber: string;
@@ -14,13 +15,13 @@ interface TransferFromData {
 }
 
 const Transfer = () => {
-    const [ apiError, setApiError ] = useState({isError: false, errorMessage: ""});
+    const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
     const { user, getUser } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm<TransferFromData>({
         defaultValues: {
-            recipientAccountNumber: "",
-            transferTitle: "",
-            amount: ""
+            recipientAccountNumber: '',
+            transferTitle: '',
+            amount: ''
         },
         mode: 'onSubmit'
     });
@@ -31,29 +32,34 @@ const Transfer = () => {
     
     const onSubmit = handleSubmit(async ({ recipientAccountNumber, transferTitle, amount }: TransferFromData) => {
         try {
-            const response = await fetch("http://127.0.0.1:5000/api/transfer", {
-                method: "POST",
+            const response = await fetch('http://127.0.0.1:5000/api/transfer', {
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json"
+                    'Content-Type': 'application/json'
                 },
-                credentials: "include",
+                credentials: 'include',
                 body: JSON.stringify({
-                    recipientAccountNumber: recipientAccountNumber,
-                    transferTitle: transferTitle,
-                    amount: amount
+                    recipientAccountNumber,
+                    transferTitle,
+                    amount
                 })
             });
-            const responseJson = await response.json();
+
+            const responseJson: unknown = await response.json();
 
             if (response.ok) {
                 await getUser();
                 navigate('/dashboard');
             } else {
-                setApiError({
-                    isError: true,
-                    errorMessage: responseJson.message
-                });
-                throw new Error(responseJson.message);
+                if (isErrorResponse(responseJson)) {
+                    setApiError({
+                        isError: true,
+                        errorMessage: responseJson.message
+                    });
+                    throw new Error(responseJson.message);
+                } else {
+                    throw new Error('Unexpected error format');
+                }
             }
         } catch (error) {
             console.error(error);
@@ -76,7 +82,7 @@ const Transfer = () => {
                                 </p>
                             </div>
                         </div>
-                        <form className="space-y-6" onSubmit={onSubmit}>
+                        <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
                             <FormInput 
                                 label="Recipient account number"
                                 fieldType="text"
@@ -122,6 +128,6 @@ const Transfer = () => {
             </Tile>
         </div>
     );
-}
+};
 
 export default Transfer;
