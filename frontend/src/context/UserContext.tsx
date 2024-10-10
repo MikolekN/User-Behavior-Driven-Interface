@@ -67,17 +67,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const fetchUser = async (): Promise<void> => {
             if (!user && !loading) {
                 try {
-                    setLoading(true);
                     await getUser();
                 } catch (error) {
                     console.error('Error fetching user:', error);
-                } finally {
-                    setLoading(false);
+                    throw error;
                 }
             }
         };
         void fetchUser();
-    }, [getUser, user, loading]);
+    }, [getUser, loading, user]);
 
     const userContextValue = useMemo(() => ({
         user,

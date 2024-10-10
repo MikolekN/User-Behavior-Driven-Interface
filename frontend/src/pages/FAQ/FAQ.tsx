@@ -3,7 +3,7 @@ import Tile from '../../components/Tile/Tile';
 import './FAQ.css';
 import { UserContext } from '../../context/UserContext';
 import { Navigate } from 'react-router-dom';
-import { FAQData } from './FAQData'; // Import FAQ data from the new file
+import { FAQData } from './FAQData';
 
 const FAQ = () => {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
