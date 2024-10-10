@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import './TransactionsAnalysis.css';
-import { AuthContext } from '../../context/AuthContext';
+import { UserContext } from '../../context/UserContext';
 import { Navigate } from 'react-router-dom';
 import Tile from '../Tile/Tile';
 import TransfersAnalysisChart from '../TransfersAnalysisChart/TransfersAnalysisChart';
@@ -12,7 +12,7 @@ const TransactionsMonthlyAnalysis = () => {
     const [chartData, setChartData] = useState<ChartData[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
-    const { user } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
     
     useEffect(() => {
         if (!user) return;

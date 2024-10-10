@@ -7,6 +7,7 @@ import FormInput from '../components/FormInput/FormInput';
 import Button from '../components/utils/Button';
 import { formValidationRules } from '../components/utils/validationRules';
 
+import { UserContext } from '../context/UserContext';
 import { AuthContext } from '../context/AuthContext';
 
 interface RegisterFormData {
@@ -17,7 +18,8 @@ interface RegisterFormData {
 
 const Register = () => {
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
-    const { user, register } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
+    const { register } = useContext(AuthContext);
     const { register: formRegister, control, handleSubmit, formState: { errors } } = useForm<RegisterFormData>({
         defaultValues: {
             email: '',

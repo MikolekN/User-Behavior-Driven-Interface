@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Tile from '../Tile/Tile';
 import FormInput from '../FormInput/FormInput';
 import { formValidationRules } from '../utils/validationRules';
-import { AuthContext } from '../../context/AuthContext';
+import { UserContext } from '../../context/UserContext';
 import DatePicker from 'react-datepicker';
 import FormSelect from '../FormSelect/FormSelect';
 import { CyclicPayment } from '../utils/types/CyclicPayment';
@@ -49,7 +49,7 @@ const CyclicPaymentsForm = () => {
     });
 
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
-    const { user, getUser } = useContext(AuthContext);
+    const { user, getUser } = useContext(UserContext);
     const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<CyclicPaymentFromData>({
         defaultValues: {
             recipientAccountNumber: '',

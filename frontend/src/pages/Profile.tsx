@@ -2,7 +2,8 @@ import { useState, useContext, useEffect, useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import FormInput from '../components/FormInput/FormInput';
-import { AuthContext } from '../context/AuthContext';
+import { UserContext } from '../context/UserContext';
+import { UserIconContext } from '../context/UserIconContext';
 import Button from '../components/utils/Button';
 import FormSelect from '../components/FormSelect/FormSelect';
 import { useForm } from 'react-hook-form';
@@ -32,7 +33,8 @@ const ProfilePage = () => {
     const [apiIconError, setApiIconError] = useState({ isError: false, errorMessage: '' });
     const [apiFieldError, setApiFieldError] = useState({ isError: false, errorMessage: '' });
     const [apiPasswordError, setApiPasswordError] = useState({ isError: false, errorMessage: '' });
-    const { user, getUser, getIcon, sendIcon, updateUser, updatePassword } = useContext(AuthContext);
+    const { user, getUser, updateUser, updatePassword } = useContext(UserContext);
+    const { getIcon, sendIcon } = useContext(UserIconContext);
 
     const { register: registerIcon, handleSubmit: handleSubmitIcon } = useForm<UserIconData>();
     const { register: registerField, handleSubmit: handleSubmitField, setValue: setFieldValueForm, formState: { errors: fieldErrors }, watch } = useForm<UserFieldData>();
@@ -135,9 +137,9 @@ const ProfilePage = () => {
     const onIconSubmit = handleSubmitIcon(async ({ files }) => {
         try {
             if (files && files[0]) {
-                const processedIcon = await preprocessImage(files[0]);
-                if (processedIcon) {
-                    await sendIcon(processedIcon);
+                const preprocessedIcon = await preprocessImage(files[0]);
+                if (preprocessedIcon) {
+                    await sendIcon(preprocessedIcon);
                     await getIcon();
                 }
             }

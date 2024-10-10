@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
+import { UserContext } from '../../context/UserContext';
 import { CyclicPayment } from '../utils/types/CyclicPayment';
 import Button from '../utils/Button';
 import arrowUp from '../../assets/images/chevron-up.svg';
@@ -12,7 +12,7 @@ interface CyclicPaymentListProps {
 }
 
 const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
-    const { user, getUser } = useContext(AuthContext);
+    const { user, getUser } = useContext(UserContext);
     const [cyclicPayments, setCyclicPayments] = useState<CyclicPayment[]>([]);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
 

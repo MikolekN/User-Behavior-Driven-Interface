@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Navigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 import { AuthContext } from '../context/AuthContext';
 import Tile from '../components/Tile/Tile';
 import './Form.css';
@@ -14,7 +15,8 @@ interface LoginFormData {
 }
 
 const Login = () => {
-    const { user, login } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
+    const { login } = useContext(AuthContext);
     const navigate = useNavigate();
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({

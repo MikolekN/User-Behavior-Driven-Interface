@@ -5,7 +5,7 @@ import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import { formValidationRules } from '../components/utils/validationRules';
-import { AuthContext } from '../context/AuthContext';
+import { UserContext } from '../context/UserContext';
 import { isErrorResponse } from '../components/utils/types/ErrorResponse';
 
 interface TransferFromData {
@@ -16,7 +16,7 @@ interface TransferFromData {
 
 const Transfer = () => {
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
-    const { user, getUser } = useContext(AuthContext);
+    const { user, getUser } = useContext(UserContext);
     const { register, handleSubmit, formState: { errors } } = useForm<TransferFromData>({
         defaultValues: {
             recipientAccountNumber: '',

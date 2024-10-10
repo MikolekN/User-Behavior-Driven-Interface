@@ -1,6 +1,7 @@
+import { ErrorResponse, isErrorResponse } from '../components/utils/types/ErrorResponse';
 import { IBackendUser } from '../components/utils/User';
 
-const API_URL = 'http://127.0.0.1:5000/api';
+export const API_URL = 'http://127.0.0.1:5000/api';
 
 interface GetUserResponse {
     user: IBackendUser;
@@ -17,19 +18,6 @@ interface RegisterResponse {
 interface UpdateUserResponse {
     user: IBackendUser;
 }
-
-interface ErrorResponse {
-    message: string;
-}
-
-const isErrorResponse = (data: unknown): data is ErrorResponse => {
-    return (
-        typeof data === 'object' &&
-        data !== null &&
-        'message' in data &&
-        typeof (data as { message: unknown }).message === 'string'
-    );
-};
 
 const handleApiResponse = async <T>(response: Response): Promise<T> => {
     const data = await response.json() as T | ErrorResponse;

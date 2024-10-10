@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import CyclicPaymentList from '../components/CyclicPaymentList/CyclicPaymentList';
-import { AuthContext } from '../context/AuthContext';
+import { UserContext } from '../context/UserContext';
 import { Link, Navigate } from 'react-router-dom';
 import { BackendCyclicPayment, CyclicPayment } from '../components/utils/types/CyclicPayment';
 import Tile from '../components/Tile/Tile';
@@ -13,7 +13,7 @@ export interface CyclicPaymentResponse {
 }
 
 const CyclicPayments = () => {
-    const { user } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
     const [cyclicPayments, setCyclicPayments] = useState<CyclicPayment[]>([]);
     const [error, setError] = useState(false);
 

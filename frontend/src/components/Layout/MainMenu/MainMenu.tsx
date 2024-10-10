@@ -2,10 +2,10 @@ import { useState, useContext, useCallback } from 'react';
 import './MainMenu.css';
 import { Link } from 'react-router-dom';
 import Dropdown from '../Dropdown/Dropdown';
-import { AuthContext } from '../../../context/AuthContext';
+import { UserContext } from '../../../context/UserContext';
 
 const MainMenu = () => {
-    const { user } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [persistentDropdown, setPersistentDropdown] = useState<string | null>(null);
   
