@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import './UserProfile.css';
 import defaultIcon from '../../../assets/images/user.png';
@@ -11,9 +11,9 @@ const Profile = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);    
     const [iconSrc, setIconSrc] = useState<string>(defaultIcon);
 
-    const toggleDropdown = () => {
+    const toggleDropdown = useCallback(() => {
         setDropdownOpen(!dropdownOpen);
-    };
+    }, [dropdownOpen]);
 
     const profileRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +33,7 @@ const Profile = () => {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    });
+    }, [dropdownOpen, toggleDropdown]);
 
     const handleLogout = async () => {
         await logout();
