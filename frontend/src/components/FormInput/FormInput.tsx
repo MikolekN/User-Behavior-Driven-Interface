@@ -24,7 +24,7 @@ const FormInput = ({ label, fieldType, register, error, children, className }: F
             {children}
             {error && <p className="text-red-600 mt-1 text-sm">{error.message}</p>}
         </div>
-    )
-}
+    );
+};
 
 export default FormInput;

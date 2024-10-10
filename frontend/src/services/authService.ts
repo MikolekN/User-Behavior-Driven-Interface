@@ -1,22 +1,13 @@
+import { IBackendUser } from '../components/utils/User';
+
 const API_URL = 'http://127.0.0.1:5000/api';
 
-interface UserResponse {
-    login: string;
-    email: string;
-    account_name: string;
-    account_number: string;
-    blockades: number;
-    balance: number;
-    currency: string;
-    role: string;
-}
-
 interface GetUserResponse {
-    user: UserResponse;
+    user: IBackendUser;
 }
 
 interface LoginResponse {
-    user: UserResponse;
+    user: IBackendUser;
 }
 
 interface RegisterResponse {
@@ -24,14 +15,32 @@ interface RegisterResponse {
 }
 
 interface UpdateUserResponse {
-    user: UserResponse;
+    user: IBackendUser;
 }
 
+interface ErrorResponse {
+    message: string;
+}
+
+const isErrorResponse = (data: unknown): data is ErrorResponse => {
+    return (
+        typeof data === 'object' &&
+        data !== null &&
+        'message' in data &&
+        typeof (data as { message: unknown }).message === 'string'
+    );
+};
+
 const handleApiResponse = async <T>(response: Response): Promise<T> => {
-    const data = await response.json();
+    const data = await response.json() as T | ErrorResponse;
     if (!response.ok) {
-        console.error(`Error: ${response.status} - ${response.statusText}`, data.message);
-        throw new Error(data.message || 'API request failed');
+        if (isErrorResponse(data)) {
+            const message = data.message || 'Something went wrong with the API request.';
+            console.error(`Error: ${response.status} - ${response.statusText}`, message);
+            throw new Error(message);
+        } else {
+            throw new Error('Unexpected response.');
+        }
     }
     return data as T;
 };
@@ -39,7 +48,7 @@ const handleApiResponse = async <T>(response: Response): Promise<T> => {
 export const getUserData = async (): Promise<GetUserResponse> => {
     const response = await fetch(`${API_URL}/user`, {
         method: 'GET',
-        credentials: 'include'
+        credentials: 'include',
     });
     return handleApiResponse<GetUserResponse>(response);
 };
@@ -51,7 +60,7 @@ export const loginUser = async (email: string, password: string): Promise<LoginR
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
-        credentials: 'include'
+        credentials: 'include',
     });
     return handleApiResponse<LoginResponse>(response);
 };
@@ -62,7 +71,7 @@ export const registerUser = async (email: string, password: string): Promise<Reg
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
     });
     return handleApiResponse<RegisterResponse>(response);
 };
@@ -70,7 +79,7 @@ export const registerUser = async (email: string, password: string): Promise<Reg
 export const logoutUser = async (): Promise<void> => {
     const response = await fetch(`${API_URL}/logout`, {
         method: 'POST',
-        credentials: 'include'
+        credentials: 'include',
     });
     await handleApiResponse(response);
 };
@@ -78,13 +87,27 @@ export const logoutUser = async (): Promise<void> => {
 export const getUserIcon = async (): Promise<Blob> => {
     const response = await fetch(`${API_URL}/user/icon`, {
         method: 'GET',
-        credentials: 'include'
+        credentials: 'include',
     });
+
     if (!response.ok) {
-        const data = await response.json();
-        console.error(`Failed to fetch icon: ${data.message}`, response.status);
-        throw new Error(data.message || 'Fetching icon failed');
+        let data: unknown;
+        try {
+            data = await response.json();
+        } catch {
+            console.error('Failed to parse response as JSON');
+            throw new Error('Fetching icon failed: Invalid JSON response');
+        }
+
+        if (isErrorResponse(data)) {
+            console.error(`Failed to fetch icon: ${data.message}`, response.status);
+            throw new Error(data.message || 'Fetching icon failed');
+        } else {
+            console.error('Failed to fetch icon: Unknown response format', response.status);
+            throw new Error('Fetching icon failed with an unknown response format.');
+        }
     }
+
     return response.blob();
 };
 
@@ -94,7 +117,7 @@ export const uploadUserIcon = async (icon: File): Promise<void> => {
     const response = await fetch(`${API_URL}/user/icon`, {
         method: 'POST',
         credentials: 'include',
-        body: formData
+        body: formData,
     });
     await handleApiResponse(response);
 };
@@ -104,7 +127,7 @@ export const updateUserField = async (field: string, value: string): Promise<Upd
         method: 'PATCH',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ [field]: value })
+        body: JSON.stringify({ [field]: value }),
     });
     return handleApiResponse<UpdateUserResponse>(response);
 };
@@ -118,8 +141,8 @@ export const updateUserPassword = async (currentPassword: string, newPassword: s
         },
         body: JSON.stringify({
             current_password: currentPassword,
-            new_password: newPassword
-        })
+            new_password: newPassword,
+        }),
     });
     await handleApiResponse(response);
 };

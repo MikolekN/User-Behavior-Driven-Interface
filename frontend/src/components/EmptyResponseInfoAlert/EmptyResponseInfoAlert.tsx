@@ -6,7 +6,7 @@ interface EmptyResponseInfoAlertProps {
     title: string;
     alertTitle: string;
     alertMessage: string;
-	children?: ReactNode;
+    children?: ReactNode;
 }
 
 const EmptyResponseInfoAlert = ({ title, alertTitle, alertMessage, children }: EmptyResponseInfoAlertProps) => {
@@ -18,7 +18,7 @@ const EmptyResponseInfoAlert = ({ title, alertTitle, alertMessage, children }: E
                     <AlertTitle>
                         {alertTitle}
                     </AlertTitle>
-                    It looks like you haven't made any {alertMessage}. Once you add one, it will appear here for you to review.
+                    It looks like you haven&apos;t made any {alertMessage}. Once you add one, it will appear here for you to review.
                 </Alert>
             </div>
         </Tile>

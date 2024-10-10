@@ -1,7 +1,6 @@
 import { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
-import { Link } from 'react-router-dom';
 import Tile from '../../components/Tile/Tile';
 import Button from '../../components/utils/Button';
 import icon from '../../assets/images/credit-card.png';

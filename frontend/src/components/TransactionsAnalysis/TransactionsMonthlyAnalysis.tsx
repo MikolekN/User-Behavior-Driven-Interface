@@ -22,13 +22,13 @@ const TransactionsMonthlyAnalysis = () => {
             const body = { 
                 year: new Date().getUTCFullYear()
             };
-            fetchTransfersAnalysisData(url, body, setChartData, setLoading, setError);
+            void fetchTransfersAnalysisData(url, body, setChartData, setLoading, setError);
         };
 
-        fetchTransfersAnalysisMonthly();
+        void fetchTransfersAnalysisMonthly();
     }, [user]);
 
-    if (!user) return <Navigate to="/login" />
+    if (!user) return <Navigate to="/login" />;
     
     if (loading) return <div>Loading...</div>;
 
@@ -49,7 +49,7 @@ const TransactionsMonthlyAnalysis = () => {
             </Tile>
         </div>
 
-    )
-}
+    );
+};
 
 export default TransactionsMonthlyAnalysis;

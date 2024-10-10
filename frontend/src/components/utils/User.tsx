@@ -10,7 +10,7 @@ interface IUser {
     icon: File | null;
 }
 
-interface IBackendUser {
+export interface IBackendUser {
     login: string;
     email: string;
     account_name: string;
@@ -31,31 +31,39 @@ export const mapBackendUserToUser = (backendUser: IBackendUser): Partial<IUser> 
         blockades: backendUser.blockades,
         balance: backendUser.balance,
         currency: backendUser.currency,
-        role: backendUser.role || "USER",
+        role: backendUser.role || 'USER',
         icon: null
     };
 };
 
 export class User implements IUser {
     login: string;
+
     email: string;
+
     accountName: string;
+
     accountNumber: string;
+
     blockades: number;
+
     balance: number;
+
     currency: string;
+
     role: string;
+
     icon: File | null;
 
     constructor(user: Partial<IUser> & { email: string }) {
         this.login = user.login ?? user.email;
         this.email = user.email;
-        this.accountName = user.accountName ?? "Przykładowa nazwa konta";
-        this.accountNumber = user.accountNumber ?? "";
+        this.accountName = user.accountName ?? 'Przykładowa nazwa konta';
+        this.accountNumber = user.accountNumber ?? '';
         this.blockades = user.blockades ?? 0;
         this.balance = user.balance ?? 0;
-        this.currency = user.currency ?? "PLN";
-        this.role = user.role ?? "USER";
+        this.currency = user.currency ?? 'PLN';
+        this.role = user.role ?? 'USER';
         this.icon = user.icon ?? null;
     }
 
