@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useState, useEffect, ReactNode, useMemo } from 'react';
 import { mapBackendUserToUser, User } from '../components/utils/User';
-import { getUserData, updateUserField, updateUserPassword } from '../services/authService';
+import { getUserData, updateUserField, updateUserPassword } from '../services/userService';
 
 interface UserContextProps {
     user: User | null;

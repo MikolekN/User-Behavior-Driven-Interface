@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, ReactNode, useMemo } from 'react';
 import { UserContext } from './UserContext';
 import { User } from '../components/utils/User';
-import { getUserIcon, uploadUserIcon } from '../services/authService';
+import { getUserIcon, uploadUserIcon } from '../services/userIconService';
 
 interface UserIconContextProps {
     getIcon: () => Promise<void>;
