@@ -63,6 +63,7 @@ const Transfer = () => {
             }
         } catch (error) {
             console.error(error);
+            // Tutaj należy przerobić jak są ustawiane errory - niektóre idą na setApiError, niektóre na konsole
         }
     });
 

@@ -27,51 +27,31 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [loading, setLoading] = useState<boolean>(false);
 
     const getUser = useCallback(async (): Promise<void> => {
-        try {
-            const { user: userBackendData } = await getUserData();
-            if (userBackendData) {
-                const userFrontendData = mapBackendUserToUser(userBackendData);
-                setUser(prevUser => new User({ ...userFrontendData, icon: prevUser?.icon || null, email: userFrontendData.email! }));
-            }
-        } catch (error) {
-            console.error('Error getting user data:', error);
-            throw error;
+        const { user: userBackendData } = await getUserData();
+        if (userBackendData) {
+            const userFrontendData = mapBackendUserToUser(userBackendData);
+            setUser(prevUser => new User({ ...userFrontendData, icon: prevUser?.icon || null, email: userFrontendData.email! }));
         }
     }, []);
 
     const updateUser = useCallback(async (field: string, value: string): Promise<void> => {
         if (!user) return;
-        try {
-            const { user: userBackendData } = await updateUserField(field, value);
-            if (userBackendData) {
-                const userFrontendData = mapBackendUserToUser(userBackendData);
-                setUser(prevUser => new User({ ...userFrontendData, icon: prevUser?.icon || null, email: userFrontendData.email! }));
-            }
-        } catch (error) {
-            console.error('Error updating user:', error);
-            throw error;
+        const { user: userBackendData } = await updateUserField(field, value);
+        if (userBackendData) {
+            const userFrontendData = mapBackendUserToUser(userBackendData);
+            setUser(prevUser => new User({ ...userFrontendData, icon: prevUser?.icon || null, email: userFrontendData.email! }));
         }
     }, [user]);
 
     const updatePassword = useCallback(async (currentPassword: string, newPassword: string): Promise<void> => {
         if (!user) return;
-        try {
-            await updateUserPassword(currentPassword, newPassword);
-        } catch (error) {
-            console.error('Error updating password:', error);
-            throw error;
-        }
+        await updateUserPassword(currentPassword, newPassword);
     }, [user]);
 
     useEffect(() => {
         const fetchUser = async (): Promise<void> => {
             if (!user && !loading) {
-                try {
-                    await getUser();
-                } catch (error) {
-                    console.error('Error fetching user:', error);
-                    throw error;
-                }
+                await getUser();
             }
         };
         void fetchUser();

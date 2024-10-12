@@ -39,14 +39,19 @@ const Profile = () => {
     }, [dropdownOpen, toggleDropdown]);
 
     const handleLogout = async () => {
-        await logout();
-        navigate('/');
+        try {
+            await logout();
+        } catch { /* If error occurs it is displayed in console */ } finally {
+            navigate('/');
+        }
     };
 
     useEffect(() => {
         const fetchIcon = async () => {
             if (user && !user.icon) {
-                await getIcon();
+                try {
+                    await getIcon();
+                } catch { /* If error occurs it is displayed in console */ }
             }
     
             if (user && user.icon) {

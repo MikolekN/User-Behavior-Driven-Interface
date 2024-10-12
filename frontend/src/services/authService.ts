@@ -27,6 +27,7 @@ const handleApiResponse = async <T>(response: Response): Promise<T> => {
             console.error(`Error: ${response.status} - ${response.statusText}`, message);
             throw new Error(message);
         } else {
+            console.error(`Error: ${response.status} - ${response.statusText}`, 'Unexpected response.');
             throw new Error('Unexpected response.');
         }
     }
