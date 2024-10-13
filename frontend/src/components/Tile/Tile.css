@@ -1,25 +1,39 @@
 .tile {
   background-color: #fff;
-  box-shadow: 6px 2px 12px rgba(89, 91, 94, 0.57), 
-              -6px -2px 16px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 
+              0 -2px 8px rgba(255, 255, 255, 0.8);
   margin: 1rem;
-  padding: 1rem;
-  border-radius: 8px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  padding: 1.5rem;
+  border-radius: 12px;
+  /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
+  transition: box-shadow 0.3s ease;
 }
 
 .tile:hover {
-  transform: scale(1.02);
-  box-shadow: 8px 4px 16px rgba(89, 91, 94, 0.7), 
-              -8px -4px 20px rgba(255, 255, 255, 0.9);
+  /* transform: scale(1.03); */
+  /* unable to make transformation without covering anything with z-index greater */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 
+              0 -4px 12px rgba(255, 255, 255, 0.9);
 }
 
 .tile-title {
-  border-bottom: 1px solid gray;
-  margin-bottom: 0.75rem;
+  margin: 0;
   padding-bottom: 0.5rem;
+  border-bottom: 2px solid #ddd;
+  font-size: 1.75rem;
+  color: #333;
   text-align: center;
-  font-size: 1.5rem;
-  color: #4a4a4a;
+  text-transform: capitalize;
+  font-weight: 600;
 }
-  
+
+@media (max-width: 768px) {
+  .tile {
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+
+  .tile-title {
+    font-size: 1.5rem;
+  }
+}

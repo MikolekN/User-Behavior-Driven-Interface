@@ -1,11 +1,12 @@
-import { ReactNode, ReactElement, FC } from 'react';
+import { ReactNode, FC, ElementType } from 'react';
 import './Tile.css';
 
 interface TileProps {
-    children: ReactNode | ReactElement;
+    children: ReactNode;
     title: string;
     className?: string;
-    as?: keyof JSX.IntrinsicElements;
+    as?: ElementType;
+    titleLevel?: 1 | 2 | 3 | 4 | 5 | 6;
 }
 
 const Tile: FC<TileProps> = ({
@@ -13,10 +14,13 @@ const Tile: FC<TileProps> = ({
     title,
     className = '',
     as: Component = 'div',
+    titleLevel = 2,
 }) => {
+    const TitleTag = `h${titleLevel}` as keyof JSX.IntrinsicElements;
+
     return (
         <Component className={`tile ${className}`}>
-            <h2 className={'tile-title'}>{title}</h2>
+            <TitleTag className="tile-title">{title}</TitleTag>
             {children}
         </Component>
     );
