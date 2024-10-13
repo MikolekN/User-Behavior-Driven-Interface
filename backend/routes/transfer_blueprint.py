@@ -5,12 +5,12 @@ from flask_login import current_user, login_required
 from datetime import datetime
 from collections.abc import Mapping
 from typing import Any, Callable
-from config import BANK_ACCOUNT_NUMBER
 from users.user_repository import UserRepository
 from transfers.transfer_repository import TransferRepository
 from transfers.transfer import Transfer
 from bson import ObjectId
 from helpers.calculations import add, substract
+from constants import BANK_ACCOUNT_NUMBER
 
 months = ['', 'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień']
 
