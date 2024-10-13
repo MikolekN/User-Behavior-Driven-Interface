@@ -3,6 +3,7 @@ from flask_login import current_user, login_required
 from users.user_repository import UserRepository
 from werkzeug.datastructures import FileStorage
 from PIL import Image
+from constants import UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 
 import uuid
 import os
@@ -10,13 +11,13 @@ import os
 user_icon_blueprint = Blueprint('user_icon', __name__, url_prefix='/api')
 
 def allowed_file(filename: str) -> bool:
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @user_icon_blueprint.route('/user/icon', methods=['POST'])
 @login_required
 def upload_user_icon() -> tuple[Response, int]:
-    if not os.path.exists(current_app.config['UPLOAD_FOLDER']):
-        os.makedirs(current_app.config['UPLOAD_FOLDER'])
+    if not os.path.exists(UPLOAD_FOLDER):
+        os.makedirs(UPLOAD_FOLDER)
     
     if 'icon' not in request.files:
         return jsonify(message="No files in the request"), 400
@@ -33,7 +34,7 @@ def upload_user_icon() -> tuple[Response, int]:
                 os.remove(old_icon_path)
 
         unique_filename = f"{uuid.uuid4().hex}.png"
-        icon_path = os.path.join(current_app.config['UPLOAD_FOLDER'], unique_filename)
+        icon_path = os.path.join(UPLOAD_FOLDER, unique_filename)
 
         try:
             image = Image.open(icon)
