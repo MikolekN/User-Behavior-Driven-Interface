@@ -63,7 +63,7 @@ export const formValidationRules = {
         },
         max: {
             value: 100000,
-            message: 'Minimum value is 100000'
+            message: 'Maximum value is 100000'
         },
         pattern: {
             value: /^([1-9]\d{0,1}0{3}|[1-9]\d{0,1}0{4})$/,
