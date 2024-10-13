@@ -1,20 +1,24 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactNode, ReactElement, FC } from 'react';
 import './Tile.css';
 
-interface TileData {
+interface TileProps {
     children: ReactNode | ReactElement;
     title: string;
     className?: string;
+    as?: keyof JSX.IntrinsicElements;
 }
 
-const Tile = ({ children, title, className = '' }: TileData) => {
+const Tile: FC<TileProps> = ({
+    children,
+    title,
+    className = '',
+    as: Component = 'div',
+}) => {
     return (
-        <div className={`${className} tile border-2 border-blue-600 border-opacity-20 rounded-lg overflow-hidden`}>
-            <div className="font-semibold text-2xl mb-6 text-gray-700 tile-title">
-                {title}
-            </div>
+        <Component className={`tile ${className}`}>
+            <h2 className={'tile-title'}>{title}</h2>
             {children}
-        </div>
+        </Component>
     );
 };
 

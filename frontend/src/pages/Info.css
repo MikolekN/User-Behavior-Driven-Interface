@@ -1,40 +1,66 @@
-.info-tile {
+.info-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
     padding: 20px;
-    justify-self: center;
-    height: fit-content;
+    box-sizing: border-box;
+    background-color: #f3f4f6;
+}
+
+.info-tile {
+    padding: 24px;
     width: 33.33%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 8px;
 }
 
 .info-sections {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
 }
 
 .info-section {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f9f9f9;
+    padding: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fafafa;
+    transition: background-color 0.3s ease;
+}
+
+.info-section:hover {
+    background-color: #f0f0f0;
 }
 
 .info-section h3 {
-    margin-top: 0;
-    font-size: 1.2em;
-    font-weight: bold;
+    margin: 0 0 8px;
+    font-size: 1.25rem;
+    color: #333;
 }
 
 .info-section p {
-    margin: 5px 0;
+    margin: 4px 0;
+    font-size: 0.95rem;
+    color: #555;
 }
 
 .info-section ul {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
     margin: 0;
 }
 
 .info-section ul li {
-    margin-bottom: 5px;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+    color: #444;
 }
-  
+
+address {
+    font-style: normal;
+    font-size: 0.95rem;
+    color: #444;
+    margin-top: 4px;
+}
