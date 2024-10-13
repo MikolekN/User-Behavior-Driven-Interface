@@ -95,7 +95,7 @@ const Loan = () => {
         <div className="flex items-center justify-center">
             <Tile title="Loan" className="form-tile w-2/5  bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
-                    <div className="max-w-md w-full mx-auto">
+                    <div className="max-w-md w-full mx-auto px-1">
                         <div className="mt-8">
                             <label className="text-sm font-semibold text-gray-700 block">From account</label>
                             <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
@@ -120,9 +120,7 @@ const Loan = () => {
                                 error={errors.amount}
                                 className="w-10/12"
                             >
-                                <span className="p-3 bg-gray-300 text-gray-700 border border-gray-300 border-l-0 rounded-lg mt-1 ml-1">
-                                    {user.currency}
-                                </span>
+                                {user.currency}
                             </FormInput>
                             <div>
                                 <Slider
