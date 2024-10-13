@@ -8,7 +8,7 @@ import { formValidationRules } from '../components/utils/validationRules';
 import { AuthContext } from '../context/AuthContext';
 import { isErrorResponse } from '../components/utils/types/ErrorResponse';
 
-interface TransferFromData {
+interface TransferFormData {
     recipientAccountNumber: string;
     transferTitle: string;
     amount: string;
@@ -17,7 +17,7 @@ interface TransferFromData {
 const Transfer = () => {
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
     const { user, getUser } = useContext(AuthContext);
-    const { register, handleSubmit, formState: { errors } } = useForm<TransferFromData>({
+    const { register, handleSubmit, formState: { errors } } = useForm<TransferFormData>({
         defaultValues: {
             recipientAccountNumber: '',
             transferTitle: '',
@@ -30,7 +30,7 @@ const Transfer = () => {
 
     if (!user) return <Navigate to="/login" />;  
     
-    const onSubmit = handleSubmit(async ({ recipientAccountNumber, transferTitle, amount }: TransferFromData) => {
+    const onSubmit = handleSubmit(async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
         try {
             const response = await fetch('http://127.0.0.1:5000/api/transfer', {
                 method: 'POST',
