@@ -7,6 +7,7 @@ import FormInput from '../components/FormInput/FormInput';
 import { formValidationRules } from '../components/utils/validationRules';
 import { UserContext } from '../context/UserContext';
 import { isErrorResponse } from '../components/utils/types/ErrorResponse';
+import Button from '../components/utils/Button';
 
 interface TransferFormData {
     recipientAccountNumber: string;
@@ -116,7 +117,9 @@ const Transfer = () => {
                                 {user.currency}
                             </FormInput>
                             <div>
-                                <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Submit</button>
+                                <Button className="w-full">
+                                    Submit
+                                </Button>
                             </div>
                             <div>
                                 {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}

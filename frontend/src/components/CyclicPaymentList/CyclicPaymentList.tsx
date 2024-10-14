@@ -185,7 +185,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                             </div>
                                             <div className="flex justify-end space-x-4 w-full">
                                                 <Link to={`/edit-cyclic-payment/${cyclicPayment.id}`} className="w-1/6">
-                                                    <Button className="w-full bg-blue-600 hover:bg-blue-700 mt-1">
+                                                    <Button className="w-full mt-1">
                                                     Edit
                                                     </Button>
                                                 </Link>
