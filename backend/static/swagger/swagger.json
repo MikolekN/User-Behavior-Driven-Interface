@@ -48,6 +48,9 @@
         "/transfer": {
             "$ref": "./paths/transfers/transfer.json"
         },
+        "/transfer/loan": {
+            "$ref": "./paths/transfers/transfer_loan.json"
+        },
         "/transfers": {
             "$ref": "./paths/transfers/transfers.json"
         },
