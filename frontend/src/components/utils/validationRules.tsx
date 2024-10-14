@@ -52,6 +52,24 @@ export const formValidationRules = {
             message: 'Invalid amount format'
         }
     },
+    loanAmount: {
+        required: {
+            value: true,
+            message: 'Amount is required'
+        },
+        min: {
+            value: 1000,
+            message: 'Minimum value is 1000'
+        },
+        max: {
+            value: 100000,
+            message: 'Maximum value is 100000'
+        },
+        pattern: {
+            value: /^([1-9]\d{0,1}0{3}|[1-9]\d{0,1}0{4})$/,
+            message: 'Invalid amount format. Provide amount in thousands'
+        }
+    },
     cyclicPaymentName: {
         required: {
             value: true,

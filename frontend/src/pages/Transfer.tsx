@@ -8,7 +8,7 @@ import { formValidationRules } from '../components/utils/validationRules';
 import { UserContext } from '../context/UserContext';
 import { isErrorResponse } from '../components/utils/types/ErrorResponse';
 
-interface TransferFromData {
+interface TransferFormData {
     recipientAccountNumber: string;
     transferTitle: string;
     amount: string;
@@ -17,7 +17,7 @@ interface TransferFromData {
 const Transfer = () => {
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
     const { user, getUser } = useContext(UserContext);
-    const { register, handleSubmit, formState: { errors } } = useForm<TransferFromData>({
+    const { register, handleSubmit, formState: { errors } } = useForm<TransferFormData>({
         defaultValues: {
             recipientAccountNumber: '',
             transferTitle: '',
@@ -30,7 +30,7 @@ const Transfer = () => {
 
     if (!user) return <Navigate to="/login" />;  
     
-    const onSubmit = handleSubmit(async ({ recipientAccountNumber, transferTitle, amount }: TransferFromData) => {
+    const onSubmit = handleSubmit(async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
         try {
             const response = await fetch('http://127.0.0.1:5000/api/transfer', {
                 method: 'POST',
@@ -113,9 +113,7 @@ const Transfer = () => {
                                 error={errors.amount}
                                 className="w-10/12"
                             >
-                                <span className="p-3 bg-gray-300 text-gray-700 border border-gray-300 border-l-0 rounded-lg mt-1 ml-1">
-                                    {user.currency}
-                                </span>
+                                {user.currency}
                             </FormInput>
                             <div>
                                 <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Submit</button>

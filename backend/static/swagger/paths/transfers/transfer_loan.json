@@ -1,6 +1,6 @@
 {
     "post": {
-        "summary": "Transfer money",
+        "summary": "Transfer money when user make a loan",
         "tags": ["Transfers"],
         "requestBody": {
             "content": {
@@ -15,7 +15,7 @@
                                 "type": "string"
                             },
                             "amount": {
-                                "type": "string"
+                                "type": "number"
                             }
                         },
                         "required": [
@@ -29,7 +29,7 @@
         },
         "responses": {
             "200": {
-                "description": "Successful transfer",
+                "description": "Successful loan",
                 "content": {
                     "application.json": {
                         "schema": {
@@ -58,21 +58,6 @@
                     }
                 }
             },
-            "403": {
-                "description": "User does not have enough money",
-                "content": {
-                    "application.json": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "message": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
             "404": {
                 "description": "User with given account number does not exist",
                 "content": {
@@ -82,6 +67,18 @@
                             "properties": {
                                 "message": {
                                     "type": "string"
+                                }
+                            }
+                        },
+                        "examples": {
+                            "bank_not_exist": {
+                                "value": {
+                                    "message": "Bank user account does not exist"
+                                }
+                            },
+                            "user_account_not_exist": {
+                                "value": {
+                                    "message": "User with given account number does not exist"
                                 }
                             }
                         }

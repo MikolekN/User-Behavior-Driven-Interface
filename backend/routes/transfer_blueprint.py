@@ -10,6 +10,7 @@ from transfers.transfer_repository import TransferRepository
 from transfers.transfer import Transfer
 from bson import ObjectId
 from helpers.calculations import add, substract
+from constants import BANK_ACCOUNT_NUMBER
 
 months = ['', 'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień']
 
@@ -207,6 +208,31 @@ def get_year_from_datetime(date: datetime) -> str:
 def get_date_from_datetime(date: datetime) -> str:
     # date in the format like: "09.09.2024"
     return date.strftime('%d.%m.%Y')
+
+@transfer_blueprint.route('/transfer/loan', methods=['POST'])
+@login_required
+def create_loan_transfer() -> tuple[Response, int]:
+    data = request.get_json()
+    error = validate_transfer_data(data)
+
+    if error:
+        return jsonify(message=error), 400
+    
+    recipient_user = UserRepository.find_by_account_number(data['recipientAccountNumber'])
+    if not recipient_user:
+        return jsonify(message="User with given account number does not exist"), 404
+    
+    bank = UserRepository.find_by_account_number(BANK_ACCOUNT_NUMBER)
+    if not bank:
+        return jsonify(message="Bank user account does not exist"), 404
+
+    transfer = Transfer(created=datetime.now(), transfer_from_id=bank._id,
+                        transfer_to_id=recipient_user._id, title=data['transferTitle'], amount=float(data['amount']))
+    transfer = TransferRepository.insert(transfer)
+
+    UserRepository.update(current_user._id, {'balance': add(float(current_user.balance), float(data['amount']))})
+
+    return jsonify(message="Loan made successfully"), 200
 
 @transfer_blueprint.route('/transfer', methods=['POST'])
 @login_required

@@ -1,4 +1,5 @@
 from flask import Flask
+from helpers.init_bank_account import init_bank_account
 from database import Database
 from users.user import User
 from flask_login import LoginManager
@@ -12,7 +13,17 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from flask_cors import CORS
 # python -m flask --app .\application.py run
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
+
+    Database.initialise()
+
+    with app.app_context():
+        init_bank_account()
+
+    return app
+
+app = create_app()
 app.config.from_pyfile('config.py')
 
 CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
@@ -25,8 +36,6 @@ swaggerui_blueprint = get_swaggerui_blueprint(
     config={ 'app_name': "User-Behavior-Driven-Interface Backend API" }
 )
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
-
-Database.initialise()
 
 login = LoginManager(app)
 
