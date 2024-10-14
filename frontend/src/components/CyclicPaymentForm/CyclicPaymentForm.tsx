@@ -10,6 +10,7 @@ import FormSelect from '../FormSelect/FormSelect';
 import { CyclicPayment } from '../utils/types/CyclicPayment';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../pages/Form.css';
+import { DAY_LENGTH_IN_MILISECONDS } from '../../services/constants';
 
 interface CyclicPaymentFromData {
     cyclicPaymentName: string;
@@ -36,7 +37,7 @@ interface ApiResponse {
 
 const CyclicPaymentsForm = () => {
     const { id } = useParams();
-    const [date, setDate] = useState<Date | null>(new Date(Date.now() + 86400000));
+    const [date, setDate] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
     const [cyclicPayment, setCyclicPayment] = useState<CyclicPayment>({
         id: null,
         amount: 0,

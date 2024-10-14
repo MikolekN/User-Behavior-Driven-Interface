@@ -5,9 +5,10 @@ import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import { formValidationRules } from '../components/utils/validationRules';
-import { AuthContext } from '../context/AuthContext';
 import { isErrorResponse } from '../components/utils/types/ErrorResponse';
 import Slider from '@mui/material/Slider';
+import { UserContext } from '../context/UserContext';
+import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MIN_LOAN_AMOUNT } from '../services/constants';
 
 interface LoanFormData {
     amount: number;
@@ -16,12 +17,12 @@ interface LoanFormData {
 
 const Loan = () => {
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
-    const { user, getUser } = useContext(AuthContext);
+    const { user, getUser } = useContext(UserContext);
     const [ sliderValue, setSliderValue ] = useState<number | null>(null);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<LoanFormData>({
         defaultValues: {
-            amount: 1000
+            amount: MIN_LOAN_AMOUNT
         },
         mode: 'onSubmit'
     });
@@ -77,14 +78,6 @@ const Loan = () => {
         }
     });
 
-    const availableLoanLengths = [
-        { loanLength: 6 },
-        { loanLength: 12 },
-        { loanLength: 24 },
-        { loanLength: 36 },
-        { loanLength: 48 }
-    ];
-
     const handleSliderChange = (event: Event, newValue: number | number[]) => {
         const sliderVal = newValue as number; 
         setSliderValue(sliderVal);
@@ -127,9 +120,9 @@ const Loan = () => {
                                     value={sliderValue as number}
                                     onChange={handleSliderChange}
                                     aria-label="input-slider"
-                                    min={1000}
-                                    step={1000}
-                                    max={100000}
+                                    min={MIN_LOAN_AMOUNT}
+                                    step={LOAN_AMOUNT_STEP}
+                                    max={MAX_LOAN_AMOUNT}
                                     valueLabelDisplay="auto"
                                 />
                                 <div className="flex justify-between">
@@ -140,7 +133,7 @@ const Loan = () => {
                             <div className="mt-8">
                                 <label className="text-sm font-semibold text-gray-700 block text-center">Number of installments</label>
                                 <div className="flex justify-between mt-4">
-                                    {availableLoanLengths.map((item, idx) => (
+                                    {AVAILABLE_LOAN_LENGTH.map((item, idx) => (
                                         <div onClick={() => { toggleAnswer(idx); }} style={activeIndex === idx ? { 'background': '#60a5fa' } : {}} key={idx} className="border-2 border-blue-600 border-opacity-20 rounded-lg px-4 py-2">
                                             <label className="text-sm font-semibold text-gray-700 block">{item.loanLength}</label>
                                         </div>
