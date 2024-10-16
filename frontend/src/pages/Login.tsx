@@ -34,17 +34,10 @@ const Login = () => {
             await login(email, password);
             navigate('/dashboard');
         } catch (error) {
-            if (error instanceof Error) {
-                setApiError({
-                    isError: true,
-                    errorMessage: error.message
-                });
-            } else {
-                setApiError({
-                    isError: true,
-                    errorMessage: 'An unknown error occurred. Please try again.'
-                });
-            }
+            setApiError({
+                isError: true,
+                errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
+            });
             console.error(error);
         }
     });

@@ -47,7 +47,10 @@ const TransactionsHistory = () => {
                 const data = await response.json() as TransfersResponse;
                 setGroupedTransactions(data.transfers);
             } catch (error) {
-                setError(true);
+                setApiError({
+                    isError: true,
+                    errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
+                });
                 console.error(error);
             } finally {
                 setLoading(false);
