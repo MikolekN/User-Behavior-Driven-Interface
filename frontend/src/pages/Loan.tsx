@@ -5,10 +5,10 @@ import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import { formValidationRules } from '../components/utils/validationRules';
-import { isErrorResponse } from '../components/utils/types/ErrorResponse';
 import Slider from '@mui/material/Slider';
 import { UserContext } from '../context/UserContext';
 import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MIN_LOAN_AMOUNT } from '../services/constants';
+import { TransferContext } from '../context/TransferContext';
 
 interface LoanFormData {
     amount: number;
@@ -18,6 +18,7 @@ interface LoanFormData {
 const Loan = () => {
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
     const { user, getUser } = useContext(UserContext);
+    const { createLoan } = useContext(TransferContext);
     const [ sliderValue, setSliderValue ] = useState<number | null>(null);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<LoanFormData>({
@@ -44,41 +45,24 @@ const Loan = () => {
     
     const onSubmit = handleSubmit(async ({ amount }: LoanFormData) => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/transfer/loan', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body: JSON.stringify({
-                    recipientAccountNumber: user.accountNumber,
-                    transferTitle: 'Pożyczka gotówkowa',
-                    amount: amount
-                })
-            });
-
-            const responseJson: unknown = await response.json();
-
-            if (response.ok) {
-                await getUser();
-                navigate('/dashboard');
-            } else {
-                if (isErrorResponse(responseJson)) {
-                    setApiError({
-                        isError: true,
-                        errorMessage: responseJson.message
-                    });
-                    throw new Error(responseJson.message);
-                } else {
-                    throw new Error('Unexpected error format');
-                }
-            }
+            const requestBody = {
+                recipientAccountNumber: user.accountNumber,
+                transferTitle: 'Pożyczka gotówkowa',
+                amount: amount
+            };
+            await createLoan(requestBody);
+            await getUser();
+            navigate('/dashboard');
         } catch (error) {
+            setApiError({
+                isError: true,
+                errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
+            });
             console.error(error);
         }
     });
 
-    const handleSliderChange = (event: Event, newValue: number | number[]) => {
+    const handleSliderChange = (_event: Event, newValue: number | number[]) => {
         const sliderVal = newValue as number; 
         setSliderValue(sliderVal);
         setValue('amount', sliderVal);

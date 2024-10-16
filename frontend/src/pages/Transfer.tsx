@@ -6,8 +6,8 @@ import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import { formValidationRules } from '../components/utils/validationRules';
 import { UserContext } from '../context/UserContext';
-import { isErrorResponse } from '../components/utils/types/ErrorResponse';
 import Button from '../components/utils/Button';
+import { TransferContext } from '../context/TransferContext';
 
 interface TransferFormData {
     recipientAccountNumber: string;
@@ -18,6 +18,7 @@ interface TransferFormData {
 const Transfer = () => {
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
     const { user, getUser } = useContext(UserContext);
+    const { createTransfer } = useContext(TransferContext);
     const { register, handleSubmit, formState: { errors } } = useForm<TransferFormData>({
         defaultValues: {
             recipientAccountNumber: '',
@@ -33,38 +34,20 @@ const Transfer = () => {
     
     const onSubmit = handleSubmit(async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/transfer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body: JSON.stringify({
-                    recipientAccountNumber,
-                    transferTitle,
-                    amount
-                })
-            });
-
-            const responseJson: unknown = await response.json();
-
-            if (response.ok) {
-                await getUser();
-                navigate('/dashboard');
-            } else {
-                if (isErrorResponse(responseJson)) {
-                    setApiError({
-                        isError: true,
-                        errorMessage: responseJson.message
-                    });
-                    throw new Error(responseJson.message);
-                } else {
-                    throw new Error('Unexpected error format');
-                }
-            }
+            const requestBody = {
+                recipientAccountNumber,
+                transferTitle,
+                amount
+            };
+            await createTransfer(requestBody);
+            await getUser();
+            navigate('/dashboard');
         } catch (error) {
+            setApiError({
+                isError: true,
+                errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
+            });
             console.error(error);
-            // Tutaj należy przerobić jak są ustawiane errory - niektóre idą na setApiError, niektóre na konsole
         }
     });
 
