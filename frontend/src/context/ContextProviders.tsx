@@ -3,6 +3,7 @@ import { AuthProvider } from './AuthContext';
 import { UserProvider } from './UserContext';
 import { UserIconProvider } from './UserIconContext';
 import { TransferProvider } from './TransferContext';
+import { CyclicPaymentProvider } from './CyclicPaymentContext';
 
 // eslint-disable-next-line react/prop-types
 const ContextProviders: React.FC<{ children: ReactNode }> = ({ children }) => (
@@ -10,7 +11,9 @@ const ContextProviders: React.FC<{ children: ReactNode }> = ({ children }) => (
         <AuthProvider>
             <UserIconProvider>
                 <TransferProvider>
-                    {children}
+                    <CyclicPaymentProvider>
+                        {children}
+                    </CyclicPaymentProvider>
                 </TransferProvider>
             </UserIconProvider>
         </AuthProvider>

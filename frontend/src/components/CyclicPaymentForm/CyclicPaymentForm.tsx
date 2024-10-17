@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import Tile from '../Tile/Tile';
@@ -11,8 +11,9 @@ import { CyclicPayment } from '../utils/types/CyclicPayment';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../pages/Form.css';
 import { DAY_LENGTH_IN_MILISECONDS } from '../../services/constants';
+import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 
-interface CyclicPaymentFromData {
+interface CyclicPaymentFormData {
     cyclicPaymentName: string;
     recipientAccountNumber: string;
     transferTitle: string;
@@ -21,37 +22,15 @@ interface CyclicPaymentFromData {
     interval: string;
 }
 
-interface ApiResponse {
-    cyclic_payment: {
-        _id: string;
-        amount: number;
-        cyclic_payment_name: string;
-        interval: string;
-        recipient_account_number: string;
-        recipient_name: string;
-        transfer_title: string;
-        start_date: string | null;
-    };
-    message: string;
-}
-
 const CyclicPaymentsForm = () => {
     const { id } = useParams();
     const [date, setDate] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
-    const [cyclicPayment, setCyclicPayment] = useState<CyclicPayment>({
-        id: null,
-        amount: 0,
-        cyclicPaymentName: '',
-        interval: '',
-        recipientAccountNumber: '',
-        recipientName: '',
-        startDate: date,
-        transferTitle: ''
-    });
-
+    const [minDate, ] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
     const { user, getUser } = useContext(UserContext);
-    const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<CyclicPaymentFromData>({
+    const { cyclicPayment, setCyclicPayment, createCyclicPayment, getCyclicPayment, 
+        updateCyclicPayment } = useContext(CyclicPaymentContext);
+    const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<CyclicPaymentFormData>({
         defaultValues: {
             recipientAccountNumber: '',
             transferTitle: '',
@@ -60,6 +39,24 @@ const CyclicPaymentsForm = () => {
         mode: 'onSubmit'
     });
     const navigate = useNavigate();
+
+    const setCyclicPaymentFormDefaultValues = useCallback(() => {
+        setValue('cyclicPaymentName', '');
+        setValue('recipientAccountNumber', '');
+        setValue('transferTitle', '');
+        setValue('amount', '');
+        setDate(minDate);
+        setValue('interval', '');
+    }, [minDate, setValue]);
+
+    const setCyclicPaymentFormEditValues = useCallback((cyclicPayment: CyclicPayment) => {
+        setValue('cyclicPaymentName', cyclicPayment.cyclicPaymentName);
+        setValue('recipientAccountNumber', cyclicPayment.recipientAccountNumber);
+        setValue('transferTitle', cyclicPayment.transferTitle);
+        setValue('amount', cyclicPayment.amount.toString());
+        setDate(cyclicPayment.startDate);
+        setValue('interval', cyclicPayment.interval);
+    }, [setValue]);
     
     useEffect(() => {
         if (!user) return;
@@ -67,114 +64,70 @@ const CyclicPaymentsForm = () => {
         if (id) {
             const fetchCyclicPaymentById = async () => {
                 try {
-                    const response = await fetch(`http://127.0.0.1:5000/api/cyclic-payment/${id}`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json' 
-                        },
-                        credentials: 'include'
-                    });
-                    const responseJson = await response.json() as ApiResponse;
-                    if (response.ok) {
-                        const parsedCyclicPayment: CyclicPayment = {
-                            id: responseJson.cyclic_payment._id,
-                            amount: responseJson.cyclic_payment.amount,
-                            cyclicPaymentName: responseJson.cyclic_payment.cyclic_payment_name,
-                            interval: responseJson.cyclic_payment.interval,
-                            recipientAccountNumber: responseJson.cyclic_payment.recipient_account_number,
-                            recipientName: responseJson.cyclic_payment.recipient_name,
-                            transferTitle: responseJson.cyclic_payment.transfer_title,
-                            startDate: responseJson.cyclic_payment.start_date ? new Date(responseJson.cyclic_payment.start_date) : null,
-                        };
-                        setCyclicPayment(parsedCyclicPayment);
-                    } else {
-                        setApiError({
-                            isError: true,
-                            errorMessage: responseJson.message
-                        });
-                        throw new Error(responseJson.message);
-                    }
+                    await getCyclicPayment(id);
                 } catch (error) {
+                    setApiError({
+                        isError: true,
+                        errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
+                    });
                     console.error(error);
                 }
             };
 
             void fetchCyclicPaymentById();
+        } else {
+            setCyclicPayment(null);
         }
 
-    }, [id, user]);
+    }, [user, id, setCyclicPayment, getCyclicPayment, setCyclicPaymentFormDefaultValues]);
 
     useEffect(() => {
-        setValue('cyclicPaymentName', cyclicPayment.cyclicPaymentName);
-        setValue('recipientAccountNumber', cyclicPayment.recipientAccountNumber);
-        setValue('transferTitle', cyclicPayment.transferTitle);
-        setValue('amount', cyclicPayment.amount.toString());
-        setValue('startDate', cyclicPayment.startDate);
-        setValue('interval', cyclicPayment.interval);
-    }, [cyclicPayment, setValue]);
-    
-    const onSubmit = handleSubmit(async (data: CyclicPaymentFromData) => {
-        if (!cyclicPayment.id) {
+        if (cyclicPayment) {
+            setCyclicPaymentFormEditValues(cyclicPayment);
+        } else {
+            setCyclicPaymentFormDefaultValues();
+        }
+    }, [cyclicPayment, setCyclicPaymentFormEditValues, setCyclicPaymentFormDefaultValues]);
+
+    const onSubmit = handleSubmit(async (data: CyclicPaymentFormData) => {
+        if (cyclicPayment === null) {
             try {
-                const response = await fetch('http://127.0.0.1:5000/api/cyclic-payment', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json' 
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify({
-                        cyclicPaymentName: data.cyclicPaymentName,
-                        recipientAccountNumber: data.recipientAccountNumber,
-                        transferTitle: data.transferTitle,
-                        amount: data.amount,
-                        startDate: data.startDate?.toISOString(),
-                        interval: data.interval
-                    })
-                });
-                const responseJson = await response.json() as ApiResponse;
-                if (response.ok) {
-                    await getUser();
-                    navigate('/cyclic-payments');
-                } else {
-                    setApiError({
-                        isError: true,
-                        errorMessage: responseJson.message
-                    });
-                    console.error(apiError);
-                    throw new Error(responseJson.message);
-                }
+                const requestBody = {
+                    cyclicPaymentName: data.cyclicPaymentName,
+                    recipientAccountNumber: data.recipientAccountNumber,
+                    transferTitle: data.transferTitle,
+                    amount: data.amount,
+                    startDate: data.startDate?.toISOString(),
+                    interval: data.interval
+                };
+                await createCyclicPayment(requestBody);
+                await getUser();
+                navigate('/dashboard');
             } catch (error) {
+                setApiError({
+                    isError: true,
+                    errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
+                });
                 console.error(error);
             }
         } else {
             try {
-                const response = await fetch(`http://127.0.0.1:5000/api/cyclic-payment/${id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json' 
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify({
-                        cyclicPaymentName: data.cyclicPaymentName,
-                        recipientAccountNumber: data.recipientAccountNumber,
-                        transferTitle: data.transferTitle,
-                        amount: data.amount,
-                        startDate: data.startDate?.toISOString(),
-                        interval: data.interval
-                    })
-                });
-                const responseJson = await response.json() as ApiResponse;
-                if (response.ok) {
-                    await getUser();
-                    navigate('/cyclic-payments');
-                } else {
-                    setApiError({
-                        isError: true,
-                        errorMessage: responseJson.message
-                    });
-                    throw new Error(responseJson.message);
-                }
+                const requestBody = {
+                    cyclicPaymentName: data.cyclicPaymentName,
+                    recipientAccountNumber: data.recipientAccountNumber,
+                    transferTitle: data.transferTitle,
+                    amount: data.amount,
+                    startDate: data.startDate?.toISOString(),
+                    interval: data.interval
+                };
+                await updateCyclicPayment(id!, requestBody);
+                await getUser();
+                navigate('/dashboard');
             } catch (error) {
+                setApiError({
+                    isError: true,
+                    errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
+                });
                 console.error(error);
             }
         }
@@ -234,7 +187,7 @@ const CyclicPaymentsForm = () => {
                             <Controller
                                 name="startDate"
                                 control={control}
-                                defaultValue={date}
+                                defaultValue={minDate}
                                 render={() => (
                                     <DatePicker
                                         selected={date}
@@ -243,7 +196,7 @@ const CyclicPaymentsForm = () => {
                                         onChange={handleChange}
                                         className="bg-white border-2"
                                         showIcon={true}
-                                        minDate={date!}
+                                        minDate={minDate!}
                                     />
                                 )}
                             />
