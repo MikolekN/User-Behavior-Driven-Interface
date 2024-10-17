@@ -101,14 +101,7 @@ const TransactionsHistory = () => {
                                         {isExpanded ? <img src={arrowUp} alt="▼" /> : <img src={arrowDown} alt="▶" />}
                                     </span>
                                 </div>
-                                <div
-                                    className={`transaction-rows ${isExpanded ? 'expanded' : 'collapsed'}`}
-                                    style={{
-                                        maxHeight: isExpanded ? `${group.transactions.length * 76}px` : '0',
-                                        overflow: 'hidden',
-                                        transition: 'max-height 0.5s ease',
-                                    }} // Added an arbitrary (only based on current styling) value 76px which corresponds to rows height
-                                >
+                                <div className={`transaction-rows ${isExpanded ? 'expanded' : 'collapsed'}`} >
                                     {group.transactions.map((item, index) => (
                                         <div className="transaction-row" key={index}>
                                             <div>

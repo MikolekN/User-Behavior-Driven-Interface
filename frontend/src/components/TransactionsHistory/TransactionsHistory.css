@@ -88,9 +88,15 @@
     font-weight: bold;
     color: #000;
 }
+
 .transaction-rows {
+    max-height: 0;
     overflow: hidden;
-    transition: max-height 0.5s ease;
+    transition: max-height 0.5s ease-in-out;
+}
+
+.transaction-rows.expanded {
+    max-height: max-content;
 }
 
 .transaction-container {
