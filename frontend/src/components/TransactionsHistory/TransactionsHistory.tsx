@@ -48,6 +48,11 @@ const TransactionsHistory = () => {
 
                 const data = (await response.json()) as TransfersResponse;
                 setGroupedTransactions(data.transfers);
+
+                if (data.transfers.length > 0) {
+                    const mostRecentDate = data.transfers[0].date;
+                    setExpandedGroups({ [mostRecentDate]: true });
+                }
             } catch (error) {
                 setError(true);
                 console.error(error);
@@ -99,7 +104,7 @@ const TransactionsHistory = () => {
                                 <div
                                     className={`transaction-rows ${isExpanded ? 'expanded' : 'collapsed'}`}
                                     style={{
-                                        maxHeight: isExpanded ? `${((group.transactions.length) * 76)}px` : '0',
+                                        maxHeight: isExpanded ? `${group.transactions.length * 76}px` : '0',
                                         overflow: 'hidden',
                                         transition: 'max-height 0.5s ease',
                                     }} // Added an arbitrary (only based on current styling) value 76px which corresponds to rows height
@@ -117,7 +122,8 @@ const TransactionsHistory = () => {
                                                     item.income ? 'transaction-income' : 'transaction-expense'
                                                 }`}
                                             >
-                                                {!item.income && <span>-</span>}{item.amount} {user.currency}
+                                                {!item.income && <span>-</span>}
+                                                {item.amount} {user.currency}
                                             </div>
                                         </div>
                                     ))}
