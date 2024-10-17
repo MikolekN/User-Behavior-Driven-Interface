@@ -18,6 +18,7 @@
   .faq-item {
     margin-bottom: 1rem;
     border-radius: 8px;
+    border: 1px solid #ddd;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
   }
@@ -29,7 +30,6 @@
   
   .faq-question {
     padding: 0.75rem;
-    border: 1px solid #ddd;
     background-color: #f9f9f9;
     cursor: pointer;
     font-weight: bold;

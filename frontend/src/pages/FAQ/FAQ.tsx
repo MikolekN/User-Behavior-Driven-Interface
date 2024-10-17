@@ -5,6 +5,22 @@ import { AuthContext } from '../../context/AuthContext';
 import { Navigate } from 'react-router-dom';
 import { FAQData } from './FAQData';
 
+interface FAQItemProps {
+    question: string;
+    answer: string;
+    isActive: boolean;
+    onClick: () => void;
+}
+
+const FAQItem: FC<FAQItemProps> = ({ question, answer, isActive, onClick }) => (
+    <div className={`faq-item ${isActive ? 'active' : ''}`}>
+        <div className="faq-question" onClick={onClick}>
+            {question}
+        </div>
+        {isActive && <div className="faq-answer">{answer}</div>}
+    </div>
+);
+
 const FAQ: FC = () => {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const { user } = useContext(AuthContext);
@@ -32,21 +48,5 @@ const FAQ: FC = () => {
         </div>
     );
 };
-
-interface FAQItemProps {
-    question: string;
-    answer: string;
-    isActive: boolean;
-    onClick: () => void;
-}
-
-const FAQItem: FC<FAQItemProps> = ({ question, answer, isActive, onClick }) => (
-    <div className={`faq-item ${isActive ? 'active' : ''}`}>
-        <div className="faq-question" onClick={onClick}>
-            {question}
-        </div>
-        {isActive && <div className="faq-answer">{answer}</div>}
-    </div>
-);
 
 export default FAQ;
