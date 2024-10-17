@@ -2,8 +2,10 @@ import { useEffect, useState, useContext } from 'react';
 import Tile from '../Tile/Tile';
 import { AuthContext } from '../../context/AuthContext';
 import { Navigate } from 'react-router-dom';
-import '../utils/styles/table.css';
 import EmptyResponseInfoAlert from '../EmptyResponseInfoAlert/EmptyResponseInfoAlert';
+import './TransactionsHistory.css';
+import arrowUp from '../../assets/images/chevron-up.svg';
+import arrowDown from '../../assets/images/chevron-down.svg';
 
 interface TransfersResponse {
     transfers: TransactionsHistoryType[];
@@ -25,26 +27,26 @@ interface Transaction {
 
 const TransactionsHistory = () => {
     const [groupedTransactions, setGroupedTransactions] = useState<TransactionsHistoryType[]>([]);
+    const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const { user } = useContext(AuthContext);
 
     useEffect(() => {
         if (!user) return;
-        
+
         const fetchTransactions = async () => {
             try {
                 const response = await fetch('http://127.0.0.1:5000/api/transfers', {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json' 
+                        'Content-Type': 'application/json',
                     },
-                    credentials: 'include'
+                    credentials: 'include',
                 });
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json() as TransfersResponse;
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const data = (await response.json()) as TransfersResponse;
                 setGroupedTransactions(data.transfers);
             } catch (error) {
                 setError(true);
@@ -56,12 +58,17 @@ const TransactionsHistory = () => {
 
         void fetchTransactions();
     }, [user]);
-    
+
+    const toggleGroup = (date: string) => {
+        setExpandedGroups((prev) => ({
+            ...prev,
+            [date]: !prev[date],
+        }));
+    };
+
     if (!user) return <Navigate to="/login" />;
-
     if (loading) return <div>Loading...</div>;
-
-    if (error) { 
+    if (error) {
         return (
             <EmptyResponseInfoAlert
                 title="Transactions History"
@@ -72,52 +79,55 @@ const TransactionsHistory = () => {
     }
 
     return (
-        <Tile title="Transactions History" className="table-tile">
-            <div className="flex justify-center p-8">
-                {!groupedTransactions &&
-                    <tr>
-                        <td colSpan={5} className="text-center">
-                            <div>
-                                Transactions History are loading
-                            </div>
-                        </td>
-                    </tr>
-                }
-                {groupedTransactions && groupedTransactions.length > 0 &&
-                    <table className="table-fixed w-9/12">
-                        <tbody>
-                            {groupedTransactions.map((transaction) => (
-                                <>
-                                    <tr className="bg-gray-200">
-                                        <td colSpan={2} className="px-4 py-2 font-bold">
-                                            {transaction.date}
-                                        </td>
-                                    </tr>
-                                    {transaction.transactions.map((item, index) => (
-                                        <tr key={index} className="border-b border-gray-400">
-                                            <td className="px-8 py-2">
-                                                <div>
-                                                    <span className="block py-1">
-                                                        <b>{item.issuer_name}</b>
-                                                    </span>
-                                                    <span className="block py-1">
-                                                        <i>{item.title}</i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            <td className="text-right px-8 py-2" style={{ color: item.income ? 'green' : 'red' }}>
-                                                {!item.income && <span>-</span>}
-                                                {item.amount} {user.currency}
-                                            </td>
-                                        </tr>
+        <div className="transfers-history-wrapper">
+            <Tile title="Transactions History" className="table-tile">
+                <div className="transaction-container">
+                    {groupedTransactions.map((group) => {
+                        const isExpanded = expandedGroups[group.date];
+
+                        return (
+                            <div className="transaction-group" key={group.date}>
+                                <div
+                                    className="transaction-date"
+                                    onClick={() => toggleGroup(group.date)}
+                                >
+                                    {group.date}
+                                    <span className={`toggle-icon ${isExpanded ? 'expanded' : ''}`}>
+                                        {isExpanded ? <img src={arrowUp} alt="▼" /> : <img src={arrowDown} alt="▶" />}
+                                    </span>
+                                </div>
+                                <div
+                                    className={`transaction-rows ${isExpanded ? 'expanded' : 'collapsed'}`}
+                                    style={{
+                                        maxHeight: isExpanded ? `${((group.transactions.length) * 76)}px` : '0',
+                                        overflow: 'hidden',
+                                        transition: 'max-height 0.5s ease',
+                                    }} // Added an arbitrary (only based on current styling) value 76px which corresponds to rows height
+                                >
+                                    {group.transactions.map((item, index) => (
+                                        <div className="transaction-row" key={index}>
+                                            <div>
+                                                <span className="issuer-name block">{item.issuer_name}</span>
+                                                <span className="transaction-title block">
+                                                    <i>{item.title}</i>
+                                                </span>
+                                            </div>
+                                            <div
+                                                className={`transaction-amount ${
+                                                    item.income ? 'transaction-income' : 'transaction-expense'
+                                                }`}
+                                            >
+                                                {!item.income && <span>-</span>}{item.amount} {user.currency}
+                                            </div>
+                                        </div>
                                     ))}
-                                </>
-                            ))}
-                        </tbody>
-                    </table>
-                }
-            </div>
-        </Tile>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </Tile>
+        </div>
     );
 };
 
