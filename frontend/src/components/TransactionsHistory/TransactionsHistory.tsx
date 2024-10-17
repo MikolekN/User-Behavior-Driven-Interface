@@ -84,8 +84,8 @@ const TransactionsHistory = () => {
     }
 
     return (
-        <div className="transfers-history-wrapper">
-            <Tile title="Transactions History" className="table-tile">
+        <div className="transactions-history-wrapper">
+            <Tile title="Transactions History" className="transactions-history-tile">
                 <div className="transaction-container">
                     {groupedTransactions.map((group) => {
                         const isExpanded = expandedGroups[group.date];
