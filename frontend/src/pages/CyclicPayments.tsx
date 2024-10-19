@@ -77,18 +77,12 @@ const CyclicPayments = () => {
         <div className='cyclic-payments-wrapper'>
             <Tile title="Cyclic Payments List" className='cyclic-payments-tile'>
                 <div className="cyclic-payments-container">
-                    {!cyclicPayments &&
-                    <tr>
-                        <td colSpan={5} className="text-center">
-                            <div>
-                                Cyclic Payments are loading
-                            </div>
-                        </td>
-                    </tr>
-                    }
-                    {cyclicPayments && cyclicPayments.length > 0 &&
+                    {!cyclicPayments && (
+                        <div>Cyclic Payments are loading...</div>
+                    )}
+                    {cyclicPayments && cyclicPayments.length > 0 && (
                     <CyclicPaymentList cyclicPaymentsList={cyclicPayments}/>
-                    }
+                    )}
                 </div>
             </Tile>
         </div>

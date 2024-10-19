@@ -26,14 +26,3 @@
   text-transform: capitalize;
   font-weight: 600;
 }
-
-@media (max-width: 768px) {
-  .tile {
-    margin: 0.5rem;
-    padding: 1rem;
-  }
-
-  .tile-title {
-    font-size: 1.5rem;
-  }
-}

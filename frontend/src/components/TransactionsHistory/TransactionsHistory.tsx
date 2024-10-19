@@ -86,45 +86,50 @@ const TransactionsHistory = () => {
     return (
         <div className="transactions-history-wrapper">
             <Tile title="Transactions History" className="transactions-history-tile">
-                <div className="transaction-container">
-                    {groupedTransactions.map((group) => {
-                        const isExpanded = expandedGroups[group.date];
+                {!groupedTransactions && (
+                    <div>Transactions History are loading...</div>
+                )}
+                {groupedTransactions && groupedTransactions.length > 0 && (
+                    <div className="transaction-container">
+                        {groupedTransactions.map((group) => {
+                            const isExpanded = expandedGroups[group.date];
 
-                        return (
-                            <div className="transaction-group" key={group.date}>
-                                <div
-                                    className="transaction-date"
-                                    onClick={() => toggleGroup(group.date)}
-                                >
-                                    {group.date}
-                                    <span className={`toggle-icon ${isExpanded ? 'expanded' : ''}`}>
-                                        {isExpanded ? <img src={arrowUp} alt="▼" /> : <img src={arrowDown} alt="▶" />}
-                                    </span>
-                                </div>
-                                <div className={`transaction-rows ${isExpanded ? 'expanded' : 'collapsed'}`} >
-                                    {group.transactions.map((item, index) => (
-                                        <div className="transaction-row" key={index}>
-                                            <div>
-                                                <span className="issuer-name block">{item.issuer_name}</span>
-                                                <span className="transaction-title block">
-                                                    <i>{item.title}</i>
-                                                </span>
+                            return (
+                                <div className="transaction-group" key={group.date}>
+                                    <div
+                                        className="transaction-date"
+                                        onClick={() => toggleGroup(group.date)}
+                                    >
+                                        {group.date}
+                                        <span className={`toggle-icon ${isExpanded ? 'expanded' : ''}`}>
+                                            {isExpanded ? <img src={arrowUp} alt="▼" /> : <img src={arrowDown} alt="▶" />}
+                                        </span>
+                                    </div>
+                                    <div className={`transaction-rows ${isExpanded ? 'expanded' : 'collapsed'}`} >
+                                        {group.transactions.map((item, index) => (
+                                            <div className="transaction-row" key={index}>
+                                                <div>
+                                                    <span className="issuer-name block">{item.issuer_name}</span>
+                                                    <span className="transaction-title block">
+                                                        <i>{item.title}</i>
+                                                    </span>
+                                                </div>
+                                                <div
+                                                    className={`transaction-amount ${
+                                                        item.income ? 'transaction-income' : 'transaction-expense'
+                                                    }`}
+                                                >
+                                                    {!item.income && <span>-</span>}
+                                                    {item.amount} {user.currency}
+                                                </div>
                                             </div>
-                                            <div
-                                                className={`transaction-amount ${
-                                                    item.income ? 'transaction-income' : 'transaction-expense'
-                                                }`}
-                                            >
-                                                {!item.income && <span>-</span>}
-                                                {item.amount} {user.currency}
-                                            </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        );
-                    })}
-                </div>
+                            );
+                        })}
+                    </div>
+                )}
             </Tile>
         </div>
     );
