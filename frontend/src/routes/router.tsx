@@ -14,6 +14,7 @@ import TransactionsYearlyAnalysis from '../components/TransactionsAnalysis/Trans
 import CyclicPaymentsForm from '../components/CyclicPaymentForm/CyclicPaymentForm';
 import CyclicPayments from '../pages/CyclicPayments';
 import Profile from '../pages/Profile';
+import Loan from '../pages/Loan';
 
 export const router = createBrowserRouter([
     {
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
             { path: '/login', element: <Login /> },
             { path: '/register', element: <Register /> },
             { path: '/transfer', element: <Transfer /> },
+            { path: '/loan', element: <Loan /> },
             { path: '/chat', element: <Chat /> },
             { path: '/faq', element: <FAQ /> },
             { path: '/info', element: <Info /> },
