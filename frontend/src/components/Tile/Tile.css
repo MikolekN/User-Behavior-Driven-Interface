@@ -5,6 +5,7 @@
   margin: 1rem;
   padding: 1.5rem;
   border-radius: 12px;
+  min-width: fit-content;
   /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
   transition: box-shadow 0.3s ease;
 }
