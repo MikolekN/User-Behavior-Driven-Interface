@@ -50,4 +50,4 @@ app.register_blueprint(user_blueprint)
 app.register_blueprint(cyclic_payment_blueprint)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True, host="0.0.0.0")

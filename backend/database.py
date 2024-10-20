@@ -1,8 +1,10 @@
+import os
 import pymongo
 from pymongo.collection import Collection
 from pymongo.database import Database as PyMongoDatabase
 from pymongo.results import InsertOneResult, InsertManyResult, DeleteResult, UpdateResult
 from typing import Any
+from pymongo.errors import ConnectionFailure
 
 class Database:
     URI: str = "mongodb://localhost:27017/"
@@ -11,8 +13,15 @@ class Database:
 
     @staticmethod
     def initialise() -> None:
-        client: pymongo.MongoClient = pymongo.MongoClient(Database.URI)
-        Database.DATABASE = client[Database.DATABASE_NAME]
+        try:
+            if os.getenv('HOST') == 'mongodb':
+                client = pymongo.MongoClient("mongodb://admin:password@mongo:27017")
+            else:
+                client = pymongo.MongoClient(Database.URI)
+            Database.DATABASE = client[Database.DATABASE_NAME]
+            print("Database connection ok")
+        except ConnectionFailure as e:
+            print("Database connection failed:", e)
 
     @staticmethod
     def insert_many(collection: str, data: list[dict[str, Any]]) -> InsertManyResult:
