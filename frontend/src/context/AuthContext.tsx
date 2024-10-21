@@ -22,38 +22,27 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const { setUser, setLoading } = useContext(UserContext);
 
     const login = useCallback(async (email: string, password: string): Promise<void> => {
-        try {
-            const { user: userBackendData } = await loginUser(email, password);
-            if (userBackendData) {
-                const userFrontendData = mapBackendUserToUser(userBackendData);
-                setUser(prevUser => new User({ ...userFrontendData, icon: prevUser?.icon || null, email: userFrontendData.email! }));
-            }
-        } catch (error) {
-            console.error('Error during login:', error);
-            throw error;
+        const { user: userBackendData } = await loginUser(email, password);
+        if (userBackendData) {
+            const userFrontendData = mapBackendUserToUser(userBackendData);
+            setUser(prevUser => new User({ ...userFrontendData, icon: prevUser?.icon || null, email: userFrontendData.email! }));
         }
     }, [setUser]);
 
     const register = useCallback(async (email: string, password: string): Promise<void> => {
-        try {
-            await registerUser(email, password);
-        } catch (error) {
-            console.error('Error during registration:', error);
-            throw error;
-        }
+        await registerUser(email, password);
     }, []);
 
     const logout = useCallback(async (): Promise<void> => {
-        try {
-            setLoading(true);
-            await logoutUser();
-            setUser(null);
-        } catch (error) {
-            console.error('Error logging out:', error);
-            throw error;
-        } finally {
-            setLoading(false);
-        }
+        setLoading(true);
+
+        await logoutUser()
+            .then(() => {
+                setUser(null);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     }, [setLoading, setUser]);
 
     const authContextValue = useMemo(() => ({

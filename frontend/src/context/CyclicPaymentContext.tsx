@@ -34,55 +34,34 @@ export const CyclicPaymentProvider: React.FC<{ children: ReactNode }> = ({ child
     const [cyclicPayments, setCyclicPayments] = useState<CyclicPayment[]>([]);
 
     const createCyclicPayment = useCallback(async (requestBody: object): Promise<void> => {
-        try {
-            await createCyclicPaymentData(requestBody);
-        } catch (error) {
-            console.error('Error during Cyclic Payment:', error);
-            throw error;
-        }
+        await createCyclicPaymentData(requestBody);
     }, []);
 
     const getCyclicPayment = useCallback(async (id: string): Promise<void> => {
-        try {
-            const { cyclic_payment: backendCyclicPaymentData } = await getCyclicPaymentData(id);
+        const { cyclic_payment: backendCyclicPaymentData } = await getCyclicPaymentData(id);
+        if (backendCyclicPaymentData) {
             const cyclicPaymentFrontendData = mapBackendCyclicPaymentToCyclicPayment(backendCyclicPaymentData);
             setCyclicPayment(cyclicPaymentFrontendData);
-        } catch (error) {
-            console.error('Error during Cyclic Payment:', error);
-            throw error;
         }
     }, []);
 
     const deleteCyclicPayment = useCallback(async (id: string): Promise<void> => {
-        try {
-            await deleteCyclicPaymentData(id);
-        } catch (error) {
-            console.error('Error during Cyclic Payment:', error);
-            throw error;
-        }
+        await deleteCyclicPaymentData(id);
     }, []);
 
     const updateCyclicPayment = useCallback(async (id: string, requestBody: object): Promise<void> => {
-        try {
-            await updateCyclicPaymentData(id, requestBody);
-        } catch (error) {
-            console.error('Error during Cyclic Payment:', error);
-            throw error;
-        }
+        await updateCyclicPaymentData(id, requestBody);
     }, []);
 
     const getCyclicPayments = useCallback(async (): Promise<void> => {
-        try {
-            const { cyclic_payments: backendCyclicPaymentsData } = await getCyclicPaymentsData();
+        const { cyclic_payments: cyclicPaymentsBackendData } = await getCyclicPaymentsData();
+        if (cyclicPaymentsBackendData) {
             const formattedCyclicPayments: CyclicPayment[] = [];
-            backendCyclicPaymentsData.forEach((backendCyclicPaymentData: BackendCyclicPayment) => {
+            cyclicPaymentsBackendData.forEach((backendCyclicPaymentData: BackendCyclicPayment) => {
                 const cyclicPaymentFrontendData = mapBackendCyclicPaymentToCyclicPayment(backendCyclicPaymentData);
                 formattedCyclicPayments.push(cyclicPaymentFrontendData);
             });
             setCyclicPayments(formattedCyclicPayments);
-        } catch (error) {
-            console.error('Error during Cyclic Payment:', error);
-            throw error;
         }
     }, []);
 

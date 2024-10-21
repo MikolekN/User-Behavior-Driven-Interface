@@ -33,41 +33,25 @@ export const TransferProvider: React.FC<{ children: ReactNode }> = ({ children }
     const [transfers, setTransfers] = useState<TransactionsHistoryType[]>([]);
 
     const fetchTransfersAnalysis = useCallback(async (interval: string, requestBody: object): Promise<void> => {
-        try {
-            const { transfers: chartData } = await fetchTransfersAnalysisData(interval, requestBody);
+        const { transfers: chartData } = await fetchTransfersAnalysisData(interval, requestBody);
+        if (chartData) {
             setChartData(chartData);
-        } catch (error) {
-            console.error('Error during fetch Transfers Analysis Yearly:', error);
-            throw error;
         }
     }, []);
 
     const fetchTransfers = useCallback(async (): Promise<void> => {
-        try {
-            const { transfers: transfersData } = await fetchTransfersData();
+        const { transfers: transfersData } = await fetchTransfersData();
+        if (transfersData) {
             setTransfers(transfersData);
-        } catch (error) {
-            console.error('Error during fetch Transfers:', error);
-            throw error;
         }
     }, []);
 
     const createTransfer = useCallback(async (requestBody: object): Promise<void> => {
-        try {
-            await createTransferData(requestBody);
-        } catch (error) {
-            console.error('Error during create Transfer:', error);
-            throw error;
-        }
+        await createTransferData(requestBody);
     }, []);
 
     const createLoan = useCallback(async (requestBody: object): Promise<void> => {
-        try {
-            await createLoanData(requestBody);
-        } catch (error) {
-            console.error('Error during create Transfer:', error);
-            throw error;
-        }
+        await createLoanData(requestBody);
     }, []);
 
     const TransferContextValue = useMemo(() => ({
