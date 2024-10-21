@@ -10,7 +10,7 @@ import FormSelect from '../FormSelect/FormSelect';
 import { CyclicPayment } from '../utils/types/CyclicPayment';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../pages/Form.css';
-import { DAY_LENGTH_IN_MILISECONDS } from '../../services/constants';
+import { DAY_LENGTH_IN_MILISECONDS, INTERVAL_OPTIONS } from '../../services/constants';
 import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 
 interface CyclicPaymentFormData {
@@ -138,13 +138,6 @@ const CyclicPaymentsForm = () => {
         setDate(dateChange);
     };
 
-    const intervalOptions = [
-        { value: 'Every 7 days', label: 'Every 7 days' },
-        { value: 'Every month', label: 'Every month' },
-        { value: 'Every 3 months', label: 'Every 3 months' },
-        { value: 'Every 6 months', label: 'Every 6 months' }
-    ];
-
     return (
         <div className="flex items-center justify-center">
             <Tile title="Transfer" className="form-tile w-2/5 bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
@@ -199,7 +192,7 @@ const CyclicPaymentsForm = () => {
                             />
                             <FormSelect
                                 label="Interval"
-                                options={intervalOptions}
+                                options={INTERVAL_OPTIONS}
                                 register={register('interval', { required: formValidationRules.interval.required })}
                                 error={errors.interval}
                                 className="w-full"

@@ -3,6 +3,7 @@ import './MainMenu.css';
 import { Link } from 'react-router-dom';
 import Dropdown from '../Dropdown/Dropdown';
 import { UserContext } from '../../../context/UserContext';
+import { CUSTOMER_SERVICE_SUBMENU_OPTIONS, FINANCES_SUBMENU_OPTIONS, SETTINGS_SUBMENU_OPTIONS, TRANSFER_SUBMENU_OPTIONS } from '../../../services/constants';
 
 const MainMenu = () => {
     const { user } = useContext(UserContext);
@@ -65,12 +66,7 @@ const MainMenu = () => {
                         <>
                             <Dropdown
                                 title="Przelewy"
-                                options={[
-                                    { label: 'Wykonaj przelew', path: '/transfer' },
-                                    { label: 'Historia przelewów', path: '/transactions/history' },
-                                    { label: 'Płatności cykliczne', path: '/cyclic-payments' },
-                                    { label: 'Pożyczki', path: '/loan' },
-                                ]}
+                                options={TRANSFER_SUBMENU_OPTIONS}
                                 isOpen={activeDropdown === 'przelewy'}
                                 isPersistent={persistentDropdown === 'przelewy'}
                                 onToggle={() => handleDropdownToggle('przelewy')}
@@ -81,10 +77,7 @@ const MainMenu = () => {
 
                             <Dropdown
                                 title="Ustawienia"
-                                options={[
-                                    { label: 'Ustawienia1', path: '/' },
-                                    { label: 'Ustawienia2', path: '/' },
-                                ]}
+                                options={SETTINGS_SUBMENU_OPTIONS}
                                 isOpen={activeDropdown === 'ustawienia'}
                                 isPersistent={persistentDropdown === 'ustawienia'}
                                 onToggle={() => handleDropdownToggle('ustawienia')}
@@ -95,10 +88,7 @@ const MainMenu = () => {
 
                             <Dropdown
                                 title="Finanse"
-                                options={[
-                                    { label: 'Analizy miesięczne', path: '/transactions/analysis/monthly' },
-                                    { label: 'Analizy roczne', path: '/transactions/analysis/yearly' },
-                                ]}
+                                options={FINANCES_SUBMENU_OPTIONS}
                                 isOpen={activeDropdown === 'finanse'}
                                 isPersistent={persistentDropdown === 'finanse'}
                                 onToggle={() => handleDropdownToggle('finanse')}
@@ -109,11 +99,7 @@ const MainMenu = () => {
                         
                             <Dropdown
                                 title="Obsługa klienta"
-                                options={[
-                                    { label: 'Czat', path: '/chat' },
-                                    { label: 'Najczęściej zadawane pytania', path: '/faq' },
-                                    { label: 'Kontakt', path: '/info' },
-                                ]}
+                                options={CUSTOMER_SERVICE_SUBMENU_OPTIONS}
                                 isOpen={activeDropdown === 'obsługa_klienta'}
                                 isPersistent={persistentDropdown === 'obsługa_klienta'}
                                 onToggle={() => handleDropdownToggle('obsługa_klienta')}
