@@ -1,14 +1,14 @@
-import { useState, useContext, useCallback } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import './MainMenu.css';
 import { Link } from 'react-router-dom';
 import Dropdown from '../Dropdown/Dropdown';
 import { AuthContext } from '../../../context/AuthContext';
 
-const MainMenu = () => {
+const MainMenu: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
     const { user } = useContext(AuthContext);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [persistentDropdown, setPersistentDropdown] = useState<string | null>(null);
-  
+
     const handleDropdownToggle = useCallback((dropdownName: string) => {
         if (persistentDropdown === dropdownName) {
             setPersistentDropdown(null);
@@ -18,14 +18,14 @@ const MainMenu = () => {
             setActiveDropdown(dropdownName);
         }
     }, [persistentDropdown]);
-  
+
     const handleDropdownHover = (dropdownName: string) => {
         setActiveDropdown(dropdownName);
         if (persistentDropdown !== dropdownName) {
             setPersistentDropdown(null);
         }
     };
-  
+
     const handleMouseLeave = (dropdownName: string) => {
         if (persistentDropdown !== dropdownName) {
             setActiveDropdown(null);
@@ -41,15 +41,15 @@ const MainMenu = () => {
         setPersistentDropdown(null);
         setActiveDropdown(null);
     };
-  
+
     return (
-        <div className="main-menu-container">
+        <div className={`main-menu-container ${isOpen ? 'visible' : ''}`}>
             <nav className="nav">
                 <ul className="nav-list">
                     <li className='nav-list-option'>
                         <Link to="/" onMouseEnter={handleOtherOptionHover}>Start</Link>
                     </li>
-                    
+
                     {!user && (
                         <>
                             <li className='nav-list-option'>
@@ -106,7 +106,7 @@ const MainMenu = () => {
                                 onMouseLeave={() => handleMouseLeave('finanse')}
                                 onOptionClick={() => handleOptionClick()}
                             />
-                        
+
                             <Dropdown
                                 title="Obsługa klienta"
                                 options={[

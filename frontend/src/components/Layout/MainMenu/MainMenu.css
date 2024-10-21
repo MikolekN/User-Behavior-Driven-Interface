@@ -1,3 +1,17 @@
+.main-menu-container {
+    display: none;
+}
+
+.main-menu-container.visible {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .main-menu-container {
+        display: block;
+    }
+}
+
 .nav {
     display: flex;
     align-items: center;
