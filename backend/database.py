@@ -15,8 +15,10 @@ class Database:
     def initialise() -> None:
         try:
             if os.getenv('HOST') == 'mongodb':
+                # connection string when docker runs
                 client = pymongo.MongoClient("mongodb://admin:password@mongo:27017")
             else:
+                # connection string when runs locally
                 client = pymongo.MongoClient(Database.URI)
             Database.DATABASE = client[Database.DATABASE_NAME]
             print("Database connection ok")
