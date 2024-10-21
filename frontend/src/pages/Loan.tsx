@@ -58,7 +58,6 @@ const Loan = () => {
                 isError: true,
                 errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
             });
-            console.error(error);
         }
     });
 

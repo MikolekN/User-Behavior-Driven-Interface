@@ -35,9 +35,9 @@ const Transfer = () => {
     const onSubmit = handleSubmit(async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
         try {
             const requestBody = {
-                recipientAccountNumber,
-                transferTitle,
-                amount
+                recipientAccountNumber: recipientAccountNumber,
+                transferTitle: transferTitle,
+                amount: amount
             };
             await createTransfer(requestBody);
             await getUser();
@@ -47,7 +47,6 @@ const Transfer = () => {
                 isError: true,
                 errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
             });
-            console.error(error);
         }
     });
 
