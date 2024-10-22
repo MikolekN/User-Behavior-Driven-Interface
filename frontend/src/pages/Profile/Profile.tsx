@@ -1,14 +1,14 @@
 import { useState, useContext, useEffect, useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
-import Tile from '../components/Tile/Tile';
-import FormInput from '../components/FormInput/FormInput';
-import { UserContext } from '../context/UserContext';
-import { UserIconContext } from '../context/UserIconContext';
-import Button from '../components/utils/Button';
-import FormSelect from '../components/FormSelect/FormSelect';
+import Tile from '../../components/Tile/Tile';
+import FormInput from '../../components/FormInput/FormInput';
+import { UserContext } from '../../context/UserContext';
+import { UserIconContext } from '../../context/UserIconContext';
+import Button from '../../components/utils/Button';
+import FormSelect from '../../components/FormSelect/FormSelect';
 import { useForm } from 'react-hook-form';
-import { formValidationRules } from '../components/utils/validationRules';
-import { VALID_FIELDS } from '../services/constants';
+import { formValidationRules } from '../../components/utils/validationRules';
+import { validFields } from './ProfileData';
 
 interface UserIconData {
     files?: FileList;
@@ -167,7 +167,7 @@ const ProfilePage = () => {
     });
 
     const getFieldLabel = (field: string) => {
-        const fieldData = VALID_FIELDS.find((item) => item.value === field);
+        const fieldData = validFields.find((item) => item.value === field);
         return fieldData ? fieldData.label : '';
     };
 
@@ -208,8 +208,10 @@ const ProfilePage = () => {
                     <form onSubmit={(e) => { e.preventDefault(); void onFieldSubmit(); }} className="space-y-4">
                         <FormSelect
                             label="Wybierz pole do zmiany"
-                            options={VALID_FIELDS}
-                            register={registerField('field', { required: 'Należy wybrać pole', validate: (value: string) => VALID_FIELDS.some((field) => field.value === value) || 'Należy wybrać poprawne pole' })}
+                            options={validFields}
+                            register={registerField('field', { required: 'Należy wybrać pole', 
+                                validate: (value: string) => validFields.some((field) => field.value === value) || 'Należy wybrać poprawne pole' 
+                            })}
                             error={fieldErrors.field}
                             className="w-full"
                         />

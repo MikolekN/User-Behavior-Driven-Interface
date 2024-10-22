@@ -3,7 +3,7 @@ import './MainMenu.css';
 import { Link } from 'react-router-dom';
 import Dropdown from '../Dropdown/Dropdown';
 import { UserContext } from '../../../context/UserContext';
-import { CUSTOMER_SERVICE_SUBMENU_OPTIONS, FINANCES_SUBMENU_OPTIONS, SETTINGS_SUBMENU_OPTIONS, TRANSFER_SUBMENU_OPTIONS } from '../../../services/constants';
+import { customerServiceSubmenuOptions, financesSubmenuOptions, settingsSubmenuOptions, transferSubmenuOptions } from './MainMenuData';
 
 const MainMenu = () => {
     const { user } = useContext(UserContext);
@@ -66,7 +66,7 @@ const MainMenu = () => {
                         <>
                             <Dropdown
                                 title="Przelewy"
-                                options={TRANSFER_SUBMENU_OPTIONS}
+                                options={transferSubmenuOptions}
                                 isOpen={activeDropdown === 'przelewy'}
                                 isPersistent={persistentDropdown === 'przelewy'}
                                 onToggle={() => handleDropdownToggle('przelewy')}
@@ -77,7 +77,7 @@ const MainMenu = () => {
 
                             <Dropdown
                                 title="Ustawienia"
-                                options={SETTINGS_SUBMENU_OPTIONS}
+                                options={settingsSubmenuOptions}
                                 isOpen={activeDropdown === 'ustawienia'}
                                 isPersistent={persistentDropdown === 'ustawienia'}
                                 onToggle={() => handleDropdownToggle('ustawienia')}
@@ -88,7 +88,7 @@ const MainMenu = () => {
 
                             <Dropdown
                                 title="Finanse"
-                                options={FINANCES_SUBMENU_OPTIONS}
+                                options={financesSubmenuOptions}
                                 isOpen={activeDropdown === 'finanse'}
                                 isPersistent={persistentDropdown === 'finanse'}
                                 onToggle={() => handleDropdownToggle('finanse')}
@@ -99,7 +99,7 @@ const MainMenu = () => {
                         
                             <Dropdown
                                 title="Obsługa klienta"
-                                options={CUSTOMER_SERVICE_SUBMENU_OPTIONS}
+                                options={customerServiceSubmenuOptions}
                                 isOpen={activeDropdown === 'obsługa_klienta'}
                                 isPersistent={persistentDropdown === 'obsługa_klienta'}
                                 onToggle={() => handleDropdownToggle('obsługa_klienta')}

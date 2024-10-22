@@ -10,8 +10,9 @@ import FormSelect from '../FormSelect/FormSelect';
 import { CyclicPayment } from '../utils/types/CyclicPayment';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../pages/Form.css';
-import { DAY_LENGTH_IN_MILISECONDS, INTERVAL_OPTIONS } from '../../services/constants';
+import { DAY_LENGTH_IN_MILISECONDS } from '../../services/constants';
 import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
+import { intervalOptions } from './CyclicPaymentData';
 
 interface CyclicPaymentFormData {
     cyclicPaymentName: string;
@@ -192,7 +193,7 @@ const CyclicPaymentsForm = () => {
                             />
                             <FormSelect
                                 label="Interval"
-                                options={INTERVAL_OPTIONS}
+                                options={intervalOptions}
                                 register={register('interval', { required: formValidationRules.interval.required })}
                                 error={errors.interval}
                                 className="w-full"
