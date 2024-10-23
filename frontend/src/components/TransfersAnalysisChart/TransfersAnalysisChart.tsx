@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, Bar, Legend } from 'recharts';
 import { TransfersAnalysisChartProps } from '../utils/types/TransfersAnalysisChartTypes';
-import { CHART_HEIGHT, COLORS, LEGEND_HEIGHT } from '../../services/constants';
+import { CHART_HEIGHT, COLORS, LEGEND_HEIGHT } from '../constants';
 
 const TransfersAnalysisChart = (props: TransfersAnalysisChartProps) => {
     const chartRef = useRef<HTMLDivElement>(null);

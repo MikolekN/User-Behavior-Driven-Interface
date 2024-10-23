@@ -10,7 +10,7 @@ import FormSelect from '../FormSelect/FormSelect';
 import { CyclicPayment } from '../utils/types/CyclicPayment';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../pages/Form.css';
-import { DAY_LENGTH_IN_MILISECONDS } from '../../services/constants';
+import { DAY_LENGTH_IN_MILISECONDS } from '../constants';
 import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 import { intervalOptions } from './CyclicPaymentData';
 

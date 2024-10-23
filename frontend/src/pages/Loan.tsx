@@ -7,7 +7,7 @@ import FormInput from '../components/FormInput/FormInput';
 import { formValidationRules } from '../components/utils/validationRules';
 import Slider from '@mui/material/Slider';
 import { UserContext } from '../context/UserContext';
-import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MIN_LOAN_AMOUNT } from '../services/constants';
+import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MIN_LOAN_AMOUNT } from './constants';
 import { TransferContext } from '../context/TransferContext';
 
 interface LoanFormData {
