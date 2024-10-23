@@ -1,12 +1,14 @@
 import { useState, useContext, useEffect, useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
-import Tile from '../components/Tile/Tile';
-import FormInput from '../components/FormInput/FormInput';
-import { AuthContext } from '../context/AuthContext';
-import Button from '../components/utils/Button';
-import FormSelect from '../components/FormSelect/FormSelect';
+import Tile from '../../components/Tile/Tile';
+import FormInput from '../../components/FormInput/FormInput';
+import { UserContext } from '../../context/UserContext';
+import { UserIconContext } from '../../context/UserIconContext';
+import Button from '../../components/utils/Button';
+import FormSelect from '../../components/FormSelect/FormSelect';
 import { useForm } from 'react-hook-form';
-import { formValidationRules } from '../components/utils/validationRules';
+import { formValidationRules } from '../../components/utils/validationRules';
+import { validFields } from './ProfileData';
 
 interface UserIconData {
     files?: FileList;
@@ -22,20 +24,15 @@ interface UserPasswordData {
     newPassword: string;
 }
 
-const validFields = [
-    { value: 'login', label: 'Nazwa użytkownika' },
-    { value: 'account_name', label: 'Nazwa konta' },
-    { value: 'currency', label: 'Waluta' }
-];
-
 const ProfilePage = () => {
     const [apiIconError, setApiIconError] = useState({ isError: false, errorMessage: '' });
     const [apiFieldError, setApiFieldError] = useState({ isError: false, errorMessage: '' });
     const [apiPasswordError, setApiPasswordError] = useState({ isError: false, errorMessage: '' });
-    const { user, getUser, getIcon, sendIcon, updateUser, updatePassword } = useContext(AuthContext);
+    const { user, getUser, updateUser, updatePassword } = useContext(UserContext);
+    const { getIcon, sendIcon } = useContext(UserIconContext);
 
-    const { register: registerIcon, handleSubmit: handleSubmitIcon } = useForm<UserIconData>();
-    const { register: registerField, handleSubmit: handleSubmitField, setValue: setFieldValueForm, formState: { errors: fieldErrors }, watch } = useForm<UserFieldData>();
+    const { register: registerIcon, handleSubmit: handleSubmitIcon, setValue: setIconValueForm, formState: { errors: iconErrors } } = useForm<UserIconData>();
+    const { register: registerField, handleSubmit: handleSubmitField, setValue: setFieldValueForm, formState: { errors: fieldErrors }, watch, clearErrors: clearFieldErrors } = useForm<UserFieldData>();
     const { register: registerPassword, handleSubmit: handleSubmitPassword, formState: { errors: passwordErrors } } = useForm<UserPasswordData>();
     
     const selectedField = watch('field');
@@ -57,9 +54,13 @@ const ProfilePage = () => {
     useEffect(() => {
         if (selectedField && user) {
             const currentValue = getUserFieldValue(selectedField);
+            clearFieldErrors();
             setFieldValueForm('value', currentValue!);
         }
-    }, [user, getUserFieldValue, selectedField, setFieldValueForm]);
+        if (user && !selectedField) {
+            setFieldValueForm('value', '');
+        }
+    }, [user, getUserFieldValue, selectedField, setFieldValueForm, clearFieldErrors]);
 
     if (!user) return <Navigate to="/login" />;
 
@@ -135,12 +136,13 @@ const ProfilePage = () => {
     const onIconSubmit = handleSubmitIcon(async ({ files }) => {
         try {
             if (files && files[0]) {
-                const processedIcon = await preprocessImage(files[0]);
-                if (processedIcon) {
-                    await sendIcon(processedIcon);
+                const preprocessedIcon = await preprocessImage(files[0]);
+                if (preprocessedIcon) {
+                    await sendIcon(preprocessedIcon);
                     await getIcon();
                 }
             }
+            setIconValueForm('files', undefined);
             setApiIconError({ isError: false, errorMessage: '' });
         } catch (error) {
             setApiIconError({ isError: true, errorMessage: typeof error === 'string' ? error : 'Error updating user icon' });
@@ -189,7 +191,8 @@ const ProfilePage = () => {
                         <FormInput
                             label="Wybierz nową ikonę"
                             fieldType="file"
-                            register={registerIcon('files')}
+                            register={registerIcon('files', { required: formValidationRules.icon.required })}
+                            error={iconErrors.files}
                             className="w-full"
                         />
                         <div className="flex justify-center">
@@ -206,7 +209,9 @@ const ProfilePage = () => {
                         <FormSelect
                             label="Wybierz pole do zmiany"
                             options={validFields}
-                            register={registerField('field', { required: 'Należy wybrać pole', validate: (value: string) => validFields.some((field) => field.value === value) || 'Należy wybrać poprawne pole' })}
+                            register={registerField('field', { required: 'Należy wybrać pole', 
+                                validate: (value: string) => validFields.some((field) => field.value === value) || 'Należy wybrać poprawne pole' 
+                            })}
                             error={fieldErrors.field}
                             className="w-full"
                         />
@@ -214,6 +219,7 @@ const ProfilePage = () => {
                             label={'Nowa ' + (selectedField ? getFieldLabel(selectedField).toLocaleLowerCase() : 'wartość')}
                             fieldType="text"
                             register={registerField('value', valueValidation(selectedField) )}
+                            error={fieldErrors.value}
                             className="w-full"
                         />
                         <div className="flex justify-center">
@@ -238,7 +244,6 @@ const ProfilePage = () => {
                             label="Nowe hasło"
                             fieldType="password"
                             register={registerPassword('newPassword', { required: formValidationRules.password.required, validate: formValidationRules.password.validate })}
-                            
                             error={passwordErrors.currentPassword}
                             className="w-full"
                         />

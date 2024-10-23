@@ -2,10 +2,10 @@ import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import './Info.css';
-import { AuthContext } from '../context/AuthContext';
+import { UserContext } from '../context/UserContext';
 
 const Info = () => {
-    const { user } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
     if (!user) return <Navigate to="/login" />;
 
     return (

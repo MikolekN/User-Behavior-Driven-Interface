@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Navigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 import { AuthContext } from '../context/AuthContext';
 import Tile from '../components/Tile/Tile';
 import './Form.css';
@@ -14,7 +15,8 @@ interface LoginFormData {
 }
 
 const Login = () => {
-    const { user, login } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
+    const { login } = useContext(AuthContext);
     const navigate = useNavigate();
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
@@ -32,18 +34,10 @@ const Login = () => {
             await login(email, password);
             navigate('/dashboard');
         } catch (error) {
-            if (error instanceof Error) {
-                setApiError({
-                    isError: true,
-                    errorMessage: error.message
-                });
-            } else {
-                setApiError({
-                    isError: true,
-                    errorMessage: 'An unknown error occurred. Please try again.'
-                });
-            }
-            console.error(error);
+            setApiError({
+                isError: true,
+                errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
+            });
         }
     });
 
@@ -73,7 +67,7 @@ const Login = () => {
                                 className="w-full"
                             />
                             <Button className="w-full">
-						Submit
+                                Submit
                             </Button>
                             <div>
                                 {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
