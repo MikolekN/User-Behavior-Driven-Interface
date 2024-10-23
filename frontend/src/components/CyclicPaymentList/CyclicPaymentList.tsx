@@ -1,20 +1,23 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
+import { UserContext } from '../../context/UserContext';
 import { CyclicPayment } from '../utils/types/CyclicPayment';
 import Button from '../utils/Button';
 import arrowUp from '../../assets/images/chevron-up.svg';
 import arrowDown from '../../assets/images/chevron-down.svg';
+import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 
 interface CyclicPaymentListProps {
     cyclicPaymentsList: CyclicPayment[];
 }
 
 const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
-    const { user, getUser } = useContext(AuthContext);
+    const { user, getUser } = useContext(UserContext);
+    const { deleteCyclicPayment } = useContext(CyclicPaymentContext);
     const [cyclicPayments, setCyclicPayments] = useState<CyclicPayment[]>([]);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [hovering, setHovering] = useState<number | null>(null);
+    const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
 
     const toggleAnswer = (index: number) => {
         setActiveIndex(activeIndex === index ? null : index);
@@ -40,27 +43,20 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
     };
 
     const handleDelete = (id: string) => {
-        const deleteCyclicPayment = async () => {
+        const deleteCyclicPaymentItem = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:5000/api/cyclic-payment/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json' 
-                    },
-                    credentials: 'include'
-                });
-                if (response.ok) {
-                    setActiveIndex(null);
-                    await getUser();
-                } else {
-                    throw new Error('Network response was not ok');
-                }
+                await deleteCyclicPayment(id);
+                setActiveIndex(null);
+                await getUser();
             } catch (error) {
-                console.error(error);
+                setApiError({
+                    isError: true,
+                    errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
+                });
             }
         };
 
-        void deleteCyclicPayment().then(() => {
+        void deleteCyclicPaymentItem().then(() => {
             setCyclicPayments(cyclicPayments => cyclicPayments.filter(x => x.id !== id));
         });
     };

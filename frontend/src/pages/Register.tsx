@@ -7,6 +7,7 @@ import FormInput from '../components/FormInput/FormInput';
 import Button from '../components/utils/Button';
 import { formValidationRules } from '../components/utils/validationRules';
 
+import { UserContext } from '../context/UserContext';
 import { AuthContext } from '../context/AuthContext';
 
 interface RegisterFormData {
@@ -17,7 +18,8 @@ interface RegisterFormData {
 
 const Register = () => {
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
-    const { user, register } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
+    const { register } = useContext(AuthContext);
     const { register: formRegister, control, handleSubmit, formState: { errors } } = useForm<RegisterFormData>({
         defaultValues: {
             email: '',
@@ -40,18 +42,10 @@ const Register = () => {
             await register(email, userPassword);
             navigate('/login');
         } catch (error) {
-            if (error instanceof Error) {
-                setApiError({
-                    isError: true,
-                    errorMessage: error.message
-                });
-            } else {
-                setApiError({
-                    isError: true,
-                    errorMessage: 'An unknown error occurred. Please try again.'
-                });
-            }
-            console.error(error);
+            setApiError({
+                isError: true,
+                errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
+            });
         }
     });
 

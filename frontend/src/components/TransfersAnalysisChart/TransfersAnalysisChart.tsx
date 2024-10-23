@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, Bar, Legend } from 'recharts';
 import { TransfersAnalysisChartProps } from '../utils/types/TransfersAnalysisChartTypes';
-
-const colors: string[] = ['#00d800', '#ee0000']; // green, red hex code
+import { CHART_HEIGHT, COLORS, LEGEND_HEIGHT } from '../constants';
 
 const TransfersAnalysisChart = (props: TransfersAnalysisChartProps) => {
     const chartRef = useRef<HTMLDivElement>(null);
@@ -19,13 +18,13 @@ const TransfersAnalysisChart = (props: TransfersAnalysisChartProps) => {
     }, []);
 
     const calculateColumnWidth = useCallback(() => {
-        if (chartRef.current && props.chartData.length > 0) {
+        if (chartRef.current && props.chartData!.length > 0) {
             const chartWidth = chartRef.current.offsetWidth;
-            const numberOfBars = props.chartData.length;
+            const numberOfBars = props.chartData!.length;
             const calculatedColumnWidth = chartWidth / numberOfBars;
             setColumnWidth(calculatedColumnWidth);
         }
-    }, [props.chartData.length]);
+    }, [props.chartData!.length]);
 
     useEffect(() => {
         calculateColumnWidth();
@@ -60,17 +59,17 @@ const TransfersAnalysisChart = (props: TransfersAnalysisChartProps) => {
 
     return (
         <div ref={chartRef} style={{ width: '100%' }}>
-            <ResponsiveContainer width="100%" height={400}>
-                <BarChart data={props.chartData}>
+            <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
+                <BarChart data={props.chartData!}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="interval" tickFormatter={formatMonth} />
                     <YAxis />
                     <Tooltip />
-                    <Legend verticalAlign="top" height={30} />
+                    <Legend verticalAlign="top" height={LEGEND_HEIGHT} />
                     <CartesianGrid stroke="#f5f5f5" />
                     {/* tutaj mozna dac jakies zmienne typu kolor primary, sedoncday czy coś */}
-                    <Bar dataKey="income" fill={colors[0]} radius={[10, 10, 0, 0]} />
-                    <Bar dataKey="outcome" fill={colors[1]} radius={[10, 10, 0, 0]} />
+                    <Bar dataKey="income" fill={COLORS.GREEN} radius={[10, 10, 0, 0]} />
+                    <Bar dataKey="outcome" fill={COLORS.RED} radius={[10, 10, 0, 0]} />
                 </BarChart>
             </ResponsiveContainer>
         </div>

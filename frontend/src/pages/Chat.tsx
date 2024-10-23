@@ -3,7 +3,7 @@ import Tile from '../components/Tile/Tile';
 import './Chat.css';
 import send_arrow from '../assets/images/send.png';
 import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { UserContext } from '../context/UserContext';
 
 type MessageType = 'user' | 'system';
 
@@ -15,7 +15,7 @@ interface Message {
 const Chat: FC = () => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState<Message[]>([]);
-    const { user } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
     const messageEndRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {

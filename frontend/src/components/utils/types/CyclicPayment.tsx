@@ -19,3 +19,16 @@ export interface BackendCyclicPayment {
     start_date: Date | null;
     transfer_title: string;
 }
+
+export const mapBackendCyclicPaymentToCyclicPayment = (backendCyclicPaymentData: BackendCyclicPayment): CyclicPayment => {
+    return {
+        id: backendCyclicPaymentData._id,
+        amount: backendCyclicPaymentData.amount,
+        cyclicPaymentName: backendCyclicPaymentData.cyclic_payment_name,
+        interval: backendCyclicPaymentData.interval,
+        recipientAccountNumber: backendCyclicPaymentData.recipient_account_number,
+        recipientName: backendCyclicPaymentData.recipient_name,
+        transferTitle: backendCyclicPaymentData.transfer_title,
+        startDate: backendCyclicPaymentData.start_date ? new Date(backendCyclicPaymentData.start_date) : null,
+    };
+};

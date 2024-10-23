@@ -1,7 +1,7 @@
 import { useState, useContext, FC } from 'react';
 import Tile from '../../components/Tile/Tile';
 import './FAQ.css';
-import { AuthContext } from '../../context/AuthContext';
+import { UserContext } from '../../context/UserContext';
 import { Navigate } from 'react-router-dom';
 import { FAQData } from './FAQData';
 
@@ -23,7 +23,7 @@ const FAQItem: FC<FAQItemProps> = ({ question, answer, isActive, onClick }) => (
 
 const FAQ: FC = () => {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
-    const { user } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
 
     const toggleAnswer = (index: number) => 
         setActiveIndex((prev) => (prev === index ? null : index));
