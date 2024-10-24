@@ -5,11 +5,9 @@ from flask_login import current_user, login_required
 from datetime import datetime
 from collections.abc import Mapping
 from typing import Any
-from users.user import User
-from users.user_repository import UserRepository
-from cyclic_payments.cyclic_payment import CyclicPayment
-from cyclic_payments.cyclic_payment_repository import CyclicPaymentRepository
-from helpers.calculations import add, substract
+from ..users import *
+from ..cyclic_payments import *
+from ..helpers import add, substract
 
 cyclic_payment_blueprint = Blueprint('cyclic_payment', __name__, url_prefix='/api')
 

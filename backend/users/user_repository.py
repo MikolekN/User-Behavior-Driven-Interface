@@ -1,6 +1,6 @@
 import bson
-from database import Database
-from users.user import User
+from ..database import Database
+from .user import User
 
 class UserRepository:
     COLLECTION: str = 'Users'

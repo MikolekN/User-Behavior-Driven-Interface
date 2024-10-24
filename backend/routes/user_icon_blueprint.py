@@ -1,9 +1,9 @@
-from flask import Blueprint, request, jsonify, Response, current_app, send_file
+from flask import Blueprint, request, jsonify, Response, send_file
 from flask_login import current_user, login_required
-from users.user_repository import UserRepository
+from ..users import UserRepository
 from werkzeug.datastructures import FileStorage
 from PIL import Image
-from constants import UPLOAD_FOLDER, ALLOWED_EXTENSIONS
+from ..constants import UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 
 import uuid
 import os

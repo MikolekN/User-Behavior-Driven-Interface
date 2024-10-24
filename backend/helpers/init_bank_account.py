@@ -1,7 +1,6 @@
 from datetime import datetime
-from users.user import User
-from users.user_repository import UserRepository
-from constants import BANK_ACCOUNT_NUMBER
+from ..users import *
+from ..constants import BANK_ACCOUNT_NUMBER
 
 def init_bank_account() -> User | None:
 
@@ -21,5 +20,5 @@ def init_bank_account() -> User | None:
         currency='PLN',
         user_icon=None,
         role='BANK')
-    print(user)
+    
     user = UserRepository.insert(user)

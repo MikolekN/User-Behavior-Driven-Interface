@@ -1,7 +1,7 @@
 from flask import Response, request, jsonify, Blueprint
 from flask_login import current_user, login_required
 from flask_login import login_required
-from users.user_repository import UserRepository
+from ..users import UserRepository
 
 import bcrypt
 

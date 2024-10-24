@@ -4,8 +4,7 @@ import bcrypt
 from datetime import datetime
 from collections.abc import Mapping
 from typing import Any
-from users.user_repository import UserRepository
-from users.user import User
+from ..users import *
 
 import random
 
