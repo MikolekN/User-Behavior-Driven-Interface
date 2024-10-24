@@ -32,7 +32,7 @@ def login() -> tuple[Response, int]:
         return jsonify(message="User does not exist"), 404
 
     if not bcrypt.checkpw(data['password'].encode('utf-8'), user.password.encode('utf-8')):
-        return jsonify(status="error", message="Invalid login credentials"), 401
+        return jsonify(message="Invalid login credentials"), 401
 
     login_user(user)
     sanitized_user = user.sanitize_user_dict()

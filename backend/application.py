@@ -17,6 +17,10 @@ def create_app():
 
     login_manager = LoginManager(app)
     login_manager.init_app(app)
+    @login_manager.user_loader
+    def load_user(id: str) -> User | None:
+        return UserRepository.find_by_id(id)
+
 
     with app.app_context():
         init_bank_account()
@@ -43,10 +47,6 @@ swaggerui_blueprint = get_swaggerui_blueprint(
     config={ 'app_name': "User-Behavior-Driven-Interface Backend API" }
 )
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
-
-@app.login_manager.user_loader
-def load_user(id: str) -> User | None:
-    return UserRepository.find_by_id(id)
 
 if __name__ == "__main__":
     app.run(debug=app.config['DEBUG_MODE'], host="0.0.0.0")
