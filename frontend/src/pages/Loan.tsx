@@ -69,7 +69,7 @@ const Loan = () => {
 
     return (
         <div className="flex items-center justify-center">
-            <Tile title="Loan" className="form-tile w-2/5  bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
+            <Tile title="Loan" className="form-tile w-2/5  bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto px-1">
                         <div className="mt-8">
@@ -117,7 +117,7 @@ const Loan = () => {
                                 <label className="text-sm font-semibold text-gray-700 block text-center">Number of installments</label>
                                 <div className="flex justify-between mt-4">
                                     {AVAILABLE_LOAN_LENGTH.map((item, idx) => (
-                                        <div onClick={() => { toggleAnswer(idx); }} style={activeIndex === idx ? { 'background': '#60a5fa' } : {}} key={idx} className="border-2 border-blue-600 border-opacity-20 rounded-lg px-4 py-2">
+                                        <div onClick={() => { toggleAnswer(idx); }} style={activeIndex === idx ? { 'background': '#60a5fa' } : {}} key={idx} className="border-2 border-blue-600 cursor-pointer hover:bg-blue-200 border-opacity-20 rounded-lg px-4 py-2">
                                             <label className="text-sm font-semibold text-gray-700 block">{item.loanLength}</label>
                                         </div>
                                     ))}

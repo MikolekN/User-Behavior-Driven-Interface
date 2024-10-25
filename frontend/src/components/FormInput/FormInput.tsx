@@ -26,7 +26,7 @@ const FormInput = ({ label, fieldType, register, error, children, className }: F
                 />
                 {children && (
                     <div
-                        className="p-3 bg-gray-300 text-gray-700 border-l border-gray-300 rounded-r-lg"
+                        className="p-3 bg-gray-300 text-gray-700 border-l border-gray-300 rounded-r-md" 
                         style={{ width: '60px', textAlign: 'center' }}
                     >
                         {children}
