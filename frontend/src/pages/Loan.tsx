@@ -43,7 +43,6 @@ const Loan = () => {
     };
     
     const onSubmit = handleSubmit(async ({ amount }: LoanFormData) => {
-        console.log(amount)
         try {
             const requestBody = {
                 recipientAccountNumber: user.accountNumber,
