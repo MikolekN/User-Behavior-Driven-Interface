@@ -1,14 +1,14 @@
 import { useState, useContext } from 'react';
 import Tile from '../../components/Tile/Tile';
 import './FAQ.css';
-import { AuthContext } from '../../context/AuthContext';
+import { UserContext } from '../../context/UserContext';
 import { Navigate } from 'react-router-dom';
-import { FAQData } from './FAQData'; // Import FAQ data from the new file
+import { FAQData } from './FAQData';
 
 const FAQ = () => {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const toggleAnswer = (index: number) => { setActiveIndex(activeIndex === index ? null : index); };
-    const { user } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
 
     if (!user) return <Navigate to="/login" />; 
 

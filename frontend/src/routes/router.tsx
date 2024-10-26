@@ -13,7 +13,7 @@ import TransactionsMonthlyAnalysis from '../components/TransactionsAnalysis/Tran
 import TransactionsYearlyAnalysis from '../components/TransactionsAnalysis/TransactionsYearlyAnalysis';
 import CyclicPaymentsForm from '../components/CyclicPaymentForm/CyclicPaymentForm';
 import CyclicPayments from '../pages/CyclicPayments';
-import Profile from '../pages/Profile';
+import Profile from '../pages/Profile/Profile';
 import Loan from '../pages/Loan';
 
 export const router = createBrowserRouter([

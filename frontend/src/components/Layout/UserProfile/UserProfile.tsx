@@ -2,10 +2,14 @@ import { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './UserProfile.css';
 import defaultIcon from '../../../assets/images/user.png';
+import { UserContext } from '../../../context/UserContext';
 import { AuthContext } from '../../../context/AuthContext';
+import { UserIconContext } from '../../../context/UserIconContext';
 
 const Profile = () => {
-    const { user, logout, getIcon } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
+    const { logout } = useContext(AuthContext);
+    const { getIcon } = useContext(UserIconContext);
     const navigate = useNavigate();
     const [dropdownOpen, setDropdownOpen] = useState(false);    
     const [iconSrc, setIconSrc] = useState<string>(defaultIcon);
@@ -35,14 +39,19 @@ const Profile = () => {
     }, [dropdownOpen, toggleDropdown]);
 
     const handleLogout = async () => {
-        await logout();
-        navigate('/');
+        try {
+            await logout();
+        } catch { /* If error occurs it is displayed in console */ } finally {
+            navigate('/');
+        }
     };
 
     useEffect(() => {
         const fetchIcon = async () => {
             if (user && !user.icon) {
-                await getIcon();
+                try {
+                    await getIcon();
+                } catch { /* If error occurs it is displayed in console */ }
             }
     
             if (user && user.icon) {

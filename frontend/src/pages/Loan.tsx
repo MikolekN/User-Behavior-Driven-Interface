@@ -4,21 +4,23 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
-import { AuthContext } from '../context/AuthContext';
-import { isErrorResponse } from '../components/utils/types/ErrorResponse';
-import Slider from '@mui/material/Slider';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoanFormData, LoanFormDataSchema } from '../schemas/loanSchema';
+import Slider from '@mui/material/Slider';
+import { UserContext } from '../context/UserContext';
+import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MIN_LOAN_AMOUNT } from './constants';
+import { TransferContext } from '../context/TransferContext';
 
 const Loan = () => {
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
-    const { user, getUser } = useContext(AuthContext);
+    const { user, getUser } = useContext(UserContext);
+    const { createLoan } = useContext(TransferContext);
     const [ sliderValue, setSliderValue ] = useState<number | null>(null);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<LoanFormData>({
         resolver: zodResolver(LoanFormDataSchema),
         defaultValues: {
-            amount: '1000'
+            amount: MIN_LOAN_AMOUNT.toString()
         },
         mode: 'onChange'
     });
@@ -43,49 +45,23 @@ const Loan = () => {
     const onSubmit = handleSubmit(async ({ amount }: LoanFormData) => {
         console.log(amount)
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/transfer/loan', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body: JSON.stringify({
-                    recipientAccountNumber: user.accountNumber,
-                    transferTitle: 'Pożyczka gotówkowa',
-                    amount: amount
-                })
-            });
-
-            const responseJson: unknown = await response.json();
-
-            if (response.ok) {
-                await getUser();
-                navigate('/dashboard');
-            } else {
-                if (isErrorResponse(responseJson)) {
-                    setApiError({
-                        isError: true,
-                        errorMessage: responseJson.message
-                    });
-                    throw new Error(responseJson.message);
-                } else {
-                    throw new Error('Unexpected error format');
-                }
-            }
+            const requestBody = {
+                recipientAccountNumber: user.accountNumber,
+                transferTitle: 'Pożyczka gotówkowa',
+                amount: amount
+            };
+            await createLoan(requestBody);
+            await getUser();
+            navigate('/dashboard');
         } catch (error) {
-            console.error(error);
+            setApiError({
+                isError: true,
+                errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
+            });
         }
     });
 
-    const availableLoanLengths = [
-        { loanLength: 6 },
-        { loanLength: 12 },
-        { loanLength: 24 },
-        { loanLength: 36 },
-        { loanLength: 48 }
-    ];
-
-    const handleSliderChange = (event: Event, newValue: number | number[]) => {
+    const handleSliderChange = (_event: Event, newValue: number | number[]) => {
         const sliderVal = newValue as number; 
         setSliderValue(sliderVal);
         setValue('amount', sliderVal.toString());
@@ -122,9 +98,9 @@ const Loan = () => {
                                     value={sliderValue as number}
                                     onChange={handleSliderChange}
                                     aria-label="input-slider"
-                                    min={1000}
-                                    step={1000}
-                                    max={100000}
+                                    min={MIN_LOAN_AMOUNT}
+                                    step={LOAN_AMOUNT_STEP}
+                                    max={MAX_LOAN_AMOUNT}
                                     valueLabelDisplay="auto"
                                 />
                                 <div className="flex justify-between">
@@ -135,7 +111,7 @@ const Loan = () => {
                             <div className="mt-8">
                                 <label className="text-sm font-semibold text-gray-700 block text-center">Number of installments</label>
                                 <div className="flex justify-between mt-4">
-                                    {availableLoanLengths.map((item, idx) => (
+                                    {AVAILABLE_LOAN_LENGTH.map((item, idx) => (
                                         <div onClick={() => { toggleAnswer(idx); }} style={activeIndex === idx ? { 'background': '#60a5fa' } : {}} key={idx} className="border-2 border-blue-600 border-opacity-20 rounded-lg px-4 py-2">
                                             <label className="text-sm font-semibold text-gray-700 block">{item.loanLength}</label>
                                         </div>

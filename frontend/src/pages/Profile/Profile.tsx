@@ -1,32 +1,29 @@
 import { useState, useContext, useEffect, useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
-import Tile from '../components/Tile/Tile';
-import FormInput from '../components/FormInput/FormInput';
-import { AuthContext } from '../context/AuthContext';
-import Button from '../components/utils/Button';
-import FormSelect from '../components/FormSelect/FormSelect';
+import Tile from '../../components/Tile/Tile';
+import FormInput from '../../components/FormInput/FormInput';
+import { UserContext } from '../../context/UserContext';
+import { UserIconContext } from '../../context/UserIconContext';
+import Button from '../../components/utils/Button';
+import FormSelect from '../../components/FormSelect/FormSelect';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { UserPasswordFormData, UserPasswordFormDataSchema } from '../schemas/userPasswordSchema';
-import { UserFieldFormData, UserFieldFormDataSchema } from '../schemas/userFieldSchema';
-import { UserIconFormDataSchema, UserIconFromData } from '../schemas/userIconSchema';
-
-const validFields = [
-    { value: 'login', label: 'Nazwa użytkownika' },
-    { value: 'account_name', label: 'Nazwa konta' },
-    { value: 'currency', label: 'Waluta' }
-];
+import { UserPasswordFormData, UserPasswordFormDataSchema } from '../../schemas/userPasswordSchema';
+import { UserFieldFormData, UserFieldFormDataSchema } from '../../schemas/userFieldSchema';
+import { UserIconFormDataSchema, UserIconFromData } from '../../schemas/userIconSchema';
+import { validFields } from './ProfileData';
 
 const ProfilePage = () => {
     const [apiIconError, setApiIconError] = useState({ isError: false, errorMessage: '' });
     const [apiFieldError, setApiFieldError] = useState({ isError: false, errorMessage: '' });
     const [apiPasswordError, setApiPasswordError] = useState({ isError: false, errorMessage: '' });
-    const { user, getUser, getIcon, sendIcon, updateUser, updatePassword } = useContext(AuthContext);
+    const { user, getUser, updateUser, updatePassword } = useContext(UserContext);
+    const { getIcon, sendIcon } = useContext(UserIconContext);
 
-    const { register: registerIcon, handleSubmit: handleSubmitIcon, formState: { errors: iconErrors } } = useForm<UserIconFromData>({
+    const { register: registerIcon, handleSubmit: handleSubmitIcon, setValue: setIconValueForm, formState: { errors: iconErrors } } = useForm<UserIconFromData>({
         resolver: zodResolver(UserIconFormDataSchema)
     });
-    const { register: registerField, handleSubmit: handleSubmitField, setValue: setFieldValueForm, formState: { errors: fieldErrors }, watch } = useForm<UserFieldFormData>({
+    const { register: registerField, handleSubmit: handleSubmitField, setValue: setFieldValueForm, formState: { errors: fieldErrors }, watch, clearErrors: clearFieldErrors } = useForm<UserFieldFormData>({
         resolver: zodResolver(UserFieldFormDataSchema)
     });
     const { register: registerPassword, handleSubmit: handleSubmitPassword, formState: { errors: passwordErrors } } = useForm<UserPasswordFormData>({
@@ -52,9 +49,13 @@ const ProfilePage = () => {
     useEffect(() => {
         if (selectedField && user) {
             const currentValue = getUserFieldValue(selectedField);
+            clearFieldErrors();
             setFieldValueForm('value', currentValue!);
         }
-    }, [user, getUserFieldValue, selectedField, setFieldValueForm]);
+        if (user && !selectedField) {
+            setFieldValueForm('value', '');
+        }
+    }, [user, getUserFieldValue, selectedField, setFieldValueForm, clearFieldErrors]);
 
     if (!user) return <Navigate to="/login" />;
 
@@ -130,12 +131,13 @@ const ProfilePage = () => {
     const onIconSubmit = handleSubmitIcon(async ({ files }) => {
         try {
             if (files && files[0]) {
-                const processedIcon = await preprocessImage(files[0]);
-                if (processedIcon) {
-                    await sendIcon(processedIcon);
+                const preprocessedIcon = await preprocessImage(files[0]);
+                if (preprocessedIcon) {
+                    await sendIcon(preprocessedIcon);
                     await getIcon();
                 }
             }
+            setIconValueForm('files', undefined);
             setApiIconError({ isError: false, errorMessage: '' });
         } catch (error) {
             setApiIconError({ isError: true, errorMessage: typeof error === 'string' ? error : 'Error updating user icon' });

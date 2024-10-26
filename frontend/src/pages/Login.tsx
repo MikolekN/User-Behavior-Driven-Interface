@@ -1,16 +1,18 @@
 import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Navigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 import { AuthContext } from '../context/AuthContext';
 import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import Button from '../components/utils/Button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LoginFormData, LoginFormDataSchema } from '../schemas/LoginSchema';
+import { LoginFormData, LoginFormDataSchema } from '../schemas/loginSchema';
 
 const Login = () => {
-    const { user, login } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
+    const { login } = useContext(AuthContext);
     const navigate = useNavigate();
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
@@ -29,18 +31,10 @@ const Login = () => {
             await login(email, password);
             navigate('/dashboard');
         } catch (error) {
-            if (error instanceof Error) {
-                setApiError({
-                    isError: true,
-                    errorMessage: error.message
-                });
-            } else {
-                setApiError({
-                    isError: true,
-                    errorMessage: 'An unknown error occurred. Please try again.'
-                });
-            }
-            console.error(error);
+            setApiError({
+                isError: true,
+                errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
+            });
         }
     });
 

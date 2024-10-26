@@ -1,20 +1,23 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
+import { UserContext } from '../../context/UserContext';
 import { CyclicPayment } from '../utils/types/CyclicPayment';
 import Button from '../utils/Button';
 import arrowUp from '../../assets/images/chevron-up.svg';
 import arrowDown from '../../assets/images/chevron-down.svg';
 import '../utils/styles/table.css';
+import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 
 interface CyclicPaymentListProps {
     cyclicPaymentsList: CyclicPayment[];
 }
 
 const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
-    const { user, getUser } = useContext(AuthContext);
+    const { user, getUser } = useContext(UserContext);
+    const { deleteCyclicPayment } = useContext(CyclicPaymentContext);
     const [cyclicPayments, setCyclicPayments] = useState<CyclicPayment[]>([]);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
+    const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
 
     const toggleAnswer = (index: number) => {
         setActiveIndex(activeIndex === index ? null : index);
@@ -40,27 +43,20 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
     };
 
     const handleDelete = (id: string) => {
-        const deleteCyclicPayment = async () => {
+        const deleteCyclicPaymentItem = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:5000/api/cyclic-payment/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json' 
-                    },
-                    credentials: 'include'
-                });
-                if (response.ok) {
-                    setActiveIndex(null);
-                    await getUser();
-                } else {
-                    throw new Error('Network response was not ok');
-                }
+                await deleteCyclicPayment(id);
+                setActiveIndex(null);
+                await getUser();
             } catch (error) {
-                console.error(error);
+                setApiError({
+                    isError: true,
+                    errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
+                });
             }
         };
 
-        void deleteCyclicPayment().then(() => {
+        void deleteCyclicPaymentItem().then(() => {
             setCyclicPayments(cyclicPayments => cyclicPayments.filter(x => x.id !== id));
         });
     };
@@ -185,7 +181,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                             </div>
                                             <div className="flex justify-end space-x-4 w-full">
                                                 <Link to={`/edit-cyclic-payment/${cyclicPayment.id}`} className="w-1/6">
-                                                    <Button className="w-full bg-blue-600 hover:bg-blue-700 mt-1">
+                                                    <Button className="w-full mt-1">
                                                     Edit
                                                     </Button>
                                                 </Link>
@@ -193,6 +189,9 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                     className="w-1/6 bg-red-600 hover:bg-red-700 mt-1 ml-10">
                                                     Delete
                                                 </Button>
+                                            </div>
+                                            <div>
+                                                {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
                                             </div>
                                         </div>
                                     </td>

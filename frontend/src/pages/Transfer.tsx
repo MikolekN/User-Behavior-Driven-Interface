@@ -4,14 +4,16 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
-import { AuthContext } from '../context/AuthContext';
-import { isErrorResponse } from '../components/utils/types/ErrorResponse';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TransferFormData, TransferFormDataSchema } from '../schemas/transferSchema';
+import { UserContext } from '../context/UserContext';
+import Button from '../components/utils/Button';
+import { TransferContext } from '../context/TransferContext';
 
 const Transfer = () => {
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
-    const { user, getUser } = useContext(AuthContext);
+    const { user, getUser } = useContext(UserContext);
+    const { createTransfer } = useContext(TransferContext);
     const { register, handleSubmit, formState: { errors } } = useForm<TransferFormData>({
         resolver: zodResolver(TransferFormDataSchema),
         defaultValues: {
@@ -28,37 +30,19 @@ const Transfer = () => {
     
     const onSubmit = handleSubmit(async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/transfer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body: JSON.stringify({
-                    recipientAccountNumber,
-                    transferTitle,
-                    amount
-                })
-            });
-
-            const responseJson: unknown = await response.json();
-
-            if (response.ok) {
-                await getUser();
-                navigate('/dashboard');
-            } else {
-                if (isErrorResponse(responseJson)) {
-                    setApiError({
-                        isError: true,
-                        errorMessage: responseJson.message
-                    });
-                    throw new Error(responseJson.message);
-                } else {
-                    throw new Error('Unexpected error format');
-                }
-            }
+            const requestBody = {
+                recipientAccountNumber: recipientAccountNumber,
+                transferTitle: transferTitle,
+                amount: amount
+            };
+            await createTransfer(requestBody);
+            await getUser();
+            navigate('/dashboard');
         } catch (error) {
-            console.error(error);
+            setApiError({
+                isError: true,
+                errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
+            });
         }
     });
 
@@ -103,7 +87,9 @@ const Transfer = () => {
                                 {user.currency}
                             </FormInput>
                             <div>
-                                <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Submit</button>
+                                <Button className="w-full">
+                                    Submit
+                                </Button>
                             </div>
                             <div>
                                 {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}

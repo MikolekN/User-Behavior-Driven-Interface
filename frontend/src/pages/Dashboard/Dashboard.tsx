@@ -1,12 +1,12 @@
 import { useContext } from 'react';
 import { Navigate, Link } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
+import { UserContext } from '../../context/UserContext';
 import Tile from '../../components/Tile/Tile';
 import Button from '../../components/utils/Button';
 import icon from '../../assets/images/credit-card.png';
 
 const Dashboard = () => {
-    const { user } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
 
     if (!user) return <Navigate to="/login" />;
 
