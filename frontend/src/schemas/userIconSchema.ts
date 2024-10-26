@@ -7,7 +7,7 @@ const sizeInMB = (sizeInBytes: number) => {
 };
 
 export const UserIconFormDataSchema = z.object({
-    files:  z.custom<FileList>()
+    files:  z.custom<FileList>().optional()
         .refine((files) => {
             return Array.from(files ?? []).length !== 0;
         }, {
