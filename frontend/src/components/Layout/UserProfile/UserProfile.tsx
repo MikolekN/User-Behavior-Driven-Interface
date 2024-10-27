@@ -70,7 +70,9 @@ const Profile = () => {
 
     return (
         <div className="profile-container" ref={profileRef}>
-            <button className="profile-button" onClick={toggleDropdown}>
+            <div className='logo-container'>
+                <h1 className="profile-user-name company-name"> {user?.login} </h1>
+                <button className="profile-button" onClick={toggleDropdown}>
                 <img 
                     src={iconSrc} 
                     id="ProfileIcon"
@@ -78,6 +80,7 @@ const Profile = () => {
                     className="profile-icon"           
                 />
             </button>
+            </div>
             {dropdownOpen && (
                 <ul className="profile-dropdown">
                     {!user && (
