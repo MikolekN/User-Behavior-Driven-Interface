@@ -1,35 +1,47 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, FC } from 'react';
 import Tile from '../../components/Tile/Tile';
 import './FAQ.css';
 import { UserContext } from '../../context/UserContext';
 import { Navigate } from 'react-router-dom';
 import { FAQData } from './FAQData';
 
-const FAQ = () => {
+interface FAQItemProps {
+    question: string;
+    answer: string;
+    isActive: boolean;
+    onClick: () => void;
+}
+
+const FAQItem: FC<FAQItemProps> = ({ question, answer, isActive, onClick }) => (
+    <div className={`faq-item ${isActive ? 'active' : ''}`}>
+        <div className="faq-question" onClick={onClick}>
+            {question}
+        </div>
+        {isActive && <div className="faq-answer">{answer}</div>}
+    </div>
+);
+
+const FAQ: FC = () => {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
-    const toggleAnswer = (index: number) => { setActiveIndex(activeIndex === index ? null : index); };
     const { user } = useContext(UserContext);
 
-    if (!user) return <Navigate to="/login" />; 
+    const toggleAnswer = (index: number) => 
+        setActiveIndex((prev) => (prev === index ? null : index));
+
+    if (!user) return <Navigate to="/login" />;
 
     return (
-        <div className="flex items-center justify-center">
-            <Tile title="FAQ" className="faq-tile">
+        <div className="faq-wrapper">
+            <Tile title="Frequently Asked Questions" className="faq-tile">
                 <div className="faq-container">
                     {FAQData.map((item, index) => (
-                        <div key={index} className="faq-item">
-                            <div
-                                className="faq-question cursor-pointer font-bold"
-                                onClick={() => toggleAnswer(index)}
-                            >
-                                Q{index + 1}. {item.question}
-                            </div>
-                            {activeIndex === index && (
-                                <div className="faq-answer mt-2 text-gray-700">
-                                    {item.answer}
-                                </div>
-                            )}
-                        </div>
+                        <FAQItem
+                            key={index}
+                            question={item.question}
+                            answer={item.answer}
+                            isActive={activeIndex === index}
+                            onClick={() => toggleAnswer(index)}
+                        />
                     ))}
                 </div>
             </Tile>

@@ -11,17 +11,20 @@ interface EmptyResponseInfoAlertProps {
 
 const EmptyResponseInfoAlert = ({ title, alertTitle, alertMessage, children }: EmptyResponseInfoAlertProps) => {
     return (
-        <Tile title={title} className="table-tile">
-            <div className="grid p-8">
-                {children}
-                <Alert severity="info" variant="outlined">
-                    <AlertTitle>
-                        {alertTitle}
-                    </AlertTitle>
-                    It looks like you haven&apos;t made any {alertMessage}. Once you add one, it will appear here for you to review.
-                </Alert>
-            </div>
-        </Tile>
+        // TUTAJ ZMIANY TYMCZASOWE - DO PRZEGADANIA
+        <div className='cyclic-payments-wrapper'>
+            <Tile title={title} className='cyclic-payments-tile'>
+                <div className="grid p-8">
+                    {children}
+                    <Alert severity="info" variant="outlined">
+                        <AlertTitle>
+                            {alertTitle}
+                        </AlertTitle>
+                        It looks like you haven&apos;t made any {alertMessage}. Once you add one, it will appear here for you to review.
+                    </Alert>
+                </div>
+            </Tile>
+        </div>
     );
 };
 

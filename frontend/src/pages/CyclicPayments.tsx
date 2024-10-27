@@ -5,8 +5,8 @@ import { Link, Navigate } from 'react-router-dom';
 import { BackendCyclicPayment } from '../components/utils/types/CyclicPayment';
 import Tile from '../components/Tile/Tile';
 import Button from '../components/utils/Button';
-import '../components/utils/styles/table.css';
 import EmptyResponseInfoAlert from '../components/EmptyResponseInfoAlert/EmptyResponseInfoAlert';
+import './CyclicPayments.css';
 import { CyclicPaymentContext } from '../context/CyclicPaymentContext';
 
 export interface CyclicPaymentResponse {
@@ -52,22 +52,18 @@ const CyclicPayments = () => {
     }
 
     return (
-        <Tile title="Cyclic Payments List" className="table-tile">
-            <div className="flex justify-center p-8">
-                {!cyclicPayments &&
-                    <tr>
-                        <td colSpan={5} className="text-center">
-                            <div>
-                                Cyclic Payments are loading
-                            </div>
-                        </td>
-                    </tr>
-                }
-                {cyclicPayments && cyclicPayments.length > 0 &&
+        <div className='cyclic-payments-wrapper'>
+            <Tile title="Cyclic Payments List" className='cyclic-payments-tile'>
+                <div className="cyclic-payments-container">
+                    {!cyclicPayments && (
+                        <div>Cyclic Payments are loading...</div>
+                    )}
+                    {cyclicPayments && cyclicPayments.length > 0 && (
                     <CyclicPaymentList cyclicPaymentsList={cyclicPayments}/>
-                }
-            </div>
-        </Tile>
+                    )}
+                </div>
+            </Tile>
+        </div>
     );
 };
 

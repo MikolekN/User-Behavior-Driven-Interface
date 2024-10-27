@@ -15,8 +15,22 @@
     margin: 10px 0;
 }
 
+.hamburger-icon {
+    display: none;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
 .layout-content-area {
     display: grid;
     flex-grow: 1;
     overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+    .hamburger-icon {
+        display: block;
+    }
 }
