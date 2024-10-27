@@ -4,22 +4,18 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
-import { formValidationRules } from '../components/utils/validationRules';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { TransferFormData, TransferFormDataSchema } from '../schemas/transferSchema';
 import { UserContext } from '../context/UserContext';
 import Button from '../components/utils/Button';
 import { TransferContext } from '../context/TransferContext';
-
-interface TransferFormData {
-    recipientAccountNumber: string;
-    transferTitle: string;
-    amount: string;
-}
 
 const Transfer = () => {
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
     const { user, getUser } = useContext(UserContext);
     const { createTransfer } = useContext(TransferContext);
     const { register, handleSubmit, formState: { errors } } = useForm<TransferFormData>({
+        resolver: zodResolver(TransferFormDataSchema),
         defaultValues: {
             recipientAccountNumber: '',
             transferTitle: '',
@@ -70,29 +66,21 @@ const Transfer = () => {
                             <FormInput 
                                 label="Recipient account number"
                                 fieldType="text"
-                                register={register('recipientAccountNumber', {
-                                    required: formValidationRules.recipientAccountNumber.required,
-                                    pattern: formValidationRules.recipientAccountNumber.pattern
-                                })}
+                                register={register('recipientAccountNumber')}
                                 error={errors.recipientAccountNumber}
                                 className="w-full"
                             />
                             <FormInput
                                 label="Title"
                                 fieldType="text"
-                                register={register('transferTitle', {
-                                    required: formValidationRules.transferTitle.required
-                                })}
+                                register={register('transferTitle')}
                                 error={errors.transferTitle}
                                 className="w-full"
                             />
                             <FormInput
                                 label="Amount"
                                 fieldType="text"
-                                register={register('amount', {
-                                    required: formValidationRules.amount.required,
-                                    pattern: formValidationRules.amount.pattern
-                                })}
+                                register={register('amount')}
                                 error={errors.amount}
                                 className="w-10/12"
                             >

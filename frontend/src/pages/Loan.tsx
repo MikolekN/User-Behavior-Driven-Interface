@@ -4,16 +4,12 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
-import { formValidationRules } from '../components/utils/validationRules';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { LoanFormData, LoanFormDataSchema } from '../schemas/loanSchema';
 import Slider from '@mui/material/Slider';
 import { UserContext } from '../context/UserContext';
 import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MIN_LOAN_AMOUNT } from './constants';
 import { TransferContext } from '../context/TransferContext';
-
-interface LoanFormData {
-    amount: number;
-    sliderValue: number;
-}
 
 const Loan = () => {
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
@@ -22,10 +18,11 @@ const Loan = () => {
     const [ sliderValue, setSliderValue ] = useState<number | null>(null);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<LoanFormData>({
+        resolver: zodResolver(LoanFormDataSchema),
         defaultValues: {
-            amount: MIN_LOAN_AMOUNT
+            amount: MIN_LOAN_AMOUNT.toString()
         },
-        mode: 'onSubmit'
+        mode: 'onChange'
     });
     const navigate = useNavigate();
 
@@ -34,7 +31,9 @@ const Loan = () => {
     useEffect(() => {
         if (!user) return;
 
-        setSliderValue(inputAmount);
+        if (!Number.isNaN(inputAmount)) {
+            setSliderValue(parseInt(inputAmount, 10));
+        }
     }, [user, inputAmount]);
 
     if (!user) return <Navigate to="/login" />;  
@@ -64,7 +63,7 @@ const Loan = () => {
     const handleSliderChange = (_event: Event, newValue: number | number[]) => {
         const sliderVal = newValue as number; 
         setSliderValue(sliderVal);
-        setValue('amount', sliderVal);
+        setValue('amount', sliderVal.toString());
     };
 
     return (
@@ -87,12 +86,7 @@ const Loan = () => {
                             <FormInput
                                 label="How much money do you need?"
                                 fieldType="text"
-                                register={register('amount', {
-                                    required: formValidationRules.loanAmount.required,
-                                    min: formValidationRules.loanAmount.min,
-                                    max: formValidationRules.loanAmount.max,
-                                    pattern: formValidationRules.loanAmount.pattern
-                                })}
+                                register={register('amount')}
                                 error={errors.amount}
                                 className="w-10/12"
                             >

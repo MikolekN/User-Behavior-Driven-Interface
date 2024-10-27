@@ -7,22 +7,11 @@ import { UserIconContext } from '../../context/UserIconContext';
 import Button from '../../components/utils/Button';
 import FormSelect from '../../components/FormSelect/FormSelect';
 import { useForm } from 'react-hook-form';
-import { formValidationRules } from '../../components/utils/validationRules';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { UserPasswordFormData, UserPasswordFormDataSchema } from '../../schemas/userPasswordSchema';
+import { UserFieldFormData, UserFieldFormDataSchema } from '../../schemas/userFieldSchema';
+import { UserIconFormDataSchema, UserIconFromData } from '../../schemas/userIconSchema';
 import { validFields } from './ProfileData';
-
-interface UserIconData {
-    files?: FileList;
-}
-
-interface UserFieldData {
-    field: string;
-    value: string;
-}
-
-interface UserPasswordData {
-    currentPassword: string;
-    newPassword: string;
-}
 
 const ProfilePage = () => {
     const [apiIconError, setApiIconError] = useState({ isError: false, errorMessage: '' });
@@ -31,9 +20,15 @@ const ProfilePage = () => {
     const { user, getUser, updateUser, updatePassword } = useContext(UserContext);
     const { getIcon, sendIcon } = useContext(UserIconContext);
 
-    const { register: registerIcon, handleSubmit: handleSubmitIcon, setValue: setIconValueForm, formState: { errors: iconErrors } } = useForm<UserIconData>();
-    const { register: registerField, handleSubmit: handleSubmitField, setValue: setFieldValueForm, formState: { errors: fieldErrors }, watch, clearErrors: clearFieldErrors } = useForm<UserFieldData>();
-    const { register: registerPassword, handleSubmit: handleSubmitPassword, formState: { errors: passwordErrors } } = useForm<UserPasswordData>();
+    const { register: registerIcon, handleSubmit: handleSubmitIcon, setValue: setIconValueForm, formState: { errors: iconErrors } } = useForm<UserIconFromData>({
+        resolver: zodResolver(UserIconFormDataSchema)
+    });
+    const { register: registerField, handleSubmit: handleSubmitField, setValue: setFieldValueForm, formState: { errors: fieldErrors }, watch, clearErrors: clearFieldErrors } = useForm<UserFieldFormData>({
+        resolver: zodResolver(UserFieldFormDataSchema)
+    });
+    const { register: registerPassword, handleSubmit: handleSubmitPassword, formState: { errors: passwordErrors } } = useForm<UserPasswordFormData>({
+        resolver: zodResolver(UserPasswordFormDataSchema)
+    });
     
     const selectedField = watch('field');
 
@@ -171,18 +166,6 @@ const ProfilePage = () => {
         return fieldData ? fieldData.label : '';
     };
 
-    const valueValidation = (selectedField: string) => {
-        switch (selectedField) {
-            case 'login':
-                return formValidationRules.userFields.login;
-            case 'account_name':
-                return formValidationRules.userFields.accountName;
-            case 'currency':
-                return formValidationRules.userFields.currency;
-            default:
-                return { required: 'Należy podać nową wartość' };
-        }
-    };
     return (
         <div className="flex items-center justify-center">
             <Tile title="Profil użytkownika" className="form-tile w-2/5 bg-white p-8 rounded-lg shadow-lg">
@@ -191,7 +174,7 @@ const ProfilePage = () => {
                         <FormInput
                             label="Wybierz nową ikonę"
                             fieldType="file"
-                            register={registerIcon('files', { required: formValidationRules.icon.required })}
+                            register={registerIcon('files')}
                             error={iconErrors.files}
                             className="w-full"
                         />
@@ -209,16 +192,14 @@ const ProfilePage = () => {
                         <FormSelect
                             label="Wybierz pole do zmiany"
                             options={validFields}
-                            register={registerField('field', { required: 'Należy wybrać pole', 
-                                validate: (value: string) => validFields.some((field) => field.value === value) || 'Należy wybrać poprawne pole' 
-                            })}
+                            register={registerField('field')}
                             error={fieldErrors.field}
                             className="w-full"
                         />
                         <FormInput
                             label={'Nowa ' + (selectedField ? getFieldLabel(selectedField).toLocaleLowerCase() : 'wartość')}
                             fieldType="text"
-                            register={registerField('value', valueValidation(selectedField) )}
+                            register={registerField('value')}
                             error={fieldErrors.value}
                             className="w-full"
                         />
@@ -236,15 +217,15 @@ const ProfilePage = () => {
                         <FormInput
                             label="Hasło"
                             fieldType="password"
-                            register={registerPassword('currentPassword', { required: formValidationRules.password.required, validate: formValidationRules.password.validate })}
+                            register={registerPassword('currentPassword')}
                             error={passwordErrors.currentPassword}
                             className="w-full"
                         />
                         <FormInput
                             label="Nowe hasło"
                             fieldType="password"
-                            register={registerPassword('newPassword', { required: formValidationRules.password.required, validate: formValidationRules.password.validate })}
-                            error={passwordErrors.currentPassword}
+                            register={registerPassword('newPassword')}
+                            error={passwordErrors.newPassword}
                             className="w-full"
                         />
                         <div className="flex justify-center">
