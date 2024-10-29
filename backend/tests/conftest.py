@@ -3,7 +3,6 @@ import bcrypt
 import pytest
 from ..application import create_app
 from .constants import TEST_EMAIL, TEST_PASSWORD, TEST_ID
-from flask_login import login_user
 
 @pytest.fixture
 def app():
@@ -24,8 +23,7 @@ def runner(app):
 @pytest.fixture
 def test_user():
     hashed_password = bcrypt.hashpw(TEST_PASSWORD.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-    
-    test_user = User(
+    yield User(
         _id=TEST_ID,
         login="testuser",
         email=TEST_EMAIL,
@@ -38,5 +36,3 @@ def test_user():
         user_icon=None,
         role="USER"
     )
-    
-    yield test_user

@@ -4,9 +4,7 @@ from ..constants import TEST_EMAIL, TEST_PASSWORD, TEST_ID
 from flask_login import current_user
 
 def test_login_success(client, test_user):
-    with patch('backend.users.user_repository.UserRepository.find_by_email') as mock_find_by_email:
-        mock_find_by_email.return_value = test_user
-
+    with patch('backend.users.user_repository.UserRepository.find_by_email', return_value=test_user):
         response = client.post('/api/login', json={
             'email': TEST_EMAIL,
             'password': TEST_PASSWORD
@@ -20,24 +18,20 @@ def test_login_success(client, test_user):
         assert current_user.is_authenticated
         assert current_user._id == TEST_ID
 
-@mock.patch('flask_login.utils._get_user')
-def test_login_already_logged_in(mock_get_user, client, test_user):
-    mock_get_user.return_value = test_user
-    
-    response = client.post('/api/login', json={
-        'email': TEST_EMAIL,
-        'password': TEST_PASSWORD
-    })
+def test_login_already_logged_in(client, test_user):
+    with patch('flask_login.utils._get_user', return_value=test_user):
+        response = client.post('/api/login', json={
+            'email': TEST_EMAIL,
+            'password': TEST_PASSWORD
+        })
 
-    assert response.status_code == 409
-    json_data = response.get_json()
-    assert 'message' in json_data
-    assert json_data['message'] == "Already logged in"
+        assert response.status_code == 409
+        json_data = response.get_json()
+        assert 'message' in json_data
+        assert json_data['message'] == "Already logged in"
 
 def test_login_user_not_exist(client):
-    with patch('backend.users.user_repository.UserRepository.find_by_email') as mock_find_by_email:
-        mock_find_by_email.return_value = None
-
+    with patch('backend.users.user_repository.UserRepository.find_by_email', return_value=None):
         response = client.post('/api/login', json={
             'email': TEST_EMAIL,
             'password': TEST_PASSWORD
@@ -49,9 +43,7 @@ def test_login_user_not_exist(client):
         assert json_data['message'] == "User does not exist"
 
 def test_login_invalid_password(client, test_user):
-    with patch('backend.users.user_repository.UserRepository.find_by_email') as mock_find_by_email:
-        mock_find_by_email.return_value = test_user
-
+    with patch('backend.users.user_repository.UserRepository.find_by_email', return_value=test_user):
         response = client.post('/api/login', json={
             'email': TEST_EMAIL,
             'password': "WrongPassword123"
