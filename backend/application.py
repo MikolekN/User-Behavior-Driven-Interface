@@ -21,7 +21,6 @@ def create_app():
     def load_user(id: str) -> User | None:
         return UserRepository.find_by_id(id)
 
-
     with app.app_context():
         init_bank_account()
 

@@ -1,7 +1,7 @@
-import pytest
+from unittest import mock
 from unittest.mock import patch
-from ..constants import TEST_EMAIL, TEST_PASSWORD
-from flask_login import login_user
+from ..constants import TEST_EMAIL, TEST_PASSWORD, TEST_ID
+from flask_login import current_user
 
 def test_login_success(client, test_user):
     with patch('backend.users.user_repository.UserRepository.find_by_email') as mock_find_by_email:
@@ -17,9 +17,22 @@ def test_login_success(client, test_user):
         assert 'message' in json_data
         assert json_data['message'] == "Logged in successfully"
         assert 'user' in json_data
+        assert current_user.is_authenticated
+        assert current_user._id == TEST_ID
 
-# Not able to mock already logged in status
-# def test_login_already_logged_in(client):
+@mock.patch('flask_login.utils._get_user')
+def test_login_already_logged_in(mock_get_user, client, test_user):
+    mock_get_user.return_value = test_user
+    
+    response = client.post('/api/login', json={
+        'email': TEST_EMAIL,
+        'password': TEST_PASSWORD
+    })
+
+    assert response.status_code == 409
+    json_data = response.get_json()
+    assert 'message' in json_data
+    assert json_data['message'] == "Already logged in"
 
 def test_login_user_not_exist(client):
     with patch('backend.users.user_repository.UserRepository.find_by_email') as mock_find_by_email:
