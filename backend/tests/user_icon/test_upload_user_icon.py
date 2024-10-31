@@ -34,13 +34,10 @@ def test_upload_user_icon_invalid_file_type(client, test_user):
         assert 'message' in json_data
         assert json_data['message'] == "File type not allowed"
 
-@patch('backend.users.user_repository.UserRepository.find_by_id')
-@patch('PIL.Image.open')
+@patch('backend.users.user_repository.UserRepository.find_by_id', return_value=MagicMock(user_icon=None))
+@patch('PIL.Image.open', side_effect=Exception("Image processing error"))
 def test_upload_user_icon_image_processing_fail(mock_image_open, mock_find_by_id, client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
-        mock_find_by_id.return_value = MagicMock(user_icon=None)
-        mock_image_open.side_effect = Exception("Image processing error")
-
         data = {'icon': (BytesIO(b'fake-image-data'), 'icon.png')}
         response = client.post('/api/user/icon', data=data, content_type='multipart/form-data')
 
@@ -49,16 +46,14 @@ def test_upload_user_icon_image_processing_fail(mock_image_open, mock_find_by_id
         assert 'message' in json_data
         assert json_data['message'] == "Image processing failed: Image processing error"
     
-@patch('backend.users.user_repository.UserRepository.find_by_id')
-@patch('backend.users.user_repository.UserRepository.update')
+@patch('backend.users.user_repository.UserRepository.find_by_id', return_value=MagicMock(user_icon=None))
+@patch('backend.users.user_repository.UserRepository.update', return_value=True)
 @patch('PIL.Image.open')
 def test_upload_user_icon_success(mock_image_open, mock_update, mock_find_by_id, client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         mock_image = MagicMock()
         mock_image.size = (100, 100)
         mock_image_open.return_value = mock_image
-        mock_find_by_id.return_value = MagicMock(user_icon=None)
-        mock_update.return_value = True
 
         data = {'icon': (BytesIO(b'fake-image-data'), 'icon.png')}
         response = client.post('/api/user/icon', data=data, content_type='multipart/form-data')

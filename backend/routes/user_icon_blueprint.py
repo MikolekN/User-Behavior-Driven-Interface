@@ -18,7 +18,7 @@ def allowed_file(filename: str) -> bool:
 def upload_user_icon() -> tuple[Response, int]:
     if not os.path.exists(UPLOAD_FOLDER):
         os.makedirs(UPLOAD_FOLDER)
-    
+
     if 'icon' not in request.files:
         return jsonify(message="No files in the request"), 400
 
@@ -28,7 +28,7 @@ def upload_user_icon() -> tuple[Response, int]:
 
     if not allowed_file(icon.filename):
         return jsonify(message="File type not allowed"), 400
-    
+
     user_data = UserRepository.find_by_id(current_user._id)
     if user_data and user_data.user_icon:
         old_icon_path = user_data.user_icon
@@ -51,19 +51,18 @@ def upload_user_icon() -> tuple[Response, int]:
 
     return jsonify(message="Icon uploaded successfully"), 200
 
-    
-
 @user_icon_blueprint.route('/user/icon', methods=['GET'])
 @login_required
 def get_user_icon() -> tuple[Response, int]:
     user_data = UserRepository.find_by_id(current_user._id)
-    if user_data and user_data.user_icon:
-        icon_path = user_data.user_icon
-        if os.path.exists(icon_path):
-            try:
-                return send_file(icon_path, mimetype='image/png')
-            except Exception as e:
-                return jsonify(message=f"Failed to send the icon: {str(e)}"), 500
-        else:
-            return jsonify(message="User icon file not found"), 404
-    return jsonify(message="No icon set for this user"), 404
+    if not user_data or not user_data.user_icon:
+        return jsonify(message="No icon set for this user"), 404
+
+    icon_path = user_data.user_icon
+    if not os.path.exists(icon_path):
+        return jsonify(message="User icon file not found"), 404
+
+    try:
+        return send_file(icon_path, mimetype='image/png')
+    except Exception as e:
+        return jsonify(message=f"Failed to send the icon: {str(e)}"), 500
