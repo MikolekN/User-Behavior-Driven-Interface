@@ -19,7 +19,7 @@ def client(app):
 def runner(app):
     with app.test_cli_runner() as runner:
         yield runner
-       
+
 @pytest.fixture
 def test_user():
     hashed_password = bcrypt.hashpw(TEST_PASSWORD.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')

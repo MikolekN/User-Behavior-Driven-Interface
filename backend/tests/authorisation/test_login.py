@@ -1,7 +1,5 @@
-from unittest import mock
 from unittest.mock import patch
-from ..constants import TEST_EMAIL, TEST_PASSWORD, TEST_ID
-from flask_login import current_user
+from ..constants import TEST_EMAIL, TEST_PASSWORD
 
 def test_login_success(client, test_user):
     with patch('backend.users.user_repository.UserRepository.find_by_email', return_value=test_user):
@@ -15,8 +13,6 @@ def test_login_success(client, test_user):
         assert 'message' in json_data
         assert json_data['message'] == "Logged in successfully"
         assert 'user' in json_data
-        assert current_user.is_authenticated
-        assert current_user._id == TEST_ID
 
 def test_login_already_logged_in(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):

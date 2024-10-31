@@ -26,30 +26,32 @@ def upload_user_icon() -> tuple[Response, int]:
     if icon is None or icon.filename == '':
         return jsonify(message="Icon missing in the request"), 400
 
-    if icon and allowed_file(icon.filename):
-        user_data = UserRepository.find_by_id(current_user._id)
-        if user_data and user_data.user_icon:
-            old_icon_path = user_data.user_icon
-            if os.path.exists(old_icon_path):
-                os.remove(old_icon_path)
+    if not allowed_file(icon.filename):
+        return jsonify(message="File type not allowed"), 400
+    
+    user_data = UserRepository.find_by_id(current_user._id)
+    if user_data and user_data.user_icon:
+        old_icon_path = user_data.user_icon
+        if os.path.exists(old_icon_path):
+            os.remove(old_icon_path)
 
-        unique_filename = f"{uuid.uuid4().hex}.png"
-        icon_path = os.path.join(UPLOAD_FOLDER, unique_filename)
+    unique_filename = f"{uuid.uuid4().hex}.png"
+    icon_path = os.path.join(UPLOAD_FOLDER, unique_filename)
 
-        try:
-            image = Image.open(icon)
-            width, height = image.size
-            if width > 120 or height > 120:
-                image = image.resize((120, 120))
-            image.save(icon_path)
-        except Exception as e:
-            return jsonify(message=f"Image processing failed: {str(e)}"), 500
+    try:
+        image = Image.open(icon)
+        width, height = image.size
+        if width > 120 or height > 120:
+            image = image.resize((120, 120))
+        image.save(icon_path)
+    except Exception as e:
+        return jsonify(message=f"Image processing failed: {str(e)}"), 500
 
-        UserRepository.update(current_user._id, {'user_icon': icon_path})
+    UserRepository.update(current_user._id, {'user_icon': icon_path})
 
-        return jsonify(message="Icon uploaded successfully"), 200
+    return jsonify(message="Icon uploaded successfully"), 200
 
-    return jsonify(message="File type not allowed"), 400
+    
 
 @user_icon_blueprint.route('/user/icon', methods=['GET'])
 @login_required
