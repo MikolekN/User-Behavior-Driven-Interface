@@ -26,7 +26,7 @@ const Transfer = () => {
     const navigate = useNavigate();
 
 
-    if (!user) return <Navigate to="/login" />;  
+    if (!user) return <Navigate to="/login" />;
     
     const onSubmit = handleSubmit(async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
         try {

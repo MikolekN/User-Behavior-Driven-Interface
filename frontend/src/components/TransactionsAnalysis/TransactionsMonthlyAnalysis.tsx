@@ -25,6 +25,14 @@ const TransactionsMonthlyAnalysis = () => {
                 const interval = 'monthly';
                 await fetchTransfersAnalysis(interval, requestBody);
             } catch (error) {
+                // if (isZodError(error)) {
+                //     console.log("zod error nastał")
+                //     setApiError({
+                //         isError: true,
+                //         errorMessage: 'zod error'
+                //     });
+                // }
+                
                 setApiError({
                     isError: true,
                     errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'

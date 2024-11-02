@@ -33,8 +33,9 @@ export const TransferProvider: React.FC<{ children: ReactNode }> = ({ children }
     const [transfers, setTransfers] = useState<TransactionsHistoryType[]>([]);
 
     const fetchTransfersAnalysis = useCallback(async (interval: string, requestBody: object): Promise<void> => {
-        const { transfers: chartData } = await fetchTransfersAnalysisData(interval, requestBody);
+        const { chartData: chartData } = await fetchTransfersAnalysisData(interval, requestBody);
         if (chartData) {
+            console.log("zapisałem")
             setChartData(chartData);
         }
     }, []);
