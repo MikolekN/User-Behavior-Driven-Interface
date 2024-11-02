@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { requiredStringField } from './commonValidators';
+import { requiredStringField } from '../common/commonValidators';
 import { ACCOUNT_NUMBER_REGEX, AMOUNT_REGEX, ZERO } from './constants';
 
 export const CyclicPaymentFormDataSchema = z.object({

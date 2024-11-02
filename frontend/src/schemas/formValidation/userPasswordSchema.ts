@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { requiredStringField } from './commonValidators';
+import { requiredStringField } from '../common/commonValidators';
 import { MIN_PASSWORD_LENGTH, PASSWORD_REGEX } from './constants';
 
 export const UserPasswordFormDataSchema = z.object({

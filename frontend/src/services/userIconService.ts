@@ -1,4 +1,4 @@
-import { isErrorResponse } from '../components/utils/types/ErrorResponse';
+import { isErrorResponse } from '../schemas/apiValidation/ErrorResponse';
 import { API_URL } from './constants';
 import { handleApiResponse } from './handleApiResponse';
 
