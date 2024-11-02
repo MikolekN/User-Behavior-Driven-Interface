@@ -5,7 +5,7 @@ import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LoanFormData, LoanFormDataSchema } from '../schemas/loanSchema';
+import { LoanFormData, LoanFormDataSchema } from '../schemas/formValidation/loanSchema';
 import Slider from '@mui/material/Slider';
 import { UserContext } from '../context/UserContext';
 import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MIN_LOAN_AMOUNT } from './constants';

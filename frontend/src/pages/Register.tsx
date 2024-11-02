@@ -8,7 +8,7 @@ import Button from '../components/utils/Button';
 import { UserContext } from '../context/UserContext';
 import { AuthContext } from '../context/AuthContext';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { RegisterFormData, RegisterFormDataSchema } from '../schemas/registerSchema';
+import { RegisterFormData, RegisterFormDataSchema } from '../schemas/formValidation/registerSchema';
 
 const Register = () => {
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });

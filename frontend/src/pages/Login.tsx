@@ -8,7 +8,7 @@ import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import Button from '../components/utils/Button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LoginFormData, LoginFormDataSchema } from '../schemas/loginSchema';
+import { LoginFormData, LoginFormDataSchema } from '../schemas/formValidation/loginSchema';
 
 const Login = () => {
     const { user } = useContext(UserContext);

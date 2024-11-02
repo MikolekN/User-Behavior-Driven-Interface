@@ -5,7 +5,7 @@ import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TransferFormData, TransferFormDataSchema } from '../schemas/transferSchema';
+import { TransferFormData, TransferFormDataSchema } from '../schemas/formValidation/transferSchema';
 import { UserContext } from '../context/UserContext';
 import Button from '../components/utils/Button';
 import { TransferContext } from '../context/TransferContext';
