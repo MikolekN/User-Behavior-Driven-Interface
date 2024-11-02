@@ -10,9 +10,11 @@ import Slider from '@mui/material/Slider';
 import { UserContext } from '../context/UserContext';
 import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MIN_LOAN_AMOUNT } from './constants';
 import { TransferContext } from '../context/TransferContext';
+import { isZodError } from '../schemas/common/commonValidators';
 
 const Loan = () => {
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
+    const [ errorMessage, setErrorMessage ] = useState('');
     const { user, getUser } = useContext(UserContext);
     const { createLoan } = useContext(TransferContext);
     const [ sliderValue, setSliderValue ] = useState<number | null>(null);
@@ -53,12 +55,22 @@ const Loan = () => {
             await getUser();
             navigate('/dashboard');
         } catch (error) {
-            setApiError({
-                isError: true,
-                errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-            });
+            if (isZodError(error)) {
+                setErrorMessage('zod api validation error');
+            } else {
+                setErrorMessage((error as Error).message || 'An unknown error occurred. Please try again.');
+            }
         }
     });
+
+    useEffect(() => {
+        if (errorMessage) {
+            setApiError({ 
+                isError: true, 
+                errorMessage 
+            });
+        }
+    }, [errorMessage]);
 
     const handleSliderChange = (_event: Event, newValue: number | number[]) => {
         const sliderVal = newValue as number; 

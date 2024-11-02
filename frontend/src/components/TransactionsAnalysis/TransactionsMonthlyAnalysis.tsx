@@ -6,6 +6,7 @@ import Tile from '../Tile/Tile';
 import TransfersAnalysisChart from '../TransfersAnalysisChart/TransfersAnalysisChart';
 import EmptyResponseInfoAlert from '../EmptyResponseInfoAlert/EmptyResponseInfoAlert';
 import { TransferContext } from '../../context/TransferContext';
+import { isZodError } from '../../schemas/common/commonValidators';
 
 const TransactionsMonthlyAnalysis = () => {
     const { user } = useContext(UserContext);
@@ -13,6 +14,7 @@ const TransactionsMonthlyAnalysis = () => {
 
     const [ loading, setLoading ] = useState(true);
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
+    const [ errorMessage, setErrorMessage ] = useState('');
     
     useEffect(() => {
         if (!user) return;
@@ -25,18 +27,11 @@ const TransactionsMonthlyAnalysis = () => {
                 const interval = 'monthly';
                 await fetchTransfersAnalysis(interval, requestBody);
             } catch (error) {
-                // if (isZodError(error)) {
-                //     console.log("zod error nastał")
-                //     setApiError({
-                //         isError: true,
-                //         errorMessage: 'zod error'
-                //     });
-                // }
-                
-                setApiError({
-                    isError: true,
-                    errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-                });
+                if (isZodError(error)) {
+                    setErrorMessage('zod api validation error');
+                } else {
+                    setErrorMessage((error as Error).message || 'An unknown error occurred. Please try again.');
+                }
             } finally {
                 setLoading(false);
             }
@@ -44,6 +39,15 @@ const TransactionsMonthlyAnalysis = () => {
 
         void fetchChartData();
     }, [user, fetchTransfersAnalysis]);
+
+    useEffect(() => {
+        if (errorMessage) {
+            setApiError({ 
+                isError: true, 
+                errorMessage 
+            });
+        }
+    }, [errorMessage]);
 
     if (!user) return <Navigate to="/login" />;
     

@@ -14,12 +14,14 @@ import { CyclicPaymentFormData, CyclicPaymentFormDataSchema } from '../../schema
 import { DAY_LENGTH_IN_MILISECONDS } from '../constants';
 import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 import { intervalOptions } from './CyclicPaymentData';
+import { isZodError } from '../../schemas/common/commonValidators';
 
 const CyclicPaymentsForm = () => {
     const { id } = useParams();
-    const [date, setDate] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
-    const [minDate, ] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
+    const [ date, setDate ] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
+    const [ minDate, ] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
+    const [ errorMessage, setErrorMessage ] = useState('');
     const { user, getUser } = useContext(UserContext);
     const { cyclicPayment, setCyclicPayment, createCyclicPayment, getCyclicPayment, 
         updateCyclicPayment } = useContext(CyclicPaymentContext);
@@ -61,10 +63,11 @@ const CyclicPaymentsForm = () => {
                 try {
                     await getCyclicPayment(id);
                 } catch (error) {
-                    setApiError({
-                        isError: true,
-                        errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-                    });
+                    if (isZodError(error)) {
+                        setErrorMessage('zod api validation error');
+                    } else {
+                        setErrorMessage((error as Error).message || 'An unknown error occurred. Please try again.');
+                    }
                 }
             };
 
@@ -98,10 +101,11 @@ const CyclicPaymentsForm = () => {
                 await getUser();
                 navigate('/dashboard');
             } catch (error) {
-                setApiError({
-                    isError: true,
-                    errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-                });
+                if (isZodError(error)) {
+                    setErrorMessage('zod api validation error');
+                } else {
+                    setErrorMessage((error as Error).message || 'An unknown error occurred. Please try again.');
+                }
             }
         } else {
             try {
@@ -117,14 +121,24 @@ const CyclicPaymentsForm = () => {
                 await getUser();
                 navigate('/dashboard');
             } catch (error) {
-                setApiError({
-                    isError: true,
-                    errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-                });
+                if (isZodError(error)) {
+                    setErrorMessage('zod api validation error');
+                } else {
+                    setErrorMessage((error as Error).message || 'An unknown error occurred. Please try again.');
+                }
             }
         }
         
     });
+
+    useEffect(() => {
+        if (errorMessage) {
+            setApiError({ 
+                isError: true, 
+                errorMessage 
+            });
+        }
+    }, [errorMessage]);
     
     const handleChange = (dateChange: Date | null) => {
         setValue('startDate', dateChange, {

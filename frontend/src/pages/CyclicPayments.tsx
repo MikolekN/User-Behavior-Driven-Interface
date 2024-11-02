@@ -8,6 +8,7 @@ import Button from '../components/utils/Button';
 import EmptyResponseInfoAlert from '../components/EmptyResponseInfoAlert/EmptyResponseInfoAlert';
 import './CyclicPayments.css';
 import { CyclicPaymentContext } from '../context/CyclicPaymentContext';
+import { isZodError } from '../schemas/common/commonValidators';
 
 export interface CyclicPaymentResponse {
     cyclic_payments: BackendCyclicPayment[];
@@ -16,6 +17,7 @@ export interface CyclicPaymentResponse {
 const CyclicPayments = () => {
     const { user } = useContext(UserContext);
     const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
+    const [ errorMessage, setErrorMessage ] = useState('');
     const { cyclicPayments, getCyclicPayments } = useContext(CyclicPaymentContext);
 
     useEffect(() => {
@@ -25,15 +27,25 @@ const CyclicPayments = () => {
             try {
                 await getCyclicPayments();
             } catch (error) {
-                setApiError({
-                    isError: true,
-                    errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-                });
+                if (isZodError(error)) {
+                    setErrorMessage('zod api validation error');
+                } else {
+                    setErrorMessage((error as Error).message || 'An unknown error occurred. Please try again.');
+                }
             }
         };
 
         void fetchCyclicPayments();
     }, [user, getCyclicPayments]);
+
+    useEffect(() => {
+        if (errorMessage) {
+            setApiError({ 
+                isError: true, 
+                errorMessage 
+            });
+        }
+    }, [errorMessage]);
 
     if (!user) return <Navigate to="/login" />;
     
