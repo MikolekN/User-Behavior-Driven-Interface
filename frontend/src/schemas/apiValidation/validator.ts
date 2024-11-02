@@ -10,7 +10,6 @@ export function validateSchema<T extends z.ZodTypeAny>(config: ValidateConfig<T>
     const { data, success, error } = config.schema.safeParse(config.dto);
 
     if (success) {
-        console.log("zod val success")
         return data;
     } else {
         captureError(`API Validation Error: ${config.schemaName}`, {
