@@ -26,7 +26,7 @@ interface GetCyclicPaymentsResponse {
     cyclic_payments: BackendCyclicPayment[];
 }
 
-export const createCyclicPaymentData = async (requestBody: object) => {
+export const createCyclicPaymentData = async (requestBody: object): Promise<CreateCyclicPaymentResponse> => {
     const response = await fetch(`${API_URL}/cyclic-payment`, {
         method: 'POST',
         headers: {
@@ -42,7 +42,7 @@ export const createCyclicPaymentData = async (requestBody: object) => {
     return apiResponse;
 };
 
-export const getCyclicPaymentData = async (id: string) => {
+export const getCyclicPaymentData = async (id: string): Promise<GetCyclicPaymentResponse> => {
     const response = await fetch(`${API_URL}/cyclic-payment/${id}`, {
         method: 'GET',
         headers: {
@@ -57,7 +57,7 @@ export const getCyclicPaymentData = async (id: string) => {
     return apiResponse;
 };
 
-export const deleteCyclicPaymentData = async (id: string) => {
+export const deleteCyclicPaymentData = async (id: string): Promise<DeleteCyclicPaymentResponse> => {
     const response = await fetch(`${API_URL}/cyclic-payment/${id}`, {
         method: 'DELETE',
         headers: {
@@ -72,7 +72,7 @@ export const deleteCyclicPaymentData = async (id: string) => {
     return apiResponse;
 };
 
-export const updateCyclicPaymentData = async (id: string, requestBody: object) => {
+export const updateCyclicPaymentData = async (id: string, requestBody: object): Promise<UpdateCyclicPaymentResponse> => {
     const response = await fetch(`${API_URL}/cyclic-payment/${id}`, {
         method: 'PUT',
         headers: {
@@ -88,7 +88,7 @@ export const updateCyclicPaymentData = async (id: string, requestBody: object) =
     return apiResponse;
 };
 
-export const getCyclicPaymentsData = async () => {
+export const getCyclicPaymentsData = async (): Promise<GetCyclicPaymentsResponse> => {
     const response = await fetch(`${API_URL}/cyclic-payments`, {
         method: 'GET',
         headers: {

@@ -3,7 +3,7 @@ import { handleApiResponse } from './handleApiResponse';
 import { validateSchema } from '../schemas/apiValidation/validator';
 import { CreateLoanResponse, CreateLoanResponseSchema, CreateTransferResponseSchema, CreateTransfersResponse, GetTransfersAnalysisResponse, GetTransfersAnalysisResponseSchema, GetTransfersResponse, GetTransfersResponseSchema } from '../schemas/apiValidation/transferResponseSchema';
 
-export const fetchTransfersAnalysisData = async (interval: string, requestBody: object) => {
+export const fetchTransfersAnalysisData = async (interval: string, requestBody: object): Promise<GetTransfersAnalysisResponse> => {
     const response = await fetch(`${API_URL}/transfers/analysis/${interval}`, {
         method: 'POST',
         headers: {
@@ -18,7 +18,7 @@ export const fetchTransfersAnalysisData = async (interval: string, requestBody: 
     return validateSchema({ dto: apiResponse, schema: GetTransfersAnalysisResponseSchema, schemaName: "/transfers/analysis" });
 };
 
-export const fetchTransfersData = async () => {
+export const fetchTransfersData = async (): Promise<GetTransfersResponse> => {
     const response = await fetch(`${API_URL}/transfers`, {
         method: 'GET',
         headers: {
@@ -32,7 +32,7 @@ export const fetchTransfersData = async () => {
     return validateSchema({ dto: apiResponse, schema: GetTransfersResponseSchema, schemaName: "/transfers" });
 };
 
-export const createTransferData = async (requestBody: object) => {
+export const createTransferData = async (requestBody: object): Promise<CreateTransfersResponse> => {
     const response = await fetch(`${API_URL}/transfer`, {
         method: 'POST',
         headers: {
@@ -47,7 +47,7 @@ export const createTransferData = async (requestBody: object) => {
     return validateSchema({ dto: apiResponse, schema: CreateTransferResponseSchema, schemaName: "/transfer" });
 };
 
-export const createLoanData = async (requestBody: object) => {
+export const createLoanData = async (requestBody: object): Promise<CreateLoanResponse> => {
     const response = await fetch(`${API_URL}/transfer/loan`, {
         method: 'POST',
         headers: {
