@@ -15,7 +15,7 @@ import CyclicPaymentsForm from '../components/CyclicPaymentForm/CyclicPaymentFor
 import CyclicPayments from '../pages/CyclicPayments';
 import Profile from '../pages/Profile/Profile';
 import Loan from '../pages/Loan';
-import PageNotFound from '../components/PageNotFound/PageNotFound';
+import PageNotFound from '../pages/PageNotFound/PageNotFound';
 
 export const router = createBrowserRouter([
     {
