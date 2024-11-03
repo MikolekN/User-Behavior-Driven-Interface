@@ -10,16 +10,17 @@ import { CyclicPayment } from '../utils/types/CyclicPayment';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../pages/Form.css';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CyclicPaymentFormData, CyclicPaymentFormDataSchema } from '../../schemas/cyclicPaymentSchema';
+import { CyclicPaymentFormData, CyclicPaymentFormDataSchema } from '../../schemas/formValidation/cyclicPaymentSchema';
 import { DAY_LENGTH_IN_MILISECONDS } from '../constants';
 import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 import { intervalOptions } from './CyclicPaymentData';
+import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 
 const CyclicPaymentsForm = () => {
     const { id } = useParams();
-    const [date, setDate] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
-    const [minDate, ] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
-    const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
+    const [ date, setDate ] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
+    const [ minDate, ] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
+    const { apiError, handleError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
     const { cyclicPayment, setCyclicPayment, createCyclicPayment, getCyclicPayment, 
         updateCyclicPayment } = useContext(CyclicPaymentContext);
@@ -61,10 +62,7 @@ const CyclicPaymentsForm = () => {
                 try {
                     await getCyclicPayment(id);
                 } catch (error) {
-                    setApiError({
-                        isError: true,
-                        errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-                    });
+                    handleError(error);
                 }
             };
 
@@ -98,10 +96,7 @@ const CyclicPaymentsForm = () => {
                 await getUser();
                 navigate('/dashboard');
             } catch (error) {
-                setApiError({
-                    isError: true,
-                    errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-                });
+                handleError(error);
             }
         } else {
             try {
@@ -117,10 +112,7 @@ const CyclicPaymentsForm = () => {
                 await getUser();
                 navigate('/dashboard');
             } catch (error) {
-                setApiError({
-                    isError: true,
-                    errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-                });
+                handleError(error);
             }
         }
         

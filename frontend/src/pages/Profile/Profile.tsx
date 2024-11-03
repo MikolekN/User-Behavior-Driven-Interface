@@ -8,9 +8,9 @@ import Button from '../../components/utils/Button';
 import FormSelect from '../../components/FormSelect/FormSelect';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { UserPasswordFormData, UserPasswordFormDataSchema } from '../../schemas/userPasswordSchema';
-import { UserFieldFormData, UserFieldFormDataSchema } from '../../schemas/userFieldSchema';
-import { UserIconFormDataSchema, UserIconFromData } from '../../schemas/userIconSchema';
+import { UserPasswordFormData, UserPasswordFormDataSchema } from '../../schemas/formValidation/userPasswordSchema';
+import { UserFieldFormData, UserFieldFormDataSchema } from '../../schemas/formValidation/userFieldSchema';
+import { UserIconFormDataSchema, UserIconFromData } from '../../schemas/formValidation/userIconSchema';
 import { validFields } from './ProfileData';
 
 const ProfilePage = () => {

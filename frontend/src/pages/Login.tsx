@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
@@ -8,13 +8,14 @@ import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import Button from '../components/utils/Button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LoginFormData, LoginFormDataSchema } from '../schemas/loginSchema';
+import { LoginFormData, LoginFormDataSchema } from '../schemas/formValidation/loginSchema';
+import useApiErrorHandler from '../hooks/useApiErrorHandler';
 
 const Login = () => {
     const { user } = useContext(UserContext);
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
-    const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
+    const { apiError, handleError } = useApiErrorHandler();
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
         resolver: zodResolver(LoginFormDataSchema),
         defaultValues: {
@@ -31,10 +32,7 @@ const Login = () => {
             await login(email, password);
             navigate('/dashboard');
         } catch (error) {
-            setApiError({
-                isError: true,
-                errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-            });
+            handleError(error);
         }
     });
 

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { requiredStringField } from './commonValidators';
+import { requiredStringField } from '../common/commonValidators';
 import { LOAN_AMOUNT_REGEX } from './constants';
 
 export const LoanFormDataSchema = z.object({

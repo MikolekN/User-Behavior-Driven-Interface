@@ -1,17 +1,18 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TransferFormData, TransferFormDataSchema } from '../schemas/transferSchema';
+import { TransferFormData, TransferFormDataSchema } from '../schemas/formValidation/transferSchema';
 import { UserContext } from '../context/UserContext';
 import Button from '../components/utils/Button';
 import { TransferContext } from '../context/TransferContext';
+import useApiErrorHandler from '../hooks/useApiErrorHandler';
 
 const Transfer = () => {
-    const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
+    const { apiError, handleError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
     const { createTransfer } = useContext(TransferContext);
     const { register, handleSubmit, formState: { errors } } = useForm<TransferFormData>({
@@ -26,7 +27,7 @@ const Transfer = () => {
     const navigate = useNavigate();
 
 
-    if (!user) return <Navigate to="/login" />;  
+    if (!user) return <Navigate to="/login" />;
     
     const onSubmit = handleSubmit(async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
         try {
@@ -39,10 +40,7 @@ const Transfer = () => {
             await getUser();
             navigate('/dashboard');
         } catch (error) {
-            setApiError({
-                isError: true,
-                errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-            });
+            handleError(error);
         }
     });
 
