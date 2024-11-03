@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
@@ -9,11 +9,10 @@ import { TransferFormData, TransferFormDataSchema } from '../schemas/formValidat
 import { UserContext } from '../context/UserContext';
 import Button from '../components/utils/Button';
 import { TransferContext } from '../context/TransferContext';
-import { isZodError } from '../schemas/common/commonValidators';
+import useApiErrorHandler from '../hooks/useApiErrorHandler';
 
 const Transfer = () => {
-    const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
-    const [ errorMessage, setErrorMessage ] = useState('');
+    const { apiError, handleError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
     const { createTransfer } = useContext(TransferContext);
     const { register, handleSubmit, formState: { errors } } = useForm<TransferFormData>({
@@ -41,22 +40,9 @@ const Transfer = () => {
             await getUser();
             navigate('/dashboard');
         } catch (error) {
-            if (isZodError(error)) {
-                setErrorMessage('zod api validation error');
-            } else {
-                setErrorMessage((error as Error).message || 'An unknown error occurred. Please try again.');
-            }
+            handleError(error);
         }
     });
-
-    useEffect(() => {
-        if (errorMessage) {
-            setApiError({ 
-                isError: true, 
-                errorMessage 
-            });
-        }
-    }, [errorMessage]);
 
     return (
         <div className="flex items-center justify-center">

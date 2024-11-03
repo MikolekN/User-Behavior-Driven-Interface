@@ -7,15 +7,14 @@ import './TransactionsHistory.css';
 import arrowUp from '../../assets/images/chevron-up.svg';
 import arrowDown from '../../assets/images/chevron-down.svg';
 import { TransferContext } from '../../context/TransferContext';
-import { isZodError } from '../../schemas/common/commonValidators';
+import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 
 const TransactionsHistory = () => {
     const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
     const [loading, setLoading] = useState(true);
     const { user } = useContext(UserContext);
     const { transfers, fetchTransfers } = useContext(TransferContext);
-    const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
-    const [ errorMessage, setErrorMessage ] = useState('');
+    const { apiError, handleError } = useApiErrorHandler();
 
     useEffect(() => {
         if (!user) return;
@@ -24,11 +23,7 @@ const TransactionsHistory = () => {
             try {
                 await fetchTransfers();
             } catch (error) {
-                if (isZodError(error)) {
-                    setErrorMessage('zod api validation error');
-                } else {
-                    setErrorMessage((error as Error).message || 'An unknown error occurred. Please try again.');
-                }
+                handleError(error);
             } finally {
                 setLoading(false); // TUTAJ CHYBA TROCHĘ BEZ SENSU BO I TAK NIGDZIE NIE JEST USTAWIANE NA true
             }
@@ -36,15 +31,6 @@ const TransactionsHistory = () => {
 
         void fetchTransactions();
     }, [user, fetchTransfers]);
-
-    useEffect(() => {
-        if (errorMessage) {
-            setApiError({ 
-                isError: true, 
-                errorMessage 
-            });
-        }
-    }, [errorMessage]);
 
     useEffect(() => {
         if (transfers && transfers.length > 0) {

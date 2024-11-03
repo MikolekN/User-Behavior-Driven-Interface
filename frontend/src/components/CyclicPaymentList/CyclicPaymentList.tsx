@@ -6,7 +6,7 @@ import Button from '../utils/Button';
 import arrowUp from '../../assets/images/chevron-up.svg';
 import arrowDown from '../../assets/images/chevron-down.svg';
 import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
-import { isZodError } from '../../schemas/common/commonValidators';
+import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 
 interface CyclicPaymentListProps {
     cyclicPaymentsList: CyclicPayment[];
@@ -18,8 +18,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
     const [cyclicPayments, setCyclicPayments] = useState<CyclicPayment[]>([]);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [hovering, setHovering] = useState<number | null>(null);
-    const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
-    const [ errorMessage, setErrorMessage ] = useState('');
+    const { apiError, handleError } = useApiErrorHandler();
 
     const toggleAnswer = (index: number) => {
         setActiveIndex(activeIndex === index ? null : index);
@@ -51,11 +50,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                 setActiveIndex(null);
                 await getUser();
             } catch (error) {
-                if (isZodError(error)) {
-                    setErrorMessage('zod api validation error');
-                } else {
-                    setErrorMessage((error as Error).message || 'An unknown error occurred. Please try again.');
-                }
+                handleError(error);
             }
         };
 
@@ -63,15 +58,6 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
             setCyclicPayments(cyclicPayments => cyclicPayments.filter(x => x.id !== id));
         });
     };
-
-    useEffect(() => {
-        if (errorMessage) {
-            setApiError({ 
-                isError: true, 
-                errorMessage 
-            });
-        }
-    }, [errorMessage]);
 
     return (
         <div>
