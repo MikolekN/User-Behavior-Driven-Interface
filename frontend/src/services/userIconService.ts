@@ -1,4 +1,6 @@
-import { isErrorResponse } from '../components/utils/types/ErrorResponse';
+import { isErrorResponse } from '../schemas/apiValidation/ErrorResponse';
+import { UploadUserIconResponseSchema } from '../schemas/apiValidation/userIconResponseSchema';
+import { validateSchema } from '../schemas/apiValidation/validator';
 import { API_URL } from './constants';
 import { handleApiResponse } from './handleApiResponse';
 
@@ -37,5 +39,7 @@ export const uploadUserIcon = async (icon: File): Promise<void> => {
         credentials: 'include',
         body: formData,
     });
-    await handleApiResponse(response);
+    const apiResponse = await handleApiResponse(response);
+
+    validateSchema({ dto: apiResponse, schema: UploadUserIconResponseSchema, schemaName: '/user/icon' })
 };

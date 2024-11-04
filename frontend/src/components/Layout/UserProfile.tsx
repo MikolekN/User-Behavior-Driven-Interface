@@ -69,9 +69,17 @@ const Profile = () => {
 
     return (
         <div id='profile-container' ref={profileRef} className='relative'>
-            <button id='profile-button' onClick={toggleDropdown} className='w-10 h-10 rounded-full cursor-pointer overflow-hidden block bg-inherit hover:bg-gray-200 transition ease-in-out duration-300'>
-                <img src={iconSrc} id='profile-icon' alt='Profile' />
-            </button>
+            <div className='logo-container'>
+                <h1 className="profile-user-name company-name"> {user?.login} </h1>
+                <button id='profile-button' onClick={toggleDropdown} className='w-10 h-10 rounded-full cursor-pointer overflow-hidden block bg-inherit hover:bg-gray-200 transition ease-in-out duration-300'>
+                    <img 
+                        src={iconSrc} 
+                        id="ProfileIcon"
+                        alt="Profile" 
+                        className="profile-icon"           
+                    />
+                </button>
+            </div>
             {dropdownOpen && (
                 <ul id='profile-dropdown' className='absolute top-full right-0 bg-transparent shadow-md z-10 py-2 text-center list-none'>
                     {!user && (

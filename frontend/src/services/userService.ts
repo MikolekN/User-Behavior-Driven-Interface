@@ -1,22 +1,17 @@
-import { IBackendUser } from '../components/utils/User';
+import { GetUserResponse, GetUserResponseSchema, UpdateUserPasswordResponseSchema, UpdateUserResponse, UpdateUserResponseSchema } from '../schemas/apiValidation/userResponseSchema';
 import { API_URL } from './constants';
 import { handleApiResponse } from './handleApiResponse';
-
-interface GetUserResponse {
-    user: IBackendUser;
-}
+import { validateSchema } from '../schemas/apiValidation/validator';
 
 export const getUserData = async (): Promise<GetUserResponse> => {
     const response = await fetch(`${API_URL}/user`, {
         method: 'GET',
         credentials: 'include',
     });
-    return handleApiResponse<GetUserResponse>(response);
-};
+    const apiResponse = await handleApiResponse<GetUserResponse>(response);
 
-interface UpdateUserResponse {
-    user: IBackendUser;
-}
+    return validateSchema({ dto: apiResponse, schema: GetUserResponseSchema, schemaName: '/user' });
+};
 
 export const updateUserField = async (field: string, value: string): Promise<UpdateUserResponse> => {
     const response = await fetch(`${API_URL}/user/update`, {
@@ -25,7 +20,9 @@ export const updateUserField = async (field: string, value: string): Promise<Upd
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ [field]: value }),
     });
-    return handleApiResponse<UpdateUserResponse>(response);
+    const apiResponse = await handleApiResponse<UpdateUserResponse>(response);
+
+    return validateSchema({ dto: apiResponse, schema: UpdateUserResponseSchema, schemaName: '/user' });
 };
 
 export const updateUserPassword = async (currentPassword: string, newPassword: string): Promise<void> => {
@@ -40,5 +37,7 @@ export const updateUserPassword = async (currentPassword: string, newPassword: s
             new_password: newPassword,
         }),
     });
-    await handleApiResponse(response);
+    const apiResponse = await handleApiResponse(response);
+
+    validateSchema({ dto: apiResponse, schema: UpdateUserPasswordResponseSchema, schemaName: '/user' });
 };

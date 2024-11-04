@@ -1,37 +1,28 @@
-import { useState, useContext } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
+import { useContext } from 'react';
+import { useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import Button from '../components/utils/Button';
-import { formValidationRules } from '../components/utils/validationRules';
-
 import { UserContext } from '../context/UserContext';
 import { AuthContext } from '../context/AuthContext';
-
-interface RegisterFormData {
-    email: string,
-    password: string,
-    confirmPassword: string
-}
+import { zodResolver } from '@hookform/resolvers/zod';
+import { RegisterFormData, RegisterFormDataSchema } from '../schemas/formValidation/registerSchema';
+import useApiErrorHandler from '../hooks/useApiErrorHandler';
 
 const Register = () => {
-    const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
+    const { apiError, handleError } = useApiErrorHandler();
     const { user } = useContext(UserContext);
     const { register } = useContext(AuthContext);
-    const { register: formRegister, control, handleSubmit, formState: { errors } } = useForm<RegisterFormData>({
+    const { register: formRegister, handleSubmit, formState: { errors } } = useForm<RegisterFormData>({
+        resolver: zodResolver(RegisterFormDataSchema),
         defaultValues: {
             email: '',
             password: '',
             confirmPassword: ''
         },
         mode: 'onSubmit'
-    });
-    const password = useWatch({
-        control,
-        name: 'password',
-        defaultValue: '',
     });
     const navigate = useNavigate();
 
@@ -42,10 +33,7 @@ const Register = () => {
             await register(email, userPassword);
             navigate('/login');
         } catch (error) {
-            setApiError({
-                isError: true,
-                errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-            });
+            handleError(error);
         }
     });
 
@@ -58,32 +46,21 @@ const Register = () => {
                             <FormInput 
                                 label="Email"
                                 fieldType="text"
-                                register={formRegister('email', {
-                                    required: formValidationRules.email.required,
-                                    pattern: formValidationRules.email.pattern
-                                })}
+                                register={formRegister('email')}
                                 error={errors.email}
                                 className="w-full"
                             />
                             <FormInput 
                                 label="Password"
                                 fieldType="password"
-                                register={formRegister('password', {
-                                    required: formValidationRules.password.required,
-                                    validate: formValidationRules.password.validate
-                                })}
+                                register={formRegister('password')}
                                 error={errors.password}
                                 className="w-full"
                             />
                             <FormInput 
                                 label="Confirm Password"
                                 fieldType="password"
-                                register={formRegister('confirmPassword', {
-                                    required: formValidationRules.confirmPassword.required,
-                                    validate: {
-                                        matchPasswords: (value: string) => value === password || 'Passwords do not match'
-                                    }
-                                })}
+                                register={formRegister('confirmPassword')}
                                 error={errors.confirmPassword}
                                 className="w-full"
                             />

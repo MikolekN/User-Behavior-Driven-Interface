@@ -16,7 +16,7 @@ export interface BackendCyclicPayment {
     interval: string;
     recipient_account_number: string;
     recipient_name: string;
-    start_date: Date | null;
+    start_date: string;
     transfer_title: string;
 }
 

@@ -3,34 +3,29 @@ import { Controller, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import Tile from '../Tile/Tile';
 import FormInput from '../FormInput/FormInput';
-import { formValidationRules } from '../utils/validationRules';
 import { UserContext } from '../../context/UserContext';
 import DatePicker from 'react-datepicker';
 import FormSelect from '../FormSelect/FormSelect';
 import { CyclicPayment } from '../utils/types/CyclicPayment';
 import 'react-datepicker/dist/react-datepicker.css';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { CyclicPaymentFormData, CyclicPaymentFormDataSchema } from '../../schemas/formValidation/cyclicPaymentSchema';
 import { DAY_LENGTH_IN_MILISECONDS } from '../constants';
 import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 import { intervalOptions } from './CyclicPaymentData';
-
-interface CyclicPaymentFormData {
-    cyclicPaymentName: string;
-    recipientAccountNumber: string;
-    transferTitle: string;
-    amount: string;
-    startDate: Date | null;
-    interval: string;
-}
+import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 
 const CyclicPaymentsForm = () => {
     const { id } = useParams();
-    const [date, setDate] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
-    const [minDate, ] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
-    const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
+    const [ date, setDate ] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
+    const [ minDate, ] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
+    const { apiError, handleError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
     const { cyclicPayment, setCyclicPayment, createCyclicPayment, getCyclicPayment, 
         updateCyclicPayment } = useContext(CyclicPaymentContext);
+
     const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<CyclicPaymentFormData>({
+        resolver: zodResolver(CyclicPaymentFormDataSchema),
         defaultValues: {
             recipientAccountNumber: '',
             transferTitle: '',
@@ -66,10 +61,7 @@ const CyclicPaymentsForm = () => {
                 try {
                     await getCyclicPayment(id);
                 } catch (error) {
-                    setApiError({
-                        isError: true,
-                        errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-                    });
+                    handleError(error);
                 }
             };
 
@@ -103,10 +95,7 @@ const CyclicPaymentsForm = () => {
                 await getUser();
                 navigate('/dashboard');
             } catch (error) {
-                setApiError({
-                    isError: true,
-                    errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-                });
+                handleError(error);
             }
         } else {
             try {
@@ -122,10 +111,7 @@ const CyclicPaymentsForm = () => {
                 await getUser();
                 navigate('/dashboard');
             } catch (error) {
-                setApiError({
-                    isError: true,
-                    errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-                });
+                handleError(error);
             }
         }
         
@@ -158,19 +144,14 @@ const CyclicPaymentsForm = () => {
                             <FormInput 
                                 label="Cyclic Payment name"
                                 fieldType="text"
-                                register={register('cyclicPaymentName', {
-                                    required: formValidationRules.cyclicPaymentName.required
-                                })}
+                                register={register('cyclicPaymentName')}
                                 error={errors.cyclicPaymentName}
                                 className="w-full"
                             />
                             <FormInput 
                                 label="Recipient account number"
                                 fieldType="text"
-                                register={register('recipientAccountNumber', {
-                                    required: formValidationRules.recipientAccountNumber.required,
-                                    pattern: formValidationRules.recipientAccountNumber.pattern
-                                })}
+                                register={register('recipientAccountNumber')}
                                 error={errors.recipientAccountNumber}
                                 className="w-full"
                             />
@@ -193,26 +174,21 @@ const CyclicPaymentsForm = () => {
                             <FormSelect
                                 label="Interval"
                                 options={intervalOptions}
-                                register={register('interval', { required: formValidationRules.interval.required })}
+                                register={register('interval')}
                                 error={errors.interval}
                                 className="w-full"
                             />
                             <FormInput 
                                 label="Title"
                                 fieldType="text"
-                                register={register('transferTitle', {
-                                    required: formValidationRules.transferTitle.required
-                                })}
+                                register={register('transferTitle')}
                                 error={errors.transferTitle}
                                 className="w-full"
                             />
                             <FormInput 
                                 label="Amount"
                                 fieldType="text"
-                                register={register('amount', {
-                                    required: formValidationRules.amount.required,
-                                    pattern: formValidationRules.amount.pattern
-                                })}
+                                register={register('amount')}
                                 error={errors.amount}
                                 className="w-10/12"
                             >

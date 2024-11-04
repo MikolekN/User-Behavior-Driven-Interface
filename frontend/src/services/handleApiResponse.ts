@@ -1,4 +1,4 @@
-import { ErrorResponse, isErrorResponse } from '../components/utils/types/ErrorResponse';
+import { ErrorResponse, isErrorResponse } from '../schemas/apiValidation/ErrorResponse';
 
 export const handleApiResponse = async <T>(response: Response): Promise<T> => {
     const data = await response.json() as T | ErrorResponse;
