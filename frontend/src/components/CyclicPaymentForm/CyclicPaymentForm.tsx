@@ -9,7 +9,6 @@ import DatePicker from 'react-datepicker';
 import FormSelect from '../FormSelect/FormSelect';
 import { CyclicPayment } from '../utils/types/CyclicPayment';
 import 'react-datepicker/dist/react-datepicker.css';
-import '../../pages/Form.css';
 import { DAY_LENGTH_IN_MILISECONDS } from '../constants';
 import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 import { intervalOptions } from './CyclicPaymentData';
@@ -140,11 +139,11 @@ const CyclicPaymentsForm = () => {
     };
 
     return (
-        <div className="flex items-center justify-center">
-            <Tile title="Transfer" className="form-tile w-2/5 bg-white p-8 rounded-lg shadow-lg">
+        <div id="cyclic-payment-form-wrapper" className="flex items-center justify-center">
+            <Tile title="Transfer" id="cyclic-payment-form" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
-                        <div className="mt-8">
+                        <div id="cyclic-payment-account-details" className="mt-8">
                             <label className="text-sm font-semibold text-gray-700 block">From account</label>
                             <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
                                 <p>
@@ -155,7 +154,7 @@ const CyclicPaymentsForm = () => {
                                 </p>
                             </div>
                         </div>
-                        <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
+                        <form id="cyclic-payment-form" className="space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
                             <FormInput 
                                 label="Cyclic Payment name"
                                 fieldType="text"

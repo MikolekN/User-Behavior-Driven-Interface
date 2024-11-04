@@ -43,7 +43,7 @@ const Login = () => {
 
     return (
         <div className="flex items-center justify-center">
-            <Tile title="Log in into online banking" className="form-tile w-2/5 bg-white p-8 rounded-lg shadow-lg">
+            <Tile title="Log in into online banking" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
                         <form className="mt-8 space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>

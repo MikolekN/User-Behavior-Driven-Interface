@@ -185,7 +185,7 @@ const ProfilePage = () => {
     };
     return (
         <div className="flex items-center justify-center">
-            <Tile title="Profil użytkownika" className="form-tile w-2/5 bg-white p-8 rounded-lg shadow-lg">
+            <Tile title="Profil użytkownika" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex flex-col space-y-6">
                     <form onSubmit={(e) => { e.preventDefault(); void onIconSubmit(); }} className="space-y-4">
                         <FormInput
