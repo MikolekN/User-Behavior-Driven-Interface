@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { requiredStringField } from './commonValidators';
+import { requiredStringField } from '../common/commonValidators';
 
 export const LoginFormDataSchema = z.object({
     email: requiredStringField('Email').email(),

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import CyclicPaymentList from '../components/CyclicPaymentList/CyclicPaymentList';
 import { UserContext } from '../context/UserContext';
 import { Link, Navigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import Button from '../components/utils/Button';
 import EmptyResponseInfoAlert from '../components/EmptyResponseInfoAlert/EmptyResponseInfoAlert';
 import './CyclicPayments.css';
 import { CyclicPaymentContext } from '../context/CyclicPaymentContext';
+import useApiErrorHandler from '../hooks/useApiErrorHandler';
 
 export interface CyclicPaymentResponse {
     cyclic_payments: BackendCyclicPayment[];
@@ -15,7 +16,7 @@ export interface CyclicPaymentResponse {
 
 const CyclicPayments = () => {
     const { user } = useContext(UserContext);
-    const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
+    const { apiError, handleError } = useApiErrorHandler();
     const { cyclicPayments, getCyclicPayments } = useContext(CyclicPaymentContext);
 
     useEffect(() => {
@@ -25,10 +26,7 @@ const CyclicPayments = () => {
             try {
                 await getCyclicPayments();
             } catch (error) {
-                setApiError({
-                    isError: true,
-                    errorMessage: (error as Error).message || 'An unknown error occurred. Please try again.'
-                });
+                handleError(error);
             }
         };
 

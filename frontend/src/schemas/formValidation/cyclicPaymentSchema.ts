@@ -1,13 +1,16 @@
 import { z } from 'zod';
-import { requiredStringField } from './commonValidators';
+import { requiredStringField } from '../common/commonValidators';
 import { ACCOUNT_NUMBER_REGEX, AMOUNT_REGEX, ZERO } from './constants';
 
-export const TransferFormDataSchema = z.object({
+export const CyclicPaymentFormDataSchema = z.object({
+    cyclicPaymentName: requiredStringField('Cyclic Payment Name'),
     recipientAccountNumber: requiredStringField('Recipient Account Number').regex(new RegExp(ACCOUNT_NUMBER_REGEX), {
         message: 'Invalid account number'
     }),
     transferTitle: requiredStringField('Transfer Title'),
-    amount: requiredStringField('Amount')
+    amount: requiredStringField('Amount'),
+    startDate: z.date().nullable(),
+    interval: requiredStringField('Interval')
     })
     .superRefine((data, ctx) => {
 
@@ -29,4 +32,4 @@ export const TransferFormDataSchema = z.object({
     }
 );
 
-export type TransferFormData = z.infer<typeof TransferFormDataSchema>;
+export type CyclicPaymentFormData = z.infer<typeof CyclicPaymentFormDataSchema>;

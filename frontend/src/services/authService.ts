@@ -1,10 +1,11 @@
+
+// zastanowic się czy warto mieć też swoje interfejsy, albo jeśli nie to gdzie miec funkcje mapujące wersje backend na frontend
 import { IBackendUser } from '../components/utils/User';
+
+import { LoginResponse, LoginResponseSchema, LogoutResponseSchema, RegisterResponse, RegisterResponseSchema } from '../schemas/apiValidation/authResponseSchema';
+import { validateSchema } from '../schemas/apiValidation/validator';
 import { API_URL } from './constants';
 import { handleApiResponse } from './handleApiResponse';
-
-interface LoginResponse {
-    user: IBackendUser;
-}
 
 export const loginUser = async (email: string, password: string): Promise<LoginResponse> => {
     const response = await fetch(`${API_URL}/login`, {
@@ -15,12 +16,14 @@ export const loginUser = async (email: string, password: string): Promise<LoginR
         body: JSON.stringify({ email, password }),
         credentials: 'include',
     });
-    return handleApiResponse<LoginResponse>(response);
+    const apiResponse = await handleApiResponse<LoginResponse>(response);
+
+    return validateSchema({ dto: apiResponse, schema: LoginResponseSchema, schemaName: '/login' });
 };
 
-interface RegisterResponse {
-    message: string;
-}
+// interface RegisterResponse {
+//     message: string;
+// }
 
 export const registerUser = async (email: string, password: string): Promise<RegisterResponse> => {
     const response = await fetch(`${API_URL}/register`, {
@@ -30,7 +33,9 @@ export const registerUser = async (email: string, password: string): Promise<Reg
         },
         body: JSON.stringify({ email, password }),
     });
-    return handleApiResponse<RegisterResponse>(response);
+    const apiResponse = await handleApiResponse<RegisterResponse>(response);
+
+    return validateSchema({ dto: apiResponse, schema: RegisterResponseSchema, schemaName: '/register' });
 };
 
 export const logoutUser = async (): Promise<void> => {
@@ -38,5 +43,7 @@ export const logoutUser = async (): Promise<void> => {
         method: 'POST',
         credentials: 'include',
     });
-    await handleApiResponse(response);
+    const apiResponse = await handleApiResponse(response);
+
+    validateSchema({ dto: apiResponse, schema: LogoutResponseSchema, schemaName: '/logout' })
 };
