@@ -3,7 +3,7 @@ import { ReactNode, FC } from 'react';
 interface TileProps {
     children: ReactNode;
     title: string;
-    id: string;
+    id?: string;
     className?: string;
 }
 

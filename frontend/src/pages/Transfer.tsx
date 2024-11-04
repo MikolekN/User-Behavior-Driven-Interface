@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
-import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TransferFormData, TransferFormDataSchema } from '../schemas/formValidation/transferSchema';

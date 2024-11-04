@@ -69,8 +69,8 @@ const Profile = () => {
 
     return (
         <div id='profile-container' ref={profileRef} className='relative'>
-            <div className='logo-container'>
-                <h1 className="profile-user-name company-name"> {user?.login} </h1>
+            <div id='profile-menu-container' className='flex items-center space-x-2'>
+                <h1 id='profile-user-name' className='text-2xl mx-1'> {user?.login} </h1>
                 <button id='profile-button' onClick={toggleDropdown} className='w-10 h-10 rounded-full cursor-pointer overflow-hidden block bg-inherit hover:bg-gray-200 transition ease-in-out duration-300'>
                     <img 
                         src={iconSrc} 

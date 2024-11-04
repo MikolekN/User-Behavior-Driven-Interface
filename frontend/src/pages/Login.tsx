@@ -4,7 +4,6 @@ import { useNavigate, Navigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import { AuthContext } from '../context/AuthContext';
 import Tile from '../components/Tile/Tile';
-import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import Button from '../components/utils/Button';
 import { zodResolver } from '@hookform/resolvers/zod';

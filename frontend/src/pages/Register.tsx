@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
-import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import Button from '../components/utils/Button';
 import { UserContext } from '../context/UserContext';
