@@ -186,8 +186,14 @@ def update_cyclic_payment(id) -> tuple[Response, int]:
         return jsonify(message="User with given account number does not exist"), 404
     
     # clear user blockades by substracting old cyclic payment amount and adding updated cyclic payment amount to the current user blockades
-    cyclic_payment = CyclicPaymentRepository.find_by_id(str(id))
     curr_user = UserRepository.find_by_id(current_user._id)
+    if curr_user.get_available_funds() - float(data['amount']) < 0:
+        return jsonify(message="User does not have enough money"), 403
+    
+    cyclic_payment = CyclicPaymentRepository.find_by_id(str(id))
+    if not cyclic_payment:
+        return jsonify(message="Cyclic Payment with given ID does not exist"), 404
+    
     UserRepository.update(curr_user._id, {'blockades': add(substract(float(curr_user.blockades), float(cyclic_payment.amount)), float(data["amount"]))})
     
     query, cyclic_payment_content = get_cyclic_payment_update_content_and_query(id, data, recipient_user)
