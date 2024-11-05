@@ -1,23 +1,22 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Navigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 import { AuthContext } from '../context/AuthContext';
 import Tile from '../components/Tile/Tile';
-import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import Button from '../components/utils/Button';
-import { formValidationRules } from '../components/utils/validationRules';
-
-interface LoginFormData {
-    email: string;
-    password: string;
-}
+import { zodResolver } from '@hookform/resolvers/zod';
+import { LoginFormData, LoginFormDataSchema } from '../schemas/formValidation/loginSchema';
+import useApiErrorHandler from '../hooks/useApiErrorHandler';
 
 const Login = () => {
-    const { user, login } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
+    const { login } = useContext(AuthContext);
     const navigate = useNavigate();
-    const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
+    const { apiError, handleError } = useApiErrorHandler();
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+        resolver: zodResolver(LoginFormDataSchema),
         defaultValues: {
             email: '',
             password: ''
@@ -32,48 +31,32 @@ const Login = () => {
             await login(email, password);
             navigate('/dashboard');
         } catch (error) {
-            if (error instanceof Error) {
-                setApiError({
-                    isError: true,
-                    errorMessage: error.message
-                });
-            } else {
-                setApiError({
-                    isError: true,
-                    errorMessage: 'An unknown error occurred. Please try again.'
-                });
-            }
-            console.error(error);
+            handleError(error);
         }
     });
 
     return (
         <div className="flex items-center justify-center">
-            <Tile title="Log in into online banking" className="form-tile w-2/5 bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
+            <Tile title="Log in into online banking" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
                         <form className="mt-8 space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
                             <FormInput 
                                 label="Email" 
                                 fieldType="text" 
-                                register={register('email', {
-                                    required: formValidationRules.email.required,
-                                    pattern: formValidationRules.email.pattern
-                                })}
+                                register={register('email')}
                                 error={errors.email}
                                 className="w-full"
                             />
                             <FormInput 
                                 label="Password"
                                 fieldType="password"
-                                register={register('password', {
-                                    required: formValidationRules.password.required
-                                })}
+                                register={register('password')}
                                 error={errors.password}
                                 className="w-full"
                             />
                             <Button className="w-full">
-						Submit
+						        Submit
                             </Button>
                             <div>
                                 {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}

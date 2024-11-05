@@ -1,123 +1,112 @@
 import { useEffect, useState, useContext } from 'react';
 import Tile from '../Tile/Tile';
-import { AuthContext } from '../../context/AuthContext';
+import { UserContext } from '../../context/UserContext';
 import { Navigate } from 'react-router-dom';
-import '../utils/styles/table.css';
 import EmptyResponseInfoAlert from '../EmptyResponseInfoAlert/EmptyResponseInfoAlert';
-
-interface TransfersResponse {
-    transfers: TransactionsHistoryType[];
-}
-
-interface TransactionsHistoryType {
-    date: string;
-    transactions: Transaction[];
-}
-
-interface Transaction {
-    created: string;
-    issuer_name: string;
-    title: string;
-    amount: number;
-    income: boolean;
-    test: string;
-}
+import './TransactionsHistory.css';
+import arrowUp from '../../assets/images/chevron-up.svg';
+import arrowDown from '../../assets/images/chevron-down.svg';
+import { TransferContext } from '../../context/TransferContext';
+import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 
 const TransactionsHistory = () => {
-    const [groupedTransactions, setGroupedTransactions] = useState<TransactionsHistoryType[]>([]);
+    const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-    const { user } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
+    const { transfers, fetchTransfers } = useContext(TransferContext);
+    const { apiError, handleError } = useApiErrorHandler();
 
     useEffect(() => {
         if (!user) return;
-        
+
         const fetchTransactions = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:5000/api/transfers', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json' 
-                    },
-                    credentials: 'include'
-                });
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json() as TransfersResponse;
-                setGroupedTransactions(data.transfers);
+                await fetchTransfers();
             } catch (error) {
-                setError(true);
-                console.error(error);
+                handleError(error);
             } finally {
-                setLoading(false);
+                setLoading(false); // TUTAJ CHYBA TROCHĘ BEZ SENSU BO I TAK NIGDZIE NIE JEST USTAWIANE NA true
             }
         };
 
         void fetchTransactions();
-    }, [user]);
-    
+    }, [user, fetchTransfers]);
+
+    useEffect(() => {
+        if (transfers && transfers.length > 0) {
+            const mostRecentDate = transfers[0].date;
+            setExpandedGroups({ [mostRecentDate]: true });
+        }
+    }, [transfers])
+
+    const toggleGroup = (date: string) => {
+        setExpandedGroups((prev) => ({
+            ...prev,
+            [date]: !prev[date],
+        }));
+    };
+
     if (!user) return <Navigate to="/login" />;
-
     if (loading) return <div>Loading...</div>;
-
-    if (error) { 
+    if (apiError.isError) { 
         return (
             <EmptyResponseInfoAlert
                 title="Transactions History"
                 alertTitle="No transactions history yet"
-                alertMessage="transactions to display in transactions history"
+                alertMessage={apiError.errorMessage}
             />
         );
     }
 
     return (
-        <Tile title="Transactions History" className="table-tile">
-            <div className="flex justify-center p-8">
-                {!groupedTransactions &&
-                    <tr>
-                        <td colSpan={5} className="text-center">
-                            <div>
-                                Transactions History are loading
-                            </div>
-                        </td>
-                    </tr>
-                }
-                {groupedTransactions && groupedTransactions.length > 0 &&
-                    <table className="table-fixed w-9/12">
-                        <tbody>
-                            {groupedTransactions.map((transaction) => (
-                                <>
-                                    <tr className="bg-gray-200">
-                                        <td colSpan={2} className="px-4 py-2 font-bold">
-                                            {transaction.date}
-                                        </td>
-                                    </tr>
-                                    {transaction.transactions.map((item, index) => (
-                                        <tr key={index} className="border-b border-gray-400">
-                                            <td className="px-8 py-2">
+        <div className="transactions-history-wrapper">
+            <Tile title="Transactions History" className="transactions-history-tile">
+                {!transfers && (
+                    <div>Transactions History are loading...</div>
+                )}
+                {transfers && transfers.length > 0 && (
+                    <div className="transaction-container">
+                        {transfers.map((transfer) => {
+                            const isExpanded = expandedGroups[transfer.date];
+
+                            return (
+                                <div className="transaction-group" key={transfer.date}>
+                                    <div
+                                        className="transaction-date"
+                                        onClick={() => toggleGroup(transfer.date)}
+                                    >
+                                        {transfer.date}
+                                        <span className={`toggle-icon ${isExpanded ? 'expanded' : ''}`}>
+                                            {isExpanded ? <img src={arrowUp} alt="▼" /> : <img src={arrowDown} alt="▶" />}
+                                        </span>
+                                    </div>
+                                    <div className={`transaction-rows ${isExpanded ? 'expanded' : 'collapsed'}`} >
+                                        {transfer.transactions.map((item, index) => (
+                                            <div className="transaction-row" key={index}>
                                                 <div>
-                                                    <span className="block py-1">
-                                                        <b>{item.issuer_name}</b>
-                                                    </span>
-                                                    <span className="block py-1">
+                                                    <span className="issuer-name block">{item.issuer_name}</span>
+                                                    <span className="transaction-title block">
                                                         <i>{item.title}</i>
                                                     </span>
                                                 </div>
-                                            </td>
-                                            <td className="text-right px-8 py-2" style={{ color: item.income ? 'green' : 'red' }}>
-                                                {!item.income && <span>-</span>}
-                                                {item.amount} {user.currency}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </>
-                            ))}
-                        </tbody>
-                    </table>
-                }
-            </div>
-        </Tile>
+                                                <div
+                                                    className={`transaction-amount ${
+                                                        item.income ? 'transaction-income' : 'transaction-expense'
+                                                    }`}
+                                                >
+                                                    {!item.income && <span>-</span>}
+                                                    {item.amount} {user.currency}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
+            </Tile>
+        </div>
     );
 };
 

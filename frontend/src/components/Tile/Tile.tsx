@@ -1,18 +1,16 @@
-import { ReactElement, ReactNode } from 'react';
-import './Tile.css';
+import { ReactNode, FC } from 'react';
 
-interface TileData {
-    children: ReactNode | ReactElement;
+interface TileProps {
+    children: ReactNode;
     title: string;
+    id?: string;
     className?: string;
 }
 
-const Tile = ({ children, title, className = '' }: TileData) => {
+const Tile: FC<TileProps> = ({ children, title, id, className = '' }) => {
     return (
-        <div className={`${className} tile border-2 border-blue-600 border-opacity-20 rounded-lg overflow-hidden`}>
-            <div className="font-semibold text-2xl mb-6 text-gray-700 tile-title">
-                {title}
-            </div>
+        <div id={`${id}-tile`} className={`bg-white min-w-fit shadow-lg hover:shadow-2xl transition-shadow duration-[0.3s] ease p-6 m-4 rounded-xl ${className}`}>
+            <h2 id={`${id}-tile-title`} className="m-0 pb-2 border-b-2 border-solid border-gray-300 text-3xl text-center capitalize font-semibold">{title}</h2>
             {children}
         </div>
     );

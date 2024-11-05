@@ -1,23 +1,21 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
-import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
-import { formValidationRules } from '../components/utils/validationRules';
-import { AuthContext } from '../context/AuthContext';
-import { isErrorResponse } from '../components/utils/types/ErrorResponse';
-
-interface TransferFormData {
-    recipientAccountNumber: string;
-    transferTitle: string;
-    amount: string;
-}
+import { zodResolver } from '@hookform/resolvers/zod';
+import { TransferFormData, TransferFormDataSchema } from '../schemas/formValidation/transferSchema';
+import { UserContext } from '../context/UserContext';
+import Button from '../components/utils/Button';
+import { TransferContext } from '../context/TransferContext';
+import useApiErrorHandler from '../hooks/useApiErrorHandler';
 
 const Transfer = () => {
-    const [ apiError, setApiError ] = useState({ isError: false, errorMessage: '' });
-    const { user, getUser } = useContext(AuthContext);
+    const { apiError, handleError } = useApiErrorHandler();
+    const { user, getUser } = useContext(UserContext);
+    const { createTransfer } = useContext(TransferContext);
     const { register, handleSubmit, formState: { errors } } = useForm<TransferFormData>({
+        resolver: zodResolver(TransferFormDataSchema),
         defaultValues: {
             recipientAccountNumber: '',
             transferTitle: '',
@@ -28,47 +26,26 @@ const Transfer = () => {
     const navigate = useNavigate();
 
 
-    if (!user) return <Navigate to="/login" />;  
+    if (!user) return <Navigate to="/login" />;
     
     const onSubmit = handleSubmit(async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/transfer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body: JSON.stringify({
-                    recipientAccountNumber,
-                    transferTitle,
-                    amount
-                })
-            });
-
-            const responseJson: unknown = await response.json();
-
-            if (response.ok) {
-                await getUser();
-                navigate('/dashboard');
-            } else {
-                if (isErrorResponse(responseJson)) {
-                    setApiError({
-                        isError: true,
-                        errorMessage: responseJson.message
-                    });
-                    throw new Error(responseJson.message);
-                } else {
-                    throw new Error('Unexpected error format');
-                }
-            }
+            const requestBody = {
+                recipientAccountNumber: recipientAccountNumber,
+                transferTitle: transferTitle,
+                amount: amount
+            };
+            await createTransfer(requestBody);
+            await getUser();
+            navigate('/dashboard');
         } catch (error) {
-            console.error(error);
+            handleError(error);
         }
     });
 
     return (
         <div className="flex items-center justify-center">
-            <Tile title="Transfer" className="form-tile w-2/5  bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
+            <Tile title="Transfer" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
                         <div className="mt-8">
@@ -86,36 +63,30 @@ const Transfer = () => {
                             <FormInput 
                                 label="Recipient account number"
                                 fieldType="text"
-                                register={register('recipientAccountNumber', {
-                                    required: formValidationRules.recipientAccountNumber.required,
-                                    pattern: formValidationRules.recipientAccountNumber.pattern
-                                })}
+                                register={register('recipientAccountNumber')}
                                 error={errors.recipientAccountNumber}
                                 className="w-full"
                             />
                             <FormInput
                                 label="Title"
                                 fieldType="text"
-                                register={register('transferTitle', {
-                                    required: formValidationRules.transferTitle.required
-                                })}
+                                register={register('transferTitle')}
                                 error={errors.transferTitle}
                                 className="w-full"
                             />
                             <FormInput
                                 label="Amount"
                                 fieldType="text"
-                                register={register('amount', {
-                                    required: formValidationRules.amount.required,
-                                    pattern: formValidationRules.amount.pattern
-                                })}
+                                register={register('amount')}
                                 error={errors.amount}
                                 className="w-10/12"
                             >
                                 {user.currency}
                             </FormInput>
                             <div>
-                                <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Submit</button>
+                                <Button className="w-full">
+                                    Submit
+                                </Button>
                             </div>
                             <div>
                                 {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}

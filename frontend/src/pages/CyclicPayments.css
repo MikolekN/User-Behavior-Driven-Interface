@@ -1,0 +1,30 @@
+.cyclic-payments-wrapper {
+    display: flex; 
+    overflow: hidden; 
+    flex-direction: column; 
+    flex-grow: 1; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100%; 
+    max-height: 100%;
+}
+
+.cyclic-payments-tile {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: 0 auto 10px auto;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    min-height: 50%;
+    max-height: 95%;
+}
+
+.cyclic-payments-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+    padding: 10px;
+}

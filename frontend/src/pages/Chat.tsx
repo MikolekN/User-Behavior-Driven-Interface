@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef, FC } from 'react';
 import Tile from '../components/Tile/Tile';
 import './Chat.css';
 import send_arrow from '../assets/images/send.png';
 import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { UserContext } from '../context/UserContext';
 
 type MessageType = 'user' | 'system';
 
@@ -12,43 +12,50 @@ interface Message {
     text: string;
 }
 
-const Chat = () => {
+const Chat: FC = () => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState<Message[]>([]);
-    const { user } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
+    const messageEndRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        if (!user) return;
-        setMessages([
-            {
-                type: 'system',
-                text: 'Witamy na czacie obsługi klienta! Nie wahaj się zadać pytań, a my chętnie Ci pomożemy.',
-            },
-        ]);
-    }, [user]);
-  
-    if (!user) return <Navigate to="/login" />;
-    const handleSend = () => {
-        if (message.trim()) {
-            setMessages((prevMessages) => [
-                ...prevMessages,
-                { type: 'user', text: message }
+        messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
+
+    useEffect(() => {
+        if (user) {
+            setMessages([
+                {
+                    type: 'system',
+                    text: 'Witamy na czacie obsługi klienta! Nie wahaj się zadać pytań, a my chętnie Ci pomożemy.',
+                },
             ]);
-    
-            setMessage('');
-    
-            setTimeout(() => {
-                setMessages((prevMessages) => [
-                    ...prevMessages,
-                    { type: 'system',
-                        text: 'Dziękujemy za wiadomość! Nasz zespół wkrótce się z Tobą skontaktuje.' }
-                ]);
-            }, 500);
         }
+    }, [user]);
+
+    const handleSend = () => {
+        if (!message.trim()) return;
+
+        const newMessage: Message = { type: 'user', text: message };
+        setMessages((prev) => [...prev, newMessage]);
+        setMessage('');
+
+        setTimeout(() => {
+            setMessages((prev) => [
+                ...prev,
+                { type: 'system', text: 'Dziękujemy za wiadomość! Nasz zespół wkrótce się z Tobą skontaktuje.' },
+            ]);
+        }, 500);
+    };
+
+    if (!user) return <Navigate to="/login" />;
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') handleSend();
     };
 
     return (
-        <div className="flex-grow flex flex-col items-center justify-center overflow-hidden h-full max-h-full">
+        <div className="chat-wrapper">
             <Tile title="Czat" className="chat-tile">
                 <div className="chat-container">
                     <div className="message-display">
@@ -57,16 +64,18 @@ const Chat = () => {
                                 {msg.text}
                             </div>
                         ))}
+                        <div ref={messageEndRef} />
                     </div>
                     <div className="chat-input-container">
                         <input
                             type="text"
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
+                            onKeyDown={handleKeyPress}
                             placeholder="Napisz wiadomość..."
                             className="chat-input"
                         />
-                        <button onClick={handleSend} className="send-button">
+                        <button onClick={handleSend} className="send-button" aria-label="Send message">
                             <img src={send_arrow} alt="Send" className="send-icon" />
                         </button>
                     </div>

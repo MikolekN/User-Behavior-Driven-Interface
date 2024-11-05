@@ -5,6 +5,6 @@ export interface ChartData {
 }
 
 export interface TransfersAnalysisChartProps {
-    chartData: ChartData[];
+    chartData: ChartData[] | null;
     truncateText?: boolean;
 }

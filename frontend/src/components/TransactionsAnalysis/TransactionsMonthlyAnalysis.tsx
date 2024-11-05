@@ -1,43 +1,48 @@
 import { useEffect, useState, useContext } from 'react';
-import './TransactionsAnalysis.css';
-import { AuthContext } from '../../context/AuthContext';
+import { UserContext } from '../../context/UserContext';
 import { Navigate } from 'react-router-dom';
 import Tile from '../Tile/Tile';
 import TransfersAnalysisChart from '../TransfersAnalysisChart/TransfersAnalysisChart';
-import { ChartData } from '../utils/types/TransfersAnalysisChartTypes';
-import { fetchTransfersAnalysisData } from '../../services/apiService';
 import EmptyResponseInfoAlert from '../EmptyResponseInfoAlert/EmptyResponseInfoAlert';
+import { TransferContext } from '../../context/TransferContext';
+import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 
 const TransactionsMonthlyAnalysis = () => {
-    const [chartData, setChartData] = useState<ChartData[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-    const { user } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
+    const { chartData, fetchTransfersAnalysis } = useContext(TransferContext);
+    const [ loading, setLoading ] = useState(true);
+    const { apiError, handleError } = useApiErrorHandler();
     
     useEffect(() => {
         if (!user) return;
 
-        const fetchTransfersAnalysisMonthly = async () => {
-            const url = 'http://127.0.0.1:5000/api/transfers/analysis/monthly';
-            const body = { 
-                year: new Date().getUTCFullYear()
-            };
-            void fetchTransfersAnalysisData(url, body, setChartData, setLoading, setError);
+        const fetchChartData = async () => {
+            try {
+                const requestBody = {
+                    year: new Date().getUTCFullYear()
+                };
+                const interval = 'monthly';
+                await fetchTransfersAnalysis(interval, requestBody);
+            } catch (error) {
+                handleError(error);
+            } finally {
+                setLoading(false);
+            }
         };
 
-        void fetchTransfersAnalysisMonthly();
-    }, [user]);
+        void fetchChartData();
+    }, [user, fetchTransfersAnalysis]);
 
     if (!user) return <Navigate to="/login" />;
     
     if (loading) return <div>Loading...</div>;
 
-    if (error) { 
+    if (apiError.isError) { 
         return (
             <EmptyResponseInfoAlert
                 title="Transactions monthly analysis"
                 alertTitle="No transactions history to generate analysis yet"
-                alertMessage="transactions to display in transactions monthly analysis"
+                alertMessage={apiError.errorMessage}
             />
         );
     }
