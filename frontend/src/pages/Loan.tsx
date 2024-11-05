@@ -45,7 +45,6 @@ const Loan = () => {
     const onSubmit = handleSubmit(async ({ amount }: LoanFormData) => {
         try {
             const requestBody = {
-                recipientAccountNumber: user.accountNumber,
                 transferTitle: 'Pożyczka gotówkowa',
                 amount: amount
             };
