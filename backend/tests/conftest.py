@@ -1,5 +1,7 @@
 from datetime import datetime
 from backend.cyclic_payments.cyclic_payment import CyclicPayment
+from backend.tests.transfer.constants import TEST_TRANSFER_TITLE
+from backend.transfers.transfer import Transfer
 from backend.users.user import User
 import bcrypt
 import pytest
@@ -83,3 +85,37 @@ def test_cyclic_payment():
         amount=float(TEST_AMOUNT), start_date=datetime.fromisoformat(TEST_CYCLIC_PAYMENT_START_DATE), 
         interval=TEST_CYCLIC_PAYMENT_INTERVAL
     )
+
+@pytest.fixture
+def test_transfers():
+    transfers = []
+    transfer = Transfer(
+        created=datetime.now(), 
+        transfer_from_id=TEST_ID,
+        transfer_to_id=TEST_ID, 
+        title=TEST_TRANSFER_TITLE, 
+        amount=TEST_AMOUNT
+    )
+
+    transfers.append(transfer)
+    transfers.append(transfer)
+    transfers.append(transfer)
+
+    yield transfers
+
+@pytest.fixture
+def test_transfers_for_analysis():
+    transfers = []
+    transfer = Transfer(
+        created=datetime.now(), 
+        transfer_from_id=TEST_ID,
+        transfer_to_id=TEST_ID, 
+        title=TEST_TRANSFER_TITLE, 
+        amount=float(TEST_AMOUNT)
+    )
+
+    transfers.append(transfer)
+    transfers.append(transfer)
+    transfers.append(transfer)
+
+    yield transfers
