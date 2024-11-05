@@ -1,5 +1,4 @@
 import { useEffect, useState, useContext } from 'react';
-import './TransactionsAnalysis.css';
 import { UserContext } from '../../context/UserContext';
 import { Navigate } from 'react-router-dom';
 import Tile from '../Tile/Tile';
