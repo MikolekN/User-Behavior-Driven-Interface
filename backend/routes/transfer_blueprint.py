@@ -6,8 +6,8 @@ from typing import Any, Callable
 from ..users import UserRepository
 from ..transfers import *
 from bson import ObjectId
-from ..helpers import add, substract
-from ..constants import BANK_ACCOUNT_NUMBER
+from helpers.calculations import add, substract
+from constants import BANK_ACCOUNT_NUMBER, MAX_LOAN_VALUE, MIN_LOAN_VALUE
 
 months = ['', 'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień']
 
@@ -16,6 +16,7 @@ transfer_blueprint = Blueprint('transfer', __name__, url_prefix='/api')
 def validate_transfer_data(data: Mapping[str, Any] | None) -> str | None:
     if not data:
         return "Request payload is empty"
+    
     if 'recipientAccountNumber' not in data or 'transferTitle' not in data or 'amount' not in data:
         return "All fields are required"
     
@@ -23,6 +24,26 @@ def validate_transfer_data(data: Mapping[str, Any] | None) -> str | None:
     if amount <= 0:
         return "Amount must be a positive number"
 
+    return None
+
+def validate_loan_data(data: Mapping[str, Any] | None) -> str | None:
+    if not data:
+        return "Request payload is empty"
+    
+    if 'transferTitle' not in data or 'amount' not in data:
+        return "All fields are required"
+    
+    amount = float(data.get('amount'))
+    
+    if amount < MIN_LOAN_VALUE:
+        return f"Amount must be bigger or equal to {MIN_LOAN_VALUE}"
+    
+    if amount > MAX_LOAN_VALUE:
+        return f"Amount must be lower or equal to {MAX_LOAN_VALUE}"
+    
+    if amount % 1000 != 0:
+        return "Invalid amount format. Provide amount in thousands"
+    
     return None
 
 def validate_get_all_user_transfers_yearly(data: Mapping[str, Any] | None) -> str | None:
@@ -210,12 +231,12 @@ def get_date_from_datetime(date: datetime) -> str:
 @login_required
 def create_loan_transfer() -> tuple[Response, int]:
     data = request.get_json()
-    error = validate_transfer_data(data)
+    error = validate_loan_data(data)
 
     if error:
         return jsonify(message=error), 400
     
-    recipient_user = UserRepository.find_by_account_number(data['recipientAccountNumber'])
+    recipient_user = UserRepository.find_by_id(current_user._id)
     if not recipient_user:
         return jsonify(message="User with given account number does not exist"), 404
     

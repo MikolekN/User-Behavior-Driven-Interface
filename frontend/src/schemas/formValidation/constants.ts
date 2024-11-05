@@ -1,6 +1,8 @@
 export const MIN_PASSWORD_LENGTH: number = 8;
 export const REQUIRED_TEXT_INPUT_LENGTH: number = 1;
 export const ZERO: number = 0;
+export const MIN_LOAN_VALUE: number = 1000
+export const MAX_LOAN_VALUE: number = 100000
 
 export const ACCEPTED_IMAGE_TYPES: string[] = ['image/png', 'image/jpg', 'image/jpeg'];
 export const ACCEPTED_IMAGE_TYPES_ERR_MSG: string[] = ['*.png', '*.jpg', '*.jpeg'];
