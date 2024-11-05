@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import './Dropdown.css';
 
 interface DropdownProps {
     title: string;
@@ -11,9 +10,11 @@ interface DropdownProps {
     onHover: () => void;
     onMouseLeave: () => void;
     onOptionClick: () => void;
+    id: string;
+    className: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersistent, onToggle, onHover, onMouseLeave, onOptionClick }) => {
+const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersistent, onToggle, onHover, onMouseLeave, onOptionClick, id, className }) => {
     const dropdownRef = useRef<HTMLLIElement>(null);
 
     useEffect(() => {
@@ -37,19 +38,21 @@ const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersisten
     return (
         <li
             ref={dropdownRef}
-            className="nav-list-option dropdown-item"
+            className={`${className} relative`}
             onMouseEnter={onHover}
             onMouseLeave={onMouseLeave}
             onClick={onToggle}
+            id={`navigation-option-${id}`}
         >
-            <span className={`dropdown-label ${isPersistent ? 'active' : ''}`}>
+            <span id={`navigation-dropdown-label-${id}`} className={`cursor-pointer ${isPersistent ? 'font-semibold' : 'font-normal'} hover:font-semibold`}>
                 {title}
             </span>
             {isOpen && (
-                <ul className="dropdown-list">
+                <ul id={`navigation-dropdown-list-${id}`} className="block whitespace-nowrap absolute top-full left-1/2 -translate-x-1/2 z-10 pb-2 max-w-max">
                     {options.map((option) => (
                         <li
-                            className="dropdown-list-item"
+                            id={`navigation-dropdown-item-${option.label}`}
+                            className='block list-none cursor-pointer text-center m-0 hover:font-semibold'
                             key={option.label}
                             onClick={() => {
                                 onOptionClick();
@@ -61,6 +64,7 @@ const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersisten
                                     e.stopPropagation();
                                     onOptionClick();
                                 }}
+                                className='py-2 px-4 block hover:font-semibold'
                             >
                                 {option.label}
                             </Link>

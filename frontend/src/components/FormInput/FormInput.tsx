@@ -1,5 +1,4 @@
 import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
-import './FormInput.css';
 import { ReactNode } from 'react';
 
 interface FormInputProps {

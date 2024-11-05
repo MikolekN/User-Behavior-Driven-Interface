@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
-import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import Button from '../components/utils/Button';
 import { UserContext } from '../context/UserContext';
@@ -39,7 +38,7 @@ const Register = () => {
 
     return (
         <div className="flex items-center justify-center">
-            <Tile title="Register to Online Banking" className="form-tile w-2/5 bg-white p-8 rounded-lg shadow-lg">
+            <Tile title="Register to Online Banking" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
                         <form className="mt-8 space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>

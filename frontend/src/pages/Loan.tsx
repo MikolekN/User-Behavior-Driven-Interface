@@ -2,7 +2,6 @@ import { useState, useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
-import './Form.css';
 import FormInput from '../components/FormInput/FormInput';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoanFormData, LoanFormDataSchema } from '../schemas/formValidation/loanSchema';
@@ -65,8 +64,8 @@ const Loan = () => {
     };
 
     return (
-        <div className="flex items-center justify-center">
-            <Tile title="Loan" className="form-tile w-2/5  bg-white p-8 rounded-lg shadow-lg">
+        <div id='loan-wrapper' className="flex items-center justify-center">
+            <Tile title="Loan" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto px-1">
                         <div className="mt-8">
