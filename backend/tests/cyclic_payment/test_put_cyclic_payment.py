@@ -1,5 +1,5 @@
 from unittest.mock import MagicMock, patch
-from backend.tests.cyclic_payment.constants import DEFAULT_CYCLIC_PAYMENT, TEST_CYCLIC_PAYMENT_ID, TEST_CYCLIC_PAYMENT_INVALID_ID, TEST_NOT_ENOUGH_USER_FUNDS
+from backend.tests.cyclic_payment.constants import DEFAULT_CYCLIC_PAYMENT, TEST_BIG_AMOUNT, TEST_CYCLIC_PAYMENT_ID, TEST_CYCLIC_PAYMENT_INVALID_ID, TEST_NOT_ENOUGH_USER_FUNDS
 from backend.tests.cyclic_payment.helpers import get_cyclic_payment, get_cyclic_payment_not_valid
 
 def test_delete_cyclic_payment_unauthorized(client):
@@ -62,16 +62,17 @@ def test_put_cyclic_payment_user_with_account_number_not_exist(mock_find_account
         assert 'message' in json_data
         assert json_data['message'] == "User with given account number does not exist"
 
-
 @patch('backend.users.user_repository.UserRepository.find_by_id')
 @patch('backend.users.user_repository.UserRepository.find_by_account_number')
-def test_put_cyclic_payment_not_enough_money(mock_find_by_account_number, mock_find_by_id, client, test_issuer_user, test_recipient_user):
+@patch('backend.cyclic_payments.cyclic_payment_repository.CyclicPaymentRepository.find_by_id')
+def test_put_cyclic_payment_not_enough_money(mock_find_by_id_cyclic_payment, mock_find_by_account_number, mock_find_by_id, client, test_issuer_user, test_recipient_user, test_cyclic_payment):
     with patch('flask_login.utils._get_user', return_value=test_issuer_user):
         mock_find_by_id.return_value = test_issuer_user
         test_issuer_user.get_available_funds = MagicMock(return_value=TEST_NOT_ENOUGH_USER_FUNDS)
         mock_find_by_account_number.return_value = test_recipient_user
+        mock_find_by_id_cyclic_payment.return_value = test_cyclic_payment
 
-        response = client.put(f'/api/cyclic-payment/{TEST_CYCLIC_PAYMENT_ID}', json=get_cyclic_payment())
+        response = client.put(f'/api/cyclic-payment/{TEST_CYCLIC_PAYMENT_ID}', json=get_cyclic_payment({'amount': TEST_BIG_AMOUNT}))
 
         assert response.status_code == 403
         json_data = response.get_json()
