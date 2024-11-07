@@ -1,16 +1,13 @@
-from collections import OrderedDict
-from json import dumps
 from flask import Blueprint, request, jsonify, Response
 from flask_login import current_user, login_required
 from datetime import datetime
 from collections.abc import Mapping
 from typing import Any, Callable
-from users.user_repository import UserRepository
-from transfers.transfer_repository import TransferRepository
-from transfers.transfer import Transfer
+from ..users import UserRepository
+from ..transfers import *
 from bson import ObjectId
-from helpers.calculations import add, substract
-from constants import BANK_ACCOUNT_NUMBER, MAX_LOAN_VALUE, MIN_LOAN_VALUE
+from ..helpers import add, substract
+from ..constants import BANK_ACCOUNT_NUMBER, MAX_LOAN_VALUE, MIN_LOAN_VALUE
 
 months = ['', 'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień']
 
@@ -361,4 +358,4 @@ def get_all_user_transfers_yearly() -> tuple[Response, int]:
     serialized_transfers = serialize_transfers(transfers)
     response = set_missing_years(get_transfers_analysis_yearly(serialized_transfers), data['startYear'], data['endYear'])
 
-    return jsonify(message="Transfers yaerly analysis returned successfully", transfers=response), 200
+    return jsonify(message="Transfers yearly analysis returned successfully", transfers=response), 200

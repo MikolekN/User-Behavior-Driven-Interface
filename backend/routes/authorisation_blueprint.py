@@ -4,8 +4,7 @@ import bcrypt
 from datetime import datetime
 from collections.abc import Mapping
 from typing import Any
-from users.user_repository import UserRepository
-from users.user import User
+from ..users import *
 
 import random
 
@@ -33,7 +32,7 @@ def login() -> tuple[Response, int]:
         return jsonify(message="User does not exist"), 404
 
     if not bcrypt.checkpw(data['password'].encode('utf-8'), user.password.encode('utf-8')):
-        return jsonify(status="error", message="Invalid login credentials"), 401
+        return jsonify(message="Invalid login credentials"), 401
 
     login_user(user)
     sanitized_user = user.sanitize_user_dict()

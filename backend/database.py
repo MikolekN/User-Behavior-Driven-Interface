@@ -1,10 +1,11 @@
-import os
 import pymongo
 from pymongo.collection import Collection
 from pymongo.database import Database as PyMongoDatabase
 from pymongo.results import InsertOneResult, InsertManyResult, DeleteResult, UpdateResult
-from typing import Any
 from pymongo.errors import ConnectionFailure
+
+import os
+from typing import Any
 
 class Database:
     URI: str = "mongodb://localhost:27017/"

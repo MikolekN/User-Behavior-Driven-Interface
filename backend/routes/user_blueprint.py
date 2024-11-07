@@ -1,7 +1,7 @@
 from flask import Response, request, jsonify, Blueprint
 from flask_login import current_user, login_required
 from flask_login import login_required
-from users.user_repository import UserRepository
+from ..users import UserRepository
 
 import bcrypt
 
@@ -11,6 +11,8 @@ user_blueprint = Blueprint('user_update', __name__, url_prefix='/api')
 @login_required
 def get_user() -> tuple[Response, int]:
     user = UserRepository.find_by_id(current_user._id)
+    if not user:
+        return jsonify(message='User not found'), 404
     sanitized_user = user.sanitize_user_dict()
     return jsonify(user=sanitized_user), 200
 

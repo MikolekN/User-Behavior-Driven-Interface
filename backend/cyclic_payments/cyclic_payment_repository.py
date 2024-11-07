@@ -1,6 +1,7 @@
+from ..database import Database
+from ..cyclic_payments import CyclicPayment
+
 import bson
-from database import Database
-from cyclic_payments.cyclic_payment import CyclicPayment
 
 class CyclicPaymentRepository:
     COLLECTION: str = 'CyclicPayments'
