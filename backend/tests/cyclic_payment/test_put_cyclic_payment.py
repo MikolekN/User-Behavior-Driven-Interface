@@ -1,5 +1,5 @@
 from unittest.mock import MagicMock, patch
-from backend.tests.cyclic_payment.constants import DEFAULT_CYCLIC_PAYMENT, TEST_BIG_AMOUNT, TEST_CYCLIC_PAYMENT_ID, TEST_CYCLIC_PAYMENT_INVALID_ID, TEST_NOT_ENOUGH_USER_FUNDS
+from backend.tests.cyclic_payment.constants import TEST_BIG_AMOUNT, TEST_CYCLIC_PAYMENT_ID, TEST_CYCLIC_PAYMENT_INVALID_ID, TEST_NOT_ENOUGH_USER_FUNDS
 from backend.tests.cyclic_payment.helpers import get_cyclic_payment, get_cyclic_payment_not_valid
 
 def test_delete_cyclic_payment_unauthorized(client):

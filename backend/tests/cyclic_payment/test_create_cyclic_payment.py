@@ -43,7 +43,7 @@ def test_create_cyclic_payment_invalid_date_format(client, test_user):
         assert json_data['message'] == "Invalid date format. Expected ISO 8601 format"
 
 @patch('backend.users.user_repository.UserRepository.find_by_account_number')
-def test_create_cyclic_payment_recipient_user_not_exist(mock_find_by_account_number, client, test_user):    
+def test_create_cyclic_payment_recipient_user_not_exist(mock_find_by_account_number, client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         mock_find_by_account_number.return_value = None
 

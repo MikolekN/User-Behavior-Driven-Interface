@@ -6,7 +6,7 @@ def test_get_transfers_unauthorized(client):
     assert response.status_code == 401
 
 @patch('backend.transfers.transfer_repository.TransferRepository.find_transfers')
-def test_get_transfers_not_exist(mock_find_transfers, client, test_user):    
+def test_get_transfers_not_exist(mock_find_transfers, client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         mock_find_transfers.return_value = None
 

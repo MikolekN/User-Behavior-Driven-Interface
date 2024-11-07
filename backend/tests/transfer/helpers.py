@@ -1,4 +1,3 @@
-
 from backend.tests.transfer.constants import DEFAULT_TRANSFER, INVALID_TRANSFER
 
 

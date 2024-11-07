@@ -41,4 +41,3 @@ def test_get_cyclic_payment_success(mock_find_by_id, client, test_user, test_cyc
         assert 'message' in json_data
         assert json_data['message'] == "Get Cyclic Payment by id successfully"
         assert 'cyclic_payment' in json_data
-

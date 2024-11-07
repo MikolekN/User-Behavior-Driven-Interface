@@ -6,7 +6,7 @@ def test_get_transfers_monthly_analysis_unauthorized(client):
     assert response.status_code == 401
 
 @patch('backend.transfers.transfer_repository.TransferRepository.find_transfers')
-def test_get_transfers_monthly_analysis_empty_data(mock_find_transfers, client, test_user):    
+def test_get_transfers_monthly_analysis_empty_data(mock_find_transfers, client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         mock_find_transfers.return_value = None
 
@@ -18,7 +18,7 @@ def test_get_transfers_monthly_analysis_empty_data(mock_find_transfers, client, 
         assert json_data['message'] == "Request payload is empty"
 
 @patch('backend.transfers.transfer_repository.TransferRepository.find_transfers')
-def test_get_transfers_monthly_analysis_invalid_data(mock_find_transfers, client, test_user):    
+def test_get_transfers_monthly_analysis_invalid_data(mock_find_transfers, client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         mock_find_transfers.return_value = None
 
@@ -30,7 +30,7 @@ def test_get_transfers_monthly_analysis_invalid_data(mock_find_transfers, client
         assert json_data['message'] == "Year must be provided"
 
 @patch('backend.transfers.transfer_repository.TransferRepository.find_transfers')
-def test_get_transfers_monthly_analysis_invalid_data_type(mock_find_transfers, client, test_user):    
+def test_get_transfers_monthly_analysis_invalid_data_type(mock_find_transfers, client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         mock_find_transfers.return_value = None
 
@@ -42,7 +42,7 @@ def test_get_transfers_monthly_analysis_invalid_data_type(mock_find_transfers, c
         assert json_data['message'] == "Year has to be of type integer"
 
 @patch('backend.transfers.transfer_repository.TransferRepository.find_transfers')
-def test_get_transfers_monthly_analysis_not_exist(mock_find_transfers, client, test_user):    
+def test_get_transfers_monthly_analysis_not_exist(mock_find_transfers, client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         mock_find_transfers.return_value = None
 

@@ -141,9 +141,9 @@ def create_cyclic_payment() -> tuple[Response, int]:
 @cyclic_payment_blueprint.route('/cyclic-payment/<id>', methods=['GET'])
 @login_required
 def get_cyclic_payment(id) -> tuple[Response, int]:
-    erorr = validate_object_id(id)
-    if erorr:
-        return jsonify(message=erorr), 400
+    error = validate_object_id(id)
+    if error:
+        return jsonify(message=error), 400
 
     cyclic_payment = CyclicPaymentRepository.find_by_id(str(id))
     if not cyclic_payment:
@@ -157,9 +157,9 @@ def get_cyclic_payment(id) -> tuple[Response, int]:
 @cyclic_payment_blueprint.route('/cyclic-payment/<id>', methods=['DELETE'])
 @login_required
 def delete_cyclic_payment(id) -> tuple[Response, int]:
-    erorr = validate_object_id(id)
-    if erorr:
-        return jsonify(message=erorr), 400
+    error = validate_object_id(id)
+    if error:
+        return jsonify(message=error), 400
     
     # substracting cyclic payment amount from current user's blockades
     cyclic_payment = CyclicPaymentRepository.find_by_id(str(id))
@@ -177,9 +177,9 @@ def delete_cyclic_payment(id) -> tuple[Response, int]:
 @login_required
 def update_cyclic_payment(id) -> tuple[Response, int]:
     data = request.get_json()
-    erorr = validate_update_cyclic_payment(data, id)
-    if erorr:
-        return jsonify(message=erorr), 400
+    error = validate_update_cyclic_payment(data, id)
+    if error:
+        return jsonify(message=error), 400
     
     recipient_user = UserRepository.find_by_account_number(data['recipientAccountNumber'])
     if not recipient_user:

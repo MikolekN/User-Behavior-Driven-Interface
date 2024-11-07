@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 from backend.tests.cyclic_payment.constants import TEST_CYCLIC_PAYMENT_ID, TEST_CYCLIC_PAYMENT_INVALID_ID
 
 def test_delete_cyclic_payment_unauthorized(client):
@@ -42,4 +42,3 @@ def test_delete_cyclic_payment_success(mock_find_cyclic_payment_by_id, mock_find
         json_data = response.get_json()
         assert 'message' in json_data
         assert json_data['message'] == "Cyclic Payment deleted successfully"
-
