@@ -22,7 +22,7 @@ def test_put_cyclic_payment_invalid_data(client, test_user):
         assert response.status_code == 400
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Fields: 'interval ' are required"
+        assert json_data['message'] == "Fields: 'interval' are required"
 
 @patch('backend.cyclic_payments.cyclic_payment_repository.CyclicPaymentRepository.find_by_id')
 def test_put_cyclic_payment_invalid_object_id(mock_find_by_id, client, test_user, test_cyclic_payment):

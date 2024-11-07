@@ -22,7 +22,7 @@ def test_create_cyclic_payment_invalid_data(client, test_user):
         assert response.status_code == 400
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Fields: 'interval ' are required"
+        assert json_data['message'] == "Fields: 'interval' are required"
 
 def test_create_cyclic_payment_negative_amount(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):

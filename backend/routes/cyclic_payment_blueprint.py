@@ -19,7 +19,7 @@ def validate_required_cyclic_payment_fields(data: Mapping[str, Any]) -> str | No
             field_names += field + " "
         
     if field_names:
-        return f"Fields: '{field_names}' are required"
+        return f"Fields: '{field_names.strip()}' are required"
     
     return None
 
