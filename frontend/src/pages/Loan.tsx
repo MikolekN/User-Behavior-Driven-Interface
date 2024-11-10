@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import FormInput from '../components/FormInput/FormInput';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,10 +9,11 @@ import { UserContext } from '../context/UserContext';
 import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MIN_LOAN_AMOUNT } from './constants';
 import { TransferContext } from '../context/TransferContext';
 import useApiErrorHandler from '../hooks/useApiErrorHandler';
+import { useNavigate } from 'react-router-dom';
 
 const Loan = () => {
     const { apiError, handleError } = useApiErrorHandler();
-    const { user, getUser } = useContext(UserContext);
+    const { user, getUser } = useContext(UserContext)
     const { createLoan } = useContext(TransferContext);
     const [ sliderValue, setSliderValue ] = useState<number | null>(null);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -35,8 +35,6 @@ const Loan = () => {
             setSliderValue(parseInt(inputAmount, 10));
         }
     }, [user, inputAmount]);
-
-    if (!user) return <Navigate to="/login" />;  
 
     const toggleAnswer = (index: number) => {
         setActiveIndex(activeIndex === index ? null : index);
@@ -71,10 +69,10 @@ const Loan = () => {
                             <label className="text-sm font-semibold text-gray-700 block">From account</label>
                             <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
                                 <p>
-                                    {user.accountName} {`(${user.availableFunds} ${user.currency})`}
+                                    {user!.accountName} {`(${user!.availableFunds} ${user!.currency})`}
                                 </p>
                                 <p>
-                                    {user.accountNumber}
+                                    {user!.accountNumber}
                                 </p>
                             </div>
                         </div>
@@ -86,7 +84,7 @@ const Loan = () => {
                                 error={errors.amount}
                                 className="w-10/12"
                             >
-                                {user.currency}
+                                {user!.currency}
                             </FormInput>
                             <div>
                                 <Slider

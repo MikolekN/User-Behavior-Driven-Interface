@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 import CyclicPaymentList from '../components/CyclicPaymentList/CyclicPaymentList';
 import { UserContext } from '../context/UserContext';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { BackendCyclicPayment } from '../components/utils/types/CyclicPayment';
 import Tile from '../components/Tile/Tile';
 import Button from '../components/utils/Button';
@@ -32,8 +32,6 @@ const CyclicPayments = () => {
 
         void fetchCyclicPayments();
     }, [user, getCyclicPayments]);
-
-    if (!user) return <Navigate to="/login" />;
     
     if (apiError.isError) { 
         return (

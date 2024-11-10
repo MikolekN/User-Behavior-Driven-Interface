@@ -1,5 +1,4 @@
 import { useState, useContext, useEffect, useCallback } from 'react';
-import { Navigate } from 'react-router-dom';
 import Tile from '../../components/Tile/Tile';
 import FormInput from '../../components/FormInput/FormInput';
 import { UserContext } from '../../context/UserContext';
@@ -56,8 +55,6 @@ const ProfilePage = () => {
             setFieldValueForm('value', '');
         }
     }, [user, getUserFieldValue, selectedField, setFieldValueForm, clearFieldErrors]);
-
-    if (!user) return <Navigate to="/login" />;
 
     const preprocessImage = (file: File): Promise<File | null> => {
         return new Promise((resolve, reject) => {

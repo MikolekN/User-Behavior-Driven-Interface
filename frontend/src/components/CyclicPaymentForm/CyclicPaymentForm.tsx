@@ -133,10 +133,10 @@ const CyclicPaymentsForm = () => {
                             <label className="text-sm font-semibold text-gray-700 block">From account</label>
                             <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
                                 <p>
-                                    {user?.accountName} {`(${user?.availableFunds} ${user?.currency})`}
+                                    {user!.accountName} {`(${user!.availableFunds} ${user!.currency})`}
                                 </p>
                                 <p>
-                                    {user?.accountNumber}
+                                    {user!.accountNumber}
                                 </p>
                             </div>
                         </div>
@@ -192,7 +192,7 @@ const CyclicPaymentsForm = () => {
                                 error={errors.amount}
                                 className="w-10/12"
                             >
-                                {user?.currency}
+                                {user!.currency}
                             </FormInput>
                             <div>
                                 <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Submit</button>

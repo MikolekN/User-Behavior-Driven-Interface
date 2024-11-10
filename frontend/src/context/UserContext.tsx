@@ -2,7 +2,7 @@ import React, { createContext, useCallback, useState, useEffect, ReactNode, useM
 import { mapBackendUserToUser, User } from '../components/utils/User';
 import { getUserData, updateUserField, updateUserPassword } from '../services/userService';
 
-interface UserContextProps {
+export interface UserContextProps {
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;

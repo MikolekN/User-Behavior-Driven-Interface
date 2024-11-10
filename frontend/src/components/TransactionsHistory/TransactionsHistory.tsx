@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import Tile from '../Tile/Tile';
 import { UserContext } from '../../context/UserContext';
-import { Navigate } from 'react-router-dom';
 import EmptyResponseInfoAlert from '../EmptyResponseInfoAlert/EmptyResponseInfoAlert';
 import './TransactionsHistory.css';
 import arrowUp from '../../assets/images/chevron-up.svg';
@@ -46,7 +45,6 @@ const TransactionsHistory = () => {
         }));
     };
 
-    if (!user) return <Navigate to="/login" />;
     if (loading) return <div>Loading...</div>;
     if (apiError.isError) { 
         return (
@@ -95,7 +93,7 @@ const TransactionsHistory = () => {
                                                     }`}
                                                 >
                                                     {!item.income && <span>-</span>}
-                                                    {item.amount} {user.currency}
+                                                    {item.amount} {user!.currency}
                                                 </div>
                                             </div>
                                         ))}
