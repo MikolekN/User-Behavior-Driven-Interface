@@ -32,3 +32,12 @@ export const mapBackendCyclicPaymentToCyclicPayment = (backendCyclicPaymentData:
         startDate: backendCyclicPaymentData.start_date ? new Date(backendCyclicPaymentData.start_date) : null,
     };
 };
+
+export const mapBackendCyclicPaymentsListToCyclicPayment = (backendCyclicPaymentsData: BackendCyclicPayment[]): CyclicPayment[] => {
+    const formattedCyclicPayments: CyclicPayment[] = [];
+    backendCyclicPaymentsData.forEach((backendCyclicPaymentData: BackendCyclicPayment) => {
+        const cyclicPaymentFrontendData = mapBackendCyclicPaymentToCyclicPayment(backendCyclicPaymentData);
+        formattedCyclicPayments.push(cyclicPaymentFrontendData);
+    });
+    return formattedCyclicPayments;
+}

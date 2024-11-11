@@ -2,17 +2,12 @@ import { useContext, useEffect } from 'react';
 import CyclicPaymentList from '../components/CyclicPaymentList/CyclicPaymentList';
 import { UserContext } from '../context/UserContext';
 import { Link } from 'react-router-dom';
-import { BackendCyclicPayment } from '../components/utils/types/CyclicPayment';
 import Tile from '../components/Tile/Tile';
 import Button from '../components/utils/Button';
 import EmptyResponseInfoAlert from '../components/EmptyResponseInfoAlert/EmptyResponseInfoAlert';
 import './CyclicPayments.css';
 import { CyclicPaymentContext } from '../context/CyclicPaymentContext';
 import useApiErrorHandler from '../hooks/useApiErrorHandler';
-
-export interface CyclicPaymentResponse {
-    cyclic_payments: BackendCyclicPayment[];
-}
 
 const CyclicPayments = () => {
     const { user } = useContext(UserContext);
@@ -55,7 +50,7 @@ const CyclicPayments = () => {
                         <div>Cyclic Payments are loading...</div>
                     )}
                     {cyclicPayments && cyclicPayments.length > 0 && (
-                    <CyclicPaymentList cyclicPaymentsList={cyclicPayments}/>
+                        <CyclicPaymentList cyclicPaymentsList={cyclicPayments}/>
                     )}
                 </div>
             </Tile>

@@ -82,7 +82,7 @@ const TransactionsHistory = () => {
                                         {transfer.transactions.map((item, index) => (
                                             <div className="transaction-row" key={index}>
                                                 <div>
-                                                    <span className="issuer-name block">{item.issuer_name}</span>
+                                                    <span className="issuer-name block">{item.issuerName}</span>
                                                     <span className="transaction-title block">
                                                         <i>{item.title}</i>
                                                     </span>
