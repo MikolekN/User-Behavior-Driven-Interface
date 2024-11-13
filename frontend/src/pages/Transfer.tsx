@@ -59,7 +59,7 @@ const Transfer = () => {
                                 </p>
                             </div>
                         </div>
-                        <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
+                        <form className="space-y-6" onSubmit={onSubmit}>
                             <FormInput 
                                 label="Recipient account number"
                                 fieldType="text"

@@ -140,7 +140,7 @@ const CyclicPaymentsForm = () => {
                                 </p>
                             </div>
                         </div>
-                        <form id="cyclic-payment-form" className="space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
+                        <form id="cyclic-payment-form" className="space-y-6" onSubmit={onSubmit}>
                             <FormInput 
                                 label="Cyclic Payment name"
                                 fieldType="text"

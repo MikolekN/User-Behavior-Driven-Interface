@@ -167,7 +167,7 @@ const ProfilePage = () => {
         <div className="flex items-center justify-center">
             <Tile title="Profil użytkownika" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex flex-col space-y-6">
-                    <form onSubmit={(e) => { e.preventDefault(); void onIconSubmit(); }} className="space-y-4">
+                    <form onSubmit={onIconSubmit} className="space-y-4">
                         <FormInput
                             label="Wybierz nową ikonę"
                             fieldType="file"
@@ -185,7 +185,7 @@ const ProfilePage = () => {
     
                     <hr className="border-t border-gray-300 my-4" />
     
-                    <form onSubmit={(e) => { e.preventDefault(); void onFieldSubmit(); }} className="space-y-4">
+                    <form onSubmit={onFieldSubmit} className="space-y-4">
                         <FormSelect
                             label="Wybierz pole do zmiany"
                             options={validFields}
@@ -210,7 +210,7 @@ const ProfilePage = () => {
     
                     <hr className="border-t border-gray-300 my-4" />
     
-                    <form onSubmit={(e) => { e.preventDefault(); void onPasswordSubmit(); }} className="space-y-4">
+                    <form onSubmit={onPasswordSubmit} className="space-y-4">
                         <FormInput
                             label="Hasło"
                             fieldType="password"
