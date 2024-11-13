@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Tile from '../components/Tile/Tile';
 import FormInput from '../components/FormInput/FormInput';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -40,7 +40,7 @@ const Loan = () => {
         setActiveIndex(activeIndex === index ? null : index);
     };
     
-    const onSubmit = handleSubmit(async ({ amount }: LoanFormData) => {
+    const onSubmit: SubmitHandler<LoanFormData> = (async ({ amount }: LoanFormData) => {
         try {
             const requestBody = {
                 transferTitle: 'Pożyczka gotówkowa',
@@ -76,7 +76,7 @@ const Loan = () => {
                                 </p>
                             </div>
                         </div>
-                        <form className="space-y-6" onSubmit={onSubmit}>
+                        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput
                                 label="How much money do you need?"
                                 fieldType="text"

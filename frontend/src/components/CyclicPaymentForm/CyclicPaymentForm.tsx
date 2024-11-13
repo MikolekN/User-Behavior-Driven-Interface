@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import Tile from '../Tile/Tile';
 import FormInput from '../FormInput/FormInput';
@@ -80,7 +80,7 @@ const CyclicPaymentsForm = () => {
         }
     }, [cyclicPayment, setCyclicPaymentFormEditValues, setCyclicPaymentFormDefaultValues]);
 
-    const onSubmit = handleSubmit(async (data: CyclicPaymentFormData) => {
+    const onSubmit: SubmitHandler<CyclicPaymentFormData> = (async (data: CyclicPaymentFormData) => {
         if (cyclicPayment === null) {
             try {
                 const requestBody = {
@@ -140,7 +140,7 @@ const CyclicPaymentsForm = () => {
                                 </p>
                             </div>
                         </div>
-                        <form id="cyclic-payment-form" className="space-y-6" onSubmit={onSubmit}>
+                        <form id="cyclic-payment-form" className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
                                 label="Cyclic Payment name"
                                 fieldType="text"

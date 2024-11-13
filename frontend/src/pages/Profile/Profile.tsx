@@ -1,21 +1,22 @@
-import { useState, useContext, useEffect, useCallback } from 'react';
+import { useContext, useEffect, useCallback } from 'react';
 import Tile from '../../components/Tile/Tile';
 import FormInput from '../../components/FormInput/FormInput';
 import { UserContext } from '../../context/UserContext';
 import { UserIconContext } from '../../context/UserIconContext';
 import Button from '../../components/utils/Button';
 import FormSelect from '../../components/FormSelect/FormSelect';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UserPasswordFormData, UserPasswordFormDataSchema } from '../../schemas/formValidation/userPasswordSchema';
 import { UserFieldFormData, UserFieldFormDataSchema } from '../../schemas/formValidation/userFieldSchema';
 import { UserIconFormDataSchema, UserIconFromData } from '../../schemas/formValidation/userIconSchema';
 import { validFields } from './ProfileData';
+import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 
 const ProfilePage = () => {
-    const [apiIconError, setApiIconError] = useState({ isError: false, errorMessage: '' });
-    const [apiFieldError, setApiFieldError] = useState({ isError: false, errorMessage: '' });
-    const [apiPasswordError, setApiPasswordError] = useState({ isError: false, errorMessage: '' });
+    const { apiError: iconApiError, handleError: handleIconError } = useApiErrorHandler();
+    const { apiError: fieldApiError, handleError: handleFieldError } = useApiErrorHandler();
+    const { apiError: passwordApiError, handleError: handlePasswordError } = useApiErrorHandler();
     const { user, getUser, updateUser, updatePassword } = useContext(UserContext);
     const { getIcon, sendIcon } = useContext(UserIconContext);
 
@@ -125,7 +126,7 @@ const ProfilePage = () => {
         });
     };
 
-    const onIconSubmit = handleSubmitIcon(async ({ files }) => {
+    const onIconSubmit: SubmitHandler<UserIconFromData> = (async ({ files }: UserIconFromData) => {
         try {
             if (files && files[0]) {
                 const preprocessedIcon = await preprocessImage(files[0]);
@@ -135,26 +136,25 @@ const ProfilePage = () => {
                 }
             }
             setIconValueForm('files', undefined);
-            setApiIconError({ isError: false, errorMessage: '' });
         } catch (error) {
-            setApiIconError({ isError: true, errorMessage: typeof error === 'string' ? error : 'Error updating user icon' });
+            handleIconError(error);
         }
     });
     
-    const onFieldSubmit = handleSubmitField(async ({ field, value }) => {
+    const onFieldSubmit: SubmitHandler<UserFieldFormData> = (async ({ field, value }: UserFieldFormData) => {
         try {
             await updateUser(field, value);
             await getUser();
         } catch (error) {
-            setApiFieldError({ isError: true, errorMessage: typeof error === 'string' ? error : 'Error updating user field' });
+            handleFieldError(error);
         }
     });
 
-    const onPasswordSubmit = handleSubmitPassword(async ({ currentPassword, newPassword }) => {
+    const onPasswordSubmit: SubmitHandler<UserPasswordFormData> = (async ({ currentPassword, newPassword }: UserPasswordFormData) => {
         try {
             await updatePassword(currentPassword, newPassword);
         } catch (error) {
-            setApiPasswordError({ isError: true, errorMessage: typeof error === 'string' ? error : 'Error updating password' });
+            handlePasswordError(error);
         }
     });
 
@@ -167,7 +167,7 @@ const ProfilePage = () => {
         <div className="flex items-center justify-center">
             <Tile title="Profil użytkownika" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex flex-col space-y-6">
-                    <form onSubmit={onIconSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmitIcon(onIconSubmit)} className="space-y-4">
                         <FormInput
                             label="Wybierz nową ikonę"
                             fieldType="file"
@@ -179,13 +179,13 @@ const ProfilePage = () => {
                             <Button>Wybierz ikonę</Button>
                         </div>
                         <div>
-                            {apiIconError.isError && <p className="text-red-600 mt-1 text-sm">{apiIconError.errorMessage}</p>}
+                            {iconApiError.isError && <p className="text-red-600 mt-1 text-sm">{iconApiError.errorMessage}</p>}
                         </div>
                     </form>
     
                     <hr className="border-t border-gray-300 my-4" />
     
-                    <form onSubmit={onFieldSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmitField(onFieldSubmit)} className="space-y-4">
                         <FormSelect
                             label="Wybierz pole do zmiany"
                             options={validFields}
@@ -204,13 +204,13 @@ const ProfilePage = () => {
                             <Button>Zmień wartość</Button>
                         </div>
                         <div>
-                            {apiFieldError.isError && <p className="text-red-600 mt-1 text-sm">{apiFieldError.errorMessage}</p>}
+                            {fieldApiError.isError && <p className="text-red-600 mt-1 text-sm">{fieldApiError.errorMessage}</p>}
                         </div>
                     </form>
     
                     <hr className="border-t border-gray-300 my-4" />
     
-                    <form onSubmit={onPasswordSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmitPassword(onPasswordSubmit)} className="space-y-4">
                         <FormInput
                             label="Hasło"
                             fieldType="password"
@@ -229,7 +229,7 @@ const ProfilePage = () => {
                             <Button>Zmień hasło</Button>
                         </div>
                         <div>
-                            {apiPasswordError.isError && <p className="text-red-600 mt-1 text-sm">{apiPasswordError.errorMessage}</p>}
+                            {passwordApiError.isError && <p className="text-red-600 mt-1 text-sm">{passwordApiError.errorMessage}</p>}
                         </div>
                     </form>
                 </div>

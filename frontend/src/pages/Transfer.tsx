@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import FormInput from '../components/FormInput/FormInput';
@@ -28,7 +28,7 @@ const Transfer = () => {
 
     if (!user) return <Navigate to="/login" />;
     
-    const onSubmit = handleSubmit(async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
+    const onSubmit: SubmitHandler<TransferFormData> = (async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
         try {
             const requestBody = {
                 recipientAccountNumber: recipientAccountNumber,
@@ -59,7 +59,7 @@ const Transfer = () => {
                                 </p>
                             </div>
                         </div>
-                        <form className="space-y-6" onSubmit={onSubmit}>
+                        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
                                 label="Recipient account number"
                                 fieldType="text"
