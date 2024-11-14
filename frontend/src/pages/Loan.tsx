@@ -1,15 +1,15 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, ChangeEventHandler } from 'react';
 import { useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import FormInput from '../components/FormInput/FormInput';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoanFormData, LoanFormDataSchema } from '../schemas/formValidation/loanSchema';
-import Slider from '@mui/material/Slider';
 import { UserContext } from '../context/UserContext';
-import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MIN_LOAN_AMOUNT } from './constants';
+import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MAX_LOAN_AMOUNT_TEXT, MIN_LOAN_AMOUNT, MIN_LOAN_AMOUNT_TEXT } from './constants';
 import { TransferContext } from '../context/TransferContext';
 import useApiErrorHandler from '../hooks/useApiErrorHandler';
+import { RangeSlider } from 'flowbite-react';
 
 const Loan = () => {
     const { apiError, handleError } = useApiErrorHandler();
@@ -56,10 +56,10 @@ const Loan = () => {
         }
     });
 
-    const handleSliderChange = (_event: Event, newValue: number | number[]) => {
-        const sliderVal = newValue as number; 
-        setSliderValue(sliderVal);
-        setValue('amount', sliderVal.toString());
+    const handleSliderChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+        const newValue = parseInt(event.target.value, 10);
+        setSliderValue(newValue);
+        setValue('amount', newValue.toString());
     };
 
     return (
@@ -89,18 +89,17 @@ const Loan = () => {
                                 {user.currency}
                             </FormInput>
                             <div>
-                                <Slider
+                                <RangeSlider 
                                     value={sliderValue as number}
                                     onChange={handleSliderChange}
                                     aria-label="input-slider"
                                     min={MIN_LOAN_AMOUNT}
                                     step={LOAN_AMOUNT_STEP}
                                     max={MAX_LOAN_AMOUNT}
-                                    valueLabelDisplay="auto"
                                 />
                                 <div className="flex justify-between">
-                                    <label className="text-sm font-semibold text-gray-700 block">1 000</label>
-                                    <label className="text-sm font-semibold text-gray-700 block">100 000</label>
+                                    <label className="text-sm font-semibold text-gray-700 block">{MIN_LOAN_AMOUNT_TEXT}</label>
+                                    <label className="text-sm font-semibold text-gray-700 block">{MAX_LOAN_AMOUNT_TEXT}</label>
                                 </div>
                             </div>
                             <div className="mt-8">
