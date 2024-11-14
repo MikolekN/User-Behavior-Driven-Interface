@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import FormInput from '../components/FormInput/FormInput';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,9 +24,6 @@ const Transfer = () => {
         mode: 'onSubmit'
     });
     const navigate = useNavigate();
-
-
-    if (!user) return <Navigate to="/login" />;
     
     const onSubmit: SubmitHandler<TransferFormData> = async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
         try {
@@ -52,10 +49,10 @@ const Transfer = () => {
                             <label className="text-sm font-semibold text-gray-700 block">From account</label>
                             <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
                                 <p>
-                                    {user.accountName} {`(${user.availableFunds} ${user.currency})`}
+                                    {user!.accountName} {`(${user!.availableFunds} ${user!.currency})`}
                                 </p>
                                 <p>
-                                    {user.accountNumber}
+                                    {user!.accountNumber}
                                 </p>
                             </div>
                         </div>
@@ -81,7 +78,7 @@ const Transfer = () => {
                                 error={errors.amount}
                                 className="w-10/12"
                             >
-                                {user.currency}
+                                {user!.currency}
                             </FormInput>
                             <div>
                                 <Button isSubmitting={isSubmitting} className="w-full">

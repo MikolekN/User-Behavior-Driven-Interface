@@ -29,8 +29,8 @@ export const router = createBrowserRouter([
             { path: '/register', element: <Register /> },
             { path: '*', element: <PageNotFound /> },
             // private routes
-            { path: '/dashboard', element: <Dashboard /> },
-            { path: '/transfer', element: <Transfer /> },
+            { path: '/dashboard', element: <PrivateRoute children={  <Dashboard /> } /> },
+            { path: '/transfer', element: <PrivateRoute children={  <Transfer /> } /> },
             { path: '/loan', element: <PrivateRoute children={ <Loan /> } /> },
             { path: '/chat', element: <PrivateRoute children={ <Chat /> } /> },
             { path: '/faq', element: <PrivateRoute children={ <FAQ /> } /> },
