@@ -50,7 +50,7 @@ const CyclicPayments = () => {
     }
 
     return (
-        <div className='cyclic-payments-wrapper'>
+        <div className='flex overflow-hidden flex-col flex-grow justify-center items-center h-full max-h-full'>
             <Tile title="Cyclic Payments List" className='cyclic-payments-tile'>
                 <div className="cyclic-payments-container">
                     {!cyclicPayments && (
