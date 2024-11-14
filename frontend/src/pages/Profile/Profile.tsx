@@ -20,13 +20,13 @@ const ProfilePage = () => {
     const { user, getUser, updateUser, updatePassword } = useContext(UserContext);
     const { getIcon, sendIcon } = useContext(UserIconContext);
 
-    const { register: registerIcon, handleSubmit: handleSubmitIcon, setValue: setIconValueForm, formState: { errors: iconErrors } } = useForm<UserIconFromData>({
+    const { register: registerIcon, handleSubmit: handleSubmitIconForm, setValue: setIconValueForm, formState: { errors: iconErrors, isSubmitting: isIconFormSubmitting } } = useForm<UserIconFromData>({
         resolver: zodResolver(UserIconFormDataSchema)
     });
-    const { register: registerField, handleSubmit: handleSubmitField, setValue: setFieldValueForm, formState: { errors: fieldErrors }, watch, clearErrors: clearFieldErrors } = useForm<UserFieldFormData>({
+    const { register: registerField, handleSubmit: handleSubmitFieldForm, setValue: setFieldValueForm, formState: { errors: fieldErrors, isSubmitting: isFieldFormSubmitting }, watch, clearErrors: clearFieldErrors } = useForm<UserFieldFormData>({
         resolver: zodResolver(UserFieldFormDataSchema)
     });
-    const { register: registerPassword, handleSubmit: handleSubmitPassword, formState: { errors: passwordErrors } } = useForm<UserPasswordFormData>({
+    const { register: registerPassword, handleSubmit: handleSubmitPasswordForm, formState: { errors: passwordErrors, isSubmitting: isPasswordFormSubmitting } } = useForm<UserPasswordFormData>({
         resolver: zodResolver(UserPasswordFormDataSchema)
     });
     
@@ -126,7 +126,7 @@ const ProfilePage = () => {
         });
     };
 
-    const onIconSubmit: SubmitHandler<UserIconFromData> = (async ({ files }: UserIconFromData) => {
+    const onIconSubmit: SubmitHandler<UserIconFromData> = async ({ files }: UserIconFromData) => {
         try {
             if (files && files[0]) {
                 const preprocessedIcon = await preprocessImage(files[0]);
@@ -139,24 +139,24 @@ const ProfilePage = () => {
         } catch (error) {
             handleIconError(error);
         }
-    });
+    };
     
-    const onFieldSubmit: SubmitHandler<UserFieldFormData> = (async ({ field, value }: UserFieldFormData) => {
+    const onFieldSubmit: SubmitHandler<UserFieldFormData> = async ({ field, value }: UserFieldFormData) => {
         try {
             await updateUser(field, value);
             await getUser();
         } catch (error) {
             handleFieldError(error);
         }
-    });
+    };
 
-    const onPasswordSubmit: SubmitHandler<UserPasswordFormData> = (async ({ currentPassword, newPassword }: UserPasswordFormData) => {
+    const onPasswordSubmit: SubmitHandler<UserPasswordFormData> = async ({ currentPassword, newPassword }: UserPasswordFormData) => {
         try {
             await updatePassword(currentPassword, newPassword);
         } catch (error) {
             handlePasswordError(error);
         }
-    });
+    };
 
     const getFieldLabel = (field: string) => {
         const fieldData = validFields.find((item) => item.value === field);
@@ -167,7 +167,7 @@ const ProfilePage = () => {
         <div className="flex items-center justify-center">
             <Tile title="Profil użytkownika" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex flex-col space-y-6">
-                    <form onSubmit={handleSubmitIcon(onIconSubmit)} className="space-y-4">
+                    <form onSubmit={handleSubmitIconForm(onIconSubmit)} className="space-y-4">
                         <FormInput
                             label="Wybierz nową ikonę"
                             fieldType="file"
@@ -176,7 +176,9 @@ const ProfilePage = () => {
                             className="w-full"
                         />
                         <div className="flex justify-center">
-                            <Button>Wybierz ikonę</Button>
+                            <Button isSubmitting={isIconFormSubmitting}>
+                                {isIconFormSubmitting ? "Loading..." : "Wybierz ikonę"}
+                            </Button>
                         </div>
                         <div>
                             {iconApiError.isError && <p className="text-red-600 mt-1 text-sm">{iconApiError.errorMessage}</p>}
@@ -185,7 +187,7 @@ const ProfilePage = () => {
     
                     <hr className="border-t border-gray-300 my-4" />
     
-                    <form onSubmit={handleSubmitField(onFieldSubmit)} className="space-y-4">
+                    <form onSubmit={handleSubmitFieldForm(onFieldSubmit)} className="space-y-4">
                         <FormSelect
                             label="Wybierz pole do zmiany"
                             options={validFields}
@@ -201,7 +203,9 @@ const ProfilePage = () => {
                             className="w-full"
                         />
                         <div className="flex justify-center">
-                            <Button>Zmień wartość</Button>
+                            <Button isSubmitting={isFieldFormSubmitting}>
+                                {isFieldFormSubmitting ? "Loading..." : "Zmień wartość"}
+                            </Button>
                         </div>
                         <div>
                             {fieldApiError.isError && <p className="text-red-600 mt-1 text-sm">{fieldApiError.errorMessage}</p>}
@@ -210,7 +214,7 @@ const ProfilePage = () => {
     
                     <hr className="border-t border-gray-300 my-4" />
     
-                    <form onSubmit={handleSubmitPassword(onPasswordSubmit)} className="space-y-4">
+                    <form onSubmit={handleSubmitPasswordForm(onPasswordSubmit)} className="space-y-4">
                         <FormInput
                             label="Hasło"
                             fieldType="password"
@@ -226,7 +230,9 @@ const ProfilePage = () => {
                             className="w-full"
                         />
                         <div className="flex justify-center">
-                            <Button>Zmień hasło</Button>
+                            <Button isSubmitting={isPasswordFormSubmitting}>
+                                {isPasswordFormSubmitting ? "Loading..." : "Zmień hasło"}
+                            </Button>
                         </div>
                         <div>
                             {passwordApiError.isError && <p className="text-red-600 mt-1 text-sm">{passwordApiError.errorMessage}</p>}

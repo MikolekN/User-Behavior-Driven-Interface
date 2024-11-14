@@ -15,7 +15,7 @@ const Login = () => {
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
     const { apiError, handleError } = useApiErrorHandler();
-    const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormData>({
         resolver: zodResolver(LoginFormDataSchema),
         defaultValues: {
             email: '',
@@ -26,14 +26,14 @@ const Login = () => {
 
     if (user) return <Navigate to="/dashboard" />;
 
-    const onSubmit: SubmitHandler<LoginFormData> = (async ({ email, password }: LoginFormData) => {
+    const onSubmit: SubmitHandler<LoginFormData> = async ({ email, password }: LoginFormData) => {
         try {
             await login(email, password);
             navigate('/dashboard');
         } catch (error) {
             handleError(error);
         }
-    });
+    };
 
     return (
         <div className="flex items-center justify-center">
@@ -55,8 +55,8 @@ const Login = () => {
                                 error={errors.password}
                                 className="w-full"
                             />
-                            <Button className="w-full">
-						        Submit
+                            <Button isSubmitting={isSubmitting} className="w-full">
+						        {isSubmitting ? "Loading..." : "Submit"}
                             </Button>
                             <div>
                                 {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}

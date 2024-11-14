@@ -10,6 +10,7 @@ import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MIN_LOAN_AMOU
 import { TransferContext } from '../context/TransferContext';
 import useApiErrorHandler from '../hooks/useApiErrorHandler';
 import { useNavigate } from 'react-router-dom';
+import Button from '../components/utils/Button';
 
 const Loan = () => {
     const { apiError, handleError } = useApiErrorHandler();
@@ -17,7 +18,7 @@ const Loan = () => {
     const { createLoan } = useContext(TransferContext);
     const [ sliderValue, setSliderValue ] = useState<number | null>(null);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
-    const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<LoanFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, watch } = useForm<LoanFormData>({
         resolver: zodResolver(LoanFormDataSchema),
         defaultValues: {
             amount: MIN_LOAN_AMOUNT.toString()
@@ -40,7 +41,7 @@ const Loan = () => {
         setActiveIndex(activeIndex === index ? null : index);
     };
     
-    const onSubmit: SubmitHandler<LoanFormData> = (async ({ amount }: LoanFormData) => {
+    const onSubmit: SubmitHandler<LoanFormData> = async ({ amount }: LoanFormData) => {
         try {
             const requestBody = {
                 transferTitle: 'Pożyczka gotówkowa',
@@ -52,7 +53,7 @@ const Loan = () => {
         } catch (error) {
             handleError(error);
         }
-    });
+    };
 
     const handleSliderChange = (_event: Event, newValue: number | number[]) => {
         const sliderVal = newValue as number; 
@@ -111,9 +112,9 @@ const Loan = () => {
                                     ))}
                                 </div>
                             </div>
-                            <div>
-                                <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Submit</button>
-                            </div>
+                            <Button isSubmitting={isSubmitting} className="w-full">
+						        {isSubmitting ? "Loading..." : "Submit"}
+                            </Button>
                             <div>
                                 {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
                             </div>

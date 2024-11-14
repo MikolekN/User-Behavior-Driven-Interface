@@ -14,7 +14,7 @@ const Transfer = () => {
     const { apiError, handleError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
     const { createTransfer } = useContext(TransferContext);
-    const { register, handleSubmit, formState: { errors } } = useForm<TransferFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<TransferFormData>({
         resolver: zodResolver(TransferFormDataSchema),
         defaultValues: {
             recipientAccountNumber: '',
@@ -28,7 +28,7 @@ const Transfer = () => {
 
     if (!user) return <Navigate to="/login" />;
     
-    const onSubmit: SubmitHandler<TransferFormData> = (async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
+    const onSubmit: SubmitHandler<TransferFormData> = async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
         try {
             const requestBody = {
                 recipientAccountNumber: recipientAccountNumber,
@@ -41,7 +41,7 @@ const Transfer = () => {
         } catch (error) {
             handleError(error);
         }
-    });
+    };
 
     return (
         <div className="flex items-center justify-center">
@@ -84,8 +84,8 @@ const Transfer = () => {
                                 {user.currency}
                             </FormInput>
                             <div>
-                                <Button className="w-full">
-                                    Submit
+                                <Button isSubmitting={isSubmitting} className="w-full">
+                                    {isSubmitting ? "Loading..." : "Submit"}
                                 </Button>
                             </div>
                             <div>
