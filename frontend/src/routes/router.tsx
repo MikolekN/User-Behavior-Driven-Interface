@@ -29,19 +29,25 @@ export const router = createBrowserRouter([
             { path: '/register', element: <Register /> },
             { path: '*', element: <PageNotFound /> },
             // private routes
-            { path: '/dashboard', element: <PrivateRoute children={  <Dashboard /> } /> },
-            { path: '/transfer', element: <PrivateRoute children={  <Transfer /> } /> },
-            { path: '/loan', element: <PrivateRoute children={ <Loan /> } /> },
-            { path: '/chat', element: <PrivateRoute children={ <Chat /> } /> },
-            { path: '/faq', element: <PrivateRoute children={ <FAQ /> } /> },
-            { path: '/info', element: <PrivateRoute children={ <Info /> } /> },
-            { path: '/transactions/history', element: <PrivateRoute children={ <TransactionsHistory /> } /> },
-            { path: '/transactions/analysis/monthly', element: <PrivateRoute children={ <TransactionsMonthlyAnalysis /> } /> },
-            { path: '/transactions/analysis/yearly', element: <PrivateRoute children={ <TransactionsYearlyAnalysis /> } /> },
-            { path: '/create-cyclic-payment', element: <PrivateRoute children={ <CyclicPaymentsForm key="create"/> } /> },
-            { path: '/edit-cyclic-payment/:id', element: <PrivateRoute children={ <CyclicPaymentsForm key="edit"/> } /> },
-            { path: '/cyclic-payments', element: <PrivateRoute children={ <CyclicPayments /> } /> },
-            { path: '/profile', element: <PrivateRoute children={ <Profile /> } /> }
+            {
+                element: <PrivateRoute />,
+                children: [
+                    { path: '/dashboard', element: <Dashboard /> },
+                    { path: '/transfer', element: <Transfer /> },
+                    { path: '/transfer', element: <Transfer /> },
+                    { path: '/loan', element: <Loan /> },
+                    { path: '/chat', element: <Chat /> },
+                    { path: '/faq', element: <FAQ /> },
+                    { path: '/info', element: <Info /> },
+                    { path: '/transactions/history', element: <TransactionsHistory /> },
+                    { path: '/transactions/analysis/monthly', element: <TransactionsMonthlyAnalysis /> },
+                    { path: '/transactions/analysis/yearly', element: <TransactionsYearlyAnalysis /> },
+                    { path: '/create-cyclic-payment', element: <CyclicPaymentsForm key="create"/> },
+                    { path: '/edit-cyclic-payment/:id', element: <CyclicPaymentsForm key="edit"/> },
+                    { path: '/cyclic-payments', element: <CyclicPayments /> },
+                    { path: '/profile', element: <Profile /> },
+                ]
+            },
         ],
     }
 ]);
