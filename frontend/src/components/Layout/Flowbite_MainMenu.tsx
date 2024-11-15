@@ -2,6 +2,7 @@ import { MegaMenu, Navbar } from 'flowbite-react';
 import { useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
 import { AccessLevels, menuOptions } from './MainMenu/MainMenuData';
+import { Link } from 'react-router-dom';
 
 export const MainMenu = () => {
     const { user } = useContext(UserContext);
@@ -26,9 +27,9 @@ export const MainMenu = () => {
                                     <ul className="space-y-4 p-4 ">
                                     {option.submenu.map((submenu_option) => (
                                         <li>
-                                        <a href={submenu_option.path} className="hover:text-primary-600 dark:hover:text-primary-500">
-                                        {submenu_option.label}
-                                        </a>
+                                            <Link to={submenu_option.path} className='hover:text-primary-600 dark:hover:text-primary-500'>
+                                                {submenu_option.label}
+                                            </Link>
                                         </li>
                                     ))}  
                                     </ul>
