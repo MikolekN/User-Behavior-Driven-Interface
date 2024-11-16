@@ -7,6 +7,8 @@ import arrowUp from '../../assets/images/chevron-up.svg';
 import arrowDown from '../../assets/images/chevron-down.svg';
 import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
+import Label from '../utils/Label';
+import AccountDetails from '../utils/AccountDetails';
 
 interface CyclicPaymentListProps {
     cyclicPaymentsList: CyclicPayment[];
@@ -111,34 +113,20 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                 <div className="flex w-full justify-evenly">
                                                     <div className="w-2/4 pr-4">
                                                         <div className="mb-4">
-                                                            <div className="font-semibold">
-                                                        Recipient
-                                                            </div>
+                                                            <Label label='Recipient'/>
                                                             <div className="pl-4">
                                                                 <i>{cyclicPayment.recipientName}</i>
                                                             </div>
                                                         </div>
                                                         <div className="mb-4">
-                                                            <div className="font-semibold mt-2">
-                                                        Recipient Account Number
-                                                            </div>
+                                                            <Label label='Recipient Account Number'/>
                                                             <div className="pl-4">
                                                                 <i>{cyclicPayment.recipientAccountNumber}</i>
                                                             </div>
                                                         </div>
+                                                        <AccountDetails label='From account' user={user!} className='w-max pl-4 p-3' />
                                                         <div className="mb-4">
-                                                            <div className="text-sm font-semibold">
-                                                        From Account
-                                                            </div>
-                                                            <div className="pl-4 p-3 border border-gray-300 rounded-lg bg-gray-100 w-max">
-                                                                <p>{user?.accountName} ({user?.availableFunds} {user?.currency})</p>
-                                                                <p>{user?.accountNumber}</p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="mb-4">
-                                                            <div className="font-semibold">
-                                                        Title
-                                                            </div>
+                                                            <Label label='Title'/>
                                                             <div className="pl-4">
                                                                 <i>{cyclicPayment.transferTitle}</i>
                                                             </div>
@@ -146,25 +134,19 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                     </div>
                                                     <div className="w-1/4 pl-4">
                                                         <div className="mb-4">
-                                                            <div className="font-semibold">
-                                                        Amount
-                                                            </div>
+                                                            <Label label='Amount'/>
                                                             <div className="pl-4">
                                                                 <i>{cyclicPayment.amount} {user?.currency}</i>
                                                             </div>
                                                         </div>
                                                         <div className="mb-4">
-                                                            <div className="font-semibold">
-                                                        Start Date
-                                                            </div>
+                                                            <Label label='Start Date'/>
                                                             <div className="pl-4">
                                                                 <i>{formatDate(cyclicPayment.startDate)}</i>
                                                             </div>
                                                         </div>
                                                         <div className="mb-4">
-                                                            <div className="font-semibold">
-                                                        Repeat
-                                                            </div>
+                                                            <Label label='Repeat'/>
                                                             <div className="pl-4">
                                                                 <i>{cyclicPayment.interval}</i>
                                                             </div>

@@ -1,5 +1,6 @@
 import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import { ReactNode } from 'react';
+import Label from '../utils/Label';
 
 interface Option {
     value: string;
@@ -19,7 +20,7 @@ interface FormSelectProps {
 const FormSelect = ({ label, options, register, error, defaultOption = '-- Wybierz opcję --', children, className }: FormSelectProps) => {
     return (
         <div>
-            <label className="text-sm font-semibold text-gray-700 block">{label}</label>
+            <Label label={label} />
             <select
                 {...register}
                 style={{ borderColor: error ? 'red' : '' }}

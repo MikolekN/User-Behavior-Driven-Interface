@@ -12,6 +12,8 @@ import useApiErrorHandler from '../hooks/useApiErrorHandler';
 import { RangeSlider } from 'flowbite-react';
 import { scrollToTop } from '../components/utils/scroll';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
+import Label from '../components/utils/Label';
+import AccountDetails from '../components/utils/AccountDetails';
 
 const Loan = () => {
     const { apiError, handleError } = useApiErrorHandler();
@@ -75,17 +77,7 @@ const Loan = () => {
                                 <ErrorAlert alertMessage={apiError.errorMessage} />
                             </div> 
                         }
-                        <div className="mt-8">
-                            <label className="text-sm font-semibold text-gray-700 block">From account</label>
-                            <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
-                                <p>
-                                    {user.accountName} {`(${user.availableFunds} ${user.currency})`}
-                                </p>
-                                <p>
-                                    {user.accountNumber}
-                                </p>
-                            </div>
-                        </div>
+                        <AccountDetails label='From account' user={user} className='w-full p-3 mb-6' />
                         <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
                             <FormInput
                                 label="How much money do you need?"
@@ -106,16 +98,16 @@ const Loan = () => {
                                     max={MAX_LOAN_AMOUNT}
                                 />
                                 <div className="flex justify-between">
-                                    <label className="text-sm font-semibold text-gray-700 block">{MIN_LOAN_AMOUNT_TEXT}</label>
-                                    <label className="text-sm font-semibold text-gray-700 block">{MAX_LOAN_AMOUNT_TEXT}</label>
+                                    <Label label={MIN_LOAN_AMOUNT_TEXT} />
+                                    <Label label={MAX_LOAN_AMOUNT_TEXT} />
                                 </div>
                             </div>
                             <div className="mt-8">
-                                <label className="text-sm font-semibold text-gray-700 block text-center">Number of installments</label>
+                                <Label label='Number of installments' />
                                 <div className="flex justify-between mt-4">
                                     {AVAILABLE_LOAN_LENGTH.map((item, idx) => (
                                         <div onClick={() => { toggleAnswer(idx); }} style={activeIndex === idx ? { 'background': '#60a5fa' } : {}} key={idx} className="border-2 border-blue-600 cursor-pointer hover:bg-blue-200 border-opacity-20 rounded-lg px-4 py-2">
-                                            <label className="text-sm font-semibold text-gray-700 block">{item.loanLength}</label>
+                                            <Label label={item.loanLength} />
                                         </div>
                                     ))}
                                 </div>

@@ -16,6 +16,7 @@ import { intervalOptions } from './CyclicPaymentData';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import ErrorAlert from '../Alerts/ErrorAlert';
 import { scrollToTop } from '../utils/scroll';
+import AccountDetails from '../utils/AccountDetails';
 
 const CyclicPaymentsForm = () => {
     const { id } = useParams();
@@ -137,17 +138,7 @@ const CyclicPaymentsForm = () => {
                                 <ErrorAlert alertMessage={apiError.errorMessage} />
                             </div> 
                         }
-                        <div id="cyclic-payment-account-details" className="mt-8">
-                            <label className="text-sm font-semibold text-gray-700 block">From account</label>
-                            <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
-                                <p>
-                                    {user?.accountName} {`(${user?.availableFunds} ${user?.currency})`}
-                                </p>
-                                <p>
-                                    {user?.accountNumber}
-                                </p>
-                            </div>
-                        </div>
+                        <AccountDetails label='From account' user={user!} className='w-full p-3 mb-6' />
                         <form id="cyclic-payment-form" className="space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
                             <FormInput 
                                 label="Cyclic Payment name"

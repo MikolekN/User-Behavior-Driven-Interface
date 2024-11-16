@@ -1,5 +1,6 @@
 import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import { ReactNode } from 'react';
+import Label from '../utils/Label';
 
 interface FormInputProps {
     label: string;
@@ -15,7 +16,7 @@ const FormInput = ({ label, fieldType, register, error, children, className }: F
 
     return (
         <div className="mb-4">
-            <label className="text-sm font-semibold text-gray-700 block mb-1">{label}</label>
+            <Label label={label} />
             <div className={`flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 ${error ? 'border-red-500' : ''}`}>
                 <input
                     {...register}
