@@ -4,10 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Tile from '../Tile/Tile';
 import FormInput from '../FormInput/FormInput';
 import { UserContext } from '../../context/UserContext';
-import DatePicker from 'react-datepicker';
 import FormSelect from '../FormSelect/FormSelect';
 import { CyclicPayment } from '../utils/types/CyclicPayment';
-import 'react-datepicker/dist/react-datepicker.css';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CyclicPaymentFormData, CyclicPaymentFormDataSchema } from '../../schemas/formValidation/cyclicPaymentSchema';
 import { DAY_LENGTH_IN_MILISECONDS } from '../constants';
@@ -17,6 +15,9 @@ import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import ErrorAlert from '../Alerts/ErrorAlert';
 import { scrollToTop } from '../utils/scroll';
 import AccountDetails from '../utils/AccountDetails';
+import { Datepicker, Flowbite } from 'flowbite-react';
+import Label from '../utils/Label';
+import { datepickerTheme } from '../utils/themes/datepickerTheme';
 
 const CyclicPaymentsForm = () => {
     const { id } = useParams();
@@ -55,7 +56,7 @@ const CyclicPaymentsForm = () => {
         setDate(cyclicPayment.startDate);
         setValue('interval', cyclicPayment.interval);
     }, [setValue]);
-    
+
     useEffect(() => {
         if (!user) return;
 
@@ -83,6 +84,11 @@ const CyclicPaymentsForm = () => {
         }
     }, [cyclicPayment, setCyclicPaymentFormEditValues, setCyclicPaymentFormDefaultValues]);
 
+    function toLocalISOString(date: Date) {
+        const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        return localDate.toISOString();
+      }
+
     const onSubmit = handleSubmit(async (data: CyclicPaymentFormData) => {
         if (cyclicPayment === null) {
             try {
@@ -91,7 +97,7 @@ const CyclicPaymentsForm = () => {
                     recipientAccountNumber: data.recipientAccountNumber,
                     transferTitle: data.transferTitle,
                     amount: data.amount,
-                    startDate: data.startDate?.toISOString(),
+                    startDate: toLocalISOString(data.startDate!),
                     interval: data.interval
                 };
                 await createCyclicPayment(requestBody);
@@ -108,7 +114,7 @@ const CyclicPaymentsForm = () => {
                     recipientAccountNumber: data.recipientAccountNumber,
                     transferTitle: data.transferTitle,
                     amount: data.amount,
-                    startDate: data.startDate?.toISOString(),
+                    startDate: toLocalISOString(data.startDate!),
                     interval: data.interval
                 };
                 await updateCyclicPayment(id!, requestBody);
@@ -121,7 +127,7 @@ const CyclicPaymentsForm = () => {
         }
     });
     
-    const handleChange = (dateChange: Date | null) => {
+    const handleDateChange = (dateChange: Date | null) => {
         setValue('startDate', dateChange, {
             shouldDirty: true
         });
@@ -159,15 +165,22 @@ const CyclicPaymentsForm = () => {
                                 control={control}
                                 defaultValue={minDate}
                                 render={() => (
-                                    <DatePicker
-                                        selected={date}
-                                        dateFormat={'dd/MM/yyyy'}
-                                        placeholderText="Select date"
-                                        onChange={handleChange}
-                                        className="bg-white border-2"
-                                        showIcon={true}
-                                        minDate={minDate!}
-                                    />
+                                    <div className="mb-4">
+                                        <Label label='Start Date' />
+                                        <Flowbite theme={{ theme: datepickerTheme }}>
+                                            <Datepicker 
+                                                // dodanie jakiejś logiki przy i18next
+                                                language='pl-PL'
+                                                minDate={minDate!}
+                                                weekStart={1} // Monday
+                                                onChange={handleDateChange}
+                                                showClearButton={false}
+                                                showTodayButton={false}
+                                                defaultValue={minDate!}
+                                                value={date}
+                                            />
+                                        </Flowbite>
+                                    </div>
                                 )}
                             />
                             <FormSelect
