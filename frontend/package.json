@@ -14,7 +14,6 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@hookform/resolvers": "^3.9.0",
-    "@mui/material": "^5.15.14",
     "flowbite-react": "^0.10.2",
     "react": "^17.0.0 || ^18.0.0",
     "react-datepicker": "^7.3.0",
@@ -40,7 +39,6 @@
     "vite": "^5.4.9"
   },
   "peerDependencies": {
-    "@mui/material": "^5.15.14",
     "react": "^17.0.0 || ^18.0.0",
     "react-dom": "^17.0.0 || ^18.0.0"
   }
