@@ -12,6 +12,8 @@ import { UserPasswordFormData, UserPasswordFormDataSchema } from '../../schemas/
 import { UserFieldFormData, UserFieldFormDataSchema } from '../../schemas/formValidation/userFieldSchema';
 import { UserIconFormDataSchema, UserIconFromData } from '../../schemas/formValidation/userIconSchema';
 import { validFields } from './ProfileData';
+import ErrorAlert from '../../components/Alerts/ErrorAlert';
+import { scrollToTop } from '../../components/utils/scroll';
 
 const ProfilePage = () => {
     const [apiIconError, setApiIconError] = useState({ isError: false, errorMessage: '' });
@@ -141,6 +143,7 @@ const ProfilePage = () => {
             setApiIconError({ isError: false, errorMessage: '' });
         } catch (error) {
             setApiIconError({ isError: true, errorMessage: typeof error === 'string' ? error : 'Error updating user icon' });
+            scrollToTop('icon-form-wrapper');
         }
     });
     
@@ -150,6 +153,7 @@ const ProfilePage = () => {
             await getUser();
         } catch (error) {
             setApiFieldError({ isError: true, errorMessage: typeof error === 'string' ? error : 'Error updating user field' });
+            scrollToTop('field-form-wrapper');
         }
     });
 
@@ -158,6 +162,7 @@ const ProfilePage = () => {
             await updatePassword(currentPassword, newPassword);
         } catch (error) {
             setApiPasswordError({ isError: true, errorMessage: typeof error === 'string' ? error : 'Error updating password' });
+            scrollToTop('password-form-wrapper');
         }
     });
 
@@ -170,71 +175,83 @@ const ProfilePage = () => {
         <div className="flex items-center justify-center">
             <Tile title="Profil użytkownika" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex flex-col space-y-6">
-                    <form onSubmit={(e) => { e.preventDefault(); void onIconSubmit(); }} className="space-y-4">
-                        <FormInput
-                            label="Wybierz nową ikonę"
-                            fieldType="file"
-                            register={registerIcon('files')}
-                            error={iconErrors.files}
-                            className="w-full"
-                        />
-                        <div className="flex justify-center">
-                            <Button>Wybierz ikonę</Button>
-                        </div>
-                        <div>
-                            {apiIconError.isError && <p className="text-red-600 mt-1 text-sm">{apiIconError.errorMessage}</p>}
-                        </div>
-                    </form>
+                    <div id="icon-form-wrapper">
+                        <form onSubmit={(e) => { e.preventDefault(); void onIconSubmit(); }} className="space-y-4">
+                            { apiIconError.isError && 
+                                <div className="my-4">
+                                    <ErrorAlert alertMessage={apiIconError.errorMessage} />
+                                </div> 
+                            }
+                            <FormInput
+                                label="Wybierz nową ikonę"
+                                fieldType="file"
+                                register={registerIcon('files')}
+                                error={iconErrors.files}
+                                className="w-full"
+                            />
+                            <div className="flex justify-center">
+                                <Button>Wybierz ikonę</Button>
+                            </div>
+                        </form>
+                    </div>
     
                     <hr className="border-t border-gray-300 my-4" />
-    
-                    <form onSubmit={(e) => { e.preventDefault(); void onFieldSubmit(); }} className="space-y-4">
-                        <FormSelect
-                            label="Wybierz pole do zmiany"
-                            options={validFields}
-                            register={registerField('field')}
-                            error={fieldErrors.field}
-                            className="w-full"
-                        />
-                        <FormInput
-                            label={'Nowa ' + (selectedField ? getFieldLabel(selectedField).toLocaleLowerCase() : 'wartość')}
-                            fieldType="text"
-                            register={registerField('value')}
-                            error={fieldErrors.value}
-                            className="w-full"
-                        />
-                        <div className="flex justify-center">
-                            <Button>Zmień wartość</Button>
-                        </div>
-                        <div>
-                            {apiFieldError.isError && <p className="text-red-600 mt-1 text-sm">{apiFieldError.errorMessage}</p>}
-                        </div>
-                    </form>
-    
+
+                    <div id="field-form-wrapper">
+                        <form onSubmit={(e) => { e.preventDefault(); void onFieldSubmit(); }} className="space-y-4">
+                            { apiFieldError.isError && 
+                                <div className="my-4">
+                                    <ErrorAlert alertMessage={apiFieldError.errorMessage} />
+                                </div> 
+                            }
+                            <FormSelect
+                                label="Wybierz pole do zmiany"
+                                options={validFields}
+                                register={registerField('field')}
+                                error={fieldErrors.field}
+                                className="w-full"
+                            />
+                            <FormInput
+                                label={'Nowa ' + (selectedField ? getFieldLabel(selectedField).toLocaleLowerCase() : 'wartość')}
+                                fieldType="text"
+                                register={registerField('value')}
+                                error={fieldErrors.value}
+                                className="w-full"
+                            />
+                            <div className="flex justify-center">
+                                <Button>Zmień wartość</Button>
+                            </div>
+                        </form>
+                    </div>
+
                     <hr className="border-t border-gray-300 my-4" />
-    
-                    <form onSubmit={(e) => { e.preventDefault(); void onPasswordSubmit(); }} className="space-y-4">
-                        <FormInput
-                            label="Hasło"
-                            fieldType="password"
-                            register={registerPassword('currentPassword')}
-                            error={passwordErrors.currentPassword}
-                            className="w-full"
-                        />
-                        <FormInput
-                            label="Nowe hasło"
-                            fieldType="password"
-                            register={registerPassword('newPassword')}
-                            error={passwordErrors.newPassword}
-                            className="w-full"
-                        />
-                        <div className="flex justify-center">
-                            <Button>Zmień hasło</Button>
-                        </div>
-                        <div>
-                            {apiPasswordError.isError && <p className="text-red-600 mt-1 text-sm">{apiPasswordError.errorMessage}</p>}
-                        </div>
-                    </form>
+
+                    <div id="password-form-wrapper">
+                        <form onSubmit={(e) => { e.preventDefault(); void onPasswordSubmit(); }} className="space-y-4">
+                            { apiPasswordError.isError && 
+                                <div className="my-4">
+                                    <ErrorAlert alertMessage={apiPasswordError.errorMessage} />
+                                </div> 
+                            }
+                            <FormInput
+                                label="Hasło"
+                                fieldType="password"
+                                register={registerPassword('currentPassword')}
+                                error={passwordErrors.currentPassword}
+                                className="w-full"
+                            />
+                            <FormInput
+                                label="Nowe hasło"
+                                fieldType="password"
+                                register={registerPassword('newPassword')}
+                                error={passwordErrors.newPassword}
+                                className="w-full"
+                            />
+                            <div className="flex justify-center">
+                                <Button>Zmień hasło</Button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </Tile>
         </div>

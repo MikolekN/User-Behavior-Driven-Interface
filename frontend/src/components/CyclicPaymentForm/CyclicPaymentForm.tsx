@@ -14,6 +14,8 @@ import { DAY_LENGTH_IN_MILISECONDS } from '../constants';
 import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 import { intervalOptions } from './CyclicPaymentData';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
+import ErrorAlert from '../Alerts/ErrorAlert';
+import { scrollToTop } from '../utils/scroll';
 
 const CyclicPaymentsForm = () => {
     const { id } = useParams();
@@ -96,6 +98,7 @@ const CyclicPaymentsForm = () => {
                 navigate('/dashboard');
             } catch (error) {
                 handleError(error);
+                scrollToTop('cyclic-payment-form-wrapper');
             }
         } else {
             try {
@@ -112,9 +115,9 @@ const CyclicPaymentsForm = () => {
                 navigate('/dashboard');
             } catch (error) {
                 handleError(error);
+                scrollToTop('cyclic-payment-form-wrapper');
             }
         }
-        
     });
     
     const handleChange = (dateChange: Date | null) => {
@@ -126,9 +129,14 @@ const CyclicPaymentsForm = () => {
 
     return (
         <div id="cyclic-payment-form-wrapper" className="flex items-center justify-center">
-            <Tile title="Transfer" id="cyclic-payment-form" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
+            <Tile title="Cyclic Payment" id="cyclic-payment-form" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
+                        { apiError.isError && 
+                            <div className="my-4">
+                                <ErrorAlert alertMessage={apiError.errorMessage} />
+                            </div> 
+                        }
                         <div id="cyclic-payment-account-details" className="mt-8">
                             <label className="text-sm font-semibold text-gray-700 block">From account</label>
                             <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
@@ -196,9 +204,6 @@ const CyclicPaymentsForm = () => {
                             </FormInput>
                             <div>
                                 <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Submit</button>
-                            </div>
-                            <div>
-                                {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
                             </div>
                         </form>
                     </div>

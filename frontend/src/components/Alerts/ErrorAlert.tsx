@@ -6,7 +6,7 @@ interface AlertProps {
 
 const ErrorAlert = ({ alertMessage }: AlertProps) => {
     return (
-        <div id="Error-alert" className="p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
+        <div id="error-alert" className="p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
             <div className="flex items-center">
                 <MdError />
                 <div className="text-red-600 dark:text-red-300 ml-2">

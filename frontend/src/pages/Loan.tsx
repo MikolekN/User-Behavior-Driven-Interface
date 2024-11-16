@@ -10,6 +10,8 @@ import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MAX_LOAN_AMOU
 import { TransferContext } from '../context/TransferContext';
 import useApiErrorHandler from '../hooks/useApiErrorHandler';
 import { RangeSlider } from 'flowbite-react';
+import { scrollToTop } from '../components/utils/scroll';
+import ErrorAlert from '../components/Alerts/ErrorAlert';
 
 const Loan = () => {
     const { apiError, handleError } = useApiErrorHandler();
@@ -53,6 +55,7 @@ const Loan = () => {
             navigate('/dashboard');
         } catch (error) {
             handleError(error);
+            scrollToTop('loan-form-wrapper');
         }
     });
 
@@ -63,10 +66,15 @@ const Loan = () => {
     };
 
     return (
-        <div id='loan-wrapper' className="flex items-center justify-center">
+        <div id='loan-form-wrapper' className="flex items-center justify-center">
             <Tile title="Loan" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto px-1">
+                        { apiError.isError && 
+                            <div className="my-4">
+                                <ErrorAlert alertMessage={apiError.errorMessage} />
+                            </div> 
+                        }
                         <div className="mt-8">
                             <label className="text-sm font-semibold text-gray-700 block">From account</label>
                             <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
@@ -114,9 +122,6 @@ const Loan = () => {
                             </div>
                             <div>
                                 <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Submit</button>
-                            </div>
-                            <div>
-                                {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
                             </div>
                         </form>
                     </div>

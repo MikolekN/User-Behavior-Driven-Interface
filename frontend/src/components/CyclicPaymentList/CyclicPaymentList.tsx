@@ -127,7 +127,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                             </div>
                                                         </div>
                                                         <div className="mb-4">
-                                                            <div className="font-semibold">
+                                                            <div className="text-sm font-semibold">
                                                         From Account
                                                             </div>
                                                             <div className="pl-4 p-3 border border-gray-300 rounded-lg bg-gray-100 w-max">
