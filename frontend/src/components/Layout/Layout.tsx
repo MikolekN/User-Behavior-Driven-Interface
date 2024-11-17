@@ -1,8 +1,8 @@
 import React from 'react';
 import { MegaMenu, Navbar } from 'flowbite-react';
-import { UserProfile } from './Flowbite_UserProfile';
-import { Logo } from './Flowbite_Logo';
-import { MainMenu } from './Flowbite_MainMenu';
+import { UserProfile } from './UserProfile';
+import { Logo } from './Logo';
+import { MainMenu } from './MainMenu/MainMenu';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
