@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Dropdown, Avatar } from "flowbite-react"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import defaultIcon from '../../assets/images/user.png';
 import { UserContext } from '../../context/UserContext';
@@ -46,17 +46,25 @@ export const UserProfile = () => {
         void fetchIcon();
     }, [user, getIcon, user?.icon]);
 
+    const DropdownItem:React.FC<{label: string, path: string, onClick?: () => Promise<void>}> = ({label, path, onClick}) => {
+        return (
+            <Dropdown.Item as={Link} to={path} onClick={onClick} className='block bg-transparent text-black font-normal hover:font-semibold hover:text-black'>
+                {label}
+            </Dropdown.Item>
+        )
+    }
+
     return (<div className="flex md:order-2">
-        <Dropdown arrowIcon={false} inline
+        <Dropdown arrowIcon={false} inline placement="bottom"
             label={
-                <Avatar alt="User profile icon" img={iconSrc} rounded className='rounded-full hover:bg-gray-200 transition ease-in-out duration-300'/>
+                <Avatar alt="User profile icon" img={iconSrc} rounded className='rounded-full hover:bg-gray-200 hover:dark:bg-gray-700 transition ease-in-out duration-300'/>
             }
         >
 
         {!user && (
             <>
-                <Dropdown.Item href="/login">Login</Dropdown.Item>
-                <Dropdown.Item href="/register">Register</Dropdown.Item>
+                <DropdownItem label="Login" path="/login" />
+                <DropdownItem label="Register" path="/register" />
             </>
         )}
 
@@ -66,10 +74,10 @@ export const UserProfile = () => {
                     <span className="block text-sm">{user?.login}</span>
                     <span className="block truncate text-sm font-medium">{user?.email}</span>
                 </Dropdown.Header>
-                <Dropdown.Item href="/profile">Profile</Dropdown.Item>
-                <Dropdown.Item>Settings</Dropdown.Item>
+                <DropdownItem label="Profile" path="/profile" />
+                <DropdownItem label="Settings" path="/settings" />
                 <Dropdown.Divider />
-                <Dropdown.Item href="/" onClick={handleLogout}>Logout</Dropdown.Item>
+                <DropdownItem label="Logout" path="/" onClick={handleLogout}/>
             </>
         )}
         </Dropdown>
