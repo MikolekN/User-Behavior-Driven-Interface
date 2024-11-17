@@ -6,7 +6,7 @@ export const Logo = () => {
     return (
         <Navbar.Brand as={Link} to="/">
             <img src={logo} className="mr-3 h-10" alt="Logo" />
-            <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white hidden md:block text-black">Bank</span>
+            <span className="self-center whitespace-nowrap text-lg font-medium dark:text-white hidden md:block text-black">Bank</span>
         </Navbar.Brand>
     );
 };

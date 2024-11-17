@@ -47,10 +47,8 @@ export const MainMenu = () => {
                 .filter((option) => canAccessOption(option, user))
                 .map((option) => 
                     'path' in option ? (
-                        <Navbar.Link onMouseEnter={() => handleDropdownState(null, "reset")}>
-                            <Link to={option.path} className='block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent' aria-current="page">
-                                {option.label}
-                            </Link>
+                        <Navbar.Link onMouseEnter={() => handleDropdownState(null, "reset")} as={Link} to={option.path} className='text-base font-normal text-black hover:text-black hover:font-semibold'>
+                            {option.label}
                         </Navbar.Link>
                     ) : ( 'submenu' in option && (
                             <Dropdown
@@ -64,7 +62,7 @@ export const MainMenu = () => {
                                 onMouseLeave={() => handleDropdownState(option.label, "leave")}
                                 onOptionClick={() => handleDropdownState(null, "reset")}
                                 id={option.label}
-                                className='block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent' aria-current="page"
+                                className='text-base font-normal text-black hover:text-black hover:font-semibold'
                             />
                         )
                     )
