@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React from 'react';
 import { MegaMenu, Navbar } from 'flowbite-react';
 import { UserProfile } from './Flowbite_UserProfile';
 import { Logo } from './Flowbite_Logo';

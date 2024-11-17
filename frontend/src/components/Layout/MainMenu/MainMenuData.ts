@@ -36,5 +36,5 @@ export const menuOptions = [
             { label: 'Kontakt', path: '/info' },
         ]
     },
-    { label: 'Panel administratora', path: '/', accessLevel: AccessLevels.Admin },
+    { label: 'Panel administratora', path: '/admin-panel', accessLevel: AccessLevels.Admin },
 ]

@@ -1,3 +1,4 @@
+import { Navbar } from 'flowbite-react';
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -58,16 +59,17 @@ const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersisten
                                 onOptionClick();
                             }}
                         >
-                            <Link 
-                                to={option.path}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    onOptionClick();
-                                }}
-                                className='py-2 px-4 block hover:font-semibold'
-                            >
-                                {option.label}
-                            </Link>
+                            <Navbar.Link>
+                                    <Link
+                                        to={option.path}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            onOptionClick();
+                                        }}
+                                        className='block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent' aria-current="page">
+                                            {option.label}
+                                    </Link>
+                            </Navbar.Link>
                         </li>
                     ))}
                 </ul>
