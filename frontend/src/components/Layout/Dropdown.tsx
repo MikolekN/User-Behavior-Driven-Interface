@@ -27,13 +27,9 @@ const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersisten
 
         if (isPersistent) {
             document.addEventListener('mousedown', handleClickOutside);
-        } else {
-            document.removeEventListener('mousedown', handleClickOutside);
         }
 
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [isPersistent, onToggle]);
 
     return (

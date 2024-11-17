@@ -5,7 +5,21 @@ export const enum AccessLevels {
     Admin
 }
 
-export const menuOptions = [
+type MenuOptionWithPath = {
+    label: string;
+    path: string;
+    accessLevel: AccessLevels;
+};
+
+type MenuOptionWithSubmenu = {
+    label: string;
+    accessLevel: AccessLevels;
+    submenu: { label: string; path: string }[];
+};
+
+export type MenuOption = MenuOptionWithPath | MenuOptionWithSubmenu;
+
+export const menuOptions: MenuOption[] = [
     { label: 'Start', path: '/', accessLevel: AccessLevels.All },
     { label: 'Login', path: '/login', accessLevel: AccessLevels.Unauthorised },
     { label: 'Register', path: '/register', accessLevel: AccessLevels.Unauthorised },
