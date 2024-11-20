@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Tile from '../components/Tile/Tile';
 import FormInput from '../components/FormInput/FormInput';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,14 +9,16 @@ import { UserContext } from '../context/UserContext';
 import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MIN_LOAN_AMOUNT } from './constants';
 import { TransferContext } from '../context/TransferContext';
 import useApiErrorHandler from '../hooks/useApiErrorHandler';
+import { useNavigate } from 'react-router-dom';
+import Button from '../components/utils/Button';
 
 const Loan = () => {
     const { apiError, handleError } = useApiErrorHandler();
-    const { user, getUser } = useContext(UserContext);
+    const { user, getUser } = useContext(UserContext)
     const { createLoan } = useContext(TransferContext);
     const [ sliderValue, setSliderValue ] = useState<number | null>(null);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
-    const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<LoanFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, watch } = useForm<LoanFormData>({
         resolver: zodResolver(LoanFormDataSchema),
         defaultValues: {
             amount: MIN_LOAN_AMOUNT.toString()
@@ -36,13 +37,11 @@ const Loan = () => {
         }
     }, [user, inputAmount]);
 
-    if (!user) return <Navigate to="/login" />;  
-
     const toggleAnswer = (index: number) => {
         setActiveIndex(activeIndex === index ? null : index);
     };
     
-    const onSubmit = handleSubmit(async ({ amount }: LoanFormData) => {
+    const onSubmit: SubmitHandler<LoanFormData> = async ({ amount }: LoanFormData) => {
         try {
             const requestBody = {
                 transferTitle: 'Pożyczka gotówkowa',
@@ -54,7 +53,7 @@ const Loan = () => {
         } catch (error) {
             handleError(error);
         }
-    });
+    };
 
     const handleSliderChange = (_event: Event, newValue: number | number[]) => {
         const sliderVal = newValue as number; 
@@ -71,14 +70,14 @@ const Loan = () => {
                             <label className="text-sm font-semibold text-gray-700 block">From account</label>
                             <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
                                 <p>
-                                    {user.accountName} {`(${user.availableFunds} ${user.currency})`}
+                                    {user!.accountName} {`(${user!.availableFunds} ${user!.currency})`}
                                 </p>
                                 <p>
-                                    {user.accountNumber}
+                                    {user!.accountNumber}
                                 </p>
                             </div>
                         </div>
-                        <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
+                        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput
                                 label="How much money do you need?"
                                 fieldType="text"
@@ -86,7 +85,7 @@ const Loan = () => {
                                 error={errors.amount}
                                 className="w-10/12"
                             >
-                                {user.currency}
+                                {user!.currency}
                             </FormInput>
                             <div>
                                 <Slider
@@ -113,9 +112,9 @@ const Loan = () => {
                                     ))}
                                 </div>
                             </div>
-                            <div>
-                                <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Submit</button>
-                            </div>
+                            <Button isSubmitting={isSubmitting} className="w-full">
+						        {isSubmitting ? "Loading..." : "Submit"}
+                            </Button>
                             <div>
                                 {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
                             </div>

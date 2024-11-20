@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import FormInput from '../components/FormInput/FormInput';
@@ -14,7 +14,7 @@ const Register = () => {
     const { apiError, handleError } = useApiErrorHandler();
     const { user } = useContext(UserContext);
     const { register } = useContext(AuthContext);
-    const { register: formRegister, handleSubmit, formState: { errors } } = useForm<RegisterFormData>({
+    const { register: formRegister, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterFormData>({
         resolver: zodResolver(RegisterFormDataSchema),
         defaultValues: {
             email: '',
@@ -27,21 +27,21 @@ const Register = () => {
 
     if (user) return <Navigate to="/dashboard" />;
 
-    const onSubmit = handleSubmit(async ({ email, password: userPassword }) => {
+    const onSubmit: SubmitHandler<RegisterFormData> = async ({ email, password: userPassword }: RegisterFormData) => {
         try {
             await register(email, userPassword);
             navigate('/login');
         } catch (error) {
             handleError(error);
         }
-    });
+    };
 
     return (
         <div className="flex items-center justify-center">
             <Tile title="Register to Online Banking" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
-                        <form className="mt-8 space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
+                        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
                                 label="Email"
                                 fieldType="text"
@@ -63,8 +63,8 @@ const Register = () => {
                                 error={errors.confirmPassword}
                                 className="w-full"
                             />
-                            <Button className="w-full">
-                                Submit
+                            <Button isSubmitting={isSubmitting} className="w-full">
+						        {isSubmitting ? "Loading..." : "Submit"}
                             </Button>
                             <div>
                                 {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}

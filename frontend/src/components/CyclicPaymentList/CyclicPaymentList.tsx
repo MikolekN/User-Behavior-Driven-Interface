@@ -112,7 +112,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                     <div className="w-2/4 pr-4">
                                                         <div className="mb-4">
                                                             <div className="font-semibold">
-                                                        Recipient
+                                                                Recipient
                                                             </div>
                                                             <div className="pl-4">
                                                                 <i>{cyclicPayment.recipientName}</i>
@@ -120,7 +120,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                         </div>
                                                         <div className="mb-4">
                                                             <div className="font-semibold mt-2">
-                                                        Recipient Account Number
+                                                                Recipient Account Number
                                                             </div>
                                                             <div className="pl-4">
                                                                 <i>{cyclicPayment.recipientAccountNumber}</i>
@@ -128,7 +128,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                         </div>
                                                         <div className="mb-4">
                                                             <div className="font-semibold">
-                                                        From Account
+                                                                From Account
                                                             </div>
                                                             <div className="pl-4 p-3 border border-gray-300 rounded-lg bg-gray-100 w-max">
                                                                 <p>{user?.accountName} ({user?.availableFunds} {user?.currency})</p>
@@ -137,7 +137,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                         </div>
                                                         <div className="mb-4">
                                                             <div className="font-semibold">
-                                                        Title
+                                                                Title
                                                             </div>
                                                             <div className="pl-4">
                                                                 <i>{cyclicPayment.transferTitle}</i>
@@ -147,7 +147,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                     <div className="w-1/4 pl-4">
                                                         <div className="mb-4">
                                                             <div className="font-semibold">
-                                                        Amount
+                                                                Amount
                                                             </div>
                                                             <div className="pl-4">
                                                                 <i>{cyclicPayment.amount} {user?.currency}</i>
@@ -155,7 +155,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                         </div>
                                                         <div className="mb-4">
                                                             <div className="font-semibold">
-                                                        Start Date
+                                                                Start Date
                                                             </div>
                                                             <div className="pl-4">
                                                                 <i>{formatDate(cyclicPayment.startDate)}</i>
@@ -163,7 +163,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                         </div>
                                                         <div className="mb-4">
                                                             <div className="font-semibold">
-                                                        Repeat
+                                                                Repeat
                                                             </div>
                                                             <div className="pl-4">
                                                                 <i>{cyclicPayment.interval}</i>
@@ -174,12 +174,12 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                 <div className="flex justify-end space-x-4 w-full">
                                                     <Link to={`/edit-cyclic-payment/${cyclicPayment.id}`} className="w-1/6">
                                                         <Button className="w-full bg-blue-600 hover:bg-blue-700 mt-1">
-                                                    Edit
+                                                            Edit
                                                         </Button>
                                                     </Link>
                                                     <Button onClick={() => handleDelete(cyclicPayment.id!)}
                                                         className="w-1/6 bg-red-600 hover:bg-red-700 mt-1 ml-10">
-                                                    Delete
+                                                            Delete
                                                     </Button>
                                                 </div>
                                             </div>

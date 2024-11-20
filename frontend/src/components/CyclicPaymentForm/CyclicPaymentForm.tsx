@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import Tile from '../Tile/Tile';
 import FormInput from '../FormInput/FormInput';
@@ -14,6 +14,7 @@ import { DAY_LENGTH_IN_MILISECONDS } from '../constants';
 import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 import { intervalOptions } from './CyclicPaymentData';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
+import Button from '../utils/Button';
 
 const CyclicPaymentsForm = () => {
     const { id } = useParams();
@@ -24,7 +25,7 @@ const CyclicPaymentsForm = () => {
     const { cyclicPayment, setCyclicPayment, createCyclicPayment, getCyclicPayment, 
         updateCyclicPayment } = useContext(CyclicPaymentContext);
 
-    const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<CyclicPaymentFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting }, control, setValue } = useForm<CyclicPaymentFormData>({
         resolver: zodResolver(CyclicPaymentFormDataSchema),
         defaultValues: {
             recipientAccountNumber: '',
@@ -80,7 +81,7 @@ const CyclicPaymentsForm = () => {
         }
     }, [cyclicPayment, setCyclicPaymentFormEditValues, setCyclicPaymentFormDefaultValues]);
 
-    const onSubmit = handleSubmit(async (data: CyclicPaymentFormData) => {
+    const onSubmit: SubmitHandler<CyclicPaymentFormData> = async (data: CyclicPaymentFormData) => {
         if (cyclicPayment === null) {
             try {
                 const requestBody = {
@@ -115,7 +116,7 @@ const CyclicPaymentsForm = () => {
             }
         }
         
-    });
+    };
     
     const handleChange = (dateChange: Date | null) => {
         setValue('startDate', dateChange, {
@@ -133,14 +134,14 @@ const CyclicPaymentsForm = () => {
                             <label className="text-sm font-semibold text-gray-700 block">From account</label>
                             <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
                                 <p>
-                                    {user?.accountName} {`(${user?.availableFunds} ${user?.currency})`}
+                                    {user!.accountName} {`(${user!.availableFunds} ${user!.currency})`}
                                 </p>
                                 <p>
-                                    {user?.accountNumber}
+                                    {user!.accountNumber}
                                 </p>
                             </div>
                         </div>
-                        <form id="cyclic-payment-form" className="space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
+                        <form id="cyclic-payment-form" className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
                                 label="Cyclic Payment name"
                                 fieldType="text"
@@ -192,11 +193,11 @@ const CyclicPaymentsForm = () => {
                                 error={errors.amount}
                                 className="w-10/12"
                             >
-                                {user?.currency}
+                                {user!.currency}
                             </FormInput>
-                            <div>
-                                <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Submit</button>
-                            </div>
+                            <Button isSubmitting={isSubmitting} className="w-full">
+						        {isSubmitting ? "Loading..." : "Submit"}
+                            </Button>
                             <div>
                                 {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
                             </div>

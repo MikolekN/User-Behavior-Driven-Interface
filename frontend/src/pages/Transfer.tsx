@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { useForm } from 'react-hook-form';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import FormInput from '../components/FormInput/FormInput';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,7 +14,7 @@ const Transfer = () => {
     const { apiError, handleError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
     const { createTransfer } = useContext(TransferContext);
-    const { register, handleSubmit, formState: { errors } } = useForm<TransferFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<TransferFormData>({
         resolver: zodResolver(TransferFormDataSchema),
         defaultValues: {
             recipientAccountNumber: '',
@@ -24,11 +24,8 @@ const Transfer = () => {
         mode: 'onSubmit'
     });
     const navigate = useNavigate();
-
-
-    if (!user) return <Navigate to="/login" />;
     
-    const onSubmit = handleSubmit(async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
+    const onSubmit: SubmitHandler<TransferFormData> = async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
         try {
             const requestBody = {
                 recipientAccountNumber: recipientAccountNumber,
@@ -41,7 +38,7 @@ const Transfer = () => {
         } catch (error) {
             handleError(error);
         }
-    });
+    };
 
     return (
         <div className="flex items-center justify-center">
@@ -52,14 +49,14 @@ const Transfer = () => {
                             <label className="text-sm font-semibold text-gray-700 block">From account</label>
                             <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
                                 <p>
-                                    {user.accountName} {`(${user.availableFunds} ${user.currency})`}
+                                    {user!.accountName} {`(${user!.availableFunds} ${user!.currency})`}
                                 </p>
                                 <p>
-                                    {user.accountNumber}
+                                    {user!.accountNumber}
                                 </p>
                             </div>
                         </div>
-                        <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
+                        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
                                 label="Recipient account number"
                                 fieldType="text"
@@ -81,11 +78,11 @@ const Transfer = () => {
                                 error={errors.amount}
                                 className="w-10/12"
                             >
-                                {user.currency}
+                                {user!.currency}
                             </FormInput>
                             <div>
-                                <Button className="w-full">
-                                    Submit
+                                <Button isSubmitting={isSubmitting} className="w-full">
+                                    {isSubmitting ? "Loading..." : "Submit"}
                                 </Button>
                             </div>
                             <div>

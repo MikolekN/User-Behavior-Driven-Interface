@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useMemo, useCallback, useState } from 'react';
 import { createLoanData, createTransferData, fetchTransfersAnalysisData, fetchTransfersData } from '../services/transferService';
 import { ChartData } from '../components/utils/types/TransfersAnalysisChartTypes';
-import { TransactionsHistoryType } from '../components/utils/types/TransfersTypes';
+import { mapBackendChartDataToChartData, mapBackendTransfersListDataToTransfers, TransactionsHistoryType } from '../components/utils/types/TransfersTypes';
 
 interface TransferContextProps {
     chartData: ChartData[] | null;
@@ -33,16 +33,16 @@ export const TransferProvider: React.FC<{ children: ReactNode }> = ({ children }
     const [transfers, setTransfers] = useState<TransactionsHistoryType[]>([]);
 
     const fetchTransfersAnalysis = useCallback(async (interval: string, requestBody: object): Promise<void> => {
-        const { transfers: chartData } = await fetchTransfersAnalysisData(interval, requestBody);
-        if (chartData) {
-            setChartData(chartData);
+        const { transfers: chartBackendData } = await fetchTransfersAnalysisData(interval, requestBody);
+        if (chartBackendData) {
+            setChartData(mapBackendChartDataToChartData(chartBackendData));
         }
     }, []);
 
     const fetchTransfers = useCallback(async (): Promise<void> => {
-        const { transfers: transfersData } = await fetchTransfersData();
-        if (transfersData) {
-            setTransfers(transfersData);
+        const { transfers: transfersBackendData } = await fetchTransfersData();
+        if (transfersBackendData) {
+            setTransfers(mapBackendTransfersListDataToTransfers(transfersBackendData));
         }
     }, []);
 
