@@ -36,7 +36,7 @@ h1 {
 }
 
 .focus\:ring-cyan-500:focus {
-  --tw-ring-color: blue !important; /* Change the focus ring color to green */
+  --tw-ring-color: blue !important; /* Change the focus ring color to blue */
 }
 
 /* button {
