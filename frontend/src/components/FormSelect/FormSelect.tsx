@@ -1,6 +1,7 @@
 import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import { ReactNode } from 'react';
 import Label from '../utils/Label';
+import ErrorMessage from '../utils/ErrorMessage';
 
 interface Option {
     value: string;
@@ -23,8 +24,7 @@ const FormSelect = ({ label, options, register, error, defaultOption = '-- Wybie
             <Label label={label} />
             <select
                 {...register}
-                style={{ borderColor: error ? 'red' : '' }}
-                className={`${className} p-3 border border-gray-300 rounded-lg mt-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                className={`${className} p-3 border border-gray-300 rounded-lg mt-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? 'border-red-300' : ''}`}
             >
                 <option value="">{defaultOption}</option>
                 {options.map((option) => (
@@ -34,7 +34,9 @@ const FormSelect = ({ label, options, register, error, defaultOption = '-- Wybie
                 ))}
             </select>
             {children}
-            {error && <p className="text-red-600 mt-1 text-sm">{error.message}</p>}
+            {error && 
+                <ErrorMessage message={error.message} />
+            }
         </div>
     );
 };

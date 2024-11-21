@@ -1,11 +1,11 @@
 import { CustomFlowbiteTheme } from "flowbite-react";
-import { textInputTheme } from "./textInputTheme";
+import { textInputErrorTheme } from "./textInputErrorTheme";
 
-export const datepickerTheme: CustomFlowbiteTheme = {
+export const datepickerErrorTheme: CustomFlowbiteTheme = {
     datepicker: {
         root: {
             base: "relative",
-            input: textInputTheme
+            input: textInputErrorTheme
         },
         popup: {
             footer: {

@@ -1,6 +1,7 @@
 import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import { ReactNode } from 'react';
 import Label from '../utils/Label';
+import ErrorMessage from '../utils/ErrorMessage';
 
 interface FormInputProps {
     label: string;
@@ -17,7 +18,7 @@ const FormInput = ({ label, fieldType, register, error, children, className }: F
     return (
         <div className="mb-4">
             <Label label={label} />
-            <div className={`flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 ${error ? 'border-red-500' : ''}`}>
+            <div className={`flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 ${error ? 'border-red-300' : ''}`}>
                 <input
                     {...register}
                     type={fieldType}
@@ -33,7 +34,9 @@ const FormInput = ({ label, fieldType, register, error, children, className }: F
                     </div>
                 )}
             </div>
-            {error && <p className="text-red-600 mt-1 text-sm">{error.message}</p>}
+            {error && 
+                <ErrorMessage message={error.message} />
+            }
         </div>
     );
 };

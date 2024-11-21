@@ -8,7 +8,7 @@ import FormSelect from '../FormSelect/FormSelect';
 import { CyclicPayment } from '../utils/types/CyclicPayment';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CyclicPaymentFormData, CyclicPaymentFormDataSchema } from '../../schemas/formValidation/cyclicPaymentSchema';
-import { DAY_LENGTH_IN_MILISECONDS } from '../constants';
+import { DAY_LENGTH_IN_MILISECONDS, MILISECONDS_IN_ONE_MINUTE } from '../constants';
 import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 import { intervalOptions } from './CyclicPaymentData';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
@@ -18,17 +18,19 @@ import AccountDetails from '../utils/AccountDetails';
 import { Datepicker, Flowbite } from 'flowbite-react';
 import Label from '../utils/Label';
 import { datepickerTheme } from '../utils/themes/datepickerTheme';
+import { datepickerErrorTheme } from '../utils/themes/datepickerErrorTheme';
+import ErrorMessage from '../utils/ErrorMessage';
 
 const CyclicPaymentsForm = () => {
     const { id } = useParams();
-    const [ date, setDate ] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
-    const [ minDate, ] = useState<Date | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
+    const [ date, setDate ] = useState<Date | undefined | null>(undefined);
+    const [ minDate, ] = useState<Date | undefined>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
     const { apiError, handleError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
     const { cyclicPayment, setCyclicPayment, createCyclicPayment, getCyclicPayment, 
         updateCyclicPayment } = useContext(CyclicPaymentContext);
 
-    const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<CyclicPaymentFormData>({
+    const { register, handleSubmit, formState: { errors }, clearErrors, control, setValue } = useForm<CyclicPaymentFormData>({
         resolver: zodResolver(CyclicPaymentFormDataSchema),
         defaultValues: {
             recipientAccountNumber: '',
@@ -44,9 +46,9 @@ const CyclicPaymentsForm = () => {
         setValue('recipientAccountNumber', '');
         setValue('transferTitle', '');
         setValue('amount', '');
-        setDate(minDate);
+        setDate(null);
         setValue('interval', '');
-    }, [minDate, setValue]);
+    }, [setValue]);
 
     const setCyclicPaymentFormEditValues = useCallback((cyclicPayment: CyclicPayment) => {
         setValue('cyclicPaymentName', cyclicPayment.cyclicPaymentName);
@@ -85,7 +87,7 @@ const CyclicPaymentsForm = () => {
     }, [cyclicPayment, setCyclicPaymentFormEditValues, setCyclicPaymentFormDefaultValues]);
 
     const toLocalISOString = (date: Date) => {
-        const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        const localDate = new Date(date.getTime() - date.getTimezoneOffset() * MILISECONDS_IN_ONE_MINUTE);
         return localDate.toISOString();
     };
 
@@ -127,11 +129,16 @@ const CyclicPaymentsForm = () => {
         }
     });
     
-    const handleDateChange = (dateChange: Date | null) => {
-        setValue('startDate', dateChange, {
+    const handleDateChange = (date: Date | null) => {
+        if (!date) {
+            return;
+        }
+
+        clearErrors('startDate');
+        setValue('startDate', date, {
             shouldDirty: true
         });
-        setDate(dateChange);
+        setDate(date);
     };
 
     return (
@@ -163,23 +170,27 @@ const CyclicPaymentsForm = () => {
                             <Controller
                                 name="startDate"
                                 control={control}
-                                defaultValue={minDate}
+                                defaultValue={undefined}
                                 render={() => (
                                     <div className="mb-4">
                                         <Label label='Start Date' />
-                                        <Flowbite theme={{ theme: datepickerTheme }}>
-                                            <Datepicker 
-                                                // dodanie jakiejś logiki przy i18next
+                                        <Flowbite theme={{ theme: errors.startDate ? datepickerErrorTheme : datepickerTheme }}>
+                                            <Datepicker
+                                                // dodanie jakiejś logiki przy i18next                             
                                                 language='pl-PL'
                                                 minDate={minDate!}
                                                 weekStart={1} // Monday
                                                 onChange={handleDateChange}
                                                 showClearButton={false}
                                                 showTodayButton={false}
-                                                defaultValue={minDate!}
+                                                defaultValue={undefined}
                                                 value={date}
+                                                label='Select Start Date'
                                             />
                                         </Flowbite>
+                                        {errors.startDate && (
+                                            <ErrorMessage message={errors.startDate.message}/>
+                                        )}
                                     </div>
                                 )}
                             />
