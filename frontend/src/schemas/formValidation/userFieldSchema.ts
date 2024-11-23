@@ -2,8 +2,8 @@ import { z } from 'zod';
 import { CURRENCY_REGEX, REQUIRED_TEXT_INPUT_LENGTH } from './constants';
 
 export const UserFieldFormDataSchema = z.object({
-    field: z.string().min(1, { message: 'Value is required' }),
-    value: z.string()
+    field: z.string().trim().min(1, { message: 'Value is required' }),
+    value: z.string().trim()
 }).superRefine((data, ctx) => {
     const selectedField = data.field;
     switch (selectedField) {
