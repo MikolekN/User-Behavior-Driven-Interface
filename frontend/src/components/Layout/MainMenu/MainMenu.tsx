@@ -61,7 +61,6 @@ export const MainMenu = () => {
                                 onHover={() => handleDropdownState(option.label, "hover")}
                                 onMouseLeave={() => handleDropdownState(option.label, "leave")}
                                 onOptionClick={() => handleDropdownState(null, "reset")}
-                                id={option.label}
                                 className='text-base font-normal text-black hover:text-black hover:font-semibold'
                             />
                         )
