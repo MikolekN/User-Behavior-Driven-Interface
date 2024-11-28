@@ -44,15 +44,15 @@ const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersisten
     return (
         <li
             ref={dropdownRef}
-            className={`${className} relative hover:font-semibold`}
+            className={`${className} relative`}
             onMouseEnter={onHover}
             onMouseLeave={onMouseLeave}
         >
             <button
                 onClick={onToggle}
-                className="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-gray-400 md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                className="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded bg-transparent md:p-0 md:w-auto dark:text-gray-400 md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
             >
-                <span className="flex items-center font-normal">
+                <span className="flex items-center font-normal hover:font-semibold md:hover:dark:text-white">
                     {title}
                     <svg
                         className="w-2.5 h-2.5 ms-1 transition-transform duration-300"
@@ -73,7 +73,7 @@ const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersisten
                         />
                     </svg>
                 </span>
-                <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gray-100 dark:bg-gray-700"></div>
+                <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gray-100 dark:bg-gray-700 md:hidden"></div>
             </button>
 
             <ul
@@ -83,7 +83,7 @@ const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersisten
                     overflow: 'hidden',
                     transition: 'max-height 0.3s ease',
                 }}
-                className="block"
+                className="left-0 w-full block md:absolute md:mt-2 md:text-nowrap md:w-fit"
             >
                 {options.map((option) => (
                     <li

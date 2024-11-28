@@ -1,10 +1,22 @@
-import { Navbar } from 'flowbite-react';
+import { FlowbiteNavbarLinkTheme, Navbar } from 'flowbite-react';
 import { useCallback, useContext, useState } from 'react';
 import { UserContext } from '../../../context/UserContext';
 import { AccessLevels, MenuOption, menuOptions } from './MainMenuData';
 import { Link } from 'react-router-dom';
 import Dropdown from '../Dropdown';
 import { User } from '../../utils/User';
+
+const blackTextTheme: FlowbiteNavbarLinkTheme = {
+    base: "block py-2 pl-3 pr-4 md:p-0",
+        active: {
+            "on": "bg-black text-white dark:text-white md:bg-transparent md:text-black",
+            "off": "border-b border-gray-100 text-gray-700 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-black md:dark:hover:bg-transparent md:dark:hover:text-white"
+        },
+        disabled: {
+            "on": "text-gray-400 hover:cursor-not-allowed dark:text-gray-600",
+            "off": ""
+        }
+      };
 
 export const MainMenu = () => {
     const { user } = useContext(UserContext);
@@ -47,7 +59,7 @@ export const MainMenu = () => {
                 .filter((option) => canAccessOption(option, user))
                 .map((option) => 
                     'path' in option ? (
-                        <Navbar.Link onMouseEnter={() => handleDropdownState(null, "reset")} as={Link} to={option.path} className='text-base font-normal text-black hover:text-black hover:font-semibold'>
+                        <Navbar.Link onMouseEnter={() => handleDropdownState(null, "reset")} as={Link} to={option.path} theme={blackTextTheme} className='text-base font-normal hover:text-black hover:font-semibold'>
                             {option.label}
                         </Navbar.Link>
                     ) : ( 'submenu' in option && (
