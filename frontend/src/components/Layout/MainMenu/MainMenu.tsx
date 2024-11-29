@@ -41,13 +41,24 @@ export const MainMenu = () => {
         );
     };
 
+    const handleLinkClick = () => {
+        setActiveDropdown(null);
+    };
+
     return (
         <Navbar.Collapse className='menu'>
-            { menuOptions
+            {menuOptions
                 .filter((option) => canAccessOption(option, user))
                 .map((option) =>
                     'path' in option ? (
-                        <Navbar.Link key={option.label} as={Link} to={option.path} theme={blackTextTheme} className='text-base font-normal hover:text-black hover:font-semibold'>
+                        <Navbar.Link
+                            key={option.label}
+                            as={Link}
+                            to={option.path}
+                            theme={blackTextTheme}
+                            className='text-base font-normal hover:text-black hover:font-semibold'
+                            onClick={handleLinkClick}
+                        >
                             {option.label}
                         </Navbar.Link>
                     ) : ( 'submenu' in option && (
