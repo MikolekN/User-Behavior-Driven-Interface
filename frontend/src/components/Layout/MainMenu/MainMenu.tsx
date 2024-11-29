@@ -1,5 +1,5 @@
 import { Navbar } from 'flowbite-react';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../../context/UserContext';
 import { AccessLevels, MenuOption, menuOptions } from './MainMenuData';
 import { Link } from 'react-router-dom';
@@ -15,6 +15,23 @@ export const MainMenu = () => {
         setActiveDropdown((prev) => (prev === dropdownName ? null : dropdownName));
     }, []);
 
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const menus = document.querySelectorAll('.menu');
+            menus.forEach((menu) => {
+                if (!menu.contains(event.target as Node)) {
+                    setActiveDropdown(null);
+                }
+            });
+        };
+
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
+    
     const canAccessOption = (option: MenuOption, user: User | null) => {
         return (
             option.accessLevel === AccessLevels.All ||
@@ -25,7 +42,7 @@ export const MainMenu = () => {
     };
 
     return (
-        <Navbar.Collapse>
+        <Navbar.Collapse className='menu'>
             { menuOptions
                 .filter((option) => canAccessOption(option, user))
                 .map((option) =>
