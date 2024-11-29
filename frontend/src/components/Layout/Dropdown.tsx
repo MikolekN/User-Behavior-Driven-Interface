@@ -1,6 +1,18 @@
-import { Navbar } from 'flowbite-react';
+import { FlowbiteNavbarLinkTheme, Navbar } from 'flowbite-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+const blackTextTheme: FlowbiteNavbarLinkTheme = {
+    base: "block py-2 pl-3 pr-4 md:p-0",
+    active: {
+        "on": "bg-black text-white dark:text-white md:bg-transparent md:text-black",
+        "off": "border-b border-gray-100 text-gray-700 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-black md:dark:hover:bg-transparent md:dark:hover:text-white"
+    },
+    disabled: {
+        "on": "text-gray-400 hover:cursor-not-allowed dark:text-gray-600",
+        "off": ""
+    }
+};
 
 interface DropdownProps {
     title: string;
@@ -8,13 +20,11 @@ interface DropdownProps {
     isOpen: boolean;
     isPersistent: boolean;
     onToggle: () => void;
-    onHover: () => void;
-    onMouseLeave: () => void;
     onOptionClick: () => void;
     className: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersistent, onToggle, onHover, onMouseLeave, onOptionClick, className}) => {
+const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersistent, onToggle, onOptionClick, className}) => {
     const dropdownRef = useRef<HTMLLIElement>(null);
     const contentRef = useRef<HTMLUListElement>(null);
     const [contentHeight, setContentHeight] = useState<string>('0px');
@@ -45,8 +55,6 @@ const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersisten
         <li
             ref={dropdownRef}
             className={`${className} relative`}
-            onMouseEnter={onHover}
-            onMouseLeave={onMouseLeave}
         >
             <button
                 onClick={onToggle}
@@ -76,36 +84,36 @@ const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersisten
                 <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gray-100 dark:bg-gray-700 md:hidden"></div>
             </button>
 
+            {isOpen && (
             <ul
                 ref={contentRef}
                 style={{
-                    maxHeight: contentHeight,
-                    overflow: 'hidden',
+                    maxHeight: isOpen ? 'none' : contentHeight,
+                    overflow: isOpen ? 'visible' : 'hidden',
                     transition: 'max-height 0.3s ease',
                 }}
-                className="left-0 w-full block md:absolute md:mt-2 md:text-nowrap md:w-fit"
+                className="left-0 w-full block 
+                    md:-translate-x-1/4 md:absolute md:text-nowrap md:w-fit md:bg-white md:dark:bg-gray-700 md:border md:border-gray-300 md:dark:border-gray-700 md:rounded md:shadow-lg md:mt-2"
             >
                 {options.map((option) => (
                     <li
-                        className="block list-none text-center m-0 hover:font-semibold text-sm"
+                        className="block list-none text-center md:hover:font-semibold  text-sm hover:bg-gray-200 hover:dark:bg-gray-600 md:p-2"
                         key={option.label}
                         onClick={onOptionClick}
                     >
                         <Navbar.Link
                             as={Link}
                             to={option.path}
-                            className="block p-2 hover:bg-gray-100 font-normal"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                onOptionClick();
-                            }}
+                            theme={blackTextTheme}
+                            className="font-normal hover:font-semibold"
                         >
                             {option.label}
                         </Navbar.Link>
                     </li>
                 ))}
-            </ul>
+            </ul> )}
         </li>
+           
     );
 };
 
