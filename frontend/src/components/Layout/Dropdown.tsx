@@ -12,21 +12,8 @@ interface DropdownProps {
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, onClick, className }) => {
-    const dropdownRef = useRef<HTMLLIElement>(null);
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                onClick();
-            }
-        };
-        if (isOpen) document.addEventListener('mousedown', handleClickOutside);
-
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [isOpen, onClick]);
-
     return (
-        <li ref={dropdownRef} className={`${className} relative`}>
+        <li className={`${className} relative`}>
             <button
                 onClick={onClick}
                 className="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded bg-transparent md:p-0 md:w-auto dark:text-gray-400 dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"

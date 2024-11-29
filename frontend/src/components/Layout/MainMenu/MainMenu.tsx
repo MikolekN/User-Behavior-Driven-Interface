@@ -13,7 +13,7 @@ export const MainMenu = () => {
 
     const handleDropdownState = useCallback((dropdownName: string | null) => {
         setActiveDropdown((prev) => (prev === dropdownName ? null : dropdownName));
-    }, []);   
+    }, []);
 
     const canAccessOption = (option: MenuOption, user: User | null) => {
         return (
@@ -28,7 +28,7 @@ export const MainMenu = () => {
         <Navbar.Collapse>
             { menuOptions
                 .filter((option) => canAccessOption(option, user))
-                .map((option) => 
+                .map((option) =>
                     'path' in option ? (
                         <Navbar.Link key={option.label} as={Link} to={option.path} theme={blackTextTheme} className='text-base font-normal hover:text-black hover:font-semibold'>
                             {option.label}
