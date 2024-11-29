@@ -8,10 +8,11 @@ interface DropdownProps {
     options: { label: string; path: string }[];
     isOpen: boolean;
     onClick: () => void;
+    closeDropdown: () => void;
     className: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, onClick, className }) => {
+const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, onClick, closeDropdown, className }) => {
     return (
         <li className={`${className} relative`}>
             <button
@@ -39,7 +40,7 @@ const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, onClick, cl
                 {options.map((option) => (
                     <li key={option.label}
                         className="block list-none text-center md:hover:font-semibold text-sm hover:bg-gray-200 hover:dark:bg-gray-600 md:p-2">
-                        <Navbar.Link as={Link} to={option.path} theme={blackTextTheme} className="font-normal hover:font-semibold">
+                        <Navbar.Link as={Link} to={option.path} theme={blackTextTheme} onClick={closeDropdown} className="font-normal hover:font-semibold">
                             {option.label}
                         </Navbar.Link>
                     </li>

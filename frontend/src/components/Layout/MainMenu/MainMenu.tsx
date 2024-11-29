@@ -45,6 +45,10 @@ export const MainMenu = () => {
         setActiveDropdown(null);
     };
 
+    const closeDropdown = () => {
+        setActiveDropdown(null);
+    };
+
     return (
         <Navbar.Collapse className='menu'>
             {menuOptions
@@ -68,6 +72,7 @@ export const MainMenu = () => {
                             options={option.submenu}
                             isOpen={activeDropdown === option.label}
                             onClick={() => handleDropdownState(option.label)}
+                            closeDropdown={closeDropdown}
                             className="text-base font-normal text-black hover:text-black hover:font-semibold"
                         />
                         )
