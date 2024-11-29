@@ -31,7 +31,7 @@ export const MainMenu = () => {
             document.removeEventListener('click', handleClickOutside);
         };
     }, []);
-    
+
     const canAccessOption = (option: MenuOption, user: User | null) => {
         return (
             option.accessLevel === AccessLevels.All ||

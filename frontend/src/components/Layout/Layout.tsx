@@ -4,7 +4,7 @@ import { UserProfile } from './UserProfile';
 import { Logo } from './Logo';
 import { MainMenu } from './MainMenu/MainMenu';
 
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <div id='layout-wrapper' className='flex flex-col h-screen'>
             <header id='layout-header'>
@@ -21,4 +21,3 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
     );
 };
-export default Layout;

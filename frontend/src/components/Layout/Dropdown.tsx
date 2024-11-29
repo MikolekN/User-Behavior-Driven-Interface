@@ -12,7 +12,7 @@ interface DropdownProps {
     className: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, onClick, closeDropdown, className }) => {
+export const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, onClick, closeDropdown, className }) => {
     return (
         <li className={`${className} relative`}>
             <button
@@ -49,5 +49,3 @@ const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, onClick, cl
         </li>
     );
 };
-
-export default Dropdown;

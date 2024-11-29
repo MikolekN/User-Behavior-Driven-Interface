@@ -23,7 +23,7 @@ export const menuOptions: MenuOption[] = [
     { label: 'Start', path: '/', accessLevel: AccessLevels.All },
     { label: 'Login', path: '/login', accessLevel: AccessLevels.Unauthorised },
     { label: 'Register', path: '/register', accessLevel: AccessLevels.Unauthorised },
-    { 
+    {
         label: 'Przelewy',
         accessLevel: AccessLevels.Authorised,
         submenu: [
@@ -33,7 +33,7 @@ export const menuOptions: MenuOption[] = [
             { label: 'Pożyczki', path: '/loan' },
         ]
     },
-    { 
+    {
         label: 'Finanse',
         accessLevel: AccessLevels.Authorised,
         submenu: [
@@ -41,7 +41,7 @@ export const menuOptions: MenuOption[] = [
             { label: 'Analizy roczne', path: '/transactions/analysis/yearly' },
         ]
     },
-    { 
+    {
         label: 'Obsługa klienta',
         accessLevel: AccessLevels.Authorised,
         submenu: [

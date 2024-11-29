@@ -31,7 +31,7 @@ export const UserProfile = () => {
                     await getIcon();
                 } catch { /* If error occurs it is displayed in console */ }
             }
-    
+
             if (user && user.icon) {
                 const iconURL = URL.createObjectURL(user.icon);
                 setIconSrc(iconURL);
@@ -42,7 +42,7 @@ export const UserProfile = () => {
                 setIconSrc(defaultIcon);
             }
         };
-    
+
         void fetchIcon();
     }, [user, getIcon, user?.icon]);
 
