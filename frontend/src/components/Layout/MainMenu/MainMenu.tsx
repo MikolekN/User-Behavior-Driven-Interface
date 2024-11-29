@@ -3,7 +3,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../../context/UserContext';
 import { AccessLevels, MenuOption, menuOptions } from './MainMenuData';
 import { Link } from 'react-router-dom';
-import Dropdown from '../Dropdown';
+import { Dropdown } from '../Dropdown';
 import { User } from '../../utils/User';
 import { blackTextTheme } from '../NavbarLinkBlackText';
 
