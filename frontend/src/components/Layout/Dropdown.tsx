@@ -1,5 +1,5 @@
 import { Navbar } from 'flowbite-react';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { blackTextTheme } from './NavbarLinkBlackText';
 
@@ -33,18 +33,18 @@ const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, onClick, cl
                 <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gray-100 dark:bg-gray-700 md:hidden"></div>
             </button>
 
-            {isOpen && (
-                <ul className="left-0 w-full block md:-translate-x-1/4 md:absolute md:text-nowrap md:w-fit md:bg-white md:dark:bg-gray-700 md:border md:border-gray-300 md:dark:border-gray-700 md:rounded md:shadow-lg md:mt-2">
-                    {options.map((option) => (
-                        <li key={option.label}
-                            className="block list-none text-center md:hover:font-semibold  text-sm hover:bg-gray-200 hover:dark:bg-gray-600 md:p-2">
-                            <Navbar.Link as={Link} to={option.path} theme={blackTextTheme} className="font-normal hover:font-semibold">
-                                {option.label}
-                            </Navbar.Link>
-                        </li>
-                    ))}
-                </ul>
-            )}
+            <ul
+                className={`transition-all duration-300 ease-in-out transform overflow-hidden ${isOpen ? 'max-h-[500px] visibility-visible md:border' : 'max-h-0 visibility-hidden'} left-0 w-full block md:-translate-x-1/4 md:absolute md:text-nowrap md:w-fit md:bg-white md:dark:bg-gray-700 md:border-gray-300 md:dark:border-gray-700 md:rounded md:shadow-lg md:mt-2`}
+            >
+                {options.map((option) => (
+                    <li key={option.label}
+                        className="block list-none text-center md:hover:font-semibold text-sm hover:bg-gray-200 hover:dark:bg-gray-600 md:p-2">
+                        <Navbar.Link as={Link} to={option.path} theme={blackTextTheme} className="font-normal hover:font-semibold">
+                            {option.label}
+                        </Navbar.Link>
+                    </li>
+                ))}
+            </ul>
         </li>
     );
 };
