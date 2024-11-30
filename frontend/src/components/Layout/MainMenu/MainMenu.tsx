@@ -50,7 +50,7 @@ export const MainMenu = () => {
     };
 
     return (
-        <Navbar.Collapse className='menu'>
+        <Navbar.Collapse className="menu order-4 md:order-2">
             {menuOptions
                 .filter((option) => canAccessOption(option, user))
                 .map((option) =>

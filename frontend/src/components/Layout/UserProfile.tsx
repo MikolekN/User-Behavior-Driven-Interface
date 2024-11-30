@@ -54,7 +54,7 @@ export const UserProfile = () => {
         )
     }
 
-    return (<div className="flex md:order-2">
+    return (<div className="flex order-3 md:order-3">
         <Dropdown arrowIcon={false} inline placement="bottom"
             label={
                 <Avatar alt="User profile icon" img={iconSrc} rounded className='rounded-full hover:bg-gray-200 hover:dark:bg-gray-700 transition ease-in-out duration-300'/>
