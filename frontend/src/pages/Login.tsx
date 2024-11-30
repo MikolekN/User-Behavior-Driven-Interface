@@ -9,6 +9,8 @@ import Button from '../components/utils/Button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginFormData, LoginFormDataSchema } from '../schemas/formValidation/loginSchema';
 import useApiErrorHandler from '../hooks/useApiErrorHandler';
+import { scrollToTop } from '../components/utils/scroll';
+import ErrorAlert from '../components/Alerts/ErrorAlert';
 
 const Login = () => {
     const { user } = useContext(UserContext);
@@ -32,14 +34,20 @@ const Login = () => {
             navigate('/dashboard');
         } catch (error) {
             handleError(error);
+            scrollToTop('login-form-wrapper');
         }
     });
 
     return (
-        <div className="flex items-center justify-center">
+        <div id="login-form-wrapper" className="flex items-center justify-center">
             <Tile title="Log in into online banking" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
+                        { apiError.isError && 
+                            <div className="my-4">
+                                <ErrorAlert alertMessage={apiError.errorMessage} />
+                            </div> 
+                        }
                         <form className="mt-8 space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
                             <FormInput 
                                 label="Email" 
@@ -58,9 +66,6 @@ const Login = () => {
                             <Button className="w-full">
 						        Submit
                             </Button>
-                            <div>
-                                {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
-                            </div>
                         </form>
                     </div>
                 </div>

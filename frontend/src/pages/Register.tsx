@@ -9,6 +9,8 @@ import { AuthContext } from '../context/AuthContext';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterFormData, RegisterFormDataSchema } from '../schemas/formValidation/registerSchema';
 import useApiErrorHandler from '../hooks/useApiErrorHandler';
+import ErrorAlert from '../components/Alerts/ErrorAlert';
+import { scrollToTop } from '../components/utils/scroll';
 
 const Register = () => {
     const { apiError, handleError } = useApiErrorHandler();
@@ -33,14 +35,20 @@ const Register = () => {
             navigate('/login');
         } catch (error) {
             handleError(error);
+            scrollToTop('register-form-wrapper');
         }
     });
 
     return (
-        <div className="flex items-center justify-center">
+        <div id="register-form-wrapper" className="flex items-center justify-center">
             <Tile title="Register to Online Banking" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
+                        { apiError.isError && 
+                            <div className="my-4">
+                                <ErrorAlert alertMessage={apiError.errorMessage} />
+                            </div> 
+                        }
                         <form className="mt-8 space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
                             <FormInput 
                                 label="Email"
@@ -66,9 +74,6 @@ const Register = () => {
                             <Button className="w-full">
                                 Submit
                             </Button>
-                            <div>
-                                {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
-                            </div>
                         </form>
                     </div>
                 </div>
