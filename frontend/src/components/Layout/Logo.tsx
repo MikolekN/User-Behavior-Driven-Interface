@@ -1,12 +1,12 @@
+import { Navbar } from 'flowbite-react';
 import logo from '../../assets/images/logo.png';
+import { Link } from 'react-router-dom';
 
-const Logo = () => {
+export const Logo = () => {
     return (
-        <div id='logo-container' className='flex items-center'>
-            <img src={logo} alt="Logo" id='logo' className='h-10 w-auto' />
-            <h1 id='company-name' className='text-2xl mx-1'> Bank </h1>
-        </div>
+        <Navbar.Brand as={Link} to="/" className="order-2 md:order-1">
+            <img src={logo} className="h-10" alt="Logo" />
+            <span className="ml-2 self-center whitespace-nowrap text-lg font-medium dark:text-white hidden md:block text-black">Bank</span>
+        </Navbar.Brand>
     );
 };
-
-export default Logo;
