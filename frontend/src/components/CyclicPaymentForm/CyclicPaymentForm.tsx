@@ -197,6 +197,7 @@ const CyclicPaymentsForm = () => {
                             <FormSelect
                                 label="Interval"
                                 options={intervalOptions}
+                                defaultOption='-- Select Interval --'
                                 register={register('interval')}
                                 error={errors.interval}
                                 className="w-full"

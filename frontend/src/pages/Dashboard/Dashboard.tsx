@@ -4,11 +4,21 @@ import { UserContext } from '../../context/UserContext';
 import Tile from '../../components/Tile/Tile';
 import Button from '../../components/utils/Button';
 import icon from '../../assets/images/credit-card.png';
+import FormSelect from '../../components/FormSelect/FormSelect';
+import { LANGUAGES } from '../constants';
+import { useTranslation } from 'react-i18next';
 
 const Dashboard = () => {
     const { user } = useContext(UserContext);
 
     if (!user) return <Navigate to="/login" />;
+
+    const { i18n, t } = useTranslation();
+
+    const onChangeLang = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const lang_code = e.target.value;
+        i18n.changeLanguage(lang_code);
+    }
 
     return (
         <div className="flex items-center justify-center">
@@ -34,6 +44,15 @@ const Dashboard = () => {
                             </Link>
                         </div>
                     </div>
+                </div>
+                <FormSelect
+                    defaultValue={i18n.language}
+                    onChange={onChangeLang}
+                    label='Select language'
+                    options={LANGUAGES}
+                />
+                <div>
+                    {t('about')}
                 </div>
             </Tile>
         </div>

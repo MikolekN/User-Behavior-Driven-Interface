@@ -206,6 +206,7 @@ const ProfilePage = () => {
                             }
                             <FormSelect
                                 label="Wybierz pole do zmiany"
+                                defaultOption='-- Wybierz pole --'
                                 options={validFields}
                                 register={registerField('field')}
                                 error={fieldErrors.field}

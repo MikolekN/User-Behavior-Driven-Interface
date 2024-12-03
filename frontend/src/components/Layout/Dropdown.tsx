@@ -1,9 +1,14 @@
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 interface DropdownProps {
     title: string;
-    options: { label: string; path: string }[];
+    options: {
+        id: string; 
+        label: string; 
+        path: string 
+    }[];
     isOpen: boolean;
     isPersistent: boolean;
     onToggle: () => void;
