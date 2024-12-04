@@ -7,7 +7,7 @@ i18n
     .use(i18nBackend)
     .use(initReactI18next)
     .init({
-        lng: 'en',
+        lng: localStorage.getItem('language') || 'en',
         interpolation: {
             escapeValue: false
         },

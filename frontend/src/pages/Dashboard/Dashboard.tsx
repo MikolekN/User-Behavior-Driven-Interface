@@ -18,6 +18,7 @@ const Dashboard = () => {
     const handelChangeLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const lang_code = e.target.value;
         i18n.changeLanguage(lang_code);
+        localStorage.setItem('language', lang_code);
     }
 
     return (
