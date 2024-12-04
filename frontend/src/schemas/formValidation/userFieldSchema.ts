@@ -17,7 +17,7 @@ export const UserFieldFormDataSchema = z.object({
             }
             break;
 
-        case 'account_name':
+        case 'accountName':
             if (data.value.length < REQUIRED_TEXT_INPUT_LENGTH) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,

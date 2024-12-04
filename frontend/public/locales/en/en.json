@@ -47,7 +47,8 @@
         },
         "email": "Email",
         "password": "Password",
-        "submit": "Sign in"
+        "submit": "Sign in",
+        "loading": "Loading..."
     },
     "register": {
         "tile": {
@@ -56,7 +57,8 @@
         "email": "Email",
         "password": "Password",
         "confirmPassword": "Confirm Password",
-        "submit": "Sign up"
+        "submit": "Sign up",
+        "loading": "Loading..."
     },
     "dashboard": {
         "balance": "Balance",
@@ -72,7 +74,8 @@
         "recipientAccountNumber": "Recipient Account Number",
         "transferTitle": "Transfer Title",
         "amount": "Amout",
-        "submit": "Submit"
+        "submit": "Submit",
+        "loading": "Loading..."
     },
     "transactionHistory": {
         "tile": {
@@ -107,7 +110,8 @@
         "transferInterval": "Transfer Interval",
         "title": "Title",
         "amount": "Amout",
-        "submit": "Submit"
+        "submit": "Submit",
+        "loading": "Loading..."
     },
     "loan": {
         "tile": {
@@ -116,7 +120,8 @@
         "fromAccount": "From Account",
         "howMuchMoney": "How much money do you need?",
         "numberOfInstallments": "Number of installments",
-        "submit": "Submit"
+        "submit": "Submit",
+        "loading": "Loading..."
     },
     "transactionsMonthlyAnalysis": {
         "tile": {
@@ -196,6 +201,37 @@
         "address": {
             "title": "Address",
             "message": "Visit us at"
+        }
+    },
+    "profile": {
+        "tile": {
+            "title": "User profile"
+        },
+        "icon": {
+            "imageFormatErrorMessage": "Invalid file type. Please upload a PNG or JPG image.",
+            "imageProcessingError": "Error processing image.",
+            "imageLoadingError": "Error loading image.",
+            "fileLoadingError": "Error reading file.",
+            "newIcon": "Choose new icon",
+            "submit": "Choose icon",
+            "loading": "Loading..."
+        },
+        "field": {
+            "defaultOption": "-- Choose option --",
+            "selectField": "Choose field to change",
+            "new": "New",
+            "value": "value",
+            "login": "user name",
+            "accountName": "account name",
+            "currency": "currency",
+            "submit": "Change",
+            "loading": "Loading..."
+        },
+        "password": {
+            "password": "Password",
+            "newPassword": "Confirm password",
+            "submit": "Change password",
+            "loading": "Loading..."
         }
     }
 }

@@ -47,7 +47,8 @@
         },
         "email": "Email",
         "password": "Hasło",
-        "submit": "Zaloguj się"
+        "submit": "Zaloguj się",
+        "loading": "Ładowanie..."
     },
     "register": {
         "tile": {
@@ -56,7 +57,8 @@
         "email": "Email",
         "password": "Hasło",
         "confirmPassword": "Powtórz hasło",
-        "submit": "Zarejestruj się"
+        "submit": "Zarejestruj się",
+        "loading": "Ładowanie..."
     },
     "dashboard": {
         "balance": "Balans",
@@ -72,7 +74,8 @@
         "recipientAccountNumber": "Numer Konta Odbiorcy",
         "transferTitle": "Tytuł przelewu",
         "amount": "Kwota",
-        "submit": "Przelej"
+        "submit": "Przelej",
+        "loading": "Ładowanie..."
     },
     "transactionHistory": {
         "tile": {
@@ -107,7 +110,8 @@
         "transferInterval": "Interwał Przelewu",
         "title": "Tytuł",
         "amount": "Kwota",
-        "submit": "Utwórz"
+        "submit": "Utwórz",
+        "loading": "Ładowanie..."
     },
     "loan": {
         "tile": {
@@ -116,7 +120,8 @@
         "fromAccount": "Z Konta",
         "howMuchMoney": "Ile pieniędzy potrzebujesz?",
         "numberOfInstallments": "Liczba rat",
-        "submit": "Weź Pożyczkę"
+        "submit": "Weź Pożyczkę",
+        "loading": "Ładowanie..."
     },
     "transactionsMonthlyAnalysis": {
         "tile": {
@@ -197,6 +202,37 @@
         "address": {
             "title": "Adres Siedziby",
             "message": "Odwiedź nas osobiście pod adresem"
+        }
+    },
+    "profile": {
+        "tile": {
+            "title": "Profil użytkownika"
+        },
+        "icon": {
+            "imageFormatErrorMessage": "Nieprawidłowy typ pliku. Proszę załącz plik PNG lub JPG.",
+            "imageProcessingError": "Błąd przetwarzania zdjęcia.",
+            "imageLoadingError": "Błąd ładowania zdjęcia",
+            "fileLoadingError": "Błąd odczytu pliku",
+            "newIcon": "Wybierz nową ikonę",
+            "submit": "Wybierz",
+            "loading": "Ładowanie..."
+        },
+        "field": {
+            "defaultOption": "-- Wybierz opcję --",
+            "selectField": "Wybierz pole do zmiany",
+            "new": "Nowa",
+            "value": "wartość",
+            "login": "nazwa użytkownia",
+            "accountName": "nazwa konta",
+            "currency": "waluta",
+            "submit": "Zmień",
+            "loading": "Ładowanie..."
+        },
+        "password": {
+            "password": "Hasło",
+            "newPassword": "Powtórz hasło",
+            "submit": "Zmień hasło",
+            "loading": "Ładowanie..."
         }
     }
 }
