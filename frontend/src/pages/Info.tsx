@@ -1,14 +1,9 @@
-import { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import './Info.css';
-import { UserContext } from '../context/UserContext';
 import { useTranslation } from 'react-i18next';
 
 const Info = () => {
     const { t } = useTranslation();
-    const { user } = useContext(UserContext);
-    if (!user) return <Navigate to="/login" />;
 
     return (
         <div className="info-wrapper">

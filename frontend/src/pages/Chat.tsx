@@ -2,7 +2,6 @@ import { useState, useEffect, useContext, useRef, FC } from 'react';
 import Tile from '../components/Tile/Tile';
 import './Chat.css';
 import send_arrow from '../assets/images/send.png';
-import { Navigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import { useTranslation } from 'react-i18next';
 
@@ -49,8 +48,6 @@ const Chat: FC = () => {
             ]);
         }, 500);
     };
-
-    if (!user) return <Navigate to="/login" />;
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') handleSend();

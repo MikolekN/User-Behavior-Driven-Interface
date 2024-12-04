@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
-import { Navigate } from 'react-router-dom';
 import Tile from '../Tile/Tile';
 import TransfersAnalysisChart from '../TransfersAnalysisChart/TransfersAnalysisChart';
 import EmptyResponseInfoAlert from '../EmptyResponseInfoAlert/EmptyResponseInfoAlert';
@@ -36,8 +35,6 @@ const TransactionsYearlyAnalysis = () => {
         void fetchChartData();
     }, [user, fetchTransfersAnalysis]);
 
-    if (!user) return <Navigate to="/login" />;
-
     if (loading) return <div>Loading...</div>;
     
     if (apiError.isError) { 
@@ -56,7 +53,6 @@ const TransactionsYearlyAnalysis = () => {
                 <TransfersAnalysisChart chartData={chartData} />
             </Tile>
         </div>
-
     );
 };
 

@@ -1,8 +1,6 @@
-import { useState, useContext, FC } from 'react';
+import { useState, FC } from 'react';
 import Tile from '../../components/Tile/Tile';
 import './FAQ.css';
-import { UserContext } from '../../context/UserContext';
-import { Navigate } from 'react-router-dom';
 import { FAQData } from './FAQData';
 import { useTranslation } from 'react-i18next';
 
@@ -28,12 +26,10 @@ const FAQItem: FC<FAQItemProps> = ({ itemKey, isActive, onClick }) => {
 const FAQ: FC = () => {
     const { t } = useTranslation();
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
-    const { user } = useContext(UserContext);
 
-    const toggleAnswer = (index: number) => 
+    const toggleAnswer = (index: number) => {
         setActiveIndex((prev) => (prev === index ? null : index));
-
-    if (!user) return <Navigate to="/login" />;
+    };
 
     return (
         <div className="faq-wrapper">

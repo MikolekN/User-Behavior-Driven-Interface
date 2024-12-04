@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import { AuthContext } from '../context/AuthContext';
@@ -19,7 +19,7 @@ const Login = () => {
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
     const { apiError, handleError } = useApiErrorHandler();
-    const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormData>({
         resolver: zodResolver(LoginFormDataSchema),
         defaultValues: {
             email: '',
@@ -30,7 +30,7 @@ const Login = () => {
 
     if (user) return <Navigate to="/dashboard" />;
 
-    const onSubmit = handleSubmit(async ({ email, password }) => {
+    const onSubmit: SubmitHandler<LoginFormData> = async ({ email, password }: LoginFormData) => {
         try {
             await login(email, password);
             navigate('/dashboard');
@@ -38,7 +38,7 @@ const Login = () => {
             handleError(error);
             scrollToTop('login-form-wrapper');
         }
-    });
+    };
 
     return (
         <div id="login-form-wrapper" className="flex items-center justify-center">
@@ -50,7 +50,7 @@ const Login = () => {
                                 <ErrorAlert alertMessage={apiError.errorMessage} />
                             </div> 
                         }
-                        <form className="mt-8 space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
+                        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
                                 label={t('login.email')} 
                                 fieldType="text" 
@@ -65,8 +65,8 @@ const Login = () => {
                                 error={errors.password}
                                 className="w-full"
                             />
-                            <Button className="w-full">
-						        {t('login.submit')}
+                            <Button isSubmitting={isSubmitting} className="w-full">
+						        {isSubmitting ? `${t('login.loading')}` : `${t('login.submit')}`}
                             </Button>
                         </form>
                     </div>

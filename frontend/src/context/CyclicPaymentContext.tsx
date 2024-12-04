@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useMemo, useCallback, useState } from 'react';
 import { createCyclicPaymentData, deleteCyclicPaymentData, getCyclicPaymentData, getCyclicPaymentsData, updateCyclicPaymentData } from '../services/cyclicPaymentService';
-import { BackendCyclicPayment, CyclicPayment, mapBackendCyclicPaymentToCyclicPayment } from '../components/utils/types/CyclicPayment';
+import { CyclicPayment, mapBackendCyclicPaymentsListToCyclicPayment, mapBackendCyclicPaymentToCyclicPayment } from '../components/utils/types/CyclicPayment';
 
 interface CyclicPaymentContextProps {
     cyclicPayment: CyclicPayment | null;
@@ -40,8 +40,7 @@ export const CyclicPaymentProvider: React.FC<{ children: ReactNode }> = ({ child
     const getCyclicPayment = useCallback(async (id: string): Promise<void> => {
         const { cyclic_payment: backendCyclicPaymentData } = await getCyclicPaymentData(id);
         if (backendCyclicPaymentData) {
-            const cyclicPaymentFrontendData = mapBackendCyclicPaymentToCyclicPayment(backendCyclicPaymentData);
-            setCyclicPayment(cyclicPaymentFrontendData);
+            setCyclicPayment(mapBackendCyclicPaymentToCyclicPayment(backendCyclicPaymentData));
         }
     }, []);
 
@@ -56,12 +55,7 @@ export const CyclicPaymentProvider: React.FC<{ children: ReactNode }> = ({ child
     const getCyclicPayments = useCallback(async (): Promise<void> => {
         const { cyclic_payments: cyclicPaymentsBackendData } = await getCyclicPaymentsData();
         if (cyclicPaymentsBackendData) {
-            const formattedCyclicPayments: CyclicPayment[] = [];
-            cyclicPaymentsBackendData.forEach((backendCyclicPaymentData: BackendCyclicPayment) => {
-                const cyclicPaymentFrontendData = mapBackendCyclicPaymentToCyclicPayment(backendCyclicPaymentData);
-                formattedCyclicPayments.push(cyclicPaymentFrontendData);
-            });
-            setCyclicPayments(formattedCyclicPayments);
+            setCyclicPayments(mapBackendCyclicPaymentsListToCyclicPayment(cyclicPaymentsBackendData));
         }
     }, []);
 

@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect, ChangeEventHandler } from 'react';
-import { useForm } from 'react-hook-form';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Tile from '../components/Tile/Tile';
 import FormInput from '../components/FormInput/FormInput';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,15 +15,16 @@ import ErrorAlert from '../components/Alerts/ErrorAlert';
 import Label from '../components/utils/Label';
 import AccountDetails from '../components/utils/AccountDetails';
 import { useTranslation } from 'react-i18next';
+import Button from '../components/utils/Button';
 
 const Loan = () => {
     const { t } = useTranslation();
     const { apiError, handleError } = useApiErrorHandler();
-    const { user, getUser } = useContext(UserContext);
+    const { user, getUser } = useContext(UserContext)
     const { createLoan } = useContext(TransferContext);
     const [ sliderValue, setSliderValue ] = useState<number | null>(null);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
-    const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<LoanFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, watch } = useForm<LoanFormData>({
         resolver: zodResolver(LoanFormDataSchema),
         defaultValues: {
             amount: MIN_LOAN_AMOUNT.toString()
@@ -42,13 +43,11 @@ const Loan = () => {
         }
     }, [user, inputAmount]);
 
-    if (!user) return <Navigate to="/login" />;  
-
     const toggleAnswer = (index: number) => {
         setActiveIndex(activeIndex === index ? null : index);
     };
     
-    const onSubmit = handleSubmit(async ({ amount }: LoanFormData) => {
+    const onSubmit: SubmitHandler<LoanFormData> = async ({ amount }: LoanFormData) => {
         try {
             const requestBody = {
                 transferTitle: 'Pożyczka gotówkowa',
@@ -61,7 +60,7 @@ const Loan = () => {
             handleError(error);
             scrollToTop('loan-form-wrapper');
         }
-    });
+    };
 
     const handleSliderChange: ChangeEventHandler<HTMLInputElement> = (event) => {
         const newValue = parseInt(event.target.value, 10);
@@ -79,8 +78,8 @@ const Loan = () => {
                                 <ErrorAlert alertMessage={apiError.errorMessage} />
                             </div> 
                         }
-                        <AccountDetails label={t('loan.fromAccount')} user={user} className='w-full p-3 mb-6' />
-                        <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
+                        <AccountDetails label={t('loan.fromAccount')} user={user!} className='w-full p-3 mb-6' />
+                        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput
                                 label={t('loan.howMuchMoney')}
                                 fieldType="text"
@@ -88,7 +87,7 @@ const Loan = () => {
                                 error={errors.amount}
                                 className="w-10/12"
                             >
-                                {user.currency}
+                                {user!.currency}
                             </FormInput>
                             <div>
                                 <RangeSlider 
@@ -114,8 +113,11 @@ const Loan = () => {
                                     ))}
                                 </div>
                             </div>
+                            <Button isSubmitting={isSubmitting} className="w-full">
+						        {isSubmitting ? `${t('loan.loading')}` : `${t('loan.submit')}`}
+                            </Button>
                             <div>
-                                <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">{t('loan.submit')}</button>
+                                {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
                             </div>
                         </form>
                     </div>

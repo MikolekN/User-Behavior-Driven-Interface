@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import FormInput from '../components/FormInput/FormInput';
@@ -18,7 +18,7 @@ const Register = () => {
     const { apiError, handleError } = useApiErrorHandler();
     const { user } = useContext(UserContext);
     const { register } = useContext(AuthContext);
-    const { register: formRegister, handleSubmit, formState: { errors } } = useForm<RegisterFormData>({
+    const { register: formRegister, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterFormData>({
         resolver: zodResolver(RegisterFormDataSchema),
         defaultValues: {
             email: '',
@@ -31,7 +31,7 @@ const Register = () => {
 
     if (user) return <Navigate to="/dashboard" />;
 
-    const onSubmit = handleSubmit(async ({ email, password: userPassword }) => {
+    const onSubmit: SubmitHandler<RegisterFormData> = async ({ email, password: userPassword }: RegisterFormData) => {
         try {
             await register(email, userPassword);
             navigate('/login');
@@ -39,7 +39,7 @@ const Register = () => {
             handleError(error);
             scrollToTop('register-form-wrapper');
         }
-    });
+    };
 
     return (
         <div id="register-form-wrapper" className="flex items-center justify-center">
@@ -51,7 +51,7 @@ const Register = () => {
                                 <ErrorAlert alertMessage={apiError.errorMessage} />
                             </div> 
                         }
-                        <form className="mt-8 space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
+                        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
                                 label={t('register.email')}
                                 fieldType="text"
@@ -73,8 +73,8 @@ const Register = () => {
                                 error={errors.confirmPassword}
                                 className="w-full"
                             />
-                            <Button className="w-full">
-                                {t('register.submit')}
+                            <Button isSubmitting={isSubmitting} className="w-full">
+						        {isSubmitting ? `${t('register.loading')}` : `${t('register.submit')}`}
                             </Button>
                         </form>
                     </div>

@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import Tile from '../Tile/Tile';
 import FormInput from '../FormInput/FormInput';
@@ -21,6 +21,7 @@ import { datepickerTheme } from '../utils/themes/datepickerTheme';
 import { datepickerErrorTheme } from '../utils/themes/datepickerErrorTheme';
 import ErrorMessage from '../utils/ErrorMessage';
 import { useTranslation } from 'react-i18next';
+import Button from '../utils/Button';
 
 const CyclicPaymentsForm = () => {
     const { t } = useTranslation();
@@ -32,7 +33,7 @@ const CyclicPaymentsForm = () => {
     const { cyclicPayment, setCyclicPayment, createCyclicPayment, getCyclicPayment, 
         updateCyclicPayment } = useContext(CyclicPaymentContext);
 
-    const { register, handleSubmit, formState: { errors }, clearErrors, control, setValue } = useForm<CyclicPaymentFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting }, clearErrors, control, setValue } = useForm<CyclicPaymentFormData>({
         resolver: zodResolver(CyclicPaymentFormDataSchema),
         defaultValues: {
             recipientAccountNumber: '',
@@ -93,7 +94,7 @@ const CyclicPaymentsForm = () => {
         return localDate.toISOString();
     };
 
-    const onSubmit = handleSubmit(async (data: CyclicPaymentFormData) => {
+    const onSubmit: SubmitHandler<CyclicPaymentFormData> = async (data: CyclicPaymentFormData) => {
         if (cyclicPayment === null) {
             try {
                 const requestBody = {
@@ -129,7 +130,7 @@ const CyclicPaymentsForm = () => {
                 scrollToTop('cyclic-payment-form-wrapper');
             }
         }
-    });
+    };
     
     const handleDateChange = (date: Date | null) => {
         if (!date) {
@@ -154,7 +155,7 @@ const CyclicPaymentsForm = () => {
                             </div> 
                         }
                         <AccountDetails label={t('cyclicPaymentForm.fromAccount')} user={user!} className='w-full p-3 mb-6' />
-                        <form id="cyclic-payment-form" className="space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
+                        <form id="cyclic-payment-form" className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
                                 label={t('cyclicPaymentForm.cyclicPaymentName')}
                                 fieldType="text"
@@ -218,11 +219,11 @@ const CyclicPaymentsForm = () => {
                                 error={errors.amount}
                                 className="w-10/12"
                             >
-                                {user?.currency}
+                                {user!.currency}
                             </FormInput>
-                            <div>
-                                <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">{t('cyclicPaymentForm.submit')}</button>
-                            </div>
+                            <Button isSubmitting={isSubmitting} className="w-full">
+						        {isSubmitting ? `${t('cyclicPaymentForm.loading')}` : `${t('cyclicPaymentForm.submit')}`}
+                            </Button>
                         </form>
                     </div>
                 </div>
