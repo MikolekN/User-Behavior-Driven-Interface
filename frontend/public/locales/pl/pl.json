@@ -1,2 +1,202 @@
 {
+    "menu": {
+        "home": "Start",
+        "transfers": {
+            "title": "Przelewy",
+            "submenu": {
+                "transfer": "Wykonaj Przelew",
+                "transferHistory": "Historia Transakcji",
+                "cyclicPayments": "Płatności cykliczne" ,
+                "loan": "Pożyczki" 
+            }
+        },
+        "settings": {
+            "title": "Ustawienia",
+            "submenu": {
+                "settings1": "Ustawienia 1",
+                "settings2": "Ustawienia 2"
+            }
+        },
+        "analysis": {
+            "title": "Finanse",
+            "submenu": {
+                "monthlyAnalysis": "Analizy miesięczne",
+                "yearlyAnalysis": "Analizy roczne"
+            }
+        },
+        "customerService": {
+            "title": "Obsługa Klienta",
+            "submenu": {
+                "chat": "Czat",
+                "faq": "FAQ",
+                "info": "Kontakt"
+            }
+        },
+        "profile": {
+            "profile": "Profil",
+            "login": "Logowanie",
+            "register": "Rejstracja",
+            "logout": "Wyloguj się"
+        },
+        "login": "Logowanie",
+        "register": "Rejstracja"
+    },
+    "login": {
+        "tile": {
+            "title": "Logowanie"
+        },
+        "email": "Email",
+        "password": "Hasło",
+        "submit": "Zaloguj się"
+    },
+    "register": {
+        "tile": {
+            "title": "Rejestracja"
+        },
+        "email": "Email",
+        "password": "Hasło",
+        "confirmPassword": "Powtórz hasło",
+        "submit": "Zarejestruj się"
+    },
+    "dashboard": {
+        "balance": "Balans",
+        "blockades": "Blokady",
+        "availableFunds": "Dostępne środki",
+        "transfer": "Przelew"
+    },
+    "transfer": {
+        "tile": {
+            "title": "Przelew"
+        },
+        "fromAccount": "Z Konta",
+        "recipientAccountNumber": "Numer Konta Odbiorcy",
+        "transferTitle": "Tytuł przelewu",
+        "amount": "Kwota",
+        "submit": "Przelej"
+    },
+    "transactionHistory": {
+        "tile": {
+            "title": "Historia Transakcji"
+        }
+    },
+    "cyclicPaymentList": {
+        "tile": {
+            "title": "Płatności cykliczne"
+        },
+        "submit": "Dodaj Płatność Cykliczną",
+        "nameAndReceiver": "Nazwa / Odbiorca",
+        "amount": "Kwota",
+        "createdDate": "Data Utworzenia",
+        "recipient": "Odbiorca",
+        "recipientAccountNumber": "Numer Konta Odbiorcy",
+        "fromAccount": "Z Konta",
+        "title": "Tytuł",
+        "startDate": "Data Początkowa",
+        "transferInterval": "Interwał Przelewu",
+        "edit": "Edytuj",
+        "delete": "Usuń"
+    },
+    "cyclicPaymentForm": {
+        "tile": {
+            "title": "Płatność cykliczna"
+        },
+        "fromAccount": "Z Konta",
+        "cyclicPaymentName": "Nazwa",
+        "recipientAccountNumber": "Numer Konta Odbiorcy",
+        "startDate": "Data Początkowa",
+        "transferInterval": "Interwał Przelewu",
+        "title": "Tytuł",
+        "amount": "Kwota",
+        "submit": "Utwórz"
+    },
+    "loan": {
+        "tile": {
+            "title": "Pożyczka"
+        },
+        "fromAccount": "Z Konta",
+        "howMuchMoney": "Ile pieniędzy potrzebujesz?",
+        "numberOfInstallments": "Liczba rat",
+        "submit": "Weź Pożyczkę"
+    },
+    "transactionsMonthlyAnalysis": {
+        "tile": {
+            "title": "Miesięczna Analiza Transakcji"
+        },
+        "emptyAlertInfo": "Brak historii transakcji aby wygenerować analizę"
+    },
+    "transactionsYeaerlyAnalysis": {
+        "tile": {
+            "title": "Roczna Analiza Transakcji"
+        },
+        "emptyAlertInfo": "Brak historii transakcji aby wygenerować analizę"
+    },
+    "chat": {
+        "tile": {
+            "title": "Czat"
+        },
+        "writeMessage": "Napisz wiadomość...",
+        "welcomeMessage": "Witamy na czacie obsługi klienta! Nie wahaj się zadać pytań, a my chętnie Ci pomożemy.",
+        "responseMessage": "Dziękujemy za wiadomość! Nasz zespół wkrótce się z Tobą skontaktuje."
+
+    },
+    "faq": {
+        "tile": {
+            "title": "FAQ"
+        },
+        "new-account": {
+            "question": "Jak mogę założyć nowe konto?",
+            "answer": "Aby założyć nowe konto, odwiedź naszą stronę rejestracyjną lub skontaktuj się z naszym biurem obsługi klienta. Możesz również odwiedzić naszą placówkę, gdzie nasi doradcy pomogą Ci przejść przez proces rejestracji."
+        },
+        "account-payments": {
+            "question": "Jakie są opłaty za prowadzenie konta?",
+            "answer": "Opłaty za prowadzenie konta różnią się w zależności od rodzaju konta. Szczegółowe informacje o opłatach znajdziesz na naszej stronie internetowej w sekcji 'Cennik' lub kontaktując się z naszym biurem obsługi klienta."
+        },
+        "update-personal-data": {
+            "question": "Jak mogę zaktualizować moje dane osobowe?",
+            "answer": "Aby zaktualizować swoje dane osobowe, zaloguj się do swojego konta online i przejdź do sekcji 'Ustawienia konta'. Możesz również odwiedzić naszą placówkę osobiście lub skontaktować się z naszym biurem obsługi klienta."
+        },
+        "forgot-password": {
+            "question": "Co zrobić, jeśli zapomnę hasła do konta?",
+            "answer": "Jeśli zapomniałeś hasła do konta, kliknij opcję 'Zapomniałem hasła' na stronie logowania. Postępuj zgodnie z instrukcjami, aby zresetować hasło. W razie problemów skontaktuj się z naszym biurem obsługi klienta."
+        },
+        "account-balance": {
+            "question": "Jak mogę sprawdzić stan mojego konta?",
+            "answer": "Stanu swojego konta możesz sprawdzić logując się do bankowości internetowej lub mobilnej. Możesz również skorzystać z naszych bankomatów, aby uzyskać aktualny stan konta lub kontaktując się z naszym biurem obsługi klienta."
+        },
+        "financial-advice": {
+            "question": "Czy oferujecie usługi doradztwa finansowego?",
+            "answer": "Tak, oferujemy usługi doradztwa finansowego. Skontaktuj się z nami, aby umówić się na spotkanie z naszym doradcą finansowym, który pomoże Ci w zarządzaniu finansami i planowaniu przyszłości."
+        },
+        "complaint": {
+            "question": "Jak mogę złożyć reklamację?",
+            "answer": "Reklamacje można składać poprzez naszą stronę internetową w sekcji 'Kontakt', telefonicznie lub osobiście w naszej placówce. Postaramy się rozwiązać problem jak najszybciej."
+        },
+        "open-hours": {
+            "question": "Jakie są godziny otwarcia waszych placówek?",
+            "answer": "Godziny otwarcia naszych placówek różnią się w zależności od lokalizacji. Szczegółowe godziny otwarcia znajdziesz na naszej stronie internetowej w sekcji 'Kontakt' lub kontaktując się z wybraną placówką."
+        }
+    },
+    "contact": {
+        "tile": {
+            "title": "Informacje Kontaktowe"
+        },
+        "phoneContact": {
+            "title": "Kontakt Telefoniczny",
+            "message": "Jeśli chcesz się z nami skontaktować telefonicznie, możesz zadzwonić na",
+            "hotline": "Infolinia",
+            "customerService": "Obsługa Klienta",
+            "technicalSupport": "Wsparcie Techniczne"
+        },
+        "emailContact": {
+            "title": "Kontakt Mailowy",
+            "message": "Masz pytania? Napisz do nas na",
+            "email": "Email;",
+            "complaint": "Reklamacje",
+            "technicalSupport": "Wsparcie Techniczne"
+        },
+        "address": {
+            "title": "Adres Siedziby",
+            "message": "Odwiedź nas osobiście pod adresem"
+        }
+    }
 }
