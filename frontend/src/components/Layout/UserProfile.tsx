@@ -3,6 +3,8 @@ import { Dropdown, Avatar } from "flowbite-react"
 import { Link, useNavigate } from "react-router-dom";
 
 import defaultIcon from '../../assets/images/user.png';
+import poland from '../../assets/images/poland.png';
+import uk from '../../assets/images/united-kingdom.png';
 import { UserContext } from '../../context/UserContext';
 import { UserIconContext } from '../../context/UserIconContext';
 import { AuthContext } from "../../context/AuthContext";
@@ -15,6 +17,9 @@ export const UserProfile = () => {
     const { getIcon } = useContext(UserIconContext);
 
     const [iconSrc, setIconSrc] = useState<string>(defaultIcon);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    const handleDropdownToggle = () => setIsOpen((prev) => !prev);
 
     const handleLogout = async () => {
         try {
@@ -54,7 +59,28 @@ export const UserProfile = () => {
         )
     }
 
-    return (<div className="flex order-3 md:order-3">
+    const LanguageDropdownItem:React.FC<{image: string, name: string, code: string, isChosen: boolean}> = ({image, name, code, isChosen}) => {
+        return (
+            <Dropdown.Item onClick={() => {}} className="space-x-2">
+                <img src={image} alt="" className="w-5 h-5" />
+                <p>{name}</p>
+                <img src={image} alt="" className={`w-5 h-5 ${isChosen ? '' : 'hidden'}`} />
+            </Dropdown.Item>
+        )
+    }
+
+    return (<div className="flex order-3 md:order-3 space-x-2">
+        <div className="flex justify-center items-center">
+            <Dropdown arrowIcon={false} inline placement="bottom" className=""
+                label={
+                    <img src={poland} alt="" className="w-5 h-5" />
+                }
+                onClick={() => setIsOpen((prev) => !prev)}
+            >
+                <LanguageDropdownItem image={poland} name="Poland" code="PL" isChosen={true} />
+                <LanguageDropdownItem image={uk} name="England" code="EN" isChosen={false} />
+            </Dropdown>
+        </div>
         <Dropdown arrowIcon={false} inline placement="bottom"
             label={
                 <Avatar alt="User profile icon" img={iconSrc} rounded className='rounded-full hover:bg-gray-200 hover:dark:bg-gray-700 transition ease-in-out duration-300'/>
