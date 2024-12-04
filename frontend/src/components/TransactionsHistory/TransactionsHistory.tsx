@@ -8,8 +8,10 @@ import arrowUp from '../../assets/images/chevron-up.svg';
 import arrowDown from '../../assets/images/chevron-down.svg';
 import { TransferContext } from '../../context/TransferContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
+import { useTranslation } from 'react-i18next';
 
 const TransactionsHistory = () => {
+    const { t } = useTranslation();
     const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
     const [loading, setLoading] = useState(true);
     const { user } = useContext(UserContext);
@@ -60,7 +62,7 @@ const TransactionsHistory = () => {
 
     return (
         <div className="transactions-history-wrapper">
-            <Tile title="Transactions History" className="transactions-history-tile">
+            <Tile title={t('transactionHistory.tile.title')} className="transactions-history-tile">
                 {!transfers && (
                     <div>Transactions History are loading...</div>
                 )}

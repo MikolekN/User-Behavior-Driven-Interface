@@ -12,8 +12,10 @@ import useApiErrorHandler from '../hooks/useApiErrorHandler';
 import { scrollToTop } from '../components/utils/scroll';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
 import AccountDetails from '../components/utils/AccountDetails';
+import { useTranslation } from 'react-i18next';
 
 const Transfer = () => {
+    const { t } = useTranslation();
     const { apiError, handleError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
     const { createTransfer } = useContext(TransferContext);
@@ -49,7 +51,7 @@ const Transfer = () => {
 
     return (
         <div id="transfer-form-wrapper" className="flex items-center justify-center">
-            <Tile title="Transfer" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
+            <Tile title={t('transfer.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
                         { apiError.isError && 
@@ -57,24 +59,24 @@ const Transfer = () => {
                                 <ErrorAlert alertMessage={apiError.errorMessage} />
                             </div> 
                         }
-                        <AccountDetails label='From account' user={user} className='w-full p-3 mb-6' />
+                        <AccountDetails label={t('transfer.fromAccount')} user={user} className='w-full p-3 mb-6' />
                         <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
                             <FormInput 
-                                label="Recipient account number"
+                                label={t('transfer.recipientAccountNumber')}
                                 fieldType="text"
                                 register={register('recipientAccountNumber')}
                                 error={errors.recipientAccountNumber}
                                 className="w-full"
                             />
                             <FormInput
-                                label="Title"
+                                label={t('transfer.transferTitle')}
                                 fieldType="text"
                                 register={register('transferTitle')}
                                 error={errors.transferTitle}
                                 className="w-full"
                             />
                             <FormInput
-                                label="Amount"
+                                label={t('transfer.amount')}
                                 fieldType="text"
                                 register={register('amount')}
                                 error={errors.amount}
@@ -84,7 +86,7 @@ const Transfer = () => {
                             </FormInput>
                             <div>
                                 <Button className="w-full">
-                                    Submit
+                                    {t('transfer.submit')}
                                 </Button>
                             </div>
                         </form>

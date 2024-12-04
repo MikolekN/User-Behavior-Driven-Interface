@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import Dropdown from '../Dropdown';
 import { UserContext } from '../../../context/UserContext';
 import { customerServiceSubmenuOptions, financesSubmenuOptions, settingsSubmenuOptions, transferSubmenuOptions } from './MainMenuData';
+import { useTranslation } from 'react-i18next';
 
 const MainMenu: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
+    const { t } = useTranslation();
     const { user } = useContext(UserContext);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [persistentDropdown, setPersistentDropdown] = useState<string | null>(null);
@@ -47,16 +49,16 @@ const MainMenu: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
             <nav id='navigation' className='flex items-center absolute left-1/2 -translate-x-1/2 top-0 h-full'>
                 <ul id='navigation-list' className='flex items-center list-none'>
                     <li id='navigation-option-start' className='mr-5 flex items-center'>
-                        <Link to="/" onMouseEnter={handleOtherOptionHover} className='hover:font-semibold'>Start</Link>
+                        <Link to="/" onMouseEnter={handleOtherOptionHover} className='hover:font-semibold'>{t('menu.home')}</Link>
                     </li>
 
                     {!user && (
                         <>
                             <li id='navigation-option-login' className='mr-5 flex items-center'>
-                                <Link to="/login" className='hover:font-semibold'>Login</Link>
+                                <Link to="/login" className='hover:font-semibold'>{t('menu.login')}</Link>
                             </li>
                             <li id='navigation-option-register' className='flex items-center'>
-                                <Link to="/register" className='hover:font-semibold'>Register</Link>
+                                <Link to="/register" className='hover:font-semibold'>{t('menu.register')}</Link>
                             </li>
                         </>
                     )}
@@ -65,7 +67,7 @@ const MainMenu: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
                         <>
                             {/* REWRITE TO AVOID COPYING CODE - object with code definitions (e.g. transfers) and map to human readable (e.g. Przelewy) */}
                             <Dropdown
-                                title="Przelewy"
+                                title="transfers"
                                 options={transferSubmenuOptions}
                                 isOpen={activeDropdown === 'przelewy'}
                                 isPersistent={persistentDropdown === 'przelewy'}
@@ -78,7 +80,7 @@ const MainMenu: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
                             />
 
                             <Dropdown
-                                title="Ustawienia"
+                                title="settings"
                                 options={settingsSubmenuOptions}
                                 isOpen={activeDropdown === 'ustawienia'}
                                 isPersistent={persistentDropdown === 'ustawienia'}
@@ -91,7 +93,7 @@ const MainMenu: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
                             />
 
                             <Dropdown
-                                title="Finanse"
+                                title="analysis"
                                 options={financesSubmenuOptions}
                                 isOpen={activeDropdown === 'finanse'}
                                 isPersistent={persistentDropdown === 'finanse'}
@@ -104,7 +106,7 @@ const MainMenu: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
                             />
 
                             <Dropdown
-                                title="Obsługa klienta"
+                                title="customerService"
                                 options={customerServiceSubmenuOptions}
                                 isOpen={activeDropdown === 'obsługa_klienta'}
                                 isPersistent={persistentDropdown === 'obsługa_klienta'}

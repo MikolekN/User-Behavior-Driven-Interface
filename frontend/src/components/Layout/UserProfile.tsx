@@ -4,8 +4,10 @@ import defaultIcon from '../../assets/images/user.png';
 import { UserContext } from '../../context/UserContext';
 import { AuthContext } from '../../context/AuthContext';
 import { UserIconContext } from '../../context/UserIconContext';
+import { useTranslation } from 'react-i18next';
 
 const Profile = () => {
+    const { t } = useTranslation();
     const { user } = useContext(UserContext);
     const { logout } = useContext(AuthContext);
     const { getIcon } = useContext(UserIconContext);
@@ -86,24 +88,24 @@ const Profile = () => {
                         <>
                             <li className='cursor-pointer'>
                                 <div>
-                                    <Link to='/login' className='py-2 px-4 no-underline block font-normal hover:font-semibold transition-colors duration-500 ease-in-out'>Login</Link>
+                                    <Link to='/login' className='py-2 px-4 no-underline block font-normal hover:font-semibold transition-colors duration-500 ease-in-out'>{t('menu.profile.login')}</Link>
                                 </div>
                             </li>
                             <li className='cursor-pointer'>
-                                <Link to='/register' className='py-2 px-4 no-underline block font-normal hover:font-semibold transition-colors duration-500 ease-in-out'>Register</Link>
+                                <Link to='/register' className='py-2 px-4 no-underline block font-normal hover:font-semibold transition-colors duration-500 ease-in-out'>{t('menu.profile.register')}</Link>
                             </li>
                         </>
                     )}
                     {user && (
                         <>
                             <li className='cursor-pointer'>
-                                <Link to="/profile" onClick={toggleDropdown} className='py-2 px-4 no-underline block font-normal hover:font-semibold transition-colors duration-500 ease-in-out'>Profile</Link>
+                                <Link to="/profile" onClick={toggleDropdown} className='py-2 px-4 no-underline block font-normal hover:font-semibold transition-colors duration-500 ease-in-out'>{t('menu.profile.profile')}</Link>
                             </li>
                             <li className='cursor-pointer'>
                                 <Link to='/' onClick={() => {
                                     toggleDropdown();
                                     void handleLogout();
-                                }} className='py-2 px-4 no-underline block font-normal hover:font-semibold transition-colors duration-500 ease-in-out'>Logout</Link>
+                                }} className='py-2 px-4 no-underline block font-normal hover:font-semibold transition-colors duration-500 ease-in-out'>{t('menu.profile.logout')}</Link>
                             </li>
                         </>
                     )}

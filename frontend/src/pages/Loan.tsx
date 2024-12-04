@@ -14,8 +14,10 @@ import { scrollToTop } from '../components/utils/scroll';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
 import Label from '../components/utils/Label';
 import AccountDetails from '../components/utils/AccountDetails';
+import { useTranslation } from 'react-i18next';
 
 const Loan = () => {
+    const { t } = useTranslation();
     const { apiError, handleError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
     const { createLoan } = useContext(TransferContext);
@@ -69,7 +71,7 @@ const Loan = () => {
 
     return (
         <div id='loan-form-wrapper' className="flex items-center justify-center">
-            <Tile title="Loan" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
+            <Tile title={t('loan.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto px-1">
                         { apiError.isError && 
@@ -77,10 +79,10 @@ const Loan = () => {
                                 <ErrorAlert alertMessage={apiError.errorMessage} />
                             </div> 
                         }
-                        <AccountDetails label='From account' user={user} className='w-full p-3 mb-6' />
+                        <AccountDetails label={t('loan.fromAccount')} user={user} className='w-full p-3 mb-6' />
                         <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
                             <FormInput
-                                label="How much money do you need?"
+                                label={t('loan.howMuchMoney')}
                                 fieldType="text"
                                 register={register('amount')}
                                 error={errors.amount}
@@ -103,7 +105,7 @@ const Loan = () => {
                                 </div>
                             </div>
                             <div className="mt-8">
-                                <Label label='Number of installments' />
+                                <Label label={t('loan.numberOfInstallments')} />
                                 <div className="flex justify-between mt-4">
                                     {AVAILABLE_LOAN_LENGTH.map((item, idx) => (
                                         <div onClick={() => { toggleAnswer(idx); }} style={activeIndex === idx ? { 'background': '#60a5fa' } : {}} key={idx} className="border-2 border-blue-600 cursor-pointer hover:bg-blue-200 border-opacity-20 rounded-lg px-4 py-2">
@@ -113,7 +115,7 @@ const Loan = () => {
                                 </div>
                             </div>
                             <div>
-                                <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Submit</button>
+                                <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">{t('loan.submit')}</button>
                             </div>
                         </form>
                     </div>

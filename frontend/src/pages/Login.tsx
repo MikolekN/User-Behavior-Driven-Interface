@@ -11,8 +11,10 @@ import { LoginFormData, LoginFormDataSchema } from '../schemas/formValidation/lo
 import useApiErrorHandler from '../hooks/useApiErrorHandler';
 import { scrollToTop } from '../components/utils/scroll';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
+    const { t } = useTranslation();
     const { user } = useContext(UserContext);
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -40,7 +42,7 @@ const Login = () => {
 
     return (
         <div id="login-form-wrapper" className="flex items-center justify-center">
-            <Tile title="Log in into online banking" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
+            <Tile title={t('login.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
                         { apiError.isError && 
@@ -50,21 +52,21 @@ const Login = () => {
                         }
                         <form className="mt-8 space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
                             <FormInput 
-                                label="Email" 
+                                label={t('login.email')} 
                                 fieldType="text" 
                                 register={register('email')}
                                 error={errors.email}
                                 className="w-full"
                             />
                             <FormInput 
-                                label="Password"
+                                label={t('login.password')}
                                 fieldType="password"
                                 register={register('password')}
                                 error={errors.password}
                                 className="w-full"
                             />
                             <Button className="w-full">
-						        Submit
+						        {t('login.submit')}
                             </Button>
                         </form>
                     </div>
