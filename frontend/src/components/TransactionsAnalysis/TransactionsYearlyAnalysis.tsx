@@ -5,8 +5,10 @@ import TransfersAnalysisChart from '../TransfersAnalysisChart/TransfersAnalysisC
 import EmptyResponseInfoAlert from '../EmptyResponseInfoAlert/EmptyResponseInfoAlert';
 import { TransferContext } from '../../context/TransferContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
+import { useTranslation } from 'react-i18next';
 
 const TransactionsYearlyAnalysis = () => {
+    const { t } = useTranslation();
     const { user } = useContext(UserContext);
     const { chartData, fetchTransfersAnalysis } = useContext(TransferContext);
     const [ loading, setLoading ] = useState(true);
@@ -38,8 +40,8 @@ const TransactionsYearlyAnalysis = () => {
     if (apiError.isError) { 
         return (
             <EmptyResponseInfoAlert
-                title="Transactions yearly analysis"
-                alertTitle="No transactions history to generate analysis yet"
+                title={t('transactionsYearlyAnalysis.tile.title')}
+                alertTitle={t('transactionsYearlyAnalysis.emptyAlertInfo')}
                 alertMessage={apiError.errorMessage}
             />
         );
@@ -47,7 +49,7 @@ const TransactionsYearlyAnalysis = () => {
 
     return (
         <div className="flex items-center justify-center">
-            <Tile title="Transactions yearly analysis" className="w-4/5">
+            <Tile title={t('transactionsYearlyAnalysis.tile.title')} className="w-4/5">
                 <TransfersAnalysisChart chartData={chartData} />
             </Tile>
         </div>

@@ -8,8 +8,10 @@ import EmptyResponseInfoAlert from '../components/EmptyResponseInfoAlert/EmptyRe
 import './CyclicPayments.css';
 import { CyclicPaymentContext } from '../context/CyclicPaymentContext';
 import useApiErrorHandler from '../hooks/useApiErrorHandler';
+import { useTranslation } from 'react-i18next';
 
 const CyclicPayments = () => {
+    const { t } = useTranslation();
     const { user } = useContext(UserContext);
     const { apiError, handleError } = useApiErrorHandler();
     const { cyclicPayments, getCyclicPayments } = useContext(CyclicPaymentContext);
@@ -36,15 +38,15 @@ const CyclicPayments = () => {
                 alertMessage={apiError.errorMessage}
             >
                 <Link to={'/create-cyclic-payment/'} className="justify-self-end p-2">
-                    <Button>+ Add Cyclic Payment</Button>
+                    <Button>+ {t('cyclicPaymentList.submit')}</Button>
                 </Link>
             </EmptyResponseInfoAlert>
         );
     }
 
     return (
-        <div className='cyclic-payments-wrapper'>
-            <Tile title="Cyclic Payments List" className='cyclic-payments-tile'>
+        <div id='cyclic-payments-wrapper' className='flex overflow-hidden flex-col flex-grow justify-center items-center h-full max-h-full'>
+            <Tile title={t('cyclicPaymentList.tile.title')} className='cyclic-payments-tile'>
                 <div className="cyclic-payments-container">
                     {!cyclicPayments && (
                         <div>Cyclic Payments are loading...</div>

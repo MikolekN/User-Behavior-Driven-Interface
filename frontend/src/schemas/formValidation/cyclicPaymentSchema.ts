@@ -9,7 +9,7 @@ export const CyclicPaymentFormDataSchema = z.object({
     }),
     transferTitle: requiredStringField('Transfer Title'),
     amount: requiredStringField('Amount'),
-    startDate: z.date().nullable(),
+    startDate: z.date({ message: "Start Date is required" }),
     interval: requiredStringField('Interval')
     })
     .superRefine((data, ctx) => {

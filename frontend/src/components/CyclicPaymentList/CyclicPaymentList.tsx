@@ -7,12 +7,16 @@ import arrowUp from '../../assets/images/chevron-up.svg';
 import arrowDown from '../../assets/images/chevron-down.svg';
 import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
+import Label from '../utils/Label';
+import AccountDetails from '../utils/AccountDetails';
+import { useTranslation } from 'react-i18next';
 
 interface CyclicPaymentListProps {
     cyclicPaymentsList: CyclicPayment[];
 }
 
 const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
+    const { t } = useTranslation();
     const { user, getUser } = useContext(UserContext);
     const { deleteCyclicPayment } = useContext(CyclicPaymentContext);
     const [cyclicPayments, setCyclicPayments] = useState<CyclicPayment[]>([]);
@@ -20,7 +24,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
     const [hovering, setHovering] = useState<number | null>(null);
     const { apiError, handleError } = useApiErrorHandler();
 
-    const toggleAnswer = (index: number) => {
+    const toggleActiveTableRow = (index: number) => {
         setActiveIndex(activeIndex === index ? null : index);
     };
 
@@ -64,7 +68,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
             <Link to={'/create-cyclic-payment/'} className="pr-12 pb-4">
                 <div className="grid">
                     <Button className="justify-self-end mb-2">
-                        + Add Cyclic Payment
+                        + {t('cyclicPaymentList.submit')}
                     </Button>
                 </div>
             </Link>
@@ -72,9 +76,9 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                 <table className='w-full'>
                     <thead>
                         <tr className="font-bold text-center">
-                            <th className="bg-[#dee2e6] px-4 py-2 rounded-tl-lg rounded-bl-lg">Cyclic Payment Name / Receiver</th>
-                            <th className="bg-[#dee2e6] px-4 py-2">Amount</th>
-                            <th className="bg-[#dee2e6] px-4 py-2">Created Date</th>
+                            <th className="bg-[#dee2e6] px-4 py-2 rounded-tl-lg rounded-bl-lg">{t('cyclicPaymentList.nameAndReceiver')}</th>
+                            <th className="bg-[#dee2e6] px-4 py-2">{t('cyclicPaymentList.amount')}</th>
+                            <th className="bg-[#dee2e6] px-4 py-2">{t('cyclicPaymentList.createdDate')}</th>
                             <th className="bg-[#dee2e6] px-4 py-2 rounded-tr-lg rounded-br-lg"></th>
                         </tr>
                     </thead>
@@ -83,7 +87,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                             <>
                                 <tr className='h-2'></tr>
                                 <tr
-                                    onClick={() => toggleAnswer(idx)}
+                                    onClick={() => toggleActiveTableRow(idx)}
                                     className={'cursor-pointer'}
                                     onMouseOver={() => setHovering(idx)}
                                     onMouseLeave={() => setHovering(null)}
@@ -111,34 +115,20 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                 <div className="flex w-full justify-evenly">
                                                     <div className="w-2/4 pr-4">
                                                         <div className="mb-4">
-                                                            <div className="font-semibold">
-                                                                Recipient
-                                                            </div>
+                                                            <Label label={t('cyclicPaymentList.recipient')}/>
                                                             <div className="pl-4">
                                                                 <i>{cyclicPayment.recipientName}</i>
                                                             </div>
                                                         </div>
                                                         <div className="mb-4">
-                                                            <div className="font-semibold mt-2">
-                                                                Recipient Account Number
-                                                            </div>
+                                                            <Label label={t('cyclicPaymentList.recipientAccountNumber')}/>
                                                             <div className="pl-4">
                                                                 <i>{cyclicPayment.recipientAccountNumber}</i>
                                                             </div>
                                                         </div>
+                                                        <AccountDetails label={t('cyclicPaymentList.fromAccount')} user={user!} className='w-max pl-4 p-3' />
                                                         <div className="mb-4">
-                                                            <div className="font-semibold">
-                                                                From Account
-                                                            </div>
-                                                            <div className="pl-4 p-3 border border-gray-300 rounded-lg bg-gray-100 w-max">
-                                                                <p>{user?.accountName} ({user?.availableFunds} {user?.currency})</p>
-                                                                <p>{user?.accountNumber}</p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="mb-4">
-                                                            <div className="font-semibold">
-                                                                Title
-                                                            </div>
+                                                            <Label label={t('cyclicPaymentList.title')}/>
                                                             <div className="pl-4">
                                                                 <i>{cyclicPayment.transferTitle}</i>
                                                             </div>
@@ -146,25 +136,19 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                     </div>
                                                     <div className="w-1/4 pl-4">
                                                         <div className="mb-4">
-                                                            <div className="font-semibold">
-                                                                Amount
-                                                            </div>
+                                                            <Label label={t('cyclicPaymentList.amount')}/>
                                                             <div className="pl-4">
                                                                 <i>{cyclicPayment.amount} {user?.currency}</i>
                                                             </div>
                                                         </div>
                                                         <div className="mb-4">
-                                                            <div className="font-semibold">
-                                                                Start Date
-                                                            </div>
+                                                            <Label label={t('cyclicPaymentList.startDate')}/>
                                                             <div className="pl-4">
                                                                 <i>{formatDate(cyclicPayment.startDate)}</i>
                                                             </div>
                                                         </div>
                                                         <div className="mb-4">
-                                                            <div className="font-semibold">
-                                                                Repeat
-                                                            </div>
+                                                            <Label label={t('cyclicPaymentList.transferInterval')}/>
                                                             <div className="pl-4">
                                                                 <i>{cyclicPayment.interval}</i>
                                                             </div>
@@ -174,12 +158,11 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                                 <div className="flex justify-end space-x-4 w-full">
                                                     <Link to={`/edit-cyclic-payment/${cyclicPayment.id}`} className="w-1/6">
                                                         <Button className="w-full bg-blue-600 hover:bg-blue-700 mt-1">
-                                                            Edit
+                                                            {t('cyclicPaymentList.edit')}
                                                         </Button>
                                                     </Link>
-                                                    <Button onClick={() => handleDelete(cyclicPayment.id!)}
-                                                        className="w-1/6 bg-red-600 hover:bg-red-700 mt-1 ml-10">
-                                                            Delete
+                                                    <Button onClick={() => handleDelete(cyclicPayment.id!)} className="w-1/6 bg-red-600 hover:bg-red-700 mt-1 ml-10">
+                                                        {t('cyclicPaymentList.delete')}
                                                     </Button>
                                                 </div>
                                             </div>

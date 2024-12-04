@@ -2,24 +2,29 @@ import { useState, FC } from 'react';
 import Tile from '../../components/Tile/Tile';
 import './FAQ.css';
 import { FAQData } from './FAQData';
+import { useTranslation } from 'react-i18next';
 
 interface FAQItemProps {
-    question: string;
-    answer: string;
+    itemKey: string;
     isActive: boolean;
     onClick: () => void;
 }
 
-const FAQItem: FC<FAQItemProps> = ({ question, answer, isActive, onClick }) => (
-    <div className={`faq-item ${isActive ? 'active' : ''}`}>
-        <div className="faq-question" onClick={onClick}>
-            {question}
+const FAQItem: FC<FAQItemProps> = ({ itemKey, isActive, onClick }) => {
+    const { t } = useTranslation();
+
+    return (
+        <div className={`faq-item ${isActive ? 'active' : ''}`}>
+            <div className="faq-question" onClick={onClick}>
+                {t(`faq.${itemKey}.question`)}
+            </div>
+            {isActive && <div className="faq-answer">{t(`faq.${itemKey}.answer`)}</div>}
         </div>
-        {isActive && <div className="faq-answer">{answer}</div>}
-    </div>
-);
+    );
+};
 
 const FAQ: FC = () => {
+    const { t } = useTranslation();
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
     const toggleAnswer = (index: number) => {
@@ -28,13 +33,12 @@ const FAQ: FC = () => {
 
     return (
         <div className="faq-wrapper">
-            <Tile title="Frequently Asked Questions" className="faq-tile">
+            <Tile title={t('faq.tile.title')} className="faq-tile">
                 <div className="faq-container">
                     {FAQData.map((item, index) => (
                         <FAQItem
                             key={index}
-                            question={item.question}
-                            answer={item.answer}
+                            itemKey={item.key}
                             isActive={activeIndex === index}
                             onClick={() => toggleAnswer(index)}
                         />

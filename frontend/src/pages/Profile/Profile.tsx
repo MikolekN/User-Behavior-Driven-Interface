@@ -1,4 +1,4 @@
-import { useContext, useEffect, useCallback } from 'react';
+import { useContext, useEffect, useCallback, useState } from 'react';
 import Tile from '../../components/Tile/Tile';
 import FormInput from '../../components/FormInput/FormInput';
 import { UserContext } from '../../context/UserContext';
@@ -11,12 +11,17 @@ import { UserPasswordFormData, UserPasswordFormDataSchema } from '../../schemas/
 import { UserFieldFormData, UserFieldFormDataSchema } from '../../schemas/formValidation/userFieldSchema';
 import { UserIconFormDataSchema, UserIconFromData } from '../../schemas/formValidation/userIconSchema';
 import { validFields } from './ProfileData';
+import ErrorAlert from '../../components/Alerts/ErrorAlert';
+import { scrollToTop } from '../../components/utils/scroll';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
+import { useTranslation } from 'react-i18next';
 
 const ProfilePage = () => {
-    const { apiError: iconApiError, handleError: handleIconError } = useApiErrorHandler();
-    const { apiError: fieldApiError, handleError: handleFieldError } = useApiErrorHandler();
-    const { apiError: passwordApiError, handleError: handlePasswordError } = useApiErrorHandler();
+    const { t } = useTranslation();
+    const [ selectedField, setSelectedField ] = useState<string>('');
+    const { apiError: apiIconError, handleError: handleIconError } = useApiErrorHandler();
+    const { apiError: apiFieldError, handleError: handleFieldError } = useApiErrorHandler();
+    const { apiError: apiPasswordError, handleError: handlePasswordError } = useApiErrorHandler();
     const { user, getUser, updateUser, updatePassword } = useContext(UserContext);
     const { getIcon, sendIcon } = useContext(UserIconContext);
 
@@ -29,15 +34,21 @@ const ProfilePage = () => {
     const { register: registerPassword, handleSubmit: handleSubmitPasswordForm, formState: { errors: passwordErrors, isSubmitting: isPasswordFormSubmitting } } = useForm<UserPasswordFormData>({
         resolver: zodResolver(UserPasswordFormDataSchema)
     });
-    
-    const selectedField = watch('field');
+
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedField(e.target.value);
+    }
+
+    const mapFieldToBackend = (field: string): string => {
+        return field === 'accountName' ? 'account_name' : field;
+    }
 
     const getUserFieldValue = useCallback((field: string): string | undefined => {
         if (!user) return;
         switch (field) {
             case 'login':
                 return user.login;
-            case 'account_name':
+            case 'accountName':
                 return user.accountName;
             case 'currency':
                 return user.currency;
@@ -61,7 +72,7 @@ const ProfilePage = () => {
         return new Promise((resolve, reject) => {
             const validExtensions = ['image/png', 'image/jpeg', 'image/jpg'];
             if (!validExtensions.includes(file.type)) {
-                const error = 'Invalid file type. Please upload a PNG or JPG image.';
+                const error = `${t('profile.icon.imageFormatErrorMessage')}`;
                 console.error(error);
                 reject(error);
                 return;
@@ -101,7 +112,7 @@ const ProfilePage = () => {
                             const processedFile = new File([blob], file.name, { type: file.type });
                             resolve(processedFile);
                         } else {
-                            const error = 'Error processing image.';
+                            const error = `${t('profile.icon.imageProcessingError')}`;
                             console.error(error);
                             reject(error);
                             return;
@@ -110,7 +121,7 @@ const ProfilePage = () => {
                 };
     
                 img.onerror = () => {
-                    const error = 'Error loading image.';
+                    const error = `${t('profile.icon.imageLoadingError')}`;
                     console.error(error);
                     reject(error);
                     return;
@@ -118,7 +129,7 @@ const ProfilePage = () => {
             };
     
             reader.onerror = () => {
-                const error = 'Error reading file.';
+                const error = `${t('profile.icon.imageLoadingFile')}`;
                 console.error(error);
                 reject(error);
                 return;
@@ -137,15 +148,18 @@ const ProfilePage = () => {
             }
             setIconValueForm('files', undefined);
         } catch (error) {
+            scrollToTop('icon-form-wrapper');
             handleIconError(error);
         }
     };
     
     const onFieldSubmit: SubmitHandler<UserFieldFormData> = async ({ field, value }: UserFieldFormData) => {
         try {
-            await updateUser(field, value);
+            const mappedField = mapFieldToBackend(field);
+            await updateUser(mappedField, value);
             await getUser();
         } catch (error) {
+            scrollToTop('field-form-wrapper');
             handleFieldError(error);
         }
     };
@@ -154,6 +168,7 @@ const ProfilePage = () => {
         try {
             await updatePassword(currentPassword, newPassword);
         } catch (error) {
+            scrollToTop('password-form-wrapper');
             handlePasswordError(error);
         }
     };
@@ -165,79 +180,93 @@ const ProfilePage = () => {
 
     return (
         <div className="flex items-center justify-center">
-            <Tile title="Profil użytkownika" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
+            <Tile title={t('profile.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex flex-col space-y-6">
-                    <form onSubmit={handleSubmitIconForm(onIconSubmit)} className="space-y-4">
-                        <FormInput
-                            label="Wybierz nową ikonę"
-                            fieldType="file"
-                            register={registerIcon('files')}
-                            error={iconErrors.files}
-                            className="w-full"
-                        />
-                        <div className="flex justify-center">
-                            <Button isSubmitting={isIconFormSubmitting}>
-                                {isIconFormSubmitting ? "Loading..." : "Wybierz ikonę"}
-                            </Button>
-                        </div>
-                        <div>
-                            {iconApiError.isError && <p className="text-red-600 mt-1 text-sm">{iconApiError.errorMessage}</p>}
-                        </div>
-                    </form>
+                    <div id="icon-form-wrapper">
+                        <form onSubmit={handleSubmitIconForm(onIconSubmit)} className="space-y-4">
+                            { apiIconError.isError && 
+                                <div className="my-4">
+                                    <ErrorAlert alertMessage={apiIconError.errorMessage} />
+                                </div> 
+                            }
+                            <FormInput
+                                label={t('profile.icon.newIcon')}
+                                fieldType="file"
+                                register={registerIcon('files')}
+                                error={iconErrors.files}
+                                className="w-full"
+                            />
+                            <div className="flex justify-center">
+                                <Button isSubmitting={isIconFormSubmitting}>
+                                    {isIconFormSubmitting ? `${t('profile.icon.loading')}` : `${t('profile.icon.submit')}`}
+                                </Button>
+                            </div>
+                        </form>
+                    </div>
     
                     <hr className="border-t border-gray-300 my-4" />
-    
-                    <form onSubmit={handleSubmitFieldForm(onFieldSubmit)} className="space-y-4">
-                        <FormSelect
-                            label="Wybierz pole do zmiany"
-                            options={validFields}
-                            register={registerField('field')}
-                            error={fieldErrors.field}
-                            className="w-full"
-                        />
-                        <FormInput
-                            label={'Nowa ' + (selectedField ? getFieldLabel(selectedField).toLocaleLowerCase() : 'wartość')}
-                            fieldType="text"
-                            register={registerField('value')}
-                            error={fieldErrors.value}
-                            className="w-full"
-                        />
-                        <div className="flex justify-center">
-                            <Button isSubmitting={isFieldFormSubmitting}>
-                                {isFieldFormSubmitting ? "Loading..." : "Zmień wartość"}
-                            </Button>
-                        </div>
-                        <div>
-                            {fieldApiError.isError && <p className="text-red-600 mt-1 text-sm">{fieldApiError.errorMessage}</p>}
-                        </div>
-                    </form>
+
+                    <div id="field-form-wrapper">
+                        <form onSubmit={handleSubmitFieldForm(onFieldSubmit)} className="space-y-4">
+                            { apiFieldError.isError && 
+                                <div className="my-4">
+                                    <ErrorAlert alertMessage={apiFieldError.errorMessage} />
+                                </div> 
+                            }
+                            <FormSelect
+                                defaultOption={t('profile.field.defaultOption')}
+                                onChange={handleChange}
+                                label={t('profile.field.selectField')}
+                                options={validFields}
+                                register={registerField('field')}
+                                error={fieldErrors.field}
+                                className="w-full"
+                            />
+                            <FormInput
+                                label={`${t('profile.field.new')} ` + (selectedField ? `${t(`profile.field.${selectedField}`)}` : `${t('profile.field.value')}`)}
+                                fieldType="text"
+                                register={registerField('value')}
+                                error={fieldErrors.value}
+                                className="w-full"
+                            />
+                            <div className="flex justify-center">
+                                <Button isSubmitting={isFieldFormSubmitting}>
+                                    {isFieldFormSubmitting ? `${t('profile.field.loading')}` : `${t('profile.field.submit')}`}
+                                </Button>
+                            </div>
+                        </form>
+                    </div>
     
                     <hr className="border-t border-gray-300 my-4" />
-    
-                    <form onSubmit={handleSubmitPasswordForm(onPasswordSubmit)} className="space-y-4">
-                        <FormInput
-                            label="Hasło"
-                            fieldType="password"
-                            register={registerPassword('currentPassword')}
-                            error={passwordErrors.currentPassword}
-                            className="w-full"
-                        />
-                        <FormInput
-                            label="Nowe hasło"
-                            fieldType="password"
-                            register={registerPassword('newPassword')}
-                            error={passwordErrors.newPassword}
-                            className="w-full"
-                        />
-                        <div className="flex justify-center">
-                            <Button isSubmitting={isPasswordFormSubmitting}>
-                                {isPasswordFormSubmitting ? "Loading..." : "Zmień hasło"}
-                            </Button>
-                        </div>
-                        <div>
-                            {passwordApiError.isError && <p className="text-red-600 mt-1 text-sm">{passwordApiError.errorMessage}</p>}
-                        </div>
-                    </form>
+
+                    <div id="password-form-wrapper">
+                        <form onSubmit={handleSubmitPasswordForm(onPasswordSubmit)} className="space-y-4">
+                            { apiPasswordError.isError && 
+                                <div className="my-4">
+                                    <ErrorAlert alertMessage={apiPasswordError.errorMessage} />
+                                </div> 
+                            }
+                            <FormInput
+                                label={t('profile.password.password')}
+                                fieldType="password"
+                                register={registerPassword('currentPassword')}
+                                error={passwordErrors.currentPassword}
+                                className="w-full"
+                            />
+                            <FormInput
+                                label={t('profile.password.newPassword')}
+                                fieldType="password"
+                                register={registerPassword('newPassword')}
+                                error={passwordErrors.newPassword}
+                                className="w-full"
+                            />
+                            <div className="flex justify-center">
+                                <Button isSubmitting={isPasswordFormSubmitting}>
+                                    {isPasswordFormSubmitting ? `${t('profile.password.loading')}` : `${t('profile.password.submit')}`}
+                                </Button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </Tile>
         </div>

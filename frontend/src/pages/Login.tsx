@@ -9,8 +9,12 @@ import Button from '../components/utils/Button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginFormData, LoginFormDataSchema } from '../schemas/formValidation/loginSchema';
 import useApiErrorHandler from '../hooks/useApiErrorHandler';
+import { scrollToTop } from '../components/utils/scroll';
+import ErrorAlert from '../components/Alerts/ErrorAlert';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
+    const { t } = useTranslation();
     const { user } = useContext(UserContext);
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -32,35 +36,38 @@ const Login = () => {
             navigate('/dashboard');
         } catch (error) {
             handleError(error);
+            scrollToTop('login-form-wrapper');
         }
     };
 
     return (
-        <div className="flex items-center justify-center">
-            <Tile title="Log in into online banking" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
+        <div id="login-form-wrapper" className="flex items-center justify-center">
+            <Tile title={t('login.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
+                        { apiError.isError && 
+                            <div className="my-4">
+                                <ErrorAlert alertMessage={apiError.errorMessage} />
+                            </div> 
+                        }
                         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
-                                label="Email" 
+                                label={t('login.email')} 
                                 fieldType="text" 
                                 register={register('email')}
                                 error={errors.email}
                                 className="w-full"
                             />
                             <FormInput 
-                                label="Password"
+                                label={t('login.password')}
                                 fieldType="password"
                                 register={register('password')}
                                 error={errors.password}
                                 className="w-full"
                             />
                             <Button isSubmitting={isSubmitting} className="w-full">
-						        {isSubmitting ? "Loading..." : "Submit"}
+						        {isSubmitting ? `${t('login.loading')}` : `${t('login.submit')}`}
                             </Button>
-                            <div>
-                                {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
-                            </div>
                         </form>
                     </div>
                 </div>

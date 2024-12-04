@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import Tile from '../Tile/Tile';
-import { Alert, AlertTitle } from '@mui/material';
+import InfoAlert from '../Alerts/InfoAlert';
+
 
 interface EmptyResponseInfoAlertProps {
     title: string;
@@ -11,17 +12,11 @@ interface EmptyResponseInfoAlertProps {
 
 const EmptyResponseInfoAlert = ({ title, alertTitle, alertMessage, children }: EmptyResponseInfoAlertProps) => {
     return (
-        // TUTAJ ZMIANY TYMCZASOWE - DO PRZEGADANIA
-        <div className='cyclic-payments-wrapper'>
-            <Tile title={title} className='cyclic-payments-tile'>
+        <div className='flex overflow-hidden flex-col flex-grow justify-center items-center h-full max-h-full'>
+            <Tile title={title}>
                 <div className="grid p-8">
                     {children}
-                    <Alert severity="info" variant="outlined">
-                        <AlertTitle>
-                            {alertTitle}
-                        </AlertTitle>
-                        It looks like you haven&apos;t made any {alertMessage}. Once you add one, it will appear here for you to review.
-                    </Alert>
+                    <InfoAlert alertTitle={alertTitle} alertMessage={alertMessage} />
                 </div>
             </Tile>
         </div>

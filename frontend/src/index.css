@@ -35,6 +35,10 @@ h1 {
   line-height: 1.1;
 }
 
+.focus\:ring-cyan-500:focus {
+  --tw-ring-color: blue !important; /* Change the focus ring color to blue */
+}
+
 /* button {
   border-radius: 8px;
   border: 1px solid transparent;

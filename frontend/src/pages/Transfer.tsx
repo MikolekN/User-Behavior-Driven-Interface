@@ -9,8 +9,13 @@ import { UserContext } from '../context/UserContext';
 import Button from '../components/utils/Button';
 import { TransferContext } from '../context/TransferContext';
 import useApiErrorHandler from '../hooks/useApiErrorHandler';
+import { scrollToTop } from '../components/utils/scroll';
+import ErrorAlert from '../components/Alerts/ErrorAlert';
+import AccountDetails from '../components/utils/AccountDetails';
+import { useTranslation } from 'react-i18next';
 
 const Transfer = () => {
+    const { t } = useTranslation();
     const { apiError, handleError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
     const { createTransfer } = useContext(TransferContext);
@@ -37,42 +42,38 @@ const Transfer = () => {
             navigate('/dashboard');
         } catch (error) {
             handleError(error);
+            scrollToTop('transfer-form-wrapper');
         }
     };
 
     return (
-        <div className="flex items-center justify-center">
-            <Tile title="Transfer" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
+        <div id="transfer-form-wrapper" className="flex items-center justify-center">
+            <Tile title={t('transfer.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
-                        <div className="mt-8">
-                            <label className="text-sm font-semibold text-gray-700 block">From account</label>
-                            <div className="w-full p-3 mb-6 border border-gray-300 rounded-lg mt-1 bg-gray-300">
-                                <p>
-                                    {user!.accountName} {`(${user!.availableFunds} ${user!.currency})`}
-                                </p>
-                                <p>
-                                    {user!.accountNumber}
-                                </p>
-                            </div>
-                        </div>
+                        { apiError.isError && 
+                            <div className="my-4">
+                                <ErrorAlert alertMessage={apiError.errorMessage} />
+                            </div> 
+                        }
+                        <AccountDetails label={t('transfer.fromAccount')} user={user!} className='w-full p-3 mb-6' />
                         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
-                                label="Recipient account number"
+                                label={t('transfer.recipientAccountNumber')}
                                 fieldType="text"
                                 register={register('recipientAccountNumber')}
                                 error={errors.recipientAccountNumber}
                                 className="w-full"
                             />
                             <FormInput
-                                label="Title"
+                                label={t('transfer.transferTitle')}
                                 fieldType="text"
                                 register={register('transferTitle')}
                                 error={errors.transferTitle}
                                 className="w-full"
                             />
                             <FormInput
-                                label="Amount"
+                                label={t('transfer.amount')}
                                 fieldType="text"
                                 register={register('amount')}
                                 error={errors.amount}
@@ -82,11 +83,8 @@ const Transfer = () => {
                             </FormInput>
                             <div>
                                 <Button isSubmitting={isSubmitting} className="w-full">
-                                    {isSubmitting ? "Loading..." : "Submit"}
+                                    {isSubmitting ? `${t('transfer.loading')}` : `${t('transfer.submit')}`}
                                 </Button>
-                            </div>
-                            <div>
-                                {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
                             </div>
                         </form>
                     </div>

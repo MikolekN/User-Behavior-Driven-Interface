@@ -3,6 +3,7 @@ import Tile from '../components/Tile/Tile';
 import './Chat.css';
 import send_arrow from '../assets/images/send.png';
 import { UserContext } from '../context/UserContext';
+import { useTranslation } from 'react-i18next';
 
 type MessageType = 'user' | 'system';
 
@@ -12,6 +13,7 @@ interface Message {
 }
 
 const Chat: FC = () => {
+    const { t } = useTranslation();
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState<Message[]>([]);
     const { user } = useContext(UserContext);
@@ -26,7 +28,7 @@ const Chat: FC = () => {
             setMessages([
                 {
                     type: 'system',
-                    text: 'Witamy na czacie obsługi klienta! Nie wahaj się zadać pytań, a my chętnie Ci pomożemy.',
+                    text: `${t('chat.welcomeMessage')}`,
                 },
             ]);
         }
@@ -42,7 +44,7 @@ const Chat: FC = () => {
         setTimeout(() => {
             setMessages((prev) => [
                 ...prev,
-                { type: 'system', text: 'Dziękujemy za wiadomość! Nasz zespół wkrótce się z Tobą skontaktuje.' },
+                { type: 'system', text: `${t('chat.reponseMessage')}` },
             ]);
         }, 500);
     };
@@ -53,7 +55,7 @@ const Chat: FC = () => {
 
     return (
         <div className="chat-wrapper">
-            <Tile title="Czat" className="chat-tile">
+            <Tile title={t('chat.tile.title')} className="chat-tile">
                 <div className="chat-container">
                     <div className="message-display">
                         {messages.map((msg, index) => (
@@ -69,7 +71,7 @@ const Chat: FC = () => {
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             onKeyDown={handleKeyPress}
-                            placeholder="Napisz wiadomość..."
+                            placeholder={t('chat.writeMessage')}
                             className="chat-input"
                         />
                         <button onClick={handleSend} className="send-button" aria-label="Send message">
