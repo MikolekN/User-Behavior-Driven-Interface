@@ -2,10 +2,11 @@ import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import { ChangeEvent, ReactNode } from 'react';
 import Label from '../utils/Label';
 import ErrorMessage from '../utils/ErrorMessage';
+import { useTranslation } from 'react-i18next';
 
 interface Option {
     value: string;
-    label: string;
+    key: string;
 }
 
 interface FormSelectProps {
@@ -21,6 +22,8 @@ interface FormSelectProps {
 }
 
 const FormSelect = ({ label, options, register, error, defaultValue, defaultOption, onChange, children, className }: FormSelectProps) => {
+    const { t } = useTranslation();
+    
     return (
         <div>
             <Label label={label} />
@@ -35,7 +38,7 @@ const FormSelect = ({ label, options, register, error, defaultValue, defaultOpti
                 }
                 {options.map((option) => (
                     <option key={option.value} value={option.value}>
-                        {option.label}
+                        {t(`formSelect.${option.key}`)}
                     </option>
                 ))}
             </select>

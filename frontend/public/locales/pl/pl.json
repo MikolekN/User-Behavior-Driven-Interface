@@ -234,5 +234,16 @@
             "submit": "Zmień hasło",
             "loading": "Ładowanie..."
         }
+    },
+    "formSelect": {
+        "userName": "Nazwa użytkownika",
+        "accountName": "Nazwa konta",
+        "currency": "Waluta",
+        "week": "Co tydzień",
+        "month": "Co miesiąc",
+        "quarter": "Co kwartał",
+        "halfYear": "Co pół roku",
+        "en": "English",
+        "pl": "Polski"
     }
 }

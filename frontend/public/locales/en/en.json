@@ -233,5 +233,16 @@
             "submit": "Change password",
             "loading": "Loading..."
         }
+    },
+    "formSelect": {
+        "userName": "User name",
+        "accountName": "Account name",
+        "currency": "Currency",
+        "week": "Every week",
+        "month": "Every month",
+        "quarter": "Every quarter",
+        "halfYear": "Every half a year",
+        "en": "English",
+        "pl": "Polski"
     }
 }
