@@ -15,7 +15,6 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     <MainMenu />
                 </MegaMenu>
             </header>
-            <main id='layout-content-area' className='grid flex-grow overflow-y-auto bg-gray-100 dark:bg-gray-800'>
             <main id='layout-content-area' className='grid flex-grow overflow-y-auto'>
                 {children}
             </main>

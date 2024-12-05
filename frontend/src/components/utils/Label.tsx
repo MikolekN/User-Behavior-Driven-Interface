@@ -5,7 +5,7 @@ interface LabelProps {
 
 const Label = ({ label }: LabelProps) => {
     return (
-        <label className="font-semibold text-gray-700 block">{label}</label>
+        <label className="font-medium text-black dark:text-gray-400 block">{label}</label>
     )
 };
 
