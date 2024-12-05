@@ -180,7 +180,7 @@ const CyclicPaymentsForm = () => {
                                         <Flowbite theme={{ theme: errors.startDate ? datepickerErrorTheme : datepickerTheme }}>
                                             <Datepicker
                                                 // dodanie jakiejś logiki przy i18next                             
-                                                language='pl-PL'
+                                                language={localStorage.getItem('language') || 'en'}
                                                 minDate={minDate!}
                                                 weekStart={1} // Monday
                                                 onChange={handleDateChange}
@@ -188,7 +188,7 @@ const CyclicPaymentsForm = () => {
                                                 showTodayButton={false}
                                                 defaultValue={undefined}
                                                 value={date}
-                                                label='Select Start Date'
+                                                label={t('cyclicPaymentForm.startDatePlaceholder')}
                                             />
                                         </Flowbite>
                                         {errors.startDate && (

@@ -107,6 +107,7 @@
         "cyclicPaymentName": "Name",
         "recipientAccountNumber": "Recipient Account Number",
         "startDate": "Start Date",
+        "startDatePlaceholder": "Select start date",
         "transferInterval": "Transfer Interval",
         "title": "Title",
         "amount": "Amout",

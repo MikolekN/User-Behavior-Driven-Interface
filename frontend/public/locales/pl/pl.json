@@ -107,6 +107,7 @@
         "cyclicPaymentName": "Nazwa",
         "recipientAccountNumber": "Numer Konta Odbiorcy",
         "startDate": "Data Początkowa",
+        "startDatePlaceholder": "Wybierz datę początkową",
         "transferInterval": "Interwał Przelewu",
         "title": "Tytuł",
         "amount": "Kwota",
