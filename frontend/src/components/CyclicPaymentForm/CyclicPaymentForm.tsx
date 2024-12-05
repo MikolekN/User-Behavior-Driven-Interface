@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CyclicPaymentFormData, CyclicPaymentFormDataSchema } from '../../schemas/formValidation/cyclicPaymentSchema';
 import { DAY_LENGTH_IN_MILISECONDS, MILISECONDS_IN_ONE_MINUTE } from '../constants';
 import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
-import { intervalOptions } from './CyclicPaymentData';
+import { INTERVAL_SELECT_OPTIONS } from '../../pages/constants';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import ErrorAlert from '../Alerts/ErrorAlert';
 import { scrollToTop } from '../utils/scroll';
@@ -199,7 +199,7 @@ const CyclicPaymentsForm = () => {
                             />
                             <FormSelect
                                 label={t('cyclicPaymentForm.transferInterval')}
-                                options={intervalOptions}
+                                options={INTERVAL_SELECT_OPTIONS}
                                 defaultOption='-- Select Interval --'
                                 register={register('interval')}
                                 error={errors.interval}
