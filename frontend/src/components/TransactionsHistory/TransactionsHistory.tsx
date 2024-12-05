@@ -68,11 +68,11 @@ const TransactionsHistory = () => {
                         {transfers.map((transfer) => {
                             const isExpanded = expandedGroups[transfer.date];
                             return (
-                                <div id="transaction-group" className='mb-1 p-2 bg-gray-100 rounded-lg shadow-sm' key={transfer.date}>
+                                <div id="transaction-group" className='mb-1 p-2 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm' key={transfer.date}>
                                     <div
                                         id="transaction-date"
-                                        className='bg-gray-200 p-2 font-semibold rounded mb-1 text-center w-full flex justify-between items-center
-                                            cursor-pointer transition-[background-color] duration-[0.3s] hover:bg-gray-300'
+                                        className='dark:text-gray-300 bg-gray-200 dark:bg-gray-800 p-2 font-semibold rounded mb-1 text-center w-full flex justify-between items-center
+                                            cursor-pointer transition-[background-color] duration-[0.3s] hover:bg-gray-300 dark:hover:bg-gray-700'
                                         onClick={() => toggleGroup(transfer.date)}
                                     >
                                         {transfer.date}
@@ -82,7 +82,7 @@ const TransactionsHistory = () => {
                                     </div>
                                     <div id='transaction-rows' className={`max-h-0 overflow-hidden transition-[max-height] duration-[0.5s] ease-[ease-in-out] ${isExpanded ? 'max-h-max' : ''}`} >
                                         {transfer.transactions.map((item, index) => (
-                                            <div id="transaction-row" key={index} className='p-3 bg-white rounded mb-1 flex justify-between items-center shadow-sm transition-[background-color] duration-[0.2s] ease-[ease]'>
+                                            <div id="transaction-row" key={index} className='p-3 dark:text-gray-300 bg-white dark:bg-gray-600 rounded mb-1 flex justify-between items-center shadow-sm transition-[background-color] duration-[0.2s] ease-[ease]'>
                                                 <div>
                                                     <span id="issuer-name" className="text-base font-semibold block">{item.issuer_name}</span>
                                                     <span id="transaction-title" className='text-sm font-normal mt-1 block'>
