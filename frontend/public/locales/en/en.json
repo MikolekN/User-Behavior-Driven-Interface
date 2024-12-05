@@ -4,9 +4,9 @@
         "transfers": {
             "title": "Transfers",
             "submenu": {
-                "transfer": "Make Transfer",
-                "transferHistory": "Transfer History",
-                "cyclicPayments": "Cyclic Payments",
+                "transfer": "Make transfer",
+                "transferHistory": "Transfer history",
+                "cyclicPayments": "Cyclic payments",
                 "loan": "Loan" 
             }
         },
@@ -20,12 +20,12 @@
         "analysis": {
             "title": "Finances",
             "submenu": {
-                "monthlyAnalysis": "Monthly Analysis",
-                "yearlyAnalysis": "Yearly Analysis"
+                "monthlyAnalysis": "Monthly analysis",
+                "yearlyAnalysis": "Yearly analysis"
             }
         },
         "customerService": {
-            "title": "Customer Service",
+            "title": "Customer service",
             "submenu": {
                 "chat": "Chat",
                 "faq": "FAQ",
@@ -56,59 +56,59 @@
         },
         "email": "Email",
         "password": "Password",
-        "confirmPassword": "Confirm Password",
+        "confirmPassword": "Confirm password",
         "submit": "Sign up",
         "loading": "Loading..."
     },
     "dashboard": {
         "balance": "Balance",
         "blockades": "Blockades",
-        "availableFunds": "Available Funds",
+        "availableFunds": "Available funds",
         "transfer": "Transfer"
     },
     "transfer": {
         "tile": {
             "title": "Transfer"
         },
-        "fromAccount": "From Account",
-        "recipientAccountNumber": "Recipient Account Number",
-        "transferTitle": "Transfer Title",
+        "fromAccount": "From account",
+        "recipientAccountNumber": "Recipient account number",
+        "transferTitle": "Transfer title",
         "amount": "Amout",
         "submit": "Submit",
         "loading": "Loading..."
     },
     "transactionHistory": {
         "tile": {
-            "title": "Transaction History"
+            "title": "Transaction history"
         }
     },
     "cyclicPaymentList": {
         "tile": {
-            "title": "Cyclic Payments"
+            "title": "Cyclic payments"
         },
-        "submit": "Add Cyclic Payment",
+        "submit": "Add cyclic payment",
         "nameAndReceiver": "Name / Receiver",
         "amount": "Amout",
-        "createdDate": "Created Date",
+        "createdDate": "Created date",
         "recipient": "Recipient",
-        "recipientAccountNumber": "Recipient Account Number",
-        "fromAccount": "From Account",
+        "recipientAccountNumber": "Recipient account number",
+        "fromAccount": "From account",
         "title": "Title",
-        "startDate": "Start Date",
-        "transferInterval": "Transfer Interval",
+        "startDate": "Start date",
+        "transferInterval": "Transfer interval",
         "edit": "Edit",
         "delete": "Delete"
     },
     "cyclicPaymentForm": {
         "tile": {
-            "title": "Cyclic Payment"
+            "title": "Cyclic payment"
         },
-        "fromAccount": "From Account",
+        "fromAccount": "From account",
         "cyclicPaymentName": "Name",
-        "recipientAccountNumber": "Recipient Account Number",
-        "startDate": "Start Date",
+        "recipientAccountNumber": "Recipient account number",
+        "startDate": "Start date",
         "startDatePlaceholder": "Select start date",
-        "transferInterval": "Transfer Interval",
+        "transferInterval": "Transfer interval",
         "title": "Title",
         "amount": "Amout",
         "submit": "Submit",
@@ -118,7 +118,7 @@
         "tile": {
             "title": "Loan"
         },
-        "fromAccount": "From Account",
+        "fromAccount": "From account",
         "howMuchMoney": "How much money do you need?",
         "numberOfInstallments": "Number of installments",
         "submit": "Submit",
@@ -126,13 +126,13 @@
     },
     "transactionsMonthlyAnalysis": {
         "tile": {
-            "title": "Transactions Monthly Analysis"
+            "title": "Transactions monthly analysis"
         },
         "emptyAlertInfo": "No transactions history to generate analysis yet"
     },
     "transactionsYearlyAnalysis": {
         "tile": {
-            "title": "Transactions Yearly Analysis"
+            "title": "Transactions yearly analysis"
         },
         "emptyAlertInfo": "No transactions history to generate analysis yet"
     },
@@ -183,21 +183,21 @@
     },
     "contact": {
         "tile": {
-            "title": "Contact Information"
+            "title": "Contact information"
         },
         "phoneContact": {
-            "title": "Phone Contact",
+            "title": "Phone contact",
             "message": "If you would like to contact us by phone, you can call",
             "hotline": "Hotline",
-            "customerService": "Customer Service",
-            "technicalSupport": "Technical Support"
+            "customerService": "Customer service",
+            "technicalSupport": "Technical support"
         },
         "emailContact": {
-            "title": "Email Contact",
+            "title": "Email contact",
             "message": "Have any questions? Write to us at",
             "email": "Email",
             "complaint": "Complaint",
-            "technicalSupport": "Technical Support"
+            "technicalSupport": "Technical support"
         },
         "address": {
             "title": "Address",

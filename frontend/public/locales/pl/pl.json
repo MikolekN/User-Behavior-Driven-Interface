@@ -4,8 +4,8 @@
         "transfers": {
             "title": "Przelewy",
             "submenu": {
-                "transfer": "Wykonaj Przelew",
-                "transferHistory": "Historia Transakcji",
+                "transfer": "Wykonaj przelew",
+                "transferHistory": "Historia transakcji",
                 "cyclicPayments": "Płatności cykliczne" ,
                 "loan": "Pożyczki" 
             }
@@ -25,7 +25,7 @@
             }
         },
         "customerService": {
-            "title": "Obsługa Klienta",
+            "title": "Obsługa klienta",
             "submenu": {
                 "chat": "Czat",
                 "faq": "FAQ",
@@ -70,8 +70,8 @@
         "tile": {
             "title": "Przelew"
         },
-        "fromAccount": "Z Konta",
-        "recipientAccountNumber": "Numer Konta Odbiorcy",
+        "fromAccount": "Z konta",
+        "recipientAccountNumber": "Numer konta odbiorcy",
         "transferTitle": "Tytuł przelewu",
         "amount": "Kwota",
         "submit": "Przelej",
@@ -79,23 +79,23 @@
     },
     "transactionHistory": {
         "tile": {
-            "title": "Historia Transakcji"
+            "title": "Historia transakcji"
         }
     },
     "cyclicPaymentList": {
         "tile": {
             "title": "Płatności cykliczne"
         },
-        "submit": "Dodaj Płatność Cykliczną",
+        "submit": "Dodaj płatność cykliczną",
         "nameAndReceiver": "Nazwa / Odbiorca",
         "amount": "Kwota",
-        "createdDate": "Data Utworzenia",
+        "createdDate": "Data utworzenia",
         "recipient": "Odbiorca",
-        "recipientAccountNumber": "Numer Konta Odbiorcy",
-        "fromAccount": "Z Konta",
+        "recipientAccountNumber": "Numer konta odbiorcy",
+        "fromAccount": "Z konta",
         "title": "Tytuł",
-        "startDate": "Data Początkowa",
-        "transferInterval": "Interwał Przelewu",
+        "startDate": "Data początkowa",
+        "transferInterval": "Interwał przelewu",
         "edit": "Edytuj",
         "delete": "Usuń"
     },
@@ -103,12 +103,12 @@
         "tile": {
             "title": "Płatność cykliczna"
         },
-        "fromAccount": "Z Konta",
+        "fromAccount": "Z konta",
         "cyclicPaymentName": "Nazwa",
-        "recipientAccountNumber": "Numer Konta Odbiorcy",
-        "startDate": "Data Początkowa",
+        "recipientAccountNumber": "Numer konta odbiorcy",
+        "startDate": "Data początkowa",
         "startDatePlaceholder": "Wybierz datę początkową",
-        "transferInterval": "Interwał Przelewu",
+        "transferInterval": "Interwał przelewu",
         "title": "Tytuł",
         "amount": "Kwota",
         "submit": "Utwórz",
@@ -118,21 +118,21 @@
         "tile": {
             "title": "Pożyczka"
         },
-        "fromAccount": "Z Konta",
+        "fromAccount": "Z konta",
         "howMuchMoney": "Ile pieniędzy potrzebujesz?",
         "numberOfInstallments": "Liczba rat",
-        "submit": "Weź Pożyczkę",
+        "submit": "Weź pożyczkę",
         "loading": "Ładowanie..."
     },
     "transactionsMonthlyAnalysis": {
         "tile": {
-            "title": "Miesięczna Analiza Transakcji"
+            "title": "Miesięczna analiza transakcji"
         },
         "emptyAlertInfo": "Brak historii transakcji aby wygenerować analizę"
     },
     "transactionsYeaerlyAnalysis": {
         "tile": {
-            "title": "Roczna Analiza Transakcji"
+            "title": "Roczna analiza transakcji"
         },
         "emptyAlertInfo": "Brak historii transakcji aby wygenerować analizę"
     },
@@ -184,24 +184,24 @@
     },
     "contact": {
         "tile": {
-            "title": "Informacje Kontaktowe"
+            "title": "Informacje kontaktowe"
         },
         "phoneContact": {
-            "title": "Kontakt Telefoniczny",
+            "title": "Kontakt telefoniczny",
             "message": "Jeśli chcesz się z nami skontaktować telefonicznie, możesz zadzwonić na",
             "hotline": "Infolinia",
-            "customerService": "Obsługa Klienta",
-            "technicalSupport": "Wsparcie Techniczne"
+            "customerService": "Obsługa klienta",
+            "technicalSupport": "Wsparcie techniczne"
         },
         "emailContact": {
-            "title": "Kontakt Mailowy",
+            "title": "Kontakt mailowy",
             "message": "Masz pytania? Napisz do nas na",
-            "email": "Email;",
+            "email": "Email",
             "complaint": "Reklamacje",
             "technicalSupport": "Wsparcie Techniczne"
         },
         "address": {
-            "title": "Adres Siedziby",
+            "title": "Adres siedziby",
             "message": "Odwiedź nas osobiście pod adresem"
         }
     },
