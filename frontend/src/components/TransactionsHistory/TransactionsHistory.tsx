@@ -5,6 +5,8 @@ import { Navigate } from 'react-router-dom';
 import EmptyResponseInfoAlert from '../EmptyResponseInfoAlert/EmptyResponseInfoAlert';
 import arrowUp from '../../assets/images/chevron-up.svg';
 import arrowDown from '../../assets/images/chevron-down.svg';
+import arrowUpDark from '../../assets/images/chevron-up-dark.svg';
+import arrowDownDark from '../../assets/images/chevron-down-dark.svg';
 import { TransferContext } from '../../context/TransferContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 
@@ -14,7 +16,8 @@ const TransactionsHistory = () => {
     const { user } = useContext(UserContext);
     const { transfers, fetchTransfers } = useContext(TransferContext);
     const { apiError, handleError } = useApiErrorHandler();
-
+    const [isDarkMode, setIsDarkMode] = useState(document.documentElement.classList.contains('dark'));
+    
     useEffect(() => {
         if (!user) return;
 
@@ -44,6 +47,19 @@ const TransactionsHistory = () => {
             [date]: !prev[date],
         }));
     };
+
+    useEffect(() => {
+        const observer = new MutationObserver(() => {
+            setIsDarkMode(document.documentElement.classList.contains('dark'));
+        });
+
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class'],
+        });
+
+        return () => observer.disconnect();
+    }, []);
 
     if (!user) return <Navigate to="/login" />;
     if (loading) return <div>Loading...</div>;
@@ -77,7 +93,7 @@ const TransactionsHistory = () => {
                                     >
                                         {transfer.date}
                                         <span id='toggle-icon' className='text-sm ml-2'>
-                                            {isExpanded ? <img src={arrowUp} alt="▼" /> : <img src={arrowDown} alt="▶" />}
+                                            {isExpanded ? <img src={isDarkMode ? arrowUpDark : arrowUp} alt="▼" /> : <img src={isDarkMode ? arrowDownDark : arrowDown} alt="▶" />}
                                         </span>
                                     </div>
                                     <div id='transaction-rows' className={`max-h-0 overflow-hidden transition-[max-height] duration-[0.5s] ease-[ease-in-out] ${isExpanded ? 'max-h-max' : ''}`} >
