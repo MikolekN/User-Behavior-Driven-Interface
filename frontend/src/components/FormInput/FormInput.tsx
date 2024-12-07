@@ -18,7 +18,7 @@ const FormInput = ({ label, fieldType, register, error, children, className }: F
     return (
         <div className="mb-4">
             <Label label={label} />
-            <div className={`flex items-center rounded-lg border border-gray-300 dark:border-gray-600 ${error ? 'border-red-500 focus-within:ring-2 focus-within:ring-red-500' : 'focus-within:ring-2 focus-within:ring-gray-300 dark:focus-within:ring-gray-600'}`}>
+            <div className={`flex items-center rounded-lg border border-gray-300 dark:border-gray-600 ${error ? 'border-red-500 focus-within:ring-2 focus-within:ring-red-500' : 'focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-600 focus-within:dark:border-blue-600'}`}>
                 <input
                     {...register}
                     type={fieldType}
