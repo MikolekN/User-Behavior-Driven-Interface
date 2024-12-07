@@ -39,8 +39,8 @@ export const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, onCl
             >
                 {options.map((option) => (
                     <li key={option.label}
-                        className="block list-none text-center md:hover:font-semibold text-sm hover:bg-gray-200 hover:dark:bg-gray-600 md:p-2">
-                        <Navbar.Link as={Link} to={option.path} theme={blackTextTheme} onClick={closeDropdown} className="font-normal hover:font-semibold">
+                        className="block list-none text-center md:hover:font-semibold text-sm hover:bg-gray-200 hover:dark:bg-gray-600 ">
+                        <Navbar.Link as={Link} to={option.path} theme={blackTextTheme} onClick={closeDropdown} className="font-normal hover:font-semibold md:p-2">
                             {option.label}
                         </Navbar.Link>
                     </li>
