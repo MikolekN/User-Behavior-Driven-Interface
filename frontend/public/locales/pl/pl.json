@@ -35,11 +35,11 @@
         "profile": {
             "profile": "Profil",
             "login": "Logowanie",
-            "register": "Rejstracja",
+            "register": "Rejestracja",
             "logout": "Wyloguj się"
         },
         "login": "Logowanie",
-        "register": "Rejstracja"
+        "register": "Rejestracja"
     },
     "login": {
         "tile": {
@@ -246,5 +246,67 @@
         "halfYear": "Co pół roku",
         "en": "English",
         "pl": "Polski"
+    },
+    "errors": {
+        "api": {
+            "unknownError": "Wystąpił nieznany błąd. Spróbuj pownownie później.",
+            "emptyRequestPayload": "Treść żądania jest pusta",
+            "authFieldsRequired": "Pola email i/lub hasło są wymagane",
+            "alreadyLogged": "Użytkownik jest już zalogowany",
+            "userNotExist": "Użytkownik nie istnieje",
+            "invalidCredentials": "Nieprawidłowe dane logowania",
+            "loginSuccesful": "Zalogowano pomyślnie",
+            "logoutSuccesful": "Wylogowano pomyślnie",
+            "userExist": "Użytkownik już istnieje",
+            "registerSuccesful": "Użytkownik został pomyślnie zarejestrowany",
+            "negativeAmount": "Kwota musi być liczbą dodatnią",
+            "invalidDateFormat": "Nieprawidłowy format daty. Oczekiwany format ISO 8601",
+            "invalidObjectId": "Nieprawidłowy identyfikator obiektu",
+            "userWithAccountNumberNotExist": "Użytkownik o podanym numerze konta nie istnieje",
+            "userDontHaveEnoughMoney": "Użytkownik nie ma wystarczających środków",
+            "cyclicPaymentCreatedSuccessful": "Cykliczna płatność została pomyślnie utworzona",
+            "cyclicPaymentNotExist": "Cykliczna płatność o podanym ID nie istnieje",
+            "cyclicPaymentGetSuccessful": "Pobrano cykliczną płatność według ID pomyślnie",
+            "cyclicPaymentDeletedSuccessful": "Cykliczna płatność została pomyślnie usunięta",
+            "cyclicPaymentUpdatedSuccessful": "Cykliczna płatność została pomyślnie zaktualizowana",
+            "cyclicPaymentListEmpty": "Lista cyklicznych płatności dla twojego konta jest pusta",
+            "cyclicPaymentListGetSuccessful": "Lista cyklicznych płatności została pomyślnie zwrócona",
+            "allFieldsRequired": "Wszystkie pola są wymagane",
+            "invalidAmountFormat": "Nieprawidłowy format kwoty. Podaj kwotę w tysiącach",
+            "startEndYearRequired": "Rok początkowy i końcowy są wymagane",
+            "invalidStartEndYearType": "Rok początkowy i/lub końcowy musi być typu liczba całkowita",
+            "yearNotProvided": "Rok musi być podany",
+            "yearInvalidType": "Rok musi być typu liczba całkowita",
+            "bankAccountNotExist": "Konto użytkownika w banku nie istnieje",
+            "loanCreatedSuccessful": "Pożyczka została udzielona pomyślnie",
+            "transferCreatedSuccessful": "Przelew został wykonany pomyślnie",
+            "transferListEmpty": "Lista przelewów dla twojego konta jest pusta",
+            "transferListGetSuccessful": "Lista przelewów została pomyślnie zwrócona",
+            "monthlyAnalysisEmpty": "Miesięczna analiza przelewów dla twojego konta jest pusta",
+            "monthlyAnalysisSuccessful": "Miesięczna analiza przelewów została pomyślnie zwrócona",
+            "yearlyAnalysisEmpty": "Roczna analiza przelewów dla twojego konta jest pusta",
+            "yearlyAnalysisSuccessful": "Roczna analiza przelewów została pomyślnie zwrócona",
+            "userUpdateNotFound": "Użytkownik nie został znaleziony po aktualizacji",
+            "userUpdateSuccessful": "Dane użytkownika zostały pomyślnie zaktualizowane",
+            "userPasswordRequiredFields": "Wymagane są obecne hasło i nowe hasło",
+            "incorrectCurrentPassword": "Obecne hasło jest nieprawidłowe",
+            "passwordUpdateSuccessful": "Hasło zostało pomyślnie zaktualizowane",
+            "fileRequired": "Brak plików w żądaniu",
+            "iconNotInRequest": "Ikona brakująca w żądaniu",
+            "invalidFileType": "Typ pliku jest niedozwolony",
+            "iconUploadSuccessful": "Ikona została pomyślnie przesłana",
+            "iconNotSetForUser": "Ikona nie została ustawiona dla tego użytkownika",
+            "iconUserNotFound": "Plik ikony użytkownika nie został znaleziony",
+            "missingFields": "Brak niektórych wymaganych pól",
+            "amountTooBig": "Kwota musi być mniejsza lub równa: ",
+            "amountTooSmall": "Kwota musi być większa lub równa: ",
+            "errorUpdatePassword": "Błąd podczas aktualizacji hasła: ",
+            "errorUpdateUser": "Błąd podczas aktualizacji danych użytkownika: ",
+            "errorImageProcess": "Przetwarzanie obrazu nie powiodło się: ",
+            "sendIconFailed": "Nie udało się wysłać ikony: " 
+        },
+        "zod": {
+
+        }
     }
 }

@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { isZodError } from '../schemas/common/commonValidators';
+import { useTranslation } from 'react-i18next';
 
 function useApiErrorHandler() {
+    const { t } = useTranslation();
     const [errorMessage, setErrorMessage] = useState('');
     const [apiError, setApiError] = useState({ isError: false, errorMessage: '' });
 
@@ -9,7 +11,10 @@ function useApiErrorHandler() {
         if (isZodError(error)) {
             setErrorMessage('Zod API validation error');
         } else {
-            setErrorMessage((error as Error).message || 'An unknown error occurred. Please try again.');
+            const errorSplit: string[] = (error as Error).message.split(";");
+            const errorKey: string = errorSplit[0];
+            const params: string = errorSplit[1] || "";
+            setErrorMessage(`${t(`errors.api.${errorKey}`)} ${params}` || `${t('errors.api.unknownError')}`);
         }
     };
 

@@ -20,14 +20,14 @@ def upload_user_icon() -> tuple[Response, int]:
         os.makedirs(UPLOAD_FOLDER)
 
     if 'icon' not in request.files:
-        return jsonify(message="No files in the request"), 400
+        return jsonify(message="fileRequired"), 400
 
     icon: FileStorage | None = request.files['icon']
     if icon is None or icon.filename == '':
-        return jsonify(message="Icon missing in the request"), 400
+        return jsonify(message="iconNotInRequest"), 400
 
     if not allowed_file(icon.filename):
-        return jsonify(message="File type not allowed"), 400
+        return jsonify(message="invalidFileType"), 400
 
     user_data = UserRepository.find_by_id(current_user._id)
     if user_data and user_data.user_icon:
@@ -45,24 +45,24 @@ def upload_user_icon() -> tuple[Response, int]:
             image = image.resize((120, 120))
         image.save(icon_path)
     except Exception as e:
-        return jsonify(message=f"Image processing failed: {str(e)}"), 500
+        return jsonify(message=f"errorImageProcess;{str(e)}"), 500
 
     UserRepository.update(current_user._id, {'user_icon': icon_path})
 
-    return jsonify(message="Icon uploaded successfully"), 200
+    return jsonify(message="iconUploadSuccessful"), 200
 
 @user_icon_blueprint.route('/user/icon', methods=['GET'])
 @login_required
 def get_user_icon() -> tuple[Response, int]:
     user_data = UserRepository.find_by_id(current_user._id)
     if not user_data or not user_data.user_icon:
-        return jsonify(message="No icon set for this user"), 404
+        return jsonify(message="iconNotSetForUser"), 404
 
     icon_path = user_data.user_icon
     if not os.path.exists(icon_path):
-        return jsonify(message="User icon file not found"), 404
+        return jsonify(message="iconUserNotFound"), 404
 
     try:
         return send_file(icon_path, mimetype='image/png')
     except Exception as e:
-        return jsonify(message=f"Failed to send the icon: {str(e)}"), 500
+        return jsonify(message=f"sendIconFailed;{str(e)}"), 500

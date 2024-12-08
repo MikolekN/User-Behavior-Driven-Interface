@@ -15,53 +15,53 @@ transfer_blueprint = Blueprint('transfer', __name__, url_prefix='/api')
 
 def validate_transfer_data(data: Mapping[str, Any] | None) -> str | None:
     if not data:
-        return "Request payload is empty"
+        return "emptyRequestPayload"
     
     if 'recipientAccountNumber' not in data or 'transferTitle' not in data or 'amount' not in data:
-        return "All fields are required"
+        return "allFieldsRequired"
     
     amount = float(data.get('amount'))
     if amount <= 0:
-        return "Amount must be a positive number"
+        return "negativeAmount"
 
     return None
 
 def validate_loan_data(data: Mapping[str, Any] | None) -> str | None:
     if not data:
-        return "Request payload is empty"
+        return "emptyRequestPayload"
     
     if 'transferTitle' not in data or 'amount' not in data:
-        return "All fields are required"
+        return "allFieldsRequired"
     
     amount = float(data.get('amount'))
     
     if amount < MIN_LOAN_VALUE:
-        return f"Amount must be bigger or equal to {MIN_LOAN_VALUE}"
+        return f"amountTooSmall;{MIN_LOAN_VALUE}"
     
     if amount > MAX_LOAN_VALUE:
-        return f"Amount must be lower or equal to {MAX_LOAN_VALUE}"
+        return f"amountTooBig;{MAX_LOAN_VALUE}"
     
     if amount % 1000 != 0:
-        return "Invalid amount format. Provide amount in thousands"
+        return "invalidAmountFormat"
     
     return None
 
 def validate_get_all_user_transfers_yearly(data: Mapping[str, Any] | None) -> str | None:
     if not data:
-        return "Request payload is empty"
+        return "emptyRequestPayload"
     if not all(key in data for key in ['startYear', 'endYear']):
-        return "Start Year and End Year are required"
+        return "startEndYearRequired"
     if ('startYear' in data and not isinstance(data['startYear'], int)) or ('endYear' in data and not isinstance(data['endYear'], int)):
-        return "Start year and / or end year has to be of type integer"
+        return "invalidStartEndYearType"
     return None
 
 def validate_get_all_user_transfers_monthly(data: Mapping[str, Any] | None) -> str | None:
     if not data:
-        return "Request payload is empty"
+        return "emptyRequestPayload"
     if 'year' not in data:
-        return "Year must be provided"
+        return "yearNotProvided"
     if 'year' in data and not isinstance(data['year'], int):
-        return "Year has to be of type integer"
+        return "yearInvalidType"
     return None
 
 def sanitize_transfer_dict(transfer: dict) -> dict[str, any]:
@@ -238,11 +238,11 @@ def create_loan_transfer() -> tuple[Response, int]:
     
     recipient_user = UserRepository.find_by_id(current_user._id)
     if not recipient_user:
-        return jsonify(message="User with given account number does not exist"), 404
+        return jsonify(message="userWithAccountNumberNotExist"), 404
     
     bank = UserRepository.find_by_account_number(BANK_ACCOUNT_NUMBER)
     if not bank:
-        return jsonify(message="Bank user account does not exist"), 404
+        return jsonify(message="bankAccountNotExist"), 404
 
     transfer = Transfer(created=datetime.now(), transfer_from_id=bank._id,
                         transfer_to_id=recipient_user._id, title=data['transferTitle'], amount=float(data['amount']))
@@ -250,7 +250,7 @@ def create_loan_transfer() -> tuple[Response, int]:
 
     UserRepository.update(current_user._id, {'balance': add(float(current_user.balance), float(data['amount']))})
 
-    return jsonify(message="Loan made successfully"), 200
+    return jsonify(message="loanCreatedSuccessful"), 200
 
 @transfer_blueprint.route('/transfer', methods=['POST'])
 @login_required
@@ -264,11 +264,11 @@ def create_transfer() -> tuple[Response, int]:
     recipient_user = UserRepository.find_by_account_number(data['recipientAccountNumber'])
     
     if not recipient_user:
-        return jsonify(message="User with given account number does not exist"), 404
+        return jsonify(message="userWithAccountNumberNotExist"), 404
     
     curr_user = UserRepository.find_by_id(current_user._id)
     if curr_user.get_available_funds() - float(data['amount']) < 0:
-        return jsonify(message="User does not have enough money"), 403
+        return jsonify(message="userDontHaveEnoughMoney"), 403
 
     transfer = Transfer(created=datetime.now(), transfer_from_id=current_user._id,
                         transfer_to_id=recipient_user._id, title=data['transferTitle'], amount=float(data['amount']))
@@ -277,7 +277,7 @@ def create_transfer() -> tuple[Response, int]:
     UserRepository.update(curr_user._id, {'balance': substract(float(curr_user.balance), float(data['amount']))})
     UserRepository.update(recipient_user._id, {'balance': add(float(recipient_user.balance), float(data['amount']))})
 
-    return jsonify(message="Transfer made successfully"), 200
+    return jsonify(message="transferCreatedSuccessful"), 200
 
 @transfer_blueprint.route('/transfers', methods=['GET'])
 @login_required
@@ -291,12 +291,12 @@ def get_all_user_transfers() -> tuple[Response, int]:
     sort_criteria = [("created", -1)]
     transfers = TransferRepository.find_transfers(query, sort_criteria)
     if not transfers:
-        return jsonify(message="Transfers list for current user is empty"), 404
+        return jsonify(message="transferListEmpty"), 404
     
     serialized_transfers = serialize_transfers(transfers)
     response = get_transactions_history_response(serialized_transfers)
     
-    return jsonify(message="Transfers returned successfully", transfers=response), 200
+    return jsonify(message="transferListGetSuccessful", transfers=response), 200
 
 @transfer_blueprint.route('/transfers/analysis/monthly', methods=['POST'])
 @login_required
@@ -322,12 +322,12 @@ def get_all_user_transfers_monthly() -> tuple[Response, int]:
 
     transfers = TransferRepository.find_transfers(query)
     if not transfers:
-        return jsonify(message="Monthly transfers analysis for current user is empty"), 404
+        return jsonify(message="monthlyAnalysisEmpty"), 404
 
     serialized_transfers = serialize_transfers(transfers)
     response = get_transfers_analysis_monthly(serialized_transfers)
 
-    return jsonify(message="Transfers monthly analysis returned successfully", transfers=response), 200
+    return jsonify(message="monthlyAnalysisSuccessful", transfers=response), 200
 
 @transfer_blueprint.route('/transfers/analysis/yearly', methods=['POST'])
 @login_required
@@ -353,9 +353,9 @@ def get_all_user_transfers_yearly() -> tuple[Response, int]:
 
     transfers = TransferRepository.find_transfers(query)
     if not transfers:
-        return jsonify(message="Yearly transfers analysis for current user is empty"), 404
+        return jsonify(message="yearlyAnalysisEmpty"), 404
     
     serialized_transfers = serialize_transfers(transfers)
     response = set_missing_years(get_transfers_analysis_yearly(serialized_transfers), data['startYear'], data['endYear'])
 
-    return jsonify(message="Transfers yearly analysis returned successfully", transfers=response), 200
+    return jsonify(message="yearlyAnalysisSuccessful", transfers=response), 200
