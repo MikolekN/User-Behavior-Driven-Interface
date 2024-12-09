@@ -13,7 +13,21 @@ export const LOAN_AMOUNT_STEP = 1000;
 export const MIN_LOAN_AMOUNT_TEXT = '1 000';
 export const MAX_LOAN_AMOUNT_TEXT = '100 000';
 
+export const FIELD_SELECT_OPTIONS = [
+    { value: 'login', key: 'userName' },
+    { value: 'accountName', key: 'accountName' },
+    { value: 'currency', key: 'currency' }
+];
+
+export const INTERVAL_SELECT_OPTIONS = [
+    { value: 'Every 7 days', key: 'week' },
+    { value: 'Every month', key: 'month' },
+    { value: 'Every 3 months', key: 'quarter' },
+    { value: 'Every 6 months', key: 'halfYear' }
+];
+
 export const LANGUAGES = [
-    { label: "English", value: "en" },
-    { label: "Polish", value: "pl" },
+    { key: "en", value: "en" },
+    { key: "pl", value: "pl" },
+
 ];

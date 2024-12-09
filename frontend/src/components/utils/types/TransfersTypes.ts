@@ -1,4 +1,6 @@
+import { t } from "i18next";
 import { ChartData } from "./TransfersAnalysisChartTypes";
+import i18n from "../../../i18n";
 
 export interface TransactionsHistoryType {
     date: string;
@@ -70,7 +72,9 @@ export const mapBackendChartDataToChartData = (chartBackendData: BackendChartDat
         const formattedChartData: ChartData = {
             income: chartData.income,
             outcome: chartData.outcome,
-            interval: chartData.interval
+            interval: i18n.exists(`chart.months.${chartData.interval}`) 
+                    ? t(`chart.months.${chartData.interval}`) 
+                    : chartData.interval
         } 
         formattedAnalysisChartData.push(formattedChartData);
     });

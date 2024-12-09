@@ -4,9 +4,9 @@
         "transfers": {
             "title": "Transfers",
             "submenu": {
-                "transfer": "Make Transfer",
-                "transferHistory": "Transfer History",
-                "cyclicPayments": "Cyclic Payments",
+                "transfer": "Make transfer",
+                "transferHistory": "Transfer history",
+                "cyclicPayments": "Cyclic payments",
                 "loan": "Loan" 
             }
         },
@@ -20,12 +20,12 @@
         "analysis": {
             "title": "Finances",
             "submenu": {
-                "monthlyAnalysis": "Monthly Analysis",
-                "yearlyAnalysis": "Yearly Analysis"
+                "monthlyAnalysis": "Monthly analysis",
+                "yearlyAnalysis": "Yearly analysis"
             }
         },
         "customerService": {
-            "title": "Customer Service",
+            "title": "Customer service",
             "submenu": {
                 "chat": "Chat",
                 "faq": "FAQ",
@@ -56,58 +56,59 @@
         },
         "email": "Email",
         "password": "Password",
-        "confirmPassword": "Confirm Password",
+        "confirmPassword": "Confirm password",
         "submit": "Sign up",
         "loading": "Loading..."
     },
     "dashboard": {
         "balance": "Balance",
         "blockades": "Blockades",
-        "availableFunds": "Available Funds",
+        "availableFunds": "Available funds",
         "transfer": "Transfer"
     },
     "transfer": {
         "tile": {
             "title": "Transfer"
         },
-        "fromAccount": "From Account",
-        "recipientAccountNumber": "Recipient Account Number",
-        "transferTitle": "Transfer Title",
+        "fromAccount": "From account",
+        "recipientAccountNumber": "Recipient account number",
+        "transferTitle": "Transfer title",
         "amount": "Amout",
         "submit": "Submit",
         "loading": "Loading..."
     },
     "transactionHistory": {
         "tile": {
-            "title": "Transaction History"
+            "title": "Transaction history"
         }
     },
     "cyclicPaymentList": {
         "tile": {
-            "title": "Cyclic Payments"
+            "title": "Cyclic payments"
         },
-        "submit": "Add Cyclic Payment",
+        "submit": "Add cyclic payment",
         "nameAndReceiver": "Name / Receiver",
         "amount": "Amout",
-        "createdDate": "Created Date",
+        "createdDate": "Created date",
         "recipient": "Recipient",
-        "recipientAccountNumber": "Recipient Account Number",
-        "fromAccount": "From Account",
+        "recipientAccountNumber": "Recipient account number",
+        "fromAccount": "From account",
         "title": "Title",
-        "startDate": "Start Date",
-        "transferInterval": "Transfer Interval",
+        "startDate": "Start date",
+        "transferInterval": "Transfer interval",
         "edit": "Edit",
         "delete": "Delete"
     },
     "cyclicPaymentForm": {
         "tile": {
-            "title": "Cyclic Payment"
+            "title": "Cyclic payment"
         },
-        "fromAccount": "From Account",
+        "fromAccount": "From account",
         "cyclicPaymentName": "Name",
-        "recipientAccountNumber": "Recipient Account Number",
-        "startDate": "Start Date",
-        "transferInterval": "Transfer Interval",
+        "recipientAccountNumber": "Recipient account number",
+        "startDate": "Start date",
+        "startDatePlaceholder": "Select start date",
+        "transferInterval": "Transfer interval",
         "title": "Title",
         "amount": "Amout",
         "submit": "Submit",
@@ -117,7 +118,7 @@
         "tile": {
             "title": "Loan"
         },
-        "fromAccount": "From Account",
+        "fromAccount": "From account",
         "howMuchMoney": "How much money do you need?",
         "numberOfInstallments": "Number of installments",
         "submit": "Submit",
@@ -125,13 +126,13 @@
     },
     "transactionsMonthlyAnalysis": {
         "tile": {
-            "title": "Transactions Monthly Analysis"
+            "title": "Transactions monthly analysis"
         },
         "emptyAlertInfo": "No transactions history to generate analysis yet"
     },
     "transactionsYearlyAnalysis": {
         "tile": {
-            "title": "Transactions Yearly Analysis"
+            "title": "Transactions yearly analysis"
         },
         "emptyAlertInfo": "No transactions history to generate analysis yet"
     },
@@ -182,21 +183,21 @@
     },
     "contact": {
         "tile": {
-            "title": "Contact Information"
+            "title": "Contact information"
         },
         "phoneContact": {
-            "title": "Phone Contact",
+            "title": "Phone contact",
             "message": "If you would like to contact us by phone, you can call",
             "hotline": "Hotline",
-            "customerService": "Customer Service",
-            "technicalSupport": "Technical Support"
+            "customerService": "Customer service",
+            "technicalSupport": "Technical support"
         },
         "emailContact": {
-            "title": "Email Contact",
+            "title": "Email contact",
             "message": "Have any questions? Write to us at",
             "email": "Email",
             "complaint": "Complaint",
-            "technicalSupport": "Technical Support"
+            "technicalSupport": "Technical support"
         },
         "address": {
             "title": "Address",
@@ -232,6 +233,108 @@
             "newPassword": "Confirm password",
             "submit": "Change password",
             "loading": "Loading..."
+        }
+    },
+    "formSelect": {
+        "userName": "User name",
+        "accountName": "Account name",
+        "currency": "Currency",
+        "week": "Every week",
+        "month": "Every month",
+        "quarter": "Every quarter",
+        "halfYear": "Every half a year",
+        "en": "English",
+        "pl": "Polski"
+    },
+    "errors": {
+        "api": {
+            "unexpectedResponse": "Unexpected response.",
+            "sthWentWrong": "Something went wrong with the API request.",
+            "unknownError": "An unknown error occurred. Please try again later.",
+            "emptyRequestPayload": "Request payload is empty",
+            "authFieldsRequired": "Email and / or password fields are required",
+            "alreadyLogged": "User already logged in",
+            "userNotExist": "User does not exist",
+            "invalidCredentials": "Invalid login credentials",
+            "loginSuccessful": "Logged in successfully",
+            "logoutSuccessful": "Logged out successfully",
+            "userExist": "User already exists",
+            "registerSuccessful": "User registered successfully",
+            "negativeAmount": "Amount must be a positive number",
+            "invalidDateFormat": "Invalid date format. Expected ISO 8601 format",
+            "invalidObjectId": "Invalid Object ID",
+            "userWithAccountNumberNotExist": "User with given account number does not exist",
+            "userDontHaveEnoughMoney": "User does not have enough money",
+            "cyclicPaymentCreatedSuccessful": "Cyclic Payment created successfully",
+            "cyclicPaymentNotExist": "Cyclic Payment with given ID does not exist",
+            "cyclicPaymentGetSuccessful": "Get Cyclic Payment by id successfully",
+            "cyclicPaymentDeletedSuccessful": "Cyclic Payment deleted successfully",
+            "cyclicPaymentUpdatedSuccessful": "Cyclic Payment updated successfully",
+            "cyclicPaymentListEmpty": "Cyclic Payments list for your account is empty",
+            "cyclicPaymentListGetSuccessful": "Cyclic Payments list retured successfully",
+            "allFieldsRequired": "All fields are required",
+            "invalidAmountFormat": "Invalid amount format. Provide amount in thousands",
+            "startEndYearRequired": "Start Year and End Year are required",
+            "invalidStartEndYearType": "Start year and / or end year has to be of type integer",
+            "yearNotProvided": "Year must be provided",
+            "yearInvalidType": "Year has to be of type integer",
+            "bankAccountNotExist": "Bank user account does not exist",
+            "loanCreatedSuccessful": "Loan made successfully",
+            "transferCreatedSuccessful": "Transfer made successfully",
+            "transferListEmpty": "Transfers list for your account is empty",
+            "transferListGetSuccessful": "Transfers returned successfully",
+            "monthlyAnalysisEmpty": "Monthly transfers analysis for your account is empty",
+            "monthlyAnalysisSuccessful": "Transfers monthly analysis returned successfully",
+            "yearlyAnalysisEmpty": "Yearly transfers analysis for your account is empty",
+            "yearlyAnalysisSuccessful": "Transfers yearly analysis returned successfully",
+            "userUpdateNotFound": "User not found after update",
+            "userUpdateSuccessful": "User data updated successfully",
+            "userPasswordRequiredFields": "Current password and new password are required",
+            "incorrectCurrentPassword": "Current password is incorrect",
+            "passwordUpdateSuccessful": "Password updated successfully",
+            "fileRequired": "No files in the request",
+            "iconNotInRequest": "Icon missing in the request",
+            "invalidFileType": "File type not allowed",
+            "iconUploadSuccessful": "Icon uploaded successfully",
+            "iconNotSetForUser": "No icon set for this user",
+            "iconUserNotFound": "User icon file not found",
+            "missingFields": "Some of required fields are missing",
+            "amountTooBig": "Amount must be lower or equal to: ",
+            "amountTooSmall": "Amount must be bigger or equal to: ",
+            "errorUpdatePassword": "Error updating password: ",
+            "errorUpdateUser": "Error updating user data: ",
+            "errorImageProcess": "Image processing failed: ",
+            "sendIconFailed": "Failed to send the icon: "
+        },
+        "zod": {
+            "required": "The field is required",
+            "zodApiError": "Error in the data returned by the server. Try again later",
+            "amountGreaterThanZero": "The value cannot be less than 0",
+            "invalidAmountFormat": "Invalid amount format. Enter an amount with up to two decimal places",
+            "loanInvalidAmountFormat": "Invalid amount format. Enter the amount in thousands",
+            "amountLowerThan": "The entered amount cannot be less than",
+            "amountBiggerThan": "The entered amount cannot be greater than",
+            "password": "The password must be at least 8 characters long, including a lowercase letter, an uppercase letter, and a number",
+            "confirmPassword": "The entered passwords do not match",
+            "invalidAccountNumber": "Invalid account number"
+        }
+    },
+    "chart": {
+        "income": "incomes",
+        "outcome": "outcomes",
+        "months": {
+            "jan": "January",
+            "feb": "February",
+            "mar": "March",
+            "apr": "April",
+            "may": "May",
+            "jun": "June",
+            "jul": "July",
+            "aug": "August",
+            "sep": "September",
+            "oct": "October",
+            "nov": "November",
+            "dec": "December"
         }
     }
 }

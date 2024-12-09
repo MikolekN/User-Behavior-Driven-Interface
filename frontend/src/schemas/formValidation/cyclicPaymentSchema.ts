@@ -3,21 +3,21 @@ import { requiredStringField } from '../common/commonValidators';
 import { ACCOUNT_NUMBER_REGEX, AMOUNT_REGEX, ZERO } from './constants';
 
 export const CyclicPaymentFormDataSchema = z.object({
-    cyclicPaymentName: requiredStringField('Cyclic Payment Name'),
-    recipientAccountNumber: requiredStringField('Recipient Account Number').regex(new RegExp(ACCOUNT_NUMBER_REGEX), {
-        message: 'Invalid account number'
+    cyclicPaymentName: requiredStringField(),
+    recipientAccountNumber: requiredStringField().regex(new RegExp(ACCOUNT_NUMBER_REGEX), {
+        message: 'accountNumber'
     }),
-    transferTitle: requiredStringField('Transfer Title'),
-    amount: requiredStringField('Amount'),
-    startDate: z.date({ message: "Start Date is required" }),
-    interval: requiredStringField('Interval')
+    transferTitle: requiredStringField(),
+    amount: requiredStringField(),
+    startDate: z.date({ message: 'required' }),
+    interval: requiredStringField()
     })
     .superRefine((data, ctx) => {
 
         if (parseFloat(data.amount) <= ZERO) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                message: 'Amount should be greater than 0',
+                message: 'amountGreaterThanZero',
                 path: ['amount']
             });
         }
@@ -25,7 +25,7 @@ export const CyclicPaymentFormDataSchema = z.object({
         if (!AMOUNT_REGEX.test(data.amount)) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                message: 'Invalid Amount format. Two decimal places are allowed',
+                message: 'invalidAmountFormat',
                 path: ['amount']
             });
         }

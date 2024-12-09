@@ -4,14 +4,14 @@ import { requiredStringField } from '../common/commonValidators';
 // GetLogin
 
 export const UserData = z.object({
-    login: requiredStringField('login'),
-    email: requiredStringField('email').email(),
-    account_name: requiredStringField('account_name'),
-    account_number: requiredStringField('account_number'),
+    login: requiredStringField(),
+    email: requiredStringField().email(),
+    account_name: requiredStringField(),
+    account_number: requiredStringField(),
     blockades: z.number(),
     balance: z.number(),
-    currency: requiredStringField('currency'),
-    role: requiredStringField('role'),
+    currency: requiredStringField(),
+    role: requiredStringField(),
     icon: z.custom<File>().nullable().optional()
 });
 
@@ -32,7 +32,7 @@ export type UpdateUserResponse = z.infer<typeof UpdateUserResponseSchema>;
 // Update User Password
 
 export const UpdateUserPasswordResponseSchema = z.object({
-    message: requiredStringField('message')
+    message: requiredStringField()
 });
 
 export type UpdateUserPasswordResponse = z.infer<typeof UpdateUserPasswordResponseSchema>;

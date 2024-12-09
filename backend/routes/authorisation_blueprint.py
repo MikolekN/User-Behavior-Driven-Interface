@@ -12,15 +12,15 @@ authorisation_blueprint = Blueprint('authorisation', __name__, url_prefix='/api'
 
 def validate_login_data(data: Mapping[str, Any] | None) -> str | None:
     if not data:
-        return "Request payload is empty"
+        return "emptyRequestPayload"
     if 'email' not in data or 'password' not in data:
-        return "Email and password fields are required"
+        return "authFieldsRequired"
     return None
 
 @authorisation_blueprint.route('/login', methods=['POST'])
 def login() -> tuple[Response, int]:
     if current_user.is_authenticated:
-        return jsonify(message="Already logged in"), 409
+        return jsonify(message="alreadyLogged"), 409
 
     data = request.get_json()
     error = validate_login_data(data)
@@ -29,25 +29,25 @@ def login() -> tuple[Response, int]:
 
     user = UserRepository.find_by_email(data['email'])
     if user is None:
-        return jsonify(message="User does not exist"), 404
+        return jsonify(message="userNotExist"), 404
 
     if not bcrypt.checkpw(data['password'].encode('utf-8'), user.password.encode('utf-8')):
-        return jsonify(message="Invalid login credentials"), 401
+        return jsonify(message="invalidCredentials"), 401
 
     login_user(user)
     sanitized_user = user.sanitize_user_dict()
-    return jsonify(message="Logged in successfully", user=sanitized_user), 200
+    return jsonify(message="loginSuccesful", user=sanitized_user), 200
 
 @authorisation_blueprint.route('/logout', methods=['POST'])
 @login_required
 def logout() -> tuple[Response, int]:
     logout_user()
-    return jsonify(message="Logged out successfully"), 200
+    return jsonify(message="logoutSuccesful"), 200
 
 @authorisation_blueprint.route('/register', methods=['POST'])
 def register() -> tuple[Response, int]:
     if current_user.is_authenticated:
-        return jsonify(message="Already logged in"), 409
+        return jsonify(message="alreadyLogged"), 409
 
     data = request.get_json()
     error = validate_login_data(data)
@@ -55,7 +55,7 @@ def register() -> tuple[Response, int]:
         return jsonify(message=error), 400
 
     if UserRepository.find_by_email(data['email']):
-        return jsonify(message="User already exists"), 409
+        return jsonify(message="userExist"), 409
 
     hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     
@@ -78,4 +78,4 @@ def register() -> tuple[Response, int]:
     user = UserRepository.insert(user) # teraz przy tworzeniu zapisuje w bazie 'user_icon: null'. Trzeba będzie zrobić, żeby nic nie zapisywał.
 
     sanitized_user = user.sanitize_user_dict()
-    return jsonify(message="User registered successfully", user=sanitized_user), 201
+    return jsonify(message="registerSuccesful", user=sanitized_user), 201
