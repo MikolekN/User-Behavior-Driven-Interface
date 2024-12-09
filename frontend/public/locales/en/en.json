@@ -39,7 +39,8 @@
             "logout": "Sign out"
         },
         "login": "Login",
-        "register": "Register"
+        "register": "Register",
+        "adminPanel": "Admin panel"
     },
     "login": {
         "tile": {
