@@ -142,7 +142,7 @@
         },
         "writeMessage": "Write a message...",
         "welcomeMessage": "Welcome to our customer service chat! Don't hesitate to ask any questions and we'll be happy to help.",
-        "reponseMessage": "Thank you for your message! Our team will contact you as soon as possible."
+        "responseMessage": "Thank you for your message! Our team will contact you as soon as possible."
     },
     "faq": {
         "tile": {

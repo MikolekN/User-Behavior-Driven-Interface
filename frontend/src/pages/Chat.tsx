@@ -44,7 +44,7 @@ const Chat: FC = () => {
         setTimeout(() => {
             setMessages((prev) => [
                 ...prev,
-                { type: 'system', text: `${t('chat.reponseMessage')}` },
+                { type: 'system', text: `${t('chat.responseMessage')}` },
             ]);
         }, 500);
     };
