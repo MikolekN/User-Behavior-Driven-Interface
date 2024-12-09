@@ -58,22 +58,21 @@ export const MainMenu = () => {
                 .map((option) =>
                     'path' in option ? (
                         <Navbar.Link
-                            key={option.label}
+                            key={option.key}
                             as={Link}
                             to={option.path}
                             theme={blackTextTheme}
                             className='text-base font-normal hover:text-black hover:font-semibold'
                             onClick={handleLinkClick}
                         >
-                            {option.label}
+                            {t('menu.' + option.key)}
                         </Navbar.Link>
                     ) : ( 'submenu' in option && (
                         <Dropdown
-                            key={option.label}
-                            title={option.label}
-                            options={option.submenu}
-                            isOpen={activeDropdown === option.label}
-                            onClick={() => handleDropdownState(option.label)}
+                            key={option.key}
+                            menu={option}
+                            isOpen={activeDropdown === option.key}
+                            onClick={() => handleDropdownState(option.key)}
                             closeDropdown={closeDropdown}
                             className="text-base font-normal text-black hover:text-black hover:font-semibold"
                         />

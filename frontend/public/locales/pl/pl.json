@@ -39,7 +39,8 @@
             "logout": "Wyloguj się"
         },
         "login": "Logowanie",
-        "register": "Rejstracja"
+        "register": "Rejstracja",
+        "adminPanel": "Panel administratora"
     },
     "login": {
         "tile": {

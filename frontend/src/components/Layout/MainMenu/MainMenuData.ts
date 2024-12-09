@@ -6,49 +6,49 @@ export const enum AccessLevels {
 }
 
 type MenuOptionWithPath = {
-    label: string;
+    key: string;
     path: string;
     accessLevel: AccessLevels;
 };
 
-type MenuOptionWithSubmenu = {
-    label: string;
+export type MenuOptionWithSubmenu = {
+    key: string;
     accessLevel: AccessLevels;
-    submenu: { label: string; path: string }[];
+    submenu: { key: string; path: string }[];
 };
 
 export type MenuOption = MenuOptionWithPath | MenuOptionWithSubmenu;
 
 export const menuOptions: MenuOption[] = [
-    { label: 'Start', path: '/', accessLevel: AccessLevels.All },
-    { label: 'Login', path: '/login', accessLevel: AccessLevels.Unauthorised },
-    { label: 'Register', path: '/register', accessLevel: AccessLevels.Unauthorised },
+    { key: 'home', path: '/', accessLevel: AccessLevels.All },
+    { key: 'login', path: '/login', accessLevel: AccessLevels.Unauthorised },
+    { key: 'register', path: '/register', accessLevel: AccessLevels.Unauthorised },
     {
-        label: 'Przelewy',
+        key: 'transfers',
         accessLevel: AccessLevels.Authorised,
         submenu: [
-            { label: 'Wykonaj przelew', path: '/transfer' },
-            { label: 'Historia przelewów', path: '/transactions/history' },
-            { label: 'Płatności cykliczne', path: '/cyclic-payments' },
-            { label: 'Pożyczki', path: '/loan' },
+            { key: 'transfer', path: '/transfer' },
+            { key: 'transferHistory', path: '/transactions/history' },
+            { key: 'cyclicPayments', path: '/cyclic-payments' },
+            { key: 'loan', path: '/loan' },
         ]
     },
     {
-        label: 'Finanse',
+        key: 'analysis',
         accessLevel: AccessLevels.Authorised,
         submenu: [
-            { label: 'Analizy miesięczne', path: '/transactions/analysis/monthly' },
-            { label: 'Analizy roczne', path: '/transactions/analysis/yearly' },
+            { key: 'monthlyAnalysis', path: '/transactions/analysis/monthly' },
+            { key: 'yearlyAnalysis', path: '/transactions/analysis/yearly' },
         ]
     },
     {
-        label: 'Obsługa klienta',
+        key: 'customerService',
         accessLevel: AccessLevels.Authorised,
         submenu: [
-            { label: 'Czat', path: '/chat' },
-            { label: 'Najczęściej zadawane pytania', path: '/faq' },
-            { label: 'Kontakt', path: '/info' },
+            { key: 'chat', path: '/chat' },
+            { key: 'faq', path: '/faq' },
+            { key: 'info', path: '/info' },
         ]
     },
-    { label: 'Panel administratora', path: '/admin-panel', accessLevel: AccessLevels.Admin },
+    { key: 'adminPanel', path: '/admin-panel', accessLevel: AccessLevels.Admin },
 ]
