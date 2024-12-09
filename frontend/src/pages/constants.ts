@@ -1,3 +1,6 @@
+import poland from '../assets/images/poland.png';
+import uk from '../assets/images/united-kingdom.png';
+
 export const HOST_URL = 'http://localhost:5173';
 
 export const AVAILABLE_LOAN_LENGTH = [
@@ -14,6 +17,14 @@ export const MIN_LOAN_AMOUNT_TEXT = '1 000';
 export const MAX_LOAN_AMOUNT_TEXT = '100 000';
 
 export const LANGUAGES = [
-    { label: "English", value: "en" },
-    { label: "Polish", value: "pl" },
+    {
+        name: "English",
+        code: "en",
+        image: uk
+    },
+    {
+        name: "Polish",
+        code: "pl",
+        image: poland
+    }
 ];

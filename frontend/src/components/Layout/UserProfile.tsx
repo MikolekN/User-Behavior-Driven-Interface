@@ -1,24 +1,27 @@
 import { useContext, useEffect, useState } from "react";
-import { Dropdown, Avatar } from "flowbite-react"
+import { Dropdown, Avatar, Checkbox } from "flowbite-react"
 import { Link, useNavigate } from "react-router-dom";
 
 import defaultIcon from '../../assets/images/user.png';
-import poland from '../../assets/images/poland.png';
-import uk from '../../assets/images/united-kingdom.png';
 import { UserContext } from '../../context/UserContext';
 import { UserIconContext } from '../../context/UserIconContext';
 import { AuthContext } from "../../context/AuthContext";
+import { useTranslation } from "react-i18next";
+import { LANGUAGES } from "../../pages/constants";
 
 export const UserProfile = () => {
     const navigate = useNavigate();
+    const { i18n, t } = useTranslation();
     const { user } = useContext(UserContext);
     const { logout } = useContext(AuthContext);
     const { getIcon } = useContext(UserIconContext);
 
     const [iconSrc, setIconSrc] = useState<string>(defaultIcon);
-    const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    const handleDropdownToggle = () => setIsOpen((prev) => !prev);
+    const handleChangeLanguage = (lang_code: string) => {
+        i18n.changeLanguage(lang_code);
+        localStorage.setItem('language', lang_code);
+    }
 
     const handleLogout = async () => {
         try {
@@ -60,24 +63,26 @@ export const UserProfile = () => {
 
     const LanguageDropdownItem:React.FC<{image: string, name: string, code: string, isChosen: boolean}> = ({image, name, code, isChosen}) => {
         return (
-            <Dropdown.Item onClick={() => {}} className="space-x-2">
+            <Dropdown.Item onClick={() => {handleChangeLanguage(code)}} className="space-x-2">
                 <img src={image} alt="" className="w-5 h-5" />
                 <p>{name}</p>
-                <img src={image} alt="" className={`w-5 h-5 ${isChosen ? '' : 'hidden'}`} />
+                <Checkbox defaultChecked disabled className={`w-4 h-4 ${isChosen ? '' : 'hidden'}`}/>
             </Dropdown.Item>
         )
     }
 
     return (<div className="flex order-3 md:order-3 space-x-2">
         <div className="flex justify-center items-center">
-            <Dropdown arrowIcon={false} inline placement="bottom" className=""
+            <Dropdown arrowIcon={false} inline placement="bottom"
                 label={
-                    <img src={poland} alt="" className="w-5 h-5" />
+                    <img src={LANGUAGES.find((language) => language.code == i18n.language)?.image} alt="" className="w-5 h-5" />
                 }
-                onClick={() => setIsOpen((prev) => !prev)}
             >
-                <LanguageDropdownItem image={poland} name="Poland" code="PL" isChosen={true} />
-                <LanguageDropdownItem image={uk} name="England" code="EN" isChosen={false} />
+                {
+                    LANGUAGES.map((language) => {
+                        return(<LanguageDropdownItem image={language.image} name={language.name} code={language.code} isChosen={i18n.language == language.code} />);
+                    })
+                }
             </Dropdown>
         </div>
         <Dropdown arrowIcon={false} inline placement="bottom"
