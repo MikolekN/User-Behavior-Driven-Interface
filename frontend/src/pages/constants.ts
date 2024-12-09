@@ -29,4 +29,5 @@ export const INTERVAL_SELECT_OPTIONS = [
 export const LANGUAGES = [
     { key: "en", value: "en" },
     { key: "pl", value: "pl" },
+
 ];
