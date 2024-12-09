@@ -307,7 +307,16 @@
             "sendIconFailed": "Failed to send the icon: "
         },
         "zod": {
-
+            "required": "The field is required",
+            "zodApiError": "Error in the data returned by the server. Try again later",
+            "amountGreaterThanZero": "The value cannot be less than 0",
+            "invalidAmountFormat": "Invalid amount format. Enter an amount with up to two decimal places",
+            "loanInvalidAmountFormat": "Invalid amount format. Enter the amount in thousands",
+            "amountLowerThan": "The entered amount cannot be less than",
+            "amountBiggerThan": "The entered amount cannot be greater than",
+            "password": "The password must be at least 8 characters long, including a lowercase letter, an uppercase letter, and a number",
+            "confirmPassword": "The entered passwords do not match",
+            "invalidAccountNumber": "Invalid account number"
         }
     }
 }

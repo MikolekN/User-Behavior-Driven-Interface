@@ -4,7 +4,7 @@ import { requiredStringField } from '../common/commonValidators';
 // uploadUserIcon
 
 export const UploadUserIconResponseSchema = z.object({
-    message: requiredStringField('message')
+    message: requiredStringField()
 });
 
 export type UploadUserIconResponse = z.infer<typeof UploadUserIconResponseSchema>;

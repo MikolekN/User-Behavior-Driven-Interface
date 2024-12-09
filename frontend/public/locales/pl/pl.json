@@ -306,7 +306,16 @@
             "sendIconFailed": "Nie udało się wysłać ikony: " 
         },
         "zod": {
-
+            "required": "Pole jest wymagane",
+            "zodApiError": "Błąd w danych zwróconych przez serwer. Spróbuj pownownie później",
+            "amountGreaterThanZero": "Wartość nie może być mniejsza niż 0",
+            "invalidAmountFormat": "Nieprawidłowy format kwoty. Podaj kwotę z dokładnością do dwóch miejsc po przecinku",
+            "loanInvalidAmountFormat": "Nieprawidłowy format kwoty. Podaj kwotę w tysiącach",
+            "amountLowerThan": "Wprowadzona kwota nie może być mniejsza niż",
+            "amountBiggerThan": "Wprowadzona kwota nie może być większa niż",
+            "password": "Hasło musi posiadać conajmniej 8 znaków, w tym małą literę, wielką literę i liczbę",
+            "confirmPassword": "Wprowadzone hasła nie pasują",
+            "invalidAccountNumber": "Nieprawidłowy numer konta"
         }
     }
 }

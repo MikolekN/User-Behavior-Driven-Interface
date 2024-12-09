@@ -192,7 +192,7 @@ const CyclicPaymentsForm = () => {
                                             />
                                         </Flowbite>
                                         {errors.startDate && (
-                                            <ErrorMessage message={errors.startDate.message}/>
+                                            <ErrorMessage message={t(`errors.zod.${errors.startDate.message}`)}/>
                                         )}
                                     </div>
                                 )}

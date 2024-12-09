@@ -6,11 +6,11 @@ import { requiredStringField } from '../common/commonValidators';
 export const ChartDataSchema = z.object({
     income: z.number(),
     outcome: z.number(),
-    interval: requiredStringField('interval')
+    interval: requiredStringField()
 });
 
 export const GetTransfersAnalysisResponseSchema = z.object({
-    message: requiredStringField('message'),
+    message: requiredStringField(),
     transfers: z.array(ChartDataSchema)
 });
 
@@ -20,14 +20,14 @@ export type GetTransfersAnalysisResponse = z.infer<typeof GetTransfersAnalysisRe
 // GetTransfers
 
 export const TransactionData = z.object({
-    _id: requiredStringField('id'),
+    _id: requiredStringField(),
     amount: z.number(),
-    created: requiredStringField('created'),
+    created: requiredStringField(),
     income: z.boolean(),
-    issuer_name: requiredStringField('issuer_name'),
-    title: requiredStringField('title'),
-    transfer_from_id: requiredStringField('transfer_from_id'),
-    transfer_to_id: requiredStringField('transfer_to_id')
+    issuer_name: requiredStringField(),
+    title: requiredStringField(),
+    transfer_from_id: requiredStringField(),
+    transfer_to_id: requiredStringField()
 });
 
 export const TransactionsHistoryData = z.object({
@@ -36,7 +36,7 @@ export const TransactionsHistoryData = z.object({
 });
 
 export const GetTransfersResponseSchema = z.object({
-    message: requiredStringField('message'),
+    message: requiredStringField(),
     transfers: z.array(TransactionsHistoryData)
 });
 
@@ -46,7 +46,7 @@ export type GetTransfersResponse = z.infer<typeof GetTransfersResponseSchema>;
 // CreateTransfer
 
 export const CreateTransferResponseSchema = z.object({
-    message: requiredStringField('message')
+    message: requiredStringField()
 });
 
 export type CreateTransfersResponse = z.infer<typeof CreateTransferResponseSchema>;
@@ -54,7 +54,7 @@ export type CreateTransfersResponse = z.infer<typeof CreateTransferResponseSchem
 // CreateLoan
 
 export const CreateLoanResponseSchema = z.object({
-    message: requiredStringField('message')
+    message: requiredStringField()
 });
 
 export type CreateLoanResponse = z.infer<typeof CreateLoanResponseSchema>;

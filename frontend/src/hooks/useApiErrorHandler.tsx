@@ -9,7 +9,7 @@ function useApiErrorHandler() {
 
     const handleError = (error: unknown) => {
         if (isZodError(error)) {
-            setErrorMessage('Zod API validation error');
+            setErrorMessage(`${t('errors.zod.zodApiError')}`);
         } else {
             const errorSplit: string[] = (error as Error).message.split(";");
             const errorKey: string = errorSplit[0];

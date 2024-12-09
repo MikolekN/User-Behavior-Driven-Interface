@@ -44,7 +44,7 @@ const FormSelect = ({ label, options, register, error, defaultValue, defaultOpti
             </select>
             {children}
             {error && 
-                <ErrorMessage message={error.message} />
+                <ErrorMessage message={t(`errors.zod.${error.message}`)} />
             }
         </div>
     );
