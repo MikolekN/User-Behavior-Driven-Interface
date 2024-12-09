@@ -28,7 +28,7 @@
             "title": "Customer Service",
             "submenu": {
                 "chat": "Chat",
-                "faq": "FAQ",
+                "faq": "Frequently asked questions",
                 "info": "Contact"
             }
         },

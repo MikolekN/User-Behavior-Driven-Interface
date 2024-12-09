@@ -28,7 +28,7 @@
             "title": "Obsługa Klienta",
             "submenu": {
                 "chat": "Czat",
-                "faq": "FAQ",
+                "faq": "Najczęściej zadawane pytania",
                 "info": "Kontakt"
             }
         },
