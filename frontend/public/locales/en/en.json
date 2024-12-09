@@ -318,5 +318,23 @@
             "confirmPassword": "The entered passwords do not match",
             "invalidAccountNumber": "Invalid account number"
         }
+    },
+    "chart": {
+        "income": "incomes",
+        "outcome": "outcomes",
+        "months": {
+            "jan": "January",
+            "feb": "February",
+            "mar": "March",
+            "apr": "April",
+            "may": "May",
+            "jun": "June",
+            "jul": "July",
+            "aug": "August",
+            "sep": "September",
+            "oct": "October",
+            "nov": "November",
+            "dec": "December"
+        }
     }
 }

@@ -130,7 +130,7 @@
         },
         "emptyAlertInfo": "Brak historii transakcji aby wygenerować analizę"
     },
-    "transactionsYeaerlyAnalysis": {
+    "transactionsYearlyAnalysis": {
         "tile": {
             "title": "Roczna analiza transakcji"
         },
@@ -316,6 +316,24 @@
             "password": "Hasło musi posiadać conajmniej 8 znaków, w tym małą literę, wielką literę i liczbę",
             "confirmPassword": "Wprowadzone hasła nie pasują",
             "invalidAccountNumber": "Nieprawidłowy numer konta"
+        }
+    },
+    "chart": {
+        "income": "przychody",
+        "outcome": "wydatki",
+        "months": {
+            "jan": "Styczeń",
+            "feb": "Luty",
+            "mar": "Marzec",
+            "apr": "Kwiecień",
+            "may": "Maj",
+            "jun": "Czerwiec",
+            "jul": "Lipiec",
+            "aug": "Sierpień",
+            "sep": "Wrzesień",
+            "oct": "Październik",
+            "nov": "Listopad",
+            "dec": "Grudzień"
         }
     }
 }

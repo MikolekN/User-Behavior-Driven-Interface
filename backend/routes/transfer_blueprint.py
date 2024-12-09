@@ -9,7 +9,7 @@ from bson import ObjectId
 from ..helpers import add, substract
 from ..constants import BANK_ACCOUNT_NUMBER, MAX_LOAN_VALUE, MIN_LOAN_VALUE
 
-months = ['', 'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień']
+months = ['', 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
 transfer_blueprint = Blueprint('transfer', __name__, url_prefix='/api')
 
