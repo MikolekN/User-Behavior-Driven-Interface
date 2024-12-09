@@ -1,0 +1,237 @@
+{
+    "menu": {
+        "home": "Home",
+        "transfers": {
+            "title": "Transfers",
+            "submenu": {
+                "transfer": "Make Transfer",
+                "transferHistory": "Transfer History",
+                "cyclicPayments": "Cyclic Payments",
+                "loan": "Loan" 
+            }
+        },
+        "settings": {
+            "title": "Settings",
+            "submenu": {
+                "settings1": "Settings 1",
+                "settings2": "Settings 2"
+            }
+        },
+        "analysis": {
+            "title": "Finances",
+            "submenu": {
+                "monthlyAnalysis": "Monthly Analysis",
+                "yearlyAnalysis": "Yearly Analysis"
+            }
+        },
+        "customerService": {
+            "title": "Customer Service",
+            "submenu": {
+                "chat": "Chat",
+                "faq": "FAQ",
+                "info": "Contact"
+            }
+        },
+        "profile": {
+            "profile": "Profile",
+            "login": "Login",
+            "register": "Register",
+            "logout": "Sign out"
+        },
+        "login": "Login",
+        "register": "Register"
+    },
+    "login": {
+        "tile": {
+            "title": "Sign in"
+        },
+        "email": "Email",
+        "password": "Password",
+        "submit": "Sign in",
+        "loading": "Loading..."
+    },
+    "register": {
+        "tile": {
+            "title": "Sign up"
+        },
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "submit": "Sign up",
+        "loading": "Loading..."
+    },
+    "dashboard": {
+        "balance": "Balance",
+        "blockades": "Blockades",
+        "availableFunds": "Available Funds",
+        "transfer": "Transfer"
+    },
+    "transfer": {
+        "tile": {
+            "title": "Transfer"
+        },
+        "fromAccount": "From Account",
+        "recipientAccountNumber": "Recipient Account Number",
+        "transferTitle": "Transfer Title",
+        "amount": "Amout",
+        "submit": "Submit",
+        "loading": "Loading..."
+    },
+    "transactionHistory": {
+        "tile": {
+            "title": "Transaction History"
+        }
+    },
+    "cyclicPaymentList": {
+        "tile": {
+            "title": "Cyclic Payments"
+        },
+        "submit": "Add Cyclic Payment",
+        "nameAndReceiver": "Name / Receiver",
+        "amount": "Amout",
+        "createdDate": "Created Date",
+        "recipient": "Recipient",
+        "recipientAccountNumber": "Recipient Account Number",
+        "fromAccount": "From Account",
+        "title": "Title",
+        "startDate": "Start Date",
+        "transferInterval": "Transfer Interval",
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "cyclicPaymentForm": {
+        "tile": {
+            "title": "Cyclic Payment"
+        },
+        "fromAccount": "From Account",
+        "cyclicPaymentName": "Name",
+        "recipientAccountNumber": "Recipient Account Number",
+        "startDate": "Start Date",
+        "transferInterval": "Transfer Interval",
+        "title": "Title",
+        "amount": "Amout",
+        "submit": "Submit",
+        "loading": "Loading..."
+    },
+    "loan": {
+        "tile": {
+            "title": "Loan"
+        },
+        "fromAccount": "From Account",
+        "howMuchMoney": "How much money do you need?",
+        "numberOfInstallments": "Number of installments",
+        "submit": "Submit",
+        "loading": "Loading..."
+    },
+    "transactionsMonthlyAnalysis": {
+        "tile": {
+            "title": "Transactions Monthly Analysis"
+        },
+        "emptyAlertInfo": "No transactions history to generate analysis yet"
+    },
+    "transactionsYearlyAnalysis": {
+        "tile": {
+            "title": "Transactions Yearly Analysis"
+        },
+        "emptyAlertInfo": "No transactions history to generate analysis yet"
+    },
+    "chat": {
+        "tile": {
+            "title": "Chat"
+        },
+        "writeMessage": "Write a message...",
+        "welcomeMessage": "Welcome to our customer service chat! Don't hesitate to ask any questions and we'll be happy to help.",
+        "reponseMessage": "Thank you for your message! Our team will contact you as soon as possible."
+    },
+    "faq": {
+        "tile": {
+            "title": "FAQ"
+        },
+        "new-account": {
+            "question": "How can I open a new account?",
+            "answer": "To open a new account, visit our registration page or contact our customer service office. You can also visit our branch, where our advisors will help you through the registration process."
+        },
+        "account-payments": {
+            "question": "What are the account maintenance fees?",
+            "answer": "Account maintenance fees vary depending on the type of account. Detailed information about fees can be found on our website in the 'Pricing' section or by contacting our customer service office."
+        },
+        "update-personal-data": {
+            "question": "How can I update my personal information?",
+            "answer": "To update your personal information, log in to your online account and go to the 'Account Settings' section. You can also visit our branch in person or contact our customer service office."
+        },
+        "forgot-password": {
+            "question": "What should I do if I forget my account password?",
+            "answer": "If you forget your account password, click on the 'Forgot Password' option on the login page. Follow the instructions to reset your password. If you encounter any issues, contact our customer service office."
+        },
+        "account-balance": {
+            "question": "How can I check my account balance?",
+            "answer": "You can check your account balance by logging into online or mobile banking. You can also use our ATMs to get your current account balance or contact our customer service office."
+        },
+        "financial-advice": {
+            "question": "Do you offer financial advisory services?",
+            "answer": "Yes, we offer financial advisory services. Contact us to schedule a meeting with our financial advisor, who will help you manage your finances and plan for the future."
+        },
+        "complaint": {
+            "question": "How can I file a complaint?",
+            "answer": "You can file a complaint through our website in the 'Contact' section, by phone, or in person at our branch. We will strive to resolve the issue as quickly as possible."
+        },
+        "open-hours": {
+            "question": "What are the opening hours of your branches?",
+            "answer": "The opening hours of our branches vary depending on the location. Detailed opening hours can be found on our website in the 'Contact' section or by contacting the selected branch."
+        }
+    },
+    "contact": {
+        "tile": {
+            "title": "Contact Information"
+        },
+        "phoneContact": {
+            "title": "Phone Contact",
+            "message": "If you would like to contact us by phone, you can call",
+            "hotline": "Hotline",
+            "customerService": "Customer Service",
+            "technicalSupport": "Technical Support"
+        },
+        "emailContact": {
+            "title": "Email Contact",
+            "message": "Have any questions? Write to us at",
+            "email": "Email",
+            "complaint": "Complaint",
+            "technicalSupport": "Technical Support"
+        },
+        "address": {
+            "title": "Address",
+            "message": "Visit us at"
+        }
+    },
+    "profile": {
+        "tile": {
+            "title": "User profile"
+        },
+        "icon": {
+            "imageFormatErrorMessage": "Invalid file type. Please upload a PNG or JPG image.",
+            "imageProcessingError": "Error processing image.",
+            "imageLoadingError": "Error loading image.",
+            "fileLoadingError": "Error reading file.",
+            "newIcon": "Choose new icon",
+            "submit": "Choose icon",
+            "loading": "Loading..."
+        },
+        "field": {
+            "defaultOption": "-- Choose option --",
+            "selectField": "Choose field to change",
+            "new": "New",
+            "value": "value",
+            "login": "user name",
+            "accountName": "account name",
+            "currency": "currency",
+            "submit": "Change",
+            "loading": "Loading..."
+        },
+        "password": {
+            "password": "Password",
+            "newPassword": "Confirm password",
+            "submit": "Change password",
+            "loading": "Loading..."
+        }
+    }
+}

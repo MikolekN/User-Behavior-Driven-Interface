@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import Tile from '../Tile/Tile';
 import { UserContext } from '../../context/UserContext';
-import { Navigate } from 'react-router-dom';
 import EmptyResponseInfoAlert from '../EmptyResponseInfoAlert/EmptyResponseInfoAlert';
 import arrowUp from '../../assets/images/chevron-up.svg';
 import arrowDown from '../../assets/images/chevron-down.svg';
@@ -9,8 +8,10 @@ import arrowUpDark from '../../assets/images/chevron-up-dark.svg';
 import arrowDownDark from '../../assets/images/chevron-down-dark.svg';
 import { TransferContext } from '../../context/TransferContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
+import { useTranslation } from 'react-i18next';
 
 const TransactionsHistory = () => {
+    const { t } = useTranslation();
     const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
     const [loading, setLoading] = useState(true);
     const { user } = useContext(UserContext);
@@ -61,7 +62,6 @@ const TransactionsHistory = () => {
         return () => observer.disconnect();
     }, []);
 
-    if (!user) return <Navigate to="/login" />;
     if (loading) return <div>Loading...</div>;
     if (apiError.isError) { 
         return (
@@ -75,7 +75,7 @@ const TransactionsHistory = () => {
 
     return (
         <div id="transactions-history-wrapper" className='flex overflow-hidden flex-col flex-grow justify-center items-center h-full max-h-full'>
-            <Tile title="Transactions History" id="transactions-history-tile" className='flex flex-col w-1/3 shadow-md h-[95%] max-h-[95%] mb-2.5 mx-auto rounded-lg'>
+            <Tile title={t('transactionHistory.tile.title')} id="transactions-history-tile" className='flex flex-col w-1/3 shadow-md h-[95%] max-h-[95%] mb-2.5 mx-auto rounded-lg'>
                 {!transfers && (
                     <div>Transactions History are loading...</div>
                 )}
@@ -100,7 +100,7 @@ const TransactionsHistory = () => {
                                         {transfer.transactions.map((item, index) => (
                                             <div id="transaction-row" key={index} className='p-3 dark:text-gray-300 bg-white dark:bg-gray-600 rounded mb-1 flex justify-between items-center shadow-sm transition-[background-color] duration-[0.2s] ease-[ease]'>
                                                 <div>
-                                                    <span id="issuer-name" className="text-base font-semibold block">{item.issuer_name}</span>
+                                                    <span id="issuer-name" className="text-base font-semibold block">{item.issuerName}</span>
                                                     <span id="transaction-title" className='text-sm font-normal mt-1 block'>
                                                         <i>{item.title}</i>
                                                     </span>
@@ -112,7 +112,7 @@ const TransactionsHistory = () => {
                                                     }`}
                                                 >
                                                     {!item.income && <span>-</span>}
-                                                    {item.amount} {user.currency}
+                                                    {item.amount} {user!.currency}
                                                 </div>
                                             </div>
                                         ))}

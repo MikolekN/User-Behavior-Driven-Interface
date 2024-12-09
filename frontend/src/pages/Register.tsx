@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Tile from '../components/Tile/Tile';
 import FormInput from '../components/FormInput/FormInput';
@@ -11,12 +11,14 @@ import { RegisterFormData, RegisterFormDataSchema } from '../schemas/formValidat
 import useApiErrorHandler from '../hooks/useApiErrorHandler';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
 import { scrollToTop } from '../components/utils/scroll';
+import { useTranslation } from 'react-i18next';
 
 const Register = () => {
+    const { t } = useTranslation();
     const { apiError, handleError } = useApiErrorHandler();
     const { user } = useContext(UserContext);
     const { register } = useContext(AuthContext);
-    const { register: formRegister, handleSubmit, formState: { errors } } = useForm<RegisterFormData>({
+    const { register: formRegister, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterFormData>({
         resolver: zodResolver(RegisterFormDataSchema),
         defaultValues: {
             email: '',
@@ -29,7 +31,7 @@ const Register = () => {
 
     if (user) return <Navigate to="/dashboard" />;
 
-    const onSubmit = handleSubmit(async ({ email, password: userPassword }) => {
+    const onSubmit: SubmitHandler<RegisterFormData> = async ({ email, password: userPassword }: RegisterFormData) => {
         try {
             await register(email, userPassword);
             navigate('/login');
@@ -37,11 +39,11 @@ const Register = () => {
             handleError(error);
             scrollToTop('register-form-wrapper');
         }
-    });
+    };
 
     return (
         <div id="register-form-wrapper" className="flex items-center justify-center">
-            <Tile title="Register to Online Banking" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
+            <Tile title={t('register.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
                         { apiError.isError && 
@@ -49,30 +51,30 @@ const Register = () => {
                                 <ErrorAlert alertMessage={apiError.errorMessage} />
                             </div> 
                         }
-                        <form className="mt-8 space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
+                        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
-                                label="Email"
+                                label={t('register.email')}
                                 fieldType="text"
                                 register={formRegister('email')}
                                 error={errors.email}
                                 className="w-full"
                             />
                             <FormInput 
-                                label="Password"
+                                label={t('register.password')}
                                 fieldType="password"
                                 register={formRegister('password')}
                                 error={errors.password}
                                 className="w-full"
                             />
                             <FormInput 
-                                label="Confirm Password"
+                                label={t('register.confirmPassword')}
                                 fieldType="password"
                                 register={formRegister('confirmPassword')}
                                 error={errors.confirmPassword}
                                 className="w-full"
                             />
-                            <Button className="w-full">
-                                Submit
+                            <Button isSubmitting={isSubmitting} className="w-full">
+						        {isSubmitting ? `${t('register.loading')}` : `${t('register.submit')}`}
                             </Button>
                         </form>
                     </div>

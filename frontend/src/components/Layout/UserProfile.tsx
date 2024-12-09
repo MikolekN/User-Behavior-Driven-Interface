@@ -11,7 +11,6 @@ import { AuthContext } from "../../context/AuthContext";
 
 export const UserProfile = () => {
     const navigate = useNavigate();
-
     const { user } = useContext(UserContext);
     const { logout } = useContext(AuthContext);
     const { getIcon } = useContext(UserIconContext);

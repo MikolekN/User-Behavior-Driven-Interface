@@ -6,8 +6,10 @@ import { Link } from 'react-router-dom';
 import { Dropdown } from '../Dropdown';
 import { User } from '../../utils/User';
 import { blackTextTheme } from '../NavbarLinkBlackText';
+import { useTranslation } from 'react-i18next';
 
 export const MainMenu = () => {
+    const { t } = useTranslation();
     const { user } = useContext(UserContext);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 

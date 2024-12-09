@@ -5,7 +5,10 @@ import { blackTextTheme } from './NavbarLinkBlackText';
 
 interface DropdownProps {
     title: string;
-    options: { label: string; path: string }[];
+    options: {
+        label: string; 
+        path: string 
+    }[];
     isOpen: boolean;
     onClick: () => void;
     closeDropdown: () => void;

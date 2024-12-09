@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import Tile from '../Tile/Tile';
 import FormInput from '../FormInput/FormInput';
@@ -20,8 +20,11 @@ import Label from '../utils/Label';
 import { datepickerTheme } from '../utils/themes/datepickerTheme';
 import { datepickerErrorTheme } from '../utils/themes/datepickerErrorTheme';
 import ErrorMessage from '../utils/ErrorMessage';
+import { useTranslation } from 'react-i18next';
+import Button from '../utils/Button';
 
 const CyclicPaymentsForm = () => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const [ date, setDate ] = useState<Date | undefined | null>(undefined);
     const [ minDate, ] = useState<Date | undefined>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
@@ -30,7 +33,7 @@ const CyclicPaymentsForm = () => {
     const { cyclicPayment, setCyclicPayment, createCyclicPayment, getCyclicPayment, 
         updateCyclicPayment } = useContext(CyclicPaymentContext);
 
-    const { register, handleSubmit, formState: { errors }, clearErrors, control, setValue } = useForm<CyclicPaymentFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting }, clearErrors, control, setValue } = useForm<CyclicPaymentFormData>({
         resolver: zodResolver(CyclicPaymentFormDataSchema),
         defaultValues: {
             recipientAccountNumber: '',
@@ -91,7 +94,7 @@ const CyclicPaymentsForm = () => {
         return localDate.toISOString();
     };
 
-    const onSubmit = handleSubmit(async (data: CyclicPaymentFormData) => {
+    const onSubmit: SubmitHandler<CyclicPaymentFormData> = async (data: CyclicPaymentFormData) => {
         if (cyclicPayment === null) {
             try {
                 const requestBody = {
@@ -127,7 +130,7 @@ const CyclicPaymentsForm = () => {
                 scrollToTop('cyclic-payment-form-wrapper');
             }
         }
-    });
+    };
     
     const handleDateChange = (date: Date | null) => {
         if (!date) {
@@ -143,7 +146,7 @@ const CyclicPaymentsForm = () => {
 
     return (
         <div id="cyclic-payment-form-wrapper" className="flex items-center justify-center">
-            <Tile title="Cyclic Payment" id="cyclic-payment-form" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
+            <Tile title={t('cyclicPaymentForm.tile.title')} id="cyclic-payment-form" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
                         { apiError.isError && 
@@ -151,17 +154,17 @@ const CyclicPaymentsForm = () => {
                                 <ErrorAlert alertMessage={apiError.errorMessage} />
                             </div> 
                         }
-                        <AccountDetails label='From account' user={user!} className='w-full p-3 mb-6' />
-                        <form id="cyclic-payment-form" className="space-y-6" onSubmit={(e) => { e.preventDefault(); void onSubmit(); }}>
+                        <AccountDetails label={t('cyclicPaymentForm.fromAccount')} user={user!} className='w-full p-3 mb-6' />
+                        <form id="cyclic-payment-form" className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
-                                label="Cyclic Payment name"
+                                label={t('cyclicPaymentForm.cyclicPaymentName')}
                                 fieldType="text"
                                 register={register('cyclicPaymentName')}
                                 error={errors.cyclicPaymentName}
                                 className="w-full"
                             />
                             <FormInput 
-                                label="Recipient account number"
+                                label={t('cyclicPaymentForm.recipientAccountNumber')}
                                 fieldType="text"
                                 register={register('recipientAccountNumber')}
                                 error={errors.recipientAccountNumber}
@@ -173,7 +176,7 @@ const CyclicPaymentsForm = () => {
                                 defaultValue={undefined}
                                 render={() => (
                                     <div className="mb-4">
-                                        <Label label='Start Date' />
+                                        <Label label={t('cyclicPaymentForm.startDate')} />
                                         <Flowbite theme={{ theme: errors.startDate ? datepickerErrorTheme : datepickerTheme }}>
                                             <Datepicker
                                                 // dodanie jakiejś logiki przy i18next                             
@@ -195,31 +198,32 @@ const CyclicPaymentsForm = () => {
                                 )}
                             />
                             <FormSelect
-                                label="Interval"
+                                label={t('cyclicPaymentForm.transferInterval')}
                                 options={intervalOptions}
+                                defaultOption='-- Select Interval --'
                                 register={register('interval')}
                                 error={errors.interval}
                                 className="w-full"
                             />
                             <FormInput 
-                                label="Title"
+                                label={t('cyclicPaymentForm.title')}
                                 fieldType="text"
                                 register={register('transferTitle')}
                                 error={errors.transferTitle}
                                 className="w-full"
                             />
                             <FormInput 
-                                label="Amount"
+                                label={t('cyclicPaymentForm.amount')}
                                 fieldType="text"
                                 register={register('amount')}
                                 error={errors.amount}
                                 className="w-10/12"
                             >
-                                {user?.currency}
+                                {user!.currency}
                             </FormInput>
-                            <div>
-                                <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Submit</button>
-                            </div>
+                            <Button isSubmitting={isSubmitting} className="w-full">
+						        {isSubmitting ? `${t('cyclicPaymentForm.loading')}` : `${t('cyclicPaymentForm.submit')}`}
+                            </Button>
                         </form>
                     </div>
                 </div>
