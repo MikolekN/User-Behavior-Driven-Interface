@@ -75,16 +75,17 @@ export const UserProfile = () => {
         <div className="flex justify-center items-center">
             <Dropdown arrowIcon={false} inline placement="bottom"
                 label={
-                    <img src={LANGUAGES.find((language) => language.code == i18n.language)?.image} alt="" className="w-5 h-5" />
+                    <img src={LANGUAGES.find((language) => language.value == i18n.language)?.image} alt="" className="w-5 h-5" />
                 }
             >
                 {
                     LANGUAGES.map((language) => {
-                        return(<LanguageDropdownItem image={language.image} name={language.name} code={language.code} isChosen={i18n.language == language.code} />);
+                        return(<LanguageDropdownItem image={language.image} name={language.name} code={language.value} isChosen={i18n.language == language.value} />);
                     })
                 }
             </Dropdown>
         </div>
+        
         <Dropdown arrowIcon={false} inline placement="bottom"
             label={
                 <Avatar alt="User profile icon" img={iconSrc} rounded className='rounded-full hover:bg-gray-200 hover:dark:bg-gray-700 transition ease-in-out duration-300'/>
@@ -93,21 +94,21 @@ export const UserProfile = () => {
 
         {!user && (
             <>
-                <DropdownItem label="Login" path="/login" />
-                <DropdownItem label="Register" path="/register" />
+                <DropdownItem label={t('menu.profile.login')} path="/login" />
+                <DropdownItem label={t('menu.profile.register')} path="/register" />
             </>
         )}
 
         {user && (
             <>
-                <Dropdown.Header>
+                <Dropdown.Header className="flex flex-col justify-center items-center">
                     <span className="block text-sm">{user?.login}</span>
                     <span className="block truncate text-sm font-medium">{user?.email}</span>
                 </Dropdown.Header>
-                <DropdownItem label="Profile" path="/profile" />
-                <DropdownItem label="Settings" path="/settings" />
+                <DropdownItem label={t('menu.profile.profile')} path="/profile" />
+                <DropdownItem label={t('menu.profile.settings')} path="/settings" />
                 <Dropdown.Divider />
-                <DropdownItem label="Logout" path="/" onClick={handleLogout}/>
+                <DropdownItem label={t('menu.profile.logout')} path="/" onClick={handleLogout}/>
             </>
         )}
         </Dropdown>

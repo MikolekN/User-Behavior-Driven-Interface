@@ -10,13 +10,6 @@
                 "loan": "Loan" 
             }
         },
-        "settings": {
-            "title": "Settings",
-            "submenu": {
-                "settings1": "Settings 1",
-                "settings2": "Settings 2"
-            }
-        },
         "analysis": {
             "title": "Finances",
             "submenu": {
@@ -36,6 +29,7 @@
             "profile": "Profile",
             "login": "Login",
             "register": "Register",
+            "settings": "Settings",
             "logout": "Sign out"
         },
         "login": "Login",

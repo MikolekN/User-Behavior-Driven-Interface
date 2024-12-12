@@ -10,13 +10,6 @@
                 "loan": "Pożyczki" 
             }
         },
-        "settings": {
-            "title": "Ustawienia",
-            "submenu": {
-                "settings1": "Ustawienia 1",
-                "settings2": "Ustawienia 2"
-            }
-        },
         "analysis": {
             "title": "Finanse",
             "submenu": {
@@ -36,6 +29,7 @@
             "profile": "Profil",
             "login": "Logowanie",
             "register": "Rejestracja",
+            "settings": "Ustawienia",
             "logout": "Wyloguj się"
         },
         "login": "Logowanie",
