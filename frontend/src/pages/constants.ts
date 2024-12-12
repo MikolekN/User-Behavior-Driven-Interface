@@ -31,14 +31,12 @@ export const INTERVAL_SELECT_OPTIONS = [
 
 export const LANGUAGES = [
     {
-        name: "English",
-        key: "en",
+        key: "english",
         value: "en",
         image: uk
     },
     {
-        name: "Polish",
-        key: "pl",
+        key: "polish",
         value: "pl",
         image: poland
     }

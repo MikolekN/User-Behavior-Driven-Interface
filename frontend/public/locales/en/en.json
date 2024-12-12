@@ -32,6 +32,10 @@
             "settings": "Settings",
             "logout": "Sign out"
         },
+        "languages": {
+            "polish": "Polish",
+            "english": "English"
+        },
         "login": "Login",
         "register": "Register",
         "adminPanel": "Admin panel"

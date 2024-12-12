@@ -32,6 +32,10 @@
             "settings": "Ustawienia",
             "logout": "Wyloguj się"
         },
+        "languages": {
+            "polish": "Polski",
+            "english": "Angielski"
+        },
         "login": "Logowanie",
         "register": "Rejstracja",
         "adminPanel": "Panel administratora"
