@@ -71,11 +71,12 @@ const TransfersAnalysisChart = (props: TransfersAnalysisChartProps) => {
         fill: computedMode == 'dark' ? '#4b5563' : "#fff",
     };
 
+    // Można jeszcze zmienić kolor labeli (wartości i miesięcy) na ciemnym motywie, ale teraz nie wiem jak
     return (
         <div ref={chartRef} style={{ width: '100%' }}>
             <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
                 <BarChart data={props.chartData!}>
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid strokeDasharray="3 3"/> {/* vertical={false}*/}
                     <XAxis dataKey="interval" tickFormatter={formatMonth} />
                     <YAxis />
                     <Tooltip cursor={cursorHover} contentStyle={tooltipStyle} />
