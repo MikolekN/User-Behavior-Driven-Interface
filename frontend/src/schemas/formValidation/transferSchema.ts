@@ -3,18 +3,18 @@ import { requiredStringField } from '../common/commonValidators';
 import { ACCOUNT_NUMBER_REGEX, AMOUNT_REGEX, ZERO } from './constants';
 
 export const TransferFormDataSchema = z.object({
-    recipientAccountNumber: requiredStringField('Recipient Account Number').regex(new RegExp(ACCOUNT_NUMBER_REGEX), {
-        message: 'Invalid account number'
+    recipientAccountNumber: requiredStringField().regex(new RegExp(ACCOUNT_NUMBER_REGEX), {
+        message: 'invalidAccountNumber'
     }),
-    transferTitle: requiredStringField('Transfer Title'),
-    amount: requiredStringField('Amount')
+    transferTitle: requiredStringField(),
+    amount: requiredStringField()
     })
     .superRefine((data, ctx) => {
 
         if (parseFloat(data.amount) <= ZERO) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                message: 'Amount should be greater than 0',
+                message: 'amountGreaterThanZero',
                 path: ['amount']
             });
         }
@@ -22,7 +22,7 @@ export const TransferFormDataSchema = z.object({
         if (!AMOUNT_REGEX.test(data.amount)) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                message: 'Invalid Amount format. Two decimal places are allowed',
+                message: 'invalidAmountFormat',
                 path: ['amount']
             });
         }
