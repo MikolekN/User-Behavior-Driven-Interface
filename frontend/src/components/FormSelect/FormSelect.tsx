@@ -29,12 +29,12 @@ const FormSelect = ({ label, options, register, error, defaultValue, defaultOpti
             <Label label={label} />
             <select
                 {...register}
-                className={`${className} p-3 border border-gray-300 rounded-lg mt-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? 'border-red-300' : ''}`}
+                className={`${className} text-black dark:text-gray-400 p-3 border border-gray-300 dark:border-gray-600 rounded-lg mt-1 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? 'border-red-300' : ''}`}
                 onChange={onChange}
                 defaultValue={defaultValue}
             >
                 { defaultOption &&
-                    <option className='bg-gray-200 dark:bg-gray-400' value="">{defaultOption}</option>
+                    <option className='bg-gray-200 dark:bg-gray-800' value="">{defaultOption}</option>
                 }
                 {options.map((option) => (
                     <option key={option.value} value={option.value}>
