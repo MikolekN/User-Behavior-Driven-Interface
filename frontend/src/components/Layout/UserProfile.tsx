@@ -3,6 +3,7 @@ import { Dropdown, Avatar, Checkbox, DarkThemeToggle, useThemeMode } from "flowb
 import { Link, useNavigate } from "react-router-dom";
 
 import defaultIcon from '../../assets/images/user.png';
+import defaultIconDark from '../../assets/images/user-dark.png';
 import { UserContext } from '../../context/UserContext';
 import { UserIconContext } from '../../context/UserIconContext';
 import { AuthContext } from "../../context/AuthContext";
@@ -17,7 +18,7 @@ export const UserProfile = () => {
     const { getIcon } = useContext(UserIconContext);
     const { computedMode, toggleMode } = useThemeMode();
 
-    const [iconSrc, setIconSrc] = useState<string>(defaultIcon);
+    const [iconSrc, setIconSrc] = useState<string>(computedMode == 'dark' ? defaultIconDark : defaultIcon);
 
     const handleChangeLanguage = (lang_code: string) => {
         i18n.changeLanguage(lang_code);
@@ -47,12 +48,12 @@ export const UserProfile = () => {
                     URL.revokeObjectURL(iconURL);
                 };
             } else {
-                setIconSrc(defaultIcon);
+                setIconSrc(computedMode == 'dark' ? defaultIconDark : defaultIcon);
             }
         };
 
         void fetchIcon();
-    }, [user, getIcon, user?.icon]);
+    }, [user, getIcon, user?.icon, computedMode]);
 
     const DropdownItem:React.FC<{label: string, path: string, onClick?: () => Promise<void>}> = ({label, path, onClick}) => {
         return (
