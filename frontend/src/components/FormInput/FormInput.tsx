@@ -2,6 +2,7 @@ import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import { ReactNode } from 'react';
 import Label from '../utils/Label';
 import ErrorMessage from '../utils/ErrorMessage';
+import { t } from 'i18next';
 
 interface FormInputProps {
     label: string;
@@ -10,6 +11,18 @@ interface FormInputProps {
     error?: FieldError;
     children?: ReactNode;
     className?: string;
+}
+
+const getZodValidationErrorFormField = (error?: FieldError): string => {
+    const errorSplit: string[] = error!.message!.split(";");
+    const fieldName: string = errorSplit[0];
+    const fieldRestriction: string = errorSplit[1] || "";
+
+    console.log(t(`errors.zod.${fieldName}`));
+
+    return (fieldRestriction === "") ? 
+        t(`errors.zod.${fieldName}`) : 
+        `${t(`errors.zod.${fieldName}`)} ${fieldRestriction}`;
 }
 
 const FormInput = ({ label, fieldType, register, error, children, className }: FormInputProps) => {
@@ -34,7 +47,7 @@ const FormInput = ({ label, fieldType, register, error, children, className }: F
                 )}
             </div>
             {error && 
-                <ErrorMessage message={error.message} />
+                <ErrorMessage message={getZodValidationErrorFormField(error)} />
             }
         </div>
     );

@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 const Login = () => {
     const { t } = useTranslation();
     const { user } = useContext(UserContext);
-    const { login } = useContext(AuthContext);
+    const { login, logout } = useContext(AuthContext);
     const navigate = useNavigate();
     const { apiError, handleError } = useApiErrorHandler();
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormData>({
@@ -36,6 +36,7 @@ const Login = () => {
             navigate('/dashboard');
         } catch (error) {
             handleError(error);
+            logout();
             scrollToTop('login-form-wrapper');
         }
     };

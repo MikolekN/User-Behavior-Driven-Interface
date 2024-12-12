@@ -2,8 +2,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, Bar, Legend } from 'recharts';
 import { TransfersAnalysisChartProps } from '../utils/types/TransfersAnalysisChartTypes';
 import { CHART_HEIGHT, COLORS, LEGEND_HEIGHT } from '../constants';
+import { useTranslation } from 'react-i18next';
 
 const TransfersAnalysisChart = (props: TransfersAnalysisChartProps) => {
+    const { t } = useTranslation();
     const chartRef = useRef<HTMLDivElement>(null);
     const [columnWidth, setColumnWidth] = useState<number>(0);
     const canvasRef = useRef<HTMLCanvasElement>(document.createElement('canvas'));
@@ -89,8 +91,8 @@ const TransfersAnalysisChart = (props: TransfersAnalysisChartProps) => {
                     <Legend verticalAlign="top" height={LEGEND_HEIGHT} />
                     <CartesianGrid stroke="#f5f5f5" />
                     {/* tutaj mozna dac jakies zmienne typu kolor primary, sedoncday czy coś */}
-                    <Bar dataKey="income" fill={COLORS.GREEN} radius={[10, 10, 0, 0]} />
-                    <Bar dataKey="outcome" fill={COLORS.RED} radius={[10, 10, 0, 0]} />
+                    <Bar dataKey="income" name={t('chart.income')} fill={COLORS.GREEN} radius={[10, 10, 0, 0]} />
+                    <Bar dataKey="outcome" name={t('chart.outcome')} fill={COLORS.RED} radius={[10, 10, 0, 0]} />
                 </BarChart>
             </ResponsiveContainer>
         </div>

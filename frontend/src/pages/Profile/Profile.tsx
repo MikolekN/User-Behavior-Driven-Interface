@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { UserPasswordFormData, UserPasswordFormDataSchema } from '../../schemas/formValidation/userPasswordSchema';
 import { UserFieldFormData, UserFieldFormDataSchema } from '../../schemas/formValidation/userFieldSchema';
 import { UserIconFormDataSchema, UserIconFromData } from '../../schemas/formValidation/userIconSchema';
-import { validFields } from './ProfileData';
+import { FIELD_SELECT_OPTIONS } from '../constants';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import { scrollToTop } from '../../components/utils/scroll';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
@@ -173,11 +173,6 @@ const ProfilePage = () => {
         }
     };
 
-    const getFieldLabel = (field: string) => {
-        const fieldData = validFields.find((item) => item.value === field);
-        return fieldData ? fieldData.label : '';
-    };
-
     return (
         <div className="flex items-center justify-center">
             <Tile title={t('profile.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
@@ -217,7 +212,7 @@ const ProfilePage = () => {
                                 defaultOption={t('profile.field.defaultOption')}
                                 onChange={handleChange}
                                 label={t('profile.field.selectField')}
-                                options={validFields}
+                                options={FIELD_SELECT_OPTIONS}
                                 register={registerField('field')}
                                 error={fieldErrors.field}
                                 className="w-full"
