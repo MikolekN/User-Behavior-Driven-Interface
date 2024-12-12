@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Dropdown, Avatar, Checkbox } from "flowbite-react"
+import { Dropdown, Avatar, Checkbox, DarkThemeToggle, useThemeMode } from "flowbite-react"
 import { Link, useNavigate } from "react-router-dom";
 
 import defaultIcon from '../../assets/images/user.png';
@@ -15,6 +15,7 @@ export const UserProfile = () => {
     const { user } = useContext(UserContext);
     const { logout } = useContext(AuthContext);
     const { getIcon } = useContext(UserIconContext);
+    const { computedMode, toggleMode } = useThemeMode();
 
     const [iconSrc, setIconSrc] = useState<string>(defaultIcon);
 
@@ -75,7 +76,10 @@ export const UserProfile = () => {
         <div className="flex justify-center items-center">
             <Dropdown arrowIcon={false} inline placement="bottom"
                 label={
-                    <img src={LANGUAGES.find((language) => language.value == i18n.language)?.image} alt="" className="w-5 h-5" />
+                    <>
+                        <DarkThemeToggle className="hidden md:block"/>
+                        <img src={LANGUAGES.find((language) => language.value == i18n.language)?.image} alt="" className="w-5 h-5" />
+                    </>
                 }
             >
                 {
@@ -96,6 +100,9 @@ export const UserProfile = () => {
             <>
                 <DropdownItem label={t('menu.profile.login')} path="/login" />
                 <DropdownItem label={t('menu.profile.register')} path="/register" />
+                <Dropdown.Item onClick={toggleMode} className='bg-transparent text-black font-normal hover:font-semibold hover:text-black'>
+                    <p>{t('menu.profile.mode.' + computedMode)}</p>
+                </Dropdown.Item>
             </>
         )}
 
@@ -107,6 +114,9 @@ export const UserProfile = () => {
                 </Dropdown.Header>
                 <DropdownItem label={t('menu.profile.profile')} path="/profile" />
                 <DropdownItem label={t('menu.profile.settings')} path="/settings" />
+                <Dropdown.Item onClick={toggleMode} className='bg-transparent text-black font-normal hover:font-semibold hover:text-black'>
+                    <p>{t('menu.profile.mode.' + computedMode)}</p>
+                </Dropdown.Item>
                 <Dropdown.Divider />
                 <DropdownItem label={t('menu.profile.logout')} path="/" onClick={handleLogout}/>
             </>

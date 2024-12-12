@@ -30,7 +30,11 @@
             "login": "Logowanie",
             "register": "Rejestracja",
             "settings": "Ustawienia",
-            "logout": "Wyloguj się"
+            "logout": "Wyloguj się",
+            "mode": {
+                "light": "Jasny motyw",
+                "dark": "Ciemny motyw"
+            }
         },
         "languages": {
             "polish": "Polski",

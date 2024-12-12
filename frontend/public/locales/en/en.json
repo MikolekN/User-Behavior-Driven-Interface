@@ -30,7 +30,11 @@
             "login": "Login",
             "register": "Register",
             "settings": "Settings",
-            "logout": "Sign out"
+            "logout": "Sign out",
+            "mode": {
+                "light": "Light theme",
+                "dark": "Dark theme"
+            }
         },
         "languages": {
             "polish": "Polish",
