@@ -75,12 +75,10 @@ export const UserProfile = () => {
 
     return (<div className="flex order-3 md:order-3 space-x-2">
         <div className="flex justify-center items-center">
+            <DarkThemeToggle className="hidden md:block focus:ring-0 dark:focus:ring-0 hover:bg-transparent dark:hover:bg-transparent"/>
             <Dropdown arrowIcon={false} inline placement="bottom"
                 label={
-                    <>
-                        <DarkThemeToggle className="hidden md:block"/>
-                        <img src={LANGUAGES.find((language) => language.value == i18n.language)?.image} alt="" className="w-5 h-5" />
-                    </>
+                    <img src={LANGUAGES.find((language) => language.value == i18n.language)?.image} alt="" className="w-5 h-5" />
                 }
             >
                 {
