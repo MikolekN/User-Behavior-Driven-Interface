@@ -17,7 +17,6 @@ const TransactionsHistory = () => {
     const { user } = useContext(UserContext);
     const { transfers, fetchTransfers } = useContext(TransferContext);
     const { apiError, handleError } = useApiErrorHandler();
-    const [isDarkMode, setIsDarkMode] = useState(document.documentElement.classList.contains('dark'));
     
     useEffect(() => {
         if (!user) return;
@@ -48,19 +47,6 @@ const TransactionsHistory = () => {
             [date]: !prev[date],
         }));
     };
-
-    useEffect(() => {
-        const observer = new MutationObserver(() => {
-            setIsDarkMode(document.documentElement.classList.contains('dark'));
-        });
-
-        observer.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ['class'],
-        });
-
-        return () => observer.disconnect();
-    }, []);
 
     if (loading) return <div>Loading...</div>;
     if (apiError.isError) { 
