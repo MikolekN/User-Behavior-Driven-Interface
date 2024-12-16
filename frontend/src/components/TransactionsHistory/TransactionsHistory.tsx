@@ -66,8 +66,8 @@ const TransactionsHistory = () => {
     if (apiError.isError) { 
         return (
             <EmptyResponseInfoAlert
-                title="Transactions History"
-                alertTitle="No transactions history yet"
+                title={t('transactionHistory.tile.title')}
+                alertTitle={t('transactionHistory.emptyList')}
                 alertMessage={apiError.errorMessage}
             />
         );

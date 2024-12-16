@@ -13,7 +13,7 @@ const InfoAlert = ({alertTitle, alertMessage}: AlertProps) => {
                 <h3 className="text-lg font-medium ml-2">{alertTitle}</h3>
             </div>
             <div className="mt-2 mb-4 text-sm">
-                <p>It looks like you haven&apos;t made any {alertMessage}. Once you add one, it will appear here for you to review.</p>
+                <p>{alertMessage}</p>
             </div>
         </div>
     )

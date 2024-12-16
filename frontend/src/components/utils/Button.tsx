@@ -3,8 +3,8 @@ import { ReactElement, ReactNode } from 'react';
 interface ButtonProps {
     children: ReactNode | ReactElement;
     onClick?: () => void;
-    className?: string
-    isSubmitting?: boolean
+    className?: string;
+    isSubmitting?: boolean;
 }
 
 const Button = ({ children, onClick, className = '', isSubmitting }: ButtonProps) => {

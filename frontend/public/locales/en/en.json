@@ -81,7 +81,8 @@
     "transactionHistory": {
         "tile": {
             "title": "Transaction History"
-        }
+        },
+        "emptyList": "List is empty"
     },
     "cyclicPaymentList": {
         "tile": {
@@ -98,7 +99,8 @@
         "startDate": "Start Date",
         "transferInterval": "Transfer Interval",
         "edit": "Edit",
-        "delete": "Delete"
+        "delete": "Delete",
+        "emptyList": "List is empty"
     },
     "cyclicPaymentForm": {
         "tile": {
