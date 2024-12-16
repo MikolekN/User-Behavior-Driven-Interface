@@ -59,7 +59,7 @@ const Chat: FC = () => {
                 <div className="chat-container">
                     <div className="message-display">
                         {messages.map((msg, index) => (
-                            <div key={index} className={`message ${msg.type}`}>
+                            <div key={index} className={`message ${msg.type} `}>
                                 {msg.text}
                             </div>
                         ))}
