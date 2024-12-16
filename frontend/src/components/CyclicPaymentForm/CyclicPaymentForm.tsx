@@ -177,6 +177,7 @@ const CyclicPaymentsForm = () => {
                                 render={() => (
                                     <div className="mb-4">
                                         <Label label={t('cyclicPaymentForm.startDate')} />
+                                        {/* TODO: inne kolory border i ring, oraz dark theme */}
                                         <Flowbite theme={{ theme: errors.startDate ? datepickerErrorTheme : datepickerTheme }}>
                                             <Datepicker
                                                 // dodanie jakiejś logiki przy i18next                             
