@@ -17,7 +17,6 @@ const TransactionsHistory = () => {
     const { user } = useContext(UserContext);
     const { transfers, fetchTransfers } = useContext(TransferContext);
     const { apiError, handleError } = useApiErrorHandler();
-    const [isDarkMode, setIsDarkMode] = useState(document.documentElement.classList.contains('dark'));
     
     useEffect(() => {
         if (!user) return;
@@ -48,19 +47,6 @@ const TransactionsHistory = () => {
             [date]: !prev[date],
         }));
     };
-
-    useEffect(() => {
-        const observer = new MutationObserver(() => {
-            setIsDarkMode(document.documentElement.classList.contains('dark'));
-        });
-
-        observer.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ['class'],
-        });
-
-        return () => observer.disconnect();
-    }, []);
 
     if (loading) return <div>Loading...</div>;
     if (apiError.isError) { 
@@ -93,7 +79,17 @@ const TransactionsHistory = () => {
                                     >
                                         {transfer.date}
                                         <span id='toggle-icon' className='text-sm ml-2'>
-                                            {isExpanded ? <img src={isDarkMode ? arrowUpDark : arrowUp} alt="▼" /> : <img src={isDarkMode ? arrowDownDark : arrowDown} alt="▶" />}
+                                            {isExpanded ? 
+                                                <>
+                                                    <img src={arrowUp} alt="▼" className='dark:hidden'/>
+                                                    <img src={arrowUpDark} alt="▼" className='hidden dark:block'/>
+                                                </>
+                                                :
+                                                <>
+                                                    <img src={arrowDown} alt="▶" className='dark:hidden'/>
+                                                    <img src={arrowDownDark} alt="▶" className='hidden dark:block'/>
+                                                </>
+                                            }
                                         </span>
                                     </div>
                                     <div id='transaction-rows' className={`max-h-0 overflow-hidden transition-[max-height] duration-[0.5s] ease-[ease-in-out] ${isExpanded ? 'max-h-max' : ''}`} >

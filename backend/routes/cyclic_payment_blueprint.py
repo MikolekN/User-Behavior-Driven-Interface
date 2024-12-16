@@ -19,13 +19,13 @@ def validate_required_cyclic_payment_fields(data: Mapping[str, Any]) -> str | No
             field_names += field + " "
         
     if field_names:
-        return f"Fields: '{field_names.strip()}' are required"
+        return f"missingFields;{field_names.strip()}"
     
     return None
 
 def validate_cyclic_payment_data(data: Mapping[str, Any] | None) -> str | None:
     if not data:
-        return "Request payload is empty"
+        return "emptyRequestPayload"
     
     message = validate_required_cyclic_payment_fields(data)
     if message:
@@ -33,19 +33,19 @@ def validate_cyclic_payment_data(data: Mapping[str, Any] | None) -> str | None:
 
     amount = float(data.get('amount'))
     if amount <= 0:
-        return "Amount must be a positive number"
+        return "negativeAmount"
 
     try:
         start_date = data.get('startDate')
         datetime.fromisoformat(start_date.replace('Z', '+00:00'))
     except (TypeError, ValueError):
-        return "Invalid date format. Expected ISO 8601 format"
+        return "invalidDateFormat"
 
     return None
 
 def validate_update_cyclic_payment(data: Mapping[str, Any] | None, id: str) -> str | None:
     if not data:
-        return "Request payload is empty"
+        return "emptyRequestPayload"
     
     message = validate_object_id(id)
     if message:
@@ -75,7 +75,7 @@ def format_cyclic_payment_dict(cyclic_payment: dict[str, Any]) -> dict[str, Any]
 
 def validate_object_id(oid: str) -> str | None:
     if not ObjectId.is_valid(oid):
-        return "Invalid Object ID"
+        return "invalidObjectId"
     return None
 
 def serialize_cyclic_payments(cyclic_payments: list[CyclicPayment]) -> dict[str, any]:
@@ -116,11 +116,11 @@ def create_cyclic_payment() -> tuple[Response, int]:
     
     recipient_user = UserRepository.find_by_account_number(data['recipientAccountNumber'])
     if not recipient_user:
-        return jsonify(message="User with given account number does not exist"), 404
+        return jsonify(message="userWithAccountNumberNotExist"), 404
     
     curr_user = UserRepository.find_by_id(current_user._id)
     if curr_user.get_available_funds() - float(data['amount']) < 0:
-        return jsonify(message="User does not have enough money"), 403
+        return jsonify(message="userDontHaveEnoughMoney"), 403
     
     cyclic_payment = CyclicPayment(created=datetime.now(), issuer_id=current_user._id, recipient_id=recipient_user._id, 
                                    recipient_account_number=data['recipientAccountNumber'], recipient_name=recipient_user.login,
@@ -136,7 +136,7 @@ def create_cyclic_payment() -> tuple[Response, int]:
     sanitized_cyclic_payment = sanitize_cyclic_payment_dict(cyclic_payment)
     formatted_cyclic_payment = format_cyclic_payment_dict(sanitized_cyclic_payment)
     
-    return jsonify(message="Cyclic Payment created successfully", cyclic_payment=formatted_cyclic_payment), 200
+    return jsonify(message="cyclicPaymentCreatedSuccesful", cyclic_payment=formatted_cyclic_payment), 200
 
 @cyclic_payment_blueprint.route('/cyclic-payment/<id>', methods=['GET'])
 @login_required
@@ -147,12 +147,12 @@ def get_cyclic_payment(id) -> tuple[Response, int]:
 
     cyclic_payment = CyclicPaymentRepository.find_by_id(str(id))
     if not cyclic_payment:
-        return jsonify(message="Cyclic Payment with given ID does not exist"), 404
+        return jsonify(message="cyclicPaymentNotExist"), 404
  
     sanitized_cyclic_payment = sanitize_cyclic_payment_dict(cyclic_payment)
     formatted_cyclic_payment = format_cyclic_payment_dict(sanitized_cyclic_payment)
 
-    return jsonify(message="Get Cyclic Payment by id successfully", cyclic_payment=formatted_cyclic_payment), 200
+    return jsonify(message="cyclicPaymentGetSuccesful", cyclic_payment=formatted_cyclic_payment), 200
 
 @cyclic_payment_blueprint.route('/cyclic-payment/<id>', methods=['DELETE'])
 @login_required
@@ -164,14 +164,14 @@ def delete_cyclic_payment(id) -> tuple[Response, int]:
     # substracting cyclic payment amount from current user's blockades
     cyclic_payment = CyclicPaymentRepository.find_by_id(str(id))
     if not cyclic_payment:
-        return jsonify(message="Cyclic Payment with given ID does not exist"), 404
+        return jsonify(message="cyclicPaymentNotExist"), 404
     
     curr_user = UserRepository.find_by_id(current_user._id)
     UserRepository.update(curr_user._id, {'blockades': substract(float(curr_user.blockades), float(cyclic_payment.amount))})
 
     CyclicPaymentRepository.delete_by_id(str(id))
  
-    return jsonify(message="Cyclic Payment deleted successfully"), 200
+    return jsonify(message="cyclicPaymentDeletedSuccesful"), 200
 
 @cyclic_payment_blueprint.route('/cyclic-payment/<id>', methods=['PUT'])
 @login_required
@@ -183,28 +183,28 @@ def update_cyclic_payment(id) -> tuple[Response, int]:
     
     recipient_user = UserRepository.find_by_account_number(data['recipientAccountNumber'])
     if not recipient_user:
-        return jsonify(message="User with given account number does not exist"), 404
+        return jsonify(message="userWithAccountNumberNotExist"), 404
     
     # clear user blockades by substracting old cyclic payment amount and adding updated cyclic payment amount to the current user blockades
     
     cyclic_payment = CyclicPaymentRepository.find_by_id(str(id))
     if not cyclic_payment:
-        return jsonify(message="Cyclic Payment with given ID does not exist"), 404
+        return jsonify(message="cyclicPaymentNotExist"), 404
     
     curr_user = UserRepository.find_by_id(current_user._id)
     if curr_user.get_available_funds() + float(cyclic_payment.amount) - float(data['amount']) < 0:
-        return jsonify(message="User does not have enough money"), 403
+        return jsonify(message="userDontHaveEnoughMoney"), 403
     
     UserRepository.update(curr_user._id, {'blockades': add(substract(float(curr_user.blockades), float(cyclic_payment.amount)), float(data["amount"]))})
     
     query, cyclic_payment_content = get_cyclic_payment_update_content_and_query(id, data, recipient_user)
     updated_cyclic_payment = CyclicPaymentRepository.update_by_id(str(id), query, cyclic_payment_content)
     if not updated_cyclic_payment:
-        return jsonify(message="Cyclic Payment with given ID does not exist"), 404
+        return jsonify(message="cyclicPaymentNotExist"), 404
 
     sanitized_cyclic_payment = sanitize_cyclic_payment_dict(updated_cyclic_payment)
 
-    return jsonify(message="Cyclic Payment updated successfully", cyclic_payment=sanitized_cyclic_payment), 200
+    return jsonify(message="cyclicPaymentUpdatedSuccesful", cyclic_payment=sanitized_cyclic_payment), 200
 
 @cyclic_payment_blueprint.route('/cyclic-payments', methods=['GET'])
 @login_required
@@ -215,8 +215,8 @@ def get_all_user_cyclic_payment() -> tuple[Response, int]:
     sort_criteria = [("created", -1)]
     cyclic_payments = CyclicPaymentRepository.find_cyclic_payments(query, sort_criteria)
     if not cyclic_payments:
-        return jsonify(message="Cyclic Payments list for current user is empty"), 404
+        return jsonify(message="cyclicPaymentListEmpty"), 404
     
     cyclic_payments = serialize_cyclic_payments(cyclic_payments)
 
-    return jsonify(message="Cyclic Payments list retured successfully", cyclic_payments=cyclic_payments), 200
+    return jsonify(message="cyclicPaymentListGetSuccesful", cyclic_payments=cyclic_payments), 200

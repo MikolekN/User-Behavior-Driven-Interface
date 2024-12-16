@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { Dropdown, Avatar, Checkbox } from "flowbite-react"
+import { Dropdown, Avatar, Checkbox, DarkThemeToggle, useThemeMode } from "flowbite-react"
 import { Link, useNavigate } from "react-router-dom";
 
 import defaultIcon from '../../assets/images/user.png';
+import defaultIconDark from '../../assets/images/user-dark.png';
 import { UserContext } from '../../context/UserContext';
 import { UserIconContext } from '../../context/UserIconContext';
 import { AuthContext } from "../../context/AuthContext";
@@ -15,8 +16,9 @@ export const UserProfile = () => {
     const { user } = useContext(UserContext);
     const { logout } = useContext(AuthContext);
     const { getIcon } = useContext(UserIconContext);
+    const { computedMode, toggleMode } = useThemeMode();
 
-    const [iconSrc, setIconSrc] = useState<string>(defaultIcon);
+    const [iconSrc, setIconSrc] = useState<string>(computedMode == 'dark' ? defaultIconDark : defaultIcon);
 
     const handleChangeLanguage = (lang_code: string) => {
         i18n.changeLanguage(lang_code);
@@ -46,12 +48,12 @@ export const UserProfile = () => {
                     URL.revokeObjectURL(iconURL);
                 };
             } else {
-                setIconSrc(defaultIcon);
+                setIconSrc(computedMode == 'dark' ? defaultIconDark : defaultIcon);
             }
         };
 
         void fetchIcon();
-    }, [user, getIcon, user?.icon]);
+    }, [user, getIcon, user?.icon, computedMode]);
 
     const DropdownItem:React.FC<{label: string, path: string, onClick?: () => Promise<void>}> = ({label, path, onClick}) => {
         return (
@@ -73,18 +75,20 @@ export const UserProfile = () => {
 
     return (<div className="flex order-3 md:order-3 space-x-2">
         <div className="flex justify-center items-center">
+            <DarkThemeToggle className="hidden md:block focus:ring-0 dark:focus:ring-0 hover:bg-transparent dark:hover:bg-transparent"/>
             <Dropdown arrowIcon={false} inline placement="bottom"
                 label={
-                    <img src={LANGUAGES.find((language) => language.code == i18n.language)?.image} alt="" className="w-5 h-5" />
+                    <img src={LANGUAGES.find((language) => language.value == i18n.language)?.image} alt="" className="w-5 h-5" />
                 }
             >
                 {
                     LANGUAGES.map((language) => {
-                        return(<LanguageDropdownItem image={language.image} name={language.name} code={language.code} isChosen={i18n.language == language.code} />);
+                        return(<LanguageDropdownItem image={language.image} name={t('menu.languages.' + language.key)} code={language.value} isChosen={i18n.language == language.value} />);
                     })
                 }
             </Dropdown>
         </div>
+        
         <Dropdown arrowIcon={false} inline placement="bottom"
             label={
                 <Avatar alt="User profile icon" img={iconSrc} rounded className='rounded-full hover:bg-gray-200 hover:dark:bg-gray-700 transition ease-in-out duration-300'/>
@@ -93,21 +97,27 @@ export const UserProfile = () => {
 
         {!user && (
             <>
-                <DropdownItem label="Login" path="/login" />
-                <DropdownItem label="Register" path="/register" />
+                <DropdownItem label={t('menu.profile.login')} path="/login" />
+                <DropdownItem label={t('menu.profile.register')} path="/register" />
+                <Dropdown.Item onClick={toggleMode} className='bg-transparent text-black font-normal hover:font-semibold hover:text-black'>
+                    <p>{t('menu.profile.mode.' + computedMode)}</p>
+                </Dropdown.Item>
             </>
         )}
 
         {user && (
             <>
-                <Dropdown.Header>
+                <Dropdown.Header className="flex flex-col justify-center items-center">
                     <span className="block text-sm">{user?.login}</span>
                     <span className="block truncate text-sm font-medium">{user?.email}</span>
                 </Dropdown.Header>
-                <DropdownItem label="Profile" path="/profile" />
-                <DropdownItem label="Settings" path="/settings" />
+                <DropdownItem label={t('menu.profile.profile')} path="/profile" />
+                <DropdownItem label={t('menu.profile.settings')} path="/settings" />
+                <Dropdown.Item onClick={toggleMode} className='bg-transparent text-black font-normal hover:font-semibold hover:text-black'>
+                    <p>{t('menu.profile.mode.' + computedMode)}</p>
+                </Dropdown.Item>
                 <Dropdown.Divider />
-                <DropdownItem label="Logout" path="/" onClick={handleLogout}/>
+                <DropdownItem label={t('menu.profile.logout')} path="/" onClick={handleLogout}/>
             </>
         )}
         </Dropdown>

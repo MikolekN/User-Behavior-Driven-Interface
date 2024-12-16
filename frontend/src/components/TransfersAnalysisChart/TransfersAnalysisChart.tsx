@@ -2,12 +2,15 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, Bar, Legend } from 'recharts';
 import { TransfersAnalysisChartProps } from '../utils/types/TransfersAnalysisChartTypes';
 import { CHART_HEIGHT, COLORS, LEGEND_HEIGHT } from '../constants';
+import { useTranslation } from 'react-i18next';
+import { useThemeMode } from 'flowbite-react';
 
 const TransfersAnalysisChart = (props: TransfersAnalysisChartProps) => {
+    const { t } = useTranslation();
     const chartRef = useRef<HTMLDivElement>(null);
     const [columnWidth, setColumnWidth] = useState<number>(0);
     const canvasRef = useRef<HTMLCanvasElement>(document.createElement('canvas'));
-    const [isDarkMode, setIsDarkMode] = useState(document.documentElement.classList.contains('dark'));
+    const { computedMode } = useThemeMode();
 
     const getTextWidth = useCallback((text: string, font: string = '20px Inter, system-ui, Avenir, Helvetica, Arial, sans-serif') => {
         const context = canvasRef.current.getContext('2d');
@@ -58,39 +61,30 @@ const TransfersAnalysisChart = (props: TransfersAnalysisChartProps) => {
         return shortenedName;
     };
 
-    useEffect(() => {
-        const observer = new MutationObserver(() => {
-            setIsDarkMode(document.documentElement.classList.contains('dark'));
-        });
-
-        observer.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ['class'],
-        });
-
-        return () => observer.disconnect();
-    }, []);
-
     const tooltipStyle = {
-        backgroundColor: isDarkMode ? '#374151' : '#ffffff',
-        color: isDarkMode ? '#ffffff' : '#000000',
-        border: `1px solid ${isDarkMode ? '#374151' : '#e0e0e0'}`,
+        backgroundColor: computedMode == 'dark' ? '#374151' : '#ffffff',
+        color: computedMode == 'dark' ? '#ffffff' : '#000000',
+        border: `1px solid ${computedMode == 'dark' ? '#374151' : '#e0e0e0'}`,
     };
 
-    // CHANGE HOVER COLOR ON DARK MODE
+    const cursorHover = {
+        fill: computedMode == 'dark' ? '#4b5563' : "#fff",
+    };
+
+    // Można jeszcze zmienić kolor labeli (wartości i miesięcy) na ciemnym motywie, ale teraz nie wiem jak
     return (
         <div ref={chartRef} style={{ width: '100%' }}>
             <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
                 <BarChart data={props.chartData!}>
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid strokeDasharray="3 3"/> {/* vertical={false}*/}
                     <XAxis dataKey="interval" tickFormatter={formatMonth} />
                     <YAxis />
-                    <Tooltip contentStyle={tooltipStyle} />
+                    <Tooltip cursor={cursorHover} contentStyle={tooltipStyle} />
                     <Legend verticalAlign="top" height={LEGEND_HEIGHT} />
                     <CartesianGrid stroke="#f5f5f5" />
                     {/* tutaj mozna dac jakies zmienne typu kolor primary, sedoncday czy coś */}
-                    <Bar dataKey="income" fill={COLORS.GREEN} radius={[10, 10, 0, 0]} />
-                    <Bar dataKey="outcome" fill={COLORS.RED} radius={[10, 10, 0, 0]} />
+                    <Bar dataKey="income" name={t('chart.income')} fill={COLORS.GREEN} radius={[10, 10, 0, 0]} />
+                    <Bar dataKey="outcome" name={t('chart.outcome')} fill={COLORS.RED} radius={[10, 10, 0, 0]} />
                 </BarChart>
             </ResponsiveContainer>
         </div>

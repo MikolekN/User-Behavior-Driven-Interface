@@ -4,17 +4,10 @@
         "transfers": {
             "title": "Przelewy",
             "submenu": {
-                "transfer": "Wykonaj Przelew",
-                "transferHistory": "Historia Transakcji",
+                "transfer": "Wykonaj przelew",
+                "transferHistory": "Historia transakcji",
                 "cyclicPayments": "Płatności cykliczne" ,
                 "loan": "Pożyczki" 
-            }
-        },
-        "settings": {
-            "title": "Ustawienia",
-            "submenu": {
-                "settings1": "Ustawienia 1",
-                "settings2": "Ustawienia 2"
             }
         },
         "analysis": {
@@ -25,7 +18,7 @@
             }
         },
         "customerService": {
-            "title": "Obsługa Klienta",
+            "title": "Obsługa klienta",
             "submenu": {
                 "chat": "Czat",
                 "faq": "Najczęściej zadawane pytania",
@@ -35,8 +28,17 @@
         "profile": {
             "profile": "Profil",
             "login": "Logowanie",
-            "register": "Rejstracja",
-            "logout": "Wyloguj się"
+            "register": "Rejestracja",
+            "settings": "Ustawienia",
+            "logout": "Wyloguj się",
+            "mode": {
+                "light": "Jasny motyw",
+                "dark": "Ciemny motyw"
+            }
+        },
+        "languages": {
+            "polish": "Polski",
+            "english": "Angielski"
         },
         "login": "Logowanie",
         "register": "Rejstracja",
@@ -71,8 +73,8 @@
         "tile": {
             "title": "Przelew"
         },
-        "fromAccount": "Z Konta",
-        "recipientAccountNumber": "Numer Konta Odbiorcy",
+        "fromAccount": "Z konta",
+        "recipientAccountNumber": "Numer konta odbiorcy",
         "transferTitle": "Tytuł przelewu",
         "amount": "Kwota",
         "submit": "Przelej",
@@ -88,16 +90,16 @@
         "tile": {
             "title": "Płatności cykliczne"
         },
-        "submit": "Dodaj Płatność Cykliczną",
+        "submit": "Dodaj płatność cykliczną",
         "nameAndReceiver": "Nazwa / Odbiorca",
         "amount": "Kwota",
-        "createdDate": "Data Utworzenia",
+        "createdDate": "Data utworzenia",
         "recipient": "Odbiorca",
-        "recipientAccountNumber": "Numer Konta Odbiorcy",
-        "fromAccount": "Z Konta",
+        "recipientAccountNumber": "Numer konta odbiorcy",
+        "fromAccount": "Z konta",
         "title": "Tytuł",
-        "startDate": "Data Początkowa",
-        "transferInterval": "Interwał Przelewu",
+        "startDate": "Data początkowa",
+        "transferInterval": "Interwał przelewu",
         "edit": "Edytuj",
         "delete": "Usuń",
         "emptyList": "Lista jest pusta"
@@ -106,11 +108,12 @@
         "tile": {
             "title": "Płatność cykliczna"
         },
-        "fromAccount": "Z Konta",
+        "fromAccount": "Z konta",
         "cyclicPaymentName": "Nazwa",
-        "recipientAccountNumber": "Numer Konta Odbiorcy",
-        "startDate": "Data Początkowa",
-        "transferInterval": "Interwał Przelewu",
+        "recipientAccountNumber": "Numer konta odbiorcy",
+        "startDate": "Data początkowa",
+        "startDatePlaceholder": "Wybierz datę początkową",
+        "transferInterval": "Interwał przelewu",
         "title": "Tytuł",
         "amount": "Kwota",
         "submit": "Utwórz",
@@ -120,21 +123,21 @@
         "tile": {
             "title": "Pożyczka"
         },
-        "fromAccount": "Z Konta",
+        "fromAccount": "Z konta",
         "howMuchMoney": "Ile pieniędzy potrzebujesz?",
         "numberOfInstallments": "Liczba rat",
-        "submit": "Weź Pożyczkę",
+        "submit": "Weź pożyczkę",
         "loading": "Ładowanie..."
     },
     "transactionsMonthlyAnalysis": {
         "tile": {
-            "title": "Miesięczna Analiza Transakcji"
+            "title": "Miesięczna analiza transakcji"
         },
         "emptyAlertInfo": "Brak historii transakcji aby wygenerować analizę"
     },
-    "transactionsYeaerlyAnalysis": {
+    "transactionsYearlyAnalysis": {
         "tile": {
-            "title": "Roczna Analiza Transakcji"
+            "title": "Roczna analiza transakcji"
         },
         "emptyAlertInfo": "Brak historii transakcji aby wygenerować analizę"
     },
@@ -186,24 +189,24 @@
     },
     "contact": {
         "tile": {
-            "title": "Informacje Kontaktowe"
+            "title": "Informacje kontaktowe"
         },
         "phoneContact": {
-            "title": "Kontakt Telefoniczny",
+            "title": "Kontakt telefoniczny",
             "message": "Jeśli chcesz się z nami skontaktować telefonicznie, możesz zadzwonić na",
             "hotline": "Infolinia",
-            "customerService": "Obsługa Klienta",
-            "technicalSupport": "Wsparcie Techniczne"
+            "customerService": "Obsługa klienta",
+            "technicalSupport": "Wsparcie techniczne"
         },
         "emailContact": {
-            "title": "Kontakt Mailowy",
+            "title": "Kontakt mailowy",
             "message": "Masz pytania? Napisz do nas na",
-            "email": "Email;",
+            "email": "Email",
             "complaint": "Reklamacje",
             "technicalSupport": "Wsparcie Techniczne"
         },
         "address": {
-            "title": "Adres Siedziby",
+            "title": "Adres siedziby",
             "message": "Odwiedź nas osobiście pod adresem"
         }
     },
@@ -236,6 +239,106 @@
             "newPassword": "Powtórz hasło",
             "submit": "Zmień hasło",
             "loading": "Ładowanie..."
+        }
+    },
+    "formSelect": {
+        "userName": "Nazwa użytkownika",
+        "accountName": "Nazwa konta",
+        "currency": "Waluta",
+        "week": "Co tydzień",
+        "month": "Co miesiąc",
+        "quarter": "Co kwartał",
+        "halfYear": "Co pół roku",
+        "en": "English",
+        "pl": "Polski"
+    },
+    "errors": {
+        "api": {
+            "unknownError": "Wystąpił nieznany błąd. Spróbuj pownownie później.",
+            "emptyRequestPayload": "Treść żądania jest pusta",
+            "authFieldsRequired": "Pola email i/lub hasło są wymagane",
+            "alreadyLogged": "Użytkownik jest już zalogowany",
+            "userNotExist": "Użytkownik nie istnieje",
+            "invalidCredentials": "Nieprawidłowe dane logowania",
+            "loginSuccesful": "Zalogowano pomyślnie",
+            "logoutSuccesful": "Wylogowano pomyślnie",
+            "userExist": "Użytkownik już istnieje",
+            "registerSuccesful": "Użytkownik został pomyślnie zarejestrowany",
+            "negativeAmount": "Kwota musi być liczbą dodatnią",
+            "invalidDateFormat": "Nieprawidłowy format daty. Oczekiwany format ISO 8601",
+            "invalidObjectId": "Nieprawidłowy identyfikator obiektu",
+            "userWithAccountNumberNotExist": "Użytkownik o podanym numerze konta nie istnieje",
+            "userDontHaveEnoughMoney": "Użytkownik nie ma wystarczających środków",
+            "cyclicPaymentCreatedSuccessful": "Cykliczna płatność została pomyślnie utworzona",
+            "cyclicPaymentNotExist": "Cykliczna płatność o podanym ID nie istnieje",
+            "cyclicPaymentGetSuccessful": "Pobrano cykliczną płatność według ID pomyślnie",
+            "cyclicPaymentDeletedSuccessful": "Cykliczna płatność została pomyślnie usunięta",
+            "cyclicPaymentUpdatedSuccessful": "Cykliczna płatność została pomyślnie zaktualizowana",
+            "cyclicPaymentListEmpty": "Lista cyklicznych płatności dla twojego konta jest pusta",
+            "cyclicPaymentListGetSuccessful": "Lista cyklicznych płatności została pomyślnie zwrócona",
+            "allFieldsRequired": "Wszystkie pola są wymagane",
+            "invalidAmountFormat": "Nieprawidłowy format kwoty. Podaj kwotę w tysiącach",
+            "startEndYearRequired": "Rok początkowy i końcowy są wymagane",
+            "invalidStartEndYearType": "Rok początkowy i/lub końcowy musi być typu liczba całkowita",
+            "yearNotProvided": "Rok musi być podany",
+            "yearInvalidType": "Rok musi być typu liczba całkowita",
+            "bankAccountNotExist": "Konto użytkownika w banku nie istnieje",
+            "loanCreatedSuccessful": "Pożyczka została udzielona pomyślnie",
+            "transferCreatedSuccessful": "Przelew został wykonany pomyślnie",
+            "transferListEmpty": "Lista przelewów dla twojego konta jest pusta",
+            "transferListGetSuccessful": "Lista przelewów została pomyślnie zwrócona",
+            "monthlyAnalysisEmpty": "Miesięczna analiza przelewów dla twojego konta jest pusta",
+            "monthlyAnalysisSuccessful": "Miesięczna analiza przelewów została pomyślnie zwrócona",
+            "yearlyAnalysisEmpty": "Roczna analiza przelewów dla twojego konta jest pusta",
+            "yearlyAnalysisSuccessful": "Roczna analiza przelewów została pomyślnie zwrócona",
+            "userUpdateNotFound": "Użytkownik nie został znaleziony po aktualizacji",
+            "userUpdateSuccessful": "Dane użytkownika zostały pomyślnie zaktualizowane",
+            "userPasswordRequiredFields": "Wymagane są obecne hasło i nowe hasło",
+            "incorrectCurrentPassword": "Obecne hasło jest nieprawidłowe",
+            "passwordUpdateSuccessful": "Hasło zostało pomyślnie zaktualizowane",
+            "fileRequired": "Brak plików w żądaniu",
+            "iconNotInRequest": "Ikona brakująca w żądaniu",
+            "invalidFileType": "Typ pliku jest niedozwolony",
+            "iconUploadSuccessful": "Ikona została pomyślnie przesłana",
+            "iconNotSetForUser": "Ikona nie została ustawiona dla tego użytkownika",
+            "iconUserNotFound": "Plik ikony użytkownika nie został znaleziony",
+            "missingFields": "Brak niektórych wymaganych pól",
+            "amountTooBig": "Kwota musi być mniejsza lub równa: ",
+            "amountTooSmall": "Kwota musi być większa lub równa: ",
+            "errorUpdatePassword": "Błąd podczas aktualizacji hasła: ",
+            "errorUpdateUser": "Błąd podczas aktualizacji danych użytkownika: ",
+            "errorImageProcess": "Przetwarzanie obrazu nie powiodło się: ",
+            "sendIconFailed": "Nie udało się wysłać ikony: " 
+        },
+        "zod": {
+            "required": "Pole jest wymagane",
+            "zodApiError": "Błąd w danych zwróconych przez serwer. Spróbuj pownownie później",
+            "amountGreaterThanZero": "Wartość nie może być mniejsza niż 0",
+            "invalidAmountFormat": "Nieprawidłowy format kwoty. Podaj kwotę z dokładnością do dwóch miejsc po przecinku",
+            "loanInvalidAmountFormat": "Nieprawidłowy format kwoty. Podaj kwotę w tysiącach",
+            "amountLowerThan": "Wprowadzona kwota nie może być mniejsza niż",
+            "amountBiggerThan": "Wprowadzona kwota nie może być większa niż",
+            "password": "Hasło musi posiadać conajmniej 8 znaków, w tym małą literę, wielką literę i liczbę",
+            "confirmPassword": "Wprowadzone hasła nie pasują",
+            "invalidAccountNumber": "Nieprawidłowy numer konta"
+        }
+    },
+    "chart": {
+        "income": "przychody",
+        "outcome": "wydatki",
+        "months": {
+            "jan": "Styczeń",
+            "feb": "Luty",
+            "mar": "Marzec",
+            "apr": "Kwiecień",
+            "may": "Maj",
+            "jun": "Czerwiec",
+            "jul": "Lipiec",
+            "aug": "Sierpień",
+            "sep": "Wrzesień",
+            "oct": "Październik",
+            "nov": "Listopad",
+            "dec": "Grudzień"
         }
     }
 }
