@@ -309,7 +309,8 @@
             "errorUpdatePassword": "Error updating password: ",
             "errorUpdateUser": "Error updating user data: ",
             "errorImageProcess": "Image processing failed: ",
-            "sendIconFailed": "Failed to send the icon: "
+            "sendIconFailed": "Failed to send the icon: ",
+            "Failed to fetch": "Unexpected server error"
         },
         "zod": {
             "required": "The field is required",

@@ -308,7 +308,8 @@
             "errorUpdatePassword": "Błąd podczas aktualizacji hasła: ",
             "errorUpdateUser": "Błąd podczas aktualizacji danych użytkownika: ",
             "errorImageProcess": "Przetwarzanie obrazu nie powiodło się: ",
-            "sendIconFailed": "Nie udało się wysłać ikony: " 
+            "sendIconFailed": "Nie udało się wysłać ikony: ",
+            "Failed to fetch": "Nieoczekiwany błąd serwera"
         },
         "zod": {
             "required": "Pole jest wymagane",
