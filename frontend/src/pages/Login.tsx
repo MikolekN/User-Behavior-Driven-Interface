@@ -18,7 +18,7 @@ const Login = () => {
     const { user } = useContext(UserContext);
     const { login, logout } = useContext(AuthContext);
     const navigate = useNavigate();
-    const { apiError, handleError } = useApiErrorHandler();
+    const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormData>({
         resolver: zodResolver(LoginFormDataSchema),
         defaultValues: {
@@ -31,6 +31,7 @@ const Login = () => {
     if (user) return <Navigate to="/dashboard" />;
 
     const onSubmit: SubmitHandler<LoginFormData> = async ({ email, password }: LoginFormData) => {
+        clearApiError();
         try {
             await login(email, password);
             navigate('/dashboard');

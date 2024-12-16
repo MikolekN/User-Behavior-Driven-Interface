@@ -36,7 +36,7 @@ const rangeSliderTheme: FlowbiteRangeSliderTheme = {
 
 const Loan = () => {
     const { t } = useTranslation();
-    const { apiError, handleError } = useApiErrorHandler();
+    const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext)
     const { createLoan } = useContext(TransferContext);
     const [ sliderValue, setSliderValue ] = useState<number | null>(null);
@@ -65,6 +65,7 @@ const Loan = () => {
     };
     
     const onSubmit: SubmitHandler<LoanFormData> = async ({ amount }: LoanFormData) => {
+        clearApiError();
         try {
             const requestBody = {
                 transferTitle: 'Pożyczka gotówkowa',
