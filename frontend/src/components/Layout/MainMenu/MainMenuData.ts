@@ -1,22 +1,54 @@
-export const transferSubmenuOptions = [
-    { id: "transfer", label: 'Wykonaj przelew', path: '/transfer' },
-    { id: "transferHistory", label: 'Historia przelewów', path: '/transactions/history' },
-    { id: "cyclicPayments", label: 'Płatności cykliczne', path: '/cyclic-payments' },
-    { id: "loan", label: 'Pożyczki', path: '/loan' },
-];
+export const enum AccessLevels {
+    All,
+    Unauthorised,
+    Authorised,
+    Admin
+}
 
-export const settingsSubmenuOptions = [
-    { id: "settings1", label: 'Ustawienia1', path: '/' },
-    { id: "settings2", label: 'Ustawienia2', path: '/' },
-];
+type MenuOptionWithPath = {
+    key: string;
+    path: string;
+    accessLevel: AccessLevels;
+};
 
-export const financesSubmenuOptions = [
-    { id: "monthlyAnalysis", label: 'Analizy miesięczne', path: '/transactions/analysis/monthly' },
-    { id: "yearlyAnalysis", label: 'Analizy roczne', path: '/transactions/analysis/yearly' },
-];
+export type MenuOptionWithSubmenu = {
+    key: string;
+    accessLevel: AccessLevels;
+    submenu: { key: string; path: string }[];
+};
 
-export const customerServiceSubmenuOptions = [
-    { id: "chat", label: 'Czat', path: '/chat' },
-    { id: "faq", label: 'Najczęściej zadawane pytania', path: '/faq' },
-    { id: "info", label: 'Kontakt', path: '/info' },
-];
+export type MenuOption = MenuOptionWithPath | MenuOptionWithSubmenu;
+
+export const menuOptions: MenuOption[] = [
+    { key: 'home', path: '/', accessLevel: AccessLevels.All },
+    { key: 'login', path: '/login', accessLevel: AccessLevels.Unauthorised },
+    { key: 'register', path: '/register', accessLevel: AccessLevels.Unauthorised },
+    {
+        key: 'transfers',
+        accessLevel: AccessLevels.Authorised,
+        submenu: [
+            { key: 'transfer', path: '/transfer' },
+            { key: 'transferHistory', path: '/transactions/history' },
+            { key: 'cyclicPayments', path: '/cyclic-payments' },
+            { key: 'loan', path: '/loan' },
+        ]
+    },
+    {
+        key: 'analysis',
+        accessLevel: AccessLevels.Authorised,
+        submenu: [
+            { key: 'monthlyAnalysis', path: '/transactions/analysis/monthly' },
+            { key: 'yearlyAnalysis', path: '/transactions/analysis/yearly' },
+        ]
+    },
+    {
+        key: 'customerService',
+        accessLevel: AccessLevels.Authorised,
+        submenu: [
+            { key: 'chat', path: '/chat' },
+            { key: 'faq', path: '/faq' },
+            { key: 'info', path: '/info' },
+        ]
+    },
+    { key: 'adminPanel', path: '/admin-panel', accessLevel: AccessLevels.Admin },
+]

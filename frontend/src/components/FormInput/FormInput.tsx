@@ -31,16 +31,15 @@ const FormInput = ({ label, fieldType, register, error, children, className }: F
     return (
         <div className="mb-4">
             <Label label={label} />
-            <div className={`flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 ${error ? 'border-red-300' : ''}`}>
+            <div className={`flex items-center rounded-lg border border-gray-300 dark:border-gray-600 ${error ? 'border-red-500 focus-within:ring-2 focus-within:ring-red-500' : 'focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-600 focus-within:dark:border-blue-600'}`}>
                 <input
                     {...register}
                     type={fieldType}
-                    className={`flex-grow p-3 bg-white focus:outline-none ${roundedClass} ${className}`}
-                    style={{ borderColor: 'transparent' }} // Remove double border
+                    className={`flex-grow p-3 ${roundedClass} ${className} border-0 focus:ring-0 bg-white dark:bg-gray-800 text-black dark:text-gray-400 ${error ? 'text-red-500 dark:text-red-500' : ''}`}
                 />
                 {children && (
                     <div
-                        className="p-3 bg-gray-300 text-gray-700 border-l border-gray-300 rounded-r-md" 
+                        className="p-3 text-gray-700 dark:text-gray-400 bg-gray-300 dark:bg-gray-800 rounded-r-md" 
                         style={{ width: '60px', textAlign: 'center' }}
                     >
                         {children}

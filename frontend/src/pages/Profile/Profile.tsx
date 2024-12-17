@@ -19,16 +19,16 @@ import { useTranslation } from 'react-i18next';
 const ProfilePage = () => {
     const { t } = useTranslation();
     const [ selectedField, setSelectedField ] = useState<string>('');
-    const { apiError: apiIconError, handleError: handleIconError } = useApiErrorHandler();
-    const { apiError: apiFieldError, handleError: handleFieldError } = useApiErrorHandler();
-    const { apiError: apiPasswordError, handleError: handlePasswordError } = useApiErrorHandler();
+    const { apiError: apiIconError, handleError: handleIconError, clearApiError: clearIconError } = useApiErrorHandler();
+    const { apiError: apiFieldError, handleError: handleFieldError, clearApiError: clearFieldError } = useApiErrorHandler();
+    const { apiError: apiPasswordError, handleError: handlePasswordError, clearApiError: clearPasswordError } = useApiErrorHandler();
     const { user, getUser, updateUser, updatePassword } = useContext(UserContext);
     const { getIcon, sendIcon } = useContext(UserIconContext);
 
     const { register: registerIcon, handleSubmit: handleSubmitIconForm, setValue: setIconValueForm, formState: { errors: iconErrors, isSubmitting: isIconFormSubmitting } } = useForm<UserIconFromData>({
         resolver: zodResolver(UserIconFormDataSchema)
     });
-    const { register: registerField, handleSubmit: handleSubmitFieldForm, setValue: setFieldValueForm, formState: { errors: fieldErrors, isSubmitting: isFieldFormSubmitting }, watch, clearErrors: clearFieldErrors } = useForm<UserFieldFormData>({
+    const { register: registerField, handleSubmit: handleSubmitFieldForm, setValue: setFieldValueForm, formState: { errors: fieldErrors, isSubmitting: isFieldFormSubmitting }, clearErrors: clearFieldErrors } = useForm<UserFieldFormData>({
         resolver: zodResolver(UserFieldFormDataSchema)
     });
     const { register: registerPassword, handleSubmit: handleSubmitPasswordForm, formState: { errors: passwordErrors, isSubmitting: isPasswordFormSubmitting } } = useForm<UserPasswordFormData>({
@@ -138,6 +138,7 @@ const ProfilePage = () => {
     };
 
     const onIconSubmit: SubmitHandler<UserIconFromData> = async ({ files }: UserIconFromData) => {
+        clearIconError();
         try {
             if (files && files[0]) {
                 const preprocessedIcon = await preprocessImage(files[0]);
@@ -154,6 +155,7 @@ const ProfilePage = () => {
     };
     
     const onFieldSubmit: SubmitHandler<UserFieldFormData> = async ({ field, value }: UserFieldFormData) => {
+        clearFieldError();
         try {
             const mappedField = mapFieldToBackend(field);
             await updateUser(mappedField, value);
@@ -165,6 +167,7 @@ const ProfilePage = () => {
     };
 
     const onPasswordSubmit: SubmitHandler<UserPasswordFormData> = async ({ currentPassword, newPassword }: UserPasswordFormData) => {
+        clearPasswordError();
         try {
             await updatePassword(currentPassword, newPassword);
         } catch (error) {

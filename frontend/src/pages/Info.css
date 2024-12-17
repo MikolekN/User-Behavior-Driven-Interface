@@ -5,7 +5,6 @@
     height: 100%;
     padding: 20px;
     box-sizing: border-box;
-    background-color: #f3f4f6;
 }
 
 .info-tile {
@@ -31,8 +30,17 @@
     transition: background-color 0.3s ease;
 }
 
+.info-section:is(.dark *) {
+    border: 1px solid #1f2937;
+    background-color: #1f2937;
+}
+
 .info-section:hover {
     background-color: #f0f0f0;
+}
+
+.info-section:hover:is(.dark *) {
+    background-color: #1f2937;
 }
 
 .info-section h3 {
@@ -47,6 +55,14 @@
     color: #555;
 }
 
+.info-section h3:is(.dark *) {
+    color: #9ca3af;
+}
+
+.info-section p:is(.dark *) {
+    color: #9ca3af;
+}
+
 .info-section ul {
     list-style: none;
     padding: 0;
@@ -59,9 +75,17 @@
     color: #444;
 }
 
+.info-section ul li:is(.dark *) {
+    color: #9ca3af;
+}
+
 address {
     font-style: normal;
     font-size: 0.95rem;
     color: #444;
     margin-top: 4px;
+}
+
+address:is(.dark *) {
+    color: #9ca3af;
 }

@@ -14,7 +14,7 @@ const FAQItem: FC<FAQItemProps> = ({ itemKey, isActive, onClick }) => {
     const { t } = useTranslation();
 
     return (
-        <div className={`faq-item ${isActive ? 'active' : ''}`}>
+        <div className='faq-item'>
             <div className="faq-question" onClick={onClick}>
                 {t(`faq.${itemKey}.question`)}
             </div>

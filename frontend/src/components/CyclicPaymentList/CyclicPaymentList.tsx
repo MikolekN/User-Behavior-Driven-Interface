@@ -22,7 +22,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
     const [cyclicPayments, setCyclicPayments] = useState<CyclicPayment[]>([]);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [hovering, setHovering] = useState<number | null>(null);
-    const { apiError, handleError } = useApiErrorHandler();
+    const { apiError, handleError } = useApiErrorHandler(); // ???
 
     const toggleActiveTableRow = (index: number) => {
         setActiveIndex(activeIndex === index ? null : index);

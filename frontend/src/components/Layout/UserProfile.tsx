@@ -1,43 +1,29 @@
-import { useState, useEffect, useRef, useContext, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import defaultIcon from '../../assets/images/user.png';
-import { UserContext } from '../../context/UserContext';
-import { AuthContext } from '../../context/AuthContext';
-import { UserIconContext } from '../../context/UserIconContext';
-import { useTranslation } from 'react-i18next';
+import { useContext, useEffect, useState } from "react";
+import { Dropdown, Avatar, Checkbox, DarkThemeToggle, useThemeMode } from "flowbite-react"
+import { Link, useNavigate } from "react-router-dom";
 
-const Profile = () => {
-    const { t } = useTranslation();
+import defaultIcon from '../../assets/images/user.png';
+import defaultIconDark from '../../assets/images/user-dark.png';
+import { UserContext } from '../../context/UserContext';
+import { UserIconContext } from '../../context/UserIconContext';
+import { AuthContext } from "../../context/AuthContext";
+import { useTranslation } from "react-i18next";
+import { LANGUAGES } from "../../pages/constants";
+
+export const UserProfile = () => {
+    const navigate = useNavigate();
+    const { i18n, t } = useTranslation();
     const { user } = useContext(UserContext);
     const { logout } = useContext(AuthContext);
     const { getIcon } = useContext(UserIconContext);
-    const navigate = useNavigate();
-    const [dropdownOpen, setDropdownOpen] = useState(false);    
-    const [iconSrc, setIconSrc] = useState<string>(defaultIcon);
+    const { computedMode, toggleMode } = useThemeMode();
 
-    const toggleDropdown = useCallback(() => {
-        setDropdownOpen(!dropdownOpen);
-    }, [dropdownOpen]);
+    const [iconSrc, setIconSrc] = useState<string>(computedMode == 'dark' ? defaultIconDark : defaultIcon);
 
-    const profileRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
-                toggleDropdown();
-            }
-        };
-
-        if (dropdownOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
-        } else {
-            document.removeEventListener('mousedown', handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [dropdownOpen, toggleDropdown]);
+    const handleChangeLanguage = (lang_code: string) => {
+        i18n.changeLanguage(lang_code);
+        localStorage.setItem('language', lang_code);
+    }
 
     const handleLogout = async () => {
         try {
@@ -54,7 +40,7 @@ const Profile = () => {
                     await getIcon();
                 } catch { /* If error occurs it is displayed in console */ }
             }
-    
+
             if (user && user.icon) {
                 const iconURL = URL.createObjectURL(user.icon);
                 setIconSrc(iconURL);
@@ -62,57 +48,78 @@ const Profile = () => {
                     URL.revokeObjectURL(iconURL);
                 };
             } else {
-                setIconSrc(defaultIcon);
+                setIconSrc(computedMode == 'dark' ? defaultIconDark : defaultIcon);
             }
         };
-    
+
         void fetchIcon();
-    }, [user, getIcon, user?.icon]);
+    }, [user, getIcon, user?.icon, computedMode]);
 
-    return (
-        <div id='profile-container' ref={profileRef} className='relative'>
-            <div id='profile-menu-container' className='flex items-center space-x-2'>
-                <h1 id='profile-user-name' className='text-2xl mx-1'> {user?.login} </h1>
-                <button id='profile-button' onClick={toggleDropdown} className='w-10 h-10 rounded-full cursor-pointer overflow-hidden block bg-inherit hover:bg-gray-200 transition ease-in-out duration-300'>
-                    <img 
-                        src={iconSrc} 
-                        id="ProfileIcon"
-                        alt="Profile" 
-                        className="profile-icon"           
-                    />
-                </button>
-            </div>
-            {dropdownOpen && (
-                <ul id='profile-dropdown' className='absolute top-full right-0 bg-transparent shadow-md z-10 py-2 text-center list-none'>
-                    {!user && (
-                        <>
-                            <li className='cursor-pointer'>
-                                <div>
-                                    <Link to='/login' className='py-2 px-4 no-underline block font-normal hover:font-semibold transition-colors duration-500 ease-in-out'>{t('menu.profile.login')}</Link>
-                                </div>
-                            </li>
-                            <li className='cursor-pointer'>
-                                <Link to='/register' className='py-2 px-4 no-underline block font-normal hover:font-semibold transition-colors duration-500 ease-in-out'>{t('menu.profile.register')}</Link>
-                            </li>
-                        </>
-                    )}
-                    {user && (
-                        <>
-                            <li className='cursor-pointer'>
-                                <Link to="/profile" onClick={toggleDropdown} className='py-2 px-4 no-underline block font-normal hover:font-semibold transition-colors duration-500 ease-in-out'>{t('menu.profile.profile')}</Link>
-                            </li>
-                            <li className='cursor-pointer'>
-                                <Link to='/' onClick={() => {
-                                    toggleDropdown();
-                                    void handleLogout();
-                                }} className='py-2 px-4 no-underline block font-normal hover:font-semibold transition-colors duration-500 ease-in-out'>{t('menu.profile.logout')}</Link>
-                            </li>
-                        </>
-                    )}
-                </ul>
-            )}
+    const DropdownItem:React.FC<{label: string, path: string, onClick?: () => Promise<void>}> = ({label, path, onClick}) => {
+        return (
+            <Dropdown.Item as={Link} to={path} onClick={onClick} className='block bg-transparent text-black font-normal hover:font-semibold hover:text-black'>
+                {label}
+            </Dropdown.Item>
+        )
+    }
+
+    const LanguageDropdownItem:React.FC<{image: string, name: string, code: string, isChosen: boolean}> = ({image, name, code, isChosen}) => {
+        return (
+            <Dropdown.Item onClick={() => {handleChangeLanguage(code)}} className="space-x-2">
+                <img src={image} alt="" className="w-5 h-5" />
+                <p>{name}</p>
+                <Checkbox defaultChecked disabled className={`w-4 h-4 ${isChosen ? '' : 'hidden'}`}/>
+            </Dropdown.Item>
+        )
+    }
+
+    return (<div className="flex order-3 md:order-3 space-x-2">
+        <div className="flex justify-center items-center">
+            <DarkThemeToggle className="hidden md:block focus:ring-0 dark:focus:ring-0 hover:bg-transparent dark:hover:bg-transparent"/>
+            <Dropdown arrowIcon={false} inline placement="bottom"
+                label={
+                    <img src={LANGUAGES.find((language) => language.value == i18n.language)?.image} alt="" className="w-5 h-5" />
+                }
+            >
+                {
+                    LANGUAGES.map((language) => {
+                        return(<LanguageDropdownItem image={language.image} name={t('menu.languages.' + language.key)} code={language.value} isChosen={i18n.language == language.value} />);
+                    })
+                }
+            </Dropdown>
         </div>
-    );
-};
+        
+        <Dropdown arrowIcon={false} inline placement="bottom"
+            label={
+                <Avatar alt="User profile icon" img={iconSrc} rounded className='rounded-full hover:bg-gray-200 hover:dark:bg-gray-700 transition ease-in-out duration-300'/>
+            }
+        >
 
-export default Profile;
+        {!user && (
+            <>
+                <DropdownItem label={t('menu.profile.login')} path="/login" />
+                <DropdownItem label={t('menu.profile.register')} path="/register" />
+                <Dropdown.Item onClick={toggleMode} className='bg-transparent text-black font-normal hover:font-semibold hover:text-black'>
+                    <p>{t('menu.profile.mode.' + computedMode)}</p>
+                </Dropdown.Item>
+            </>
+        )}
+
+        {user && (
+            <>
+                <Dropdown.Header className="flex flex-col justify-center items-center">
+                    <span className="block text-sm">{user?.login}</span>
+                    <span className="block truncate text-sm font-medium">{user?.email}</span>
+                </Dropdown.Header>
+                <DropdownItem label={t('menu.profile.profile')} path="/profile" />
+                <DropdownItem label={t('menu.profile.settings')} path="/settings" />
+                <Dropdown.Item onClick={toggleMode} className='bg-transparent text-black font-normal hover:font-semibold hover:text-black'>
+                    <p>{t('menu.profile.mode.' + computedMode)}</p>
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <DropdownItem label={t('menu.profile.logout')} path="/" onClick={handleLogout}/>
+            </>
+        )}
+        </Dropdown>
+    </div>);
+}

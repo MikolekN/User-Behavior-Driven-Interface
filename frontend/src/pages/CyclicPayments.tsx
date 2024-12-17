@@ -30,11 +30,11 @@ const CyclicPayments = () => {
         void fetchCyclicPayments();
     }, [user, getCyclicPayments]);
     
-    if (apiError.isError) { 
+    if (apiError.isError) {
         return (
             <EmptyResponseInfoAlert
-                title="Cyclic Payments List"
-                alertTitle="No transactions history to generate analysis yet"
+                title={t('cyclicPaymentList.tile.title')}
+                alertTitle={t('cyclicPaymentList.emptyList')}
                 alertMessage={apiError.errorMessage}
             >
                 <Link to={'/create-cyclic-payment/'} className="justify-self-end p-2">

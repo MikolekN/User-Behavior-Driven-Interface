@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 
 const Register = () => {
     const { t } = useTranslation();
-    const { apiError, handleError } = useApiErrorHandler();
+    const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { user } = useContext(UserContext);
     const { register } = useContext(AuthContext);
     const { register: formRegister, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterFormData>({
@@ -32,6 +32,7 @@ const Register = () => {
     if (user) return <Navigate to="/dashboard" />;
 
     const onSubmit: SubmitHandler<RegisterFormData> = async ({ email, password: userPassword }: RegisterFormData) => {
+        clearApiError();
         try {
             await register(email, userPassword);
             navigate('/login');

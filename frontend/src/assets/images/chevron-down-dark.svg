@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="14.14214"
+   height="8.4852791"
+   viewBox="0 0 14.14214 8.4852791"
+   fill="none"
+   version="1.1"
+   id="svg256"
+   sodipodi:docname="chevron-down-dark.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs260">
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Colorize"
+       id="filter264"
+       x="0"
+       y="0"
+       width="1"
+       height="1">
+      <feColorMatrix
+         values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 -0.21 -0.72 -0.07 2 0 "
+         result="fbSourceGraphic"
+         id="feColorMatrix262" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix179" />
+      <feComposite
+         in2="fbSourceGraphic"
+         id="feComposite181"
+         operator="arithmetic"
+         k1="0"
+         k2="1"
+         result="composite1"
+         in="fbSourceGraphic" />
+      <feColorMatrix
+         id="feColorMatrix183"
+         in="composite1"
+         values="1"
+         type="saturate"
+         result="colormatrix1" />
+      <feFlood
+         id="feFlood185"
+         flood-opacity="1"
+         flood-color="rgb(156,163,175)"
+         result="flood1" />
+      <feBlend
+         in2="colormatrix1"
+         id="feBlend187"
+         in="flood1"
+         mode="multiply"
+         result="blend1" />
+      <feBlend
+         in2="blend1"
+         id="feBlend189"
+         mode="screen"
+         result="blend2" />
+      <feColorMatrix
+         id="feColorMatrix191"
+         in="blend2"
+         values="1"
+         type="saturate"
+         result="colormatrix2" />
+      <feComposite
+         in2="fbSourceGraphic"
+         id="feComposite193"
+         in="colormatrix2"
+         operator="in"
+         k2="1"
+         result="composite2" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="namedview258"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="95.930846"
+     inkscape:cx="7.0675912"
+     inkscape:cy="4.2478516"
+     inkscape:window-width="1350"
+     inkscape:window-height="1040"
+     inkscape:window-x="189"
+     inkscape:window-y="29"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg256" />
+  <path
+     d="M 1.4142102,7.2784424e-8 1.5350342e-7,1.4142201 7.0710402,8.4852801 14.14214,1.4142501 12.72794,3.0072784e-5 7.0710402,5.6568801 Z"
+     fill="currentColor"
+     id="path254"
+     style="filter:url(#filter264)" />
+</svg>

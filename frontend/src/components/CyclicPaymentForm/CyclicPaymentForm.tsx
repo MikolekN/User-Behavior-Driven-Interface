@@ -28,7 +28,7 @@ const CyclicPaymentsForm = () => {
     const { id } = useParams();
     const [ date, setDate ] = useState<Date | undefined | null>(undefined);
     const [ minDate, ] = useState<Date | undefined>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
-    const { apiError, handleError } = useApiErrorHandler();
+    const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
     const { cyclicPayment, setCyclicPayment, createCyclicPayment, getCyclicPayment, 
         updateCyclicPayment } = useContext(CyclicPaymentContext);
@@ -95,6 +95,7 @@ const CyclicPaymentsForm = () => {
     };
 
     const onSubmit: SubmitHandler<CyclicPaymentFormData> = async (data: CyclicPaymentFormData) => {
+        clearApiError();
         if (cyclicPayment === null) {
             try {
                 const requestBody = {
@@ -177,6 +178,7 @@ const CyclicPaymentsForm = () => {
                                 render={() => (
                                     <div className="mb-4">
                                         <Label label={t('cyclicPaymentForm.startDate')} />
+                                        {/* TODO: inne kolory border i ring, oraz dark theme */}
                                         <Flowbite theme={{ theme: errors.startDate ? datepickerErrorTheme : datepickerTheme }}>
                                             <Datepicker
                                                 // dodanie jakiejś logiki przy i18next                             

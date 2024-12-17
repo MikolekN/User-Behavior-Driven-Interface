@@ -22,10 +22,18 @@
     overflow: hidden;
     transition: all 0.3s ease-in-out;
   }
+
+  .faq-item:is(.dark *) {
+    border: 1px solid #1f2937;
+  }
   
-  .faq-item.active .faq-question {
-    background-color: #e0f2ff;
-    border-color: #007bff;
+  .faq-question {
+    background-color: #1f2937;
+  }
+
+  .faq-question:is(.dark *) {
+    background-color: #1f2937;
+    color: #9ca3af;
   }
   
   .faq-question {
@@ -39,10 +47,18 @@
   .faq-question:hover {
     background-color: #f1f1f1;
   }
+
+  .faq-question:hover:is(.dark *) {
+    background-color: #1f2937;
+  }
   
   .faq-answer {
     padding: 0.75rem;
-    border-left: 4px solid #007bff;
     background-color: #fff;
+  }
+  
+  .faq-answer:is(.dark *) {
+    background-color: #1f2937;
+    color: #9ca3af;
   }
   
