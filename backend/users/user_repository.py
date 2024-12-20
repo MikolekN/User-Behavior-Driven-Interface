@@ -1,17 +1,11 @@
 import bson
+
+from repository import BaseRepository
 from ..database import Database
 from .user import User
 
-class UserRepository:
+class UserRepository(BaseRepository):
     COLLECTION: str = 'Users'
-
-    @staticmethod
-    def find_by_id(user_id: str) -> User | None:
-        query = {'_id': bson.ObjectId(user_id)}
-        user_dict = Database.find_one(UserRepository.COLLECTION, query)
-        if user_dict:
-            return User.from_dict(user_dict)
-        return None
 
     @staticmethod
     def find_by_email(email: str) -> User | None:
@@ -28,26 +22,4 @@ class UserRepository:
         if user_dict:
             return User.from_dict(user_dict)
         return None
-
-    @staticmethod
-    def insert(user: User) -> User:
-        user_dict = user.to_dict()
-        result = Database.insert_one(UserRepository.COLLECTION, user_dict)
-        
-        inserted_user = UserRepository.find_by_id(str(result.inserted_id))
-        
-        if inserted_user is None:
-            raise ValueError("Failed to retrieve the user after insertion.")
-        
-        return inserted_user
-    
-    @staticmethod
-    def update(user_id: str, updates: dict[str, any]) -> User:
-        query = {'_id': bson.ObjectId(user_id)}
-        result = Database.update_one(UserRepository.COLLECTION, {'_id': user_id}, updates)
-
-        if result.matched_count == 0:
-            return None
-        
-        return UserRepository.find_by_id(user_id)
         
