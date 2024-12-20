@@ -4,7 +4,7 @@ import bcrypt
 from datetime import datetime
 from collections.abc import Mapping
 from typing import Any
-from ..users import *
+from users import *
 
 import random
 

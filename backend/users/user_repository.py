@@ -1,8 +1,7 @@
-import bson
-
+from database import Database
 from repository import BaseRepository
-from ..database import Database
-from .user import User
+from users import User
+
 
 class UserRepository(BaseRepository):
     COLLECTION: str = 'Users'

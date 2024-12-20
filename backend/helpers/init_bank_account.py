@@ -1,6 +1,8 @@
 from datetime import datetime
-from ..users import *
-from ..constants import BANK_ACCOUNT_NUMBER
+
+from constants import BANK_ACCOUNT_NUMBER
+from users import UserRepository, User
+
 
 def init_bank_account() -> User | None:
 

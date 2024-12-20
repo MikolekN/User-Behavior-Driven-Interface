@@ -1,7 +1,9 @@
 from flask import Response, request, jsonify, Blueprint
 from flask_login import current_user, login_required
 from flask_login import login_required
-from ..users import UserRepository
+
+from users import User
+from users import UserRepository
 
 import bcrypt
 
@@ -10,7 +12,7 @@ user_blueprint = Blueprint('user_update', __name__, url_prefix='/api')
 @user_blueprint.route('/user', methods=['GET'])
 @login_required
 def get_user() -> tuple[Response, int]:
-    user = UserRepository.find_by_id(current_user._id)
+    user = UserRepository.find_by_id(current_user._id, User)
     if not user:
         return jsonify(message='userNotExist'), 404
     sanitized_user = user.sanitize_user_dict()
@@ -33,7 +35,7 @@ def update_user_field() -> Response:
     try:
         UserRepository.update(current_user._id, user_data)
 
-        updated_user = UserRepository.find_by_id(current_user._id)
+        updated_user = UserRepository.find_by_id(current_user._id, User)
         if not updated_user:
             return jsonify(message="userUpdateNotFound"), 404
 
@@ -52,7 +54,7 @@ def change_user_password() -> Response:
     current_password = data['current_password']
     new_password = data['new_password']
 
-    user = UserRepository.find_by_id(current_user._id)
+    user = UserRepository.find_by_id(current_user._id, User)
     if not bcrypt.checkpw(current_password.encode('utf-8'), user.password.encode('utf-8')):
         return jsonify(message="incorrectCurrentPassword"), 401
 

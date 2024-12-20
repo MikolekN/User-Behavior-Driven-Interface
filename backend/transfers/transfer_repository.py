@@ -1,8 +1,7 @@
-import bson
-
+from database import Database
 from repository import BaseRepository
-from ..database import Database
-from ..transfers import Transfer
+from transfers import Transfer
+
 
 class TransferRepository(BaseRepository):
     COLLECTION: str = 'Transfers'

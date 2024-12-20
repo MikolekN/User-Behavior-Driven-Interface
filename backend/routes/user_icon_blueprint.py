@@ -1,9 +1,10 @@
 from flask import Blueprint, request, jsonify, Response, send_file
 from flask_login import current_user, login_required
-from ..users import UserRepository
+
+from constants import ALLOWED_EXTENSIONS, UPLOAD_FOLDER
+from users import User, UserRepository
 from werkzeug.datastructures import FileStorage
 from PIL import Image
-from ..constants import UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 
 import uuid
 import os
@@ -29,7 +30,7 @@ def upload_user_icon() -> tuple[Response, int]:
     if not allowed_file(icon.filename):
         return jsonify(message="invalidFileType"), 400
 
-    user_data = UserRepository.find_by_id(current_user._id)
+    user_data = UserRepository.find_by_id(current_user._id, User)
     if user_data and user_data.user_icon:
         old_icon_path = user_data.user_icon
         if os.path.exists(old_icon_path):
@@ -54,7 +55,7 @@ def upload_user_icon() -> tuple[Response, int]:
 @user_icon_blueprint.route('/user/icon', methods=['GET'])
 @login_required
 def get_user_icon() -> tuple[Response, int]:
-    user_data = UserRepository.find_by_id(current_user._id)
+    user_data = UserRepository.find_by_id(current_user._id, User)
     if not user_data or not user_data.user_icon:
         return jsonify(message="iconNotSetForUser"), 404
 

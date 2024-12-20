@@ -3,10 +3,12 @@ from flask_login import LoginManager
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_cors import CORS
 
-from .helpers import init_bank_account
-from .database import Database
-from .users import *
-from .routes import *
+from database import Database
+from helpers import init_bank_account
+from routes import authorisation_blueprint, transfer_blueprint, user_icon_blueprint, user_blueprint, \
+    cyclic_payment_blueprint
+from users import UserRepository, User
+
 
 # python -m flask --app .\application.py run
 
@@ -19,7 +21,7 @@ def create_app():
     login_manager.init_app(app)
     @login_manager.user_loader
     def load_user(id: str) -> User | None:
-        return UserRepository.find_by_id(id)
+        return UserRepository.find_by_id(id, User)
 
     with app.app_context():
         init_bank_account()

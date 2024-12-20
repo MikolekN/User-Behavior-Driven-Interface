@@ -1,13 +1,14 @@
+from bson import ObjectId
 from flask import Blueprint, request, jsonify, Response
 from flask_login import current_user, login_required
 from datetime import datetime
 from collections.abc import Mapping
 from typing import Any, Callable
-from ..users import UserRepository
-from ..transfers import *
-from bson import ObjectId
-from ..helpers import add, substract
-from ..constants import BANK_ACCOUNT_NUMBER, MAX_LOAN_VALUE, MIN_LOAN_VALUE
+
+from constants import MIN_LOAN_VALUE, MAX_LOAN_VALUE, BANK_ACCOUNT_NUMBER
+from helpers import add, substract
+from transfers import Transfer, TransferRepository
+from users import User, UserRepository
 
 months = ['', 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
@@ -76,12 +77,12 @@ def sanitize_transfer_dict(transfer: dict) -> dict[str, any]:
 def set_income_flag(transfer: dict) -> dict[str, any]:
     if 'transfer_from_id' in transfer and transfer['transfer_from_id'] == current_user._id:
         transfer['income'] = False
-        issuer = UserRepository.find_by_id(transfer['transfer_to_id'])
+        issuer = UserRepository.find_by_id(transfer['transfer_to_id'], User)
         transfer['issuer_name'] = issuer.login # Tutaj uznałem, że może zostać login. Jeszcze powiedz Dawid czy się zgadzasz.
 
     elif 'transfer_to_id' in transfer and transfer['transfer_to_id'] == current_user._id:
         transfer['income'] = True
-        issuer = UserRepository.find_by_id(transfer['transfer_from_id'])
+        issuer = UserRepository.find_by_id(transfer['transfer_from_id'], User)
         transfer['issuer_name'] = issuer.login
 
     return transfer
@@ -236,7 +237,7 @@ def create_loan_transfer() -> tuple[Response, int]:
     if error:
         return jsonify(message=error), 400
     
-    recipient_user = UserRepository.find_by_id(current_user._id)
+    recipient_user = UserRepository.find_by_id(current_user._id, User)
     if not recipient_user:
         return jsonify(message="userWithAccountNumberNotExist"), 404
     

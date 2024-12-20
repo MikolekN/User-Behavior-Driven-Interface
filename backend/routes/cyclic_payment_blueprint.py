@@ -5,9 +5,10 @@ from flask_login import current_user, login_required
 from datetime import datetime
 from collections.abc import Mapping
 from typing import Any
-from ..users import *
-from ..cyclic_payments import *
-from ..helpers import add, substract
+
+from cyclic_payments import CyclicPayment, CyclicPaymentRepository
+from helpers import add, substract
+from users import User, UserRepository
 
 cyclic_payment_blueprint = Blueprint('cyclic_payment', __name__, url_prefix='/api')
 
@@ -118,7 +119,7 @@ def create_cyclic_payment() -> tuple[Response, int]:
     if not recipient_user:
         return jsonify(message="userWithAccountNumberNotExist"), 404
     
-    curr_user = UserRepository.find_by_id(current_user._id)
+    curr_user = UserRepository.find_by_id(current_user._id, User)
     if curr_user.get_available_funds() - float(data['amount']) < 0:
         return jsonify(message="userDontHaveEnoughMoney"), 403
     
@@ -145,7 +146,7 @@ def get_cyclic_payment(id) -> tuple[Response, int]:
     if error:
         return jsonify(message=error), 400
 
-    cyclic_payment = CyclicPaymentRepository.find_by_id(str(id))
+    cyclic_payment = CyclicPaymentRepository.find_by_id(str(id), User)
     if not cyclic_payment:
         return jsonify(message="cyclicPaymentNotExist"), 404
  
@@ -162,7 +163,7 @@ def delete_cyclic_payment(id) -> tuple[Response, int]:
         return jsonify(message=error), 400
     
     # substracting cyclic payment amount from current user's blockades
-    cyclic_payment = CyclicPaymentRepository.find_by_id(str(id))
+    cyclic_payment = CyclicPaymentRepository.find_by_id(str(id), User)
     if not cyclic_payment:
         return jsonify(message="cyclicPaymentNotExist"), 404
     
