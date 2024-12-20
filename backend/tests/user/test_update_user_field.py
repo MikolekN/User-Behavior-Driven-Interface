@@ -12,7 +12,7 @@ def test_update_user_field_no_data(client, test_user):
         assert response.status_code == 400
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "No data provided"
+        assert json_data['message'] == "emptyRequestPayload"
 
 def test_update_user_field_invalid_field(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
@@ -21,8 +21,9 @@ def test_update_user_field_invalid_field(client, test_user):
         assert response.status_code == 400
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Invalid field: invalid_field"
+        assert json_data['message'] == "missingFields;invalid_field"
 
+# TODO: FIX
 @patch('backend.users.user_repository.UserRepository.find_by_id', return_value=None)
 def test_update_user_field_user_not_found_after_update(mock_find_by_id, client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
@@ -33,6 +34,7 @@ def test_update_user_field_user_not_found_after_update(mock_find_by_id, client, 
         assert 'message' in json_data
         assert json_data['message'] == "User not found after update"
 
+# TODO: FIX
 @patch('backend.users.user_repository.UserRepository.update', side_effect=Exception("Database error"))
 def test_update_user_field_exception(mock_update, client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
@@ -43,6 +45,7 @@ def test_update_user_field_exception(mock_update, client, test_user):
         assert 'message' in json_data
         assert "Error updating user data:" in json_data['message']
 
+# TODO: FIX
 @patch('backend.users.user_repository.UserRepository.find_by_id')
 def test_update_user_field_success(mock_find_by_id, client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):

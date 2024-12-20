@@ -21,7 +21,8 @@ def create_app():
     login_manager.init_app(app)
     @login_manager.user_loader
     def load_user(id: str) -> User | None:
-        return UserRepository.find_by_id(id, User)
+        user_repository = UserRepository()
+        return user_repository.find_by_id(id, User)
 
     with app.app_context():
         init_bank_account()

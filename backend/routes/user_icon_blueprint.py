@@ -11,6 +11,8 @@ import os
 
 user_icon_blueprint = Blueprint('user_icon', __name__, url_prefix='/api')
 
+user_repository = UserRepository()
+
 def allowed_file(filename: str) -> bool:
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -30,7 +32,7 @@ def upload_user_icon() -> tuple[Response, int]:
     if not allowed_file(icon.filename):
         return jsonify(message="invalidFileType"), 400
 
-    user_data = UserRepository.find_by_id(current_user._id, User)
+    user_data = user_repository.find_by_id(current_user._id, User)
     if user_data and user_data.user_icon:
         old_icon_path = user_data.user_icon
         if os.path.exists(old_icon_path):
@@ -48,14 +50,14 @@ def upload_user_icon() -> tuple[Response, int]:
     except Exception as e:
         return jsonify(message=f"errorImageProcess;{str(e)}"), 500
 
-    UserRepository.update(current_user._id, {'user_icon': icon_path})
+    user_repository.update(current_user._id, {'user_icon': icon_path}, User)
 
     return jsonify(message="iconUploadSuccessful"), 200
 
 @user_icon_blueprint.route('/user/icon', methods=['GET'])
 @login_required
 def get_user_icon() -> tuple[Response, int]:
-    user_data = UserRepository.find_by_id(current_user._id, User)
+    user_data = user_repository.find_by_id(current_user._id, User)
     if not user_data or not user_data.user_icon:
         return jsonify(message="iconNotSetForUser"), 404
 

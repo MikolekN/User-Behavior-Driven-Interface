@@ -10,6 +10,8 @@ import random
 
 authorisation_blueprint = Blueprint('authorisation', __name__, url_prefix='/api')
 
+user_repository = UserRepository()
+
 def validate_login_data(data: Mapping[str, Any] | None) -> str | None:
     if not data:
         return "emptyRequestPayload"
@@ -27,7 +29,7 @@ def login() -> tuple[Response, int]:
     if error:
         return jsonify(message=error), 400
 
-    user = UserRepository.find_by_email(data['email'])
+    user = user_repository.find_by_email(data['email'])
     if user is None:
         return jsonify(message="userNotExist"), 404
 
@@ -36,13 +38,13 @@ def login() -> tuple[Response, int]:
 
     login_user(user)
     sanitized_user = user.sanitize_user_dict()
-    return jsonify(message="loginSuccesful", user=sanitized_user), 200
+    return jsonify(message="loginSuccessful", user=sanitized_user), 200
 
 @authorisation_blueprint.route('/logout', methods=['POST'])
 @login_required
 def logout() -> tuple[Response, int]:
     logout_user()
-    return jsonify(message="logoutSuccesful"), 200
+    return jsonify(message="logoutSuccessful"), 200
 
 @authorisation_blueprint.route('/register', methods=['POST'])
 def register() -> tuple[Response, int]:
@@ -54,7 +56,7 @@ def register() -> tuple[Response, int]:
     if error:
         return jsonify(message=error), 400
 
-    if UserRepository.find_by_email(data['email']):
+    if user_repository.find_by_email(data['email']):
         return jsonify(message="userExist"), 409
 
     hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -75,7 +77,7 @@ def register() -> tuple[Response, int]:
         currency='PLN',
         user_icon=None,
         role='USER')
-    user = UserRepository.insert(user) # teraz przy tworzeniu zapisuje w bazie 'user_icon: null'. Trzeba będzie zrobić, żeby nic nie zapisywał.
+    user = user_repository.insert(user) # teraz przy tworzeniu zapisuje w bazie 'user_icon: null'. Trzeba będzie zrobić, żeby nic nie zapisywał.
 
     sanitized_user = user.sanitize_user_dict()
-    return jsonify(message="registerSuccesful", user=sanitized_user), 201
+    return jsonify(message="registerSuccessful", user=sanitized_user), 201

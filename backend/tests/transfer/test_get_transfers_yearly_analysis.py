@@ -1,5 +1,7 @@
 from unittest.mock import patch
-from backend.tests.transfer.constants import TEST_YEAR, TEST_YEAR_INVALID
+
+from tests.transfer.constants import TEST_YEAR_INVALID, TEST_YEAR
+
 
 def test_get_transfers_yearly_analysis_unauthorized(client):
     response = client.post('/api/transfers/analysis/yearly')
@@ -15,7 +17,7 @@ def test_get_transfers_yearly_analysis_empty_data(mock_find_transfers, client, t
         assert response.status_code == 400
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Request payload is empty"
+        assert json_data['message'] == "emptyRequestPayload"
 
 @patch('backend.transfers.transfer_repository.TransferRepository.find_transfers')
 def test_get_transfers_yearly_analysis_invalid_data(mock_find_transfers, client, test_user):
@@ -27,7 +29,7 @@ def test_get_transfers_yearly_analysis_invalid_data(mock_find_transfers, client,
         assert response.status_code == 400
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Start Year and End Year are required"
+        assert json_data['message'] == "startEndYearRequired"
 
 @patch('backend.transfers.transfer_repository.TransferRepository.find_transfers')
 def test_get_transfers_yearly_analysis_invalid_data_type(mock_find_transfers, client, test_user):
@@ -39,8 +41,9 @@ def test_get_transfers_yearly_analysis_invalid_data_type(mock_find_transfers, cl
         assert response.status_code == 400
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Start year and / or end year has to be of type integer"
+        assert json_data['message'] == "invalidStartEndYearType"
 
+# TODO: FIX
 @patch('backend.transfers.transfer_repository.TransferRepository.find_transfers')
 def test_get_transfers_yearly_analysis_not_exist(mock_find_transfers, client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
@@ -66,5 +69,5 @@ def test_get_transfers_yearly_analysis_success(mock_find_user_by_id, mock_find_t
         assert response.status_code == 200
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Transfers yearly analysis returned successfully"
+        assert json_data['message'] == "yearlyAnalysisSuccessful"
         assert 'transfers' in json_data

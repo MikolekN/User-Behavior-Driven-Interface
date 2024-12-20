@@ -9,10 +9,12 @@ import bcrypt
 
 user_blueprint = Blueprint('user_update', __name__, url_prefix='/api')
 
+user_repository = UserRepository()
+
 @user_blueprint.route('/user', methods=['GET'])
 @login_required
 def get_user() -> tuple[Response, int]:
-    user = UserRepository.find_by_id(current_user._id, User)
+    user = user_repository.find_by_id(current_user._id, User)
     if not user:
         return jsonify(message='userNotExist'), 404
     sanitized_user = user.sanitize_user_dict()
@@ -33,9 +35,9 @@ def update_user_field() -> Response:
             return jsonify(message=f"missingFields;{field}"), 400
 
     try:
-        UserRepository.update(current_user._id, user_data)
+        user_repository.update(current_user._id, user_data, User)
 
-        updated_user = UserRepository.find_by_id(current_user._id, User)
+        updated_user = user_repository.find_by_id(current_user._id, User)
         if not updated_user:
             return jsonify(message="userUpdateNotFound"), 404
 
@@ -54,13 +56,13 @@ def change_user_password() -> Response:
     current_password = data['current_password']
     new_password = data['new_password']
 
-    user = UserRepository.find_by_id(current_user._id, User)
+    user = user_repository.find_by_id(current_user._id, User)
     if not bcrypt.checkpw(current_password.encode('utf-8'), user.password.encode('utf-8')):
         return jsonify(message="incorrectCurrentPassword"), 401
 
     try:
         hashed_new_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        UserRepository.update(current_user._id, {'password': hashed_new_password})
+        user_repository.update(current_user._id, {'password': hashed_new_password})
         return jsonify(message="passwordUpdateSuccessful"), 200
     except Exception as e:
         return jsonify(message=f"errorUpdatePassword;{str(e)}"), 500

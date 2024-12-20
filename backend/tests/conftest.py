@@ -1,17 +1,21 @@
 from datetime import datetime
-from backend.cyclic_payments.cyclic_payment import CyclicPayment
-from backend.tests.transfer.constants import TEST_TRANSFER_TITLE
-from backend.transfers.transfer import Transfer
-from backend.users.user import User
+
 import bcrypt
 import pytest
-from ..application import create_app
-from backend.tests.constants import TEST_EMAIL, TEST_ID, TEST_PASSWORD
-from backend.tests.cyclic_payment.constants import TEST_AMOUNT, TEST_CYCLIC_PAYMENT_INTERVAL, TEST_CYCLIC_PAYMENT_NAME, TEST_CYCLIC_PAYMENT_START_DATE, TEST_CYCLIC_PAYMENT_TRANSFER_TITLE, TEST_ISSUER_ACCOUNT_NUMBER, TEST_RECIPIENT_ACCOUNT_NUMBER
+
+import application
+from cyclic_payments import CyclicPayment
+from tests.constants import TEST_PASSWORD, TEST_ID, TEST_EMAIL
+from tests.cyclic_payment.constants import TEST_ISSUER_ACCOUNT_NUMBER, TEST_CYCLIC_PAYMENT_NAME, TEST_AMOUNT, \
+    TEST_CYCLIC_PAYMENT_TRANSFER_TITLE, TEST_CYCLIC_PAYMENT_START_DATE, TEST_CYCLIC_PAYMENT_INTERVAL
+from tests.transfer.constants import TEST_RECIPIENT_ACCOUNT_NUMBER, TEST_TRANSFER_TITLE
+from transfers import Transfer
+from users import User
+
 
 @pytest.fixture
 def app():
-    app = create_app()
+    app = application.create_app()
     app.config.update({"TESTING": True})
     yield app
 

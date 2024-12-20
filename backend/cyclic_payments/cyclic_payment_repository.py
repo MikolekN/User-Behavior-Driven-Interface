@@ -1,22 +1,15 @@
 from cyclic_payments import CyclicPayment
-from database import Database
 from repository import BaseRepository
 
 class CyclicPaymentRepository(BaseRepository):
-    COLLECTION: str = 'CyclicPayments'
+    def __init__(self):
+        super().__init__('CyclicPayments')
 
-    @staticmethod
-    def find_by_issuer_id(cyclic_payment_from_id: str) -> CyclicPayment | None:
-        query = {'issuer_id': cyclic_payment_from_id}
-        cyclic_payment_dict = Database.find_one(CyclicPaymentRepository.COLLECTION, query)
-        if cyclic_payment_dict:
-            return CyclicPayment.from_dict(cyclic_payment_dict)
-        return None
+    def find_cyclic_payments(self, query: dict, sort_criteria: list[tuple[str, int]] = None) -> CyclicPayment | None:
+        return super().find_many(CyclicPayment, query, sort_criteria)
+
+    def find_by_issuer_id(self, cyclic_payment_from_id: str) -> CyclicPayment | None:
+        return super().find_by_field('cyclic_payment_from_id', cyclic_payment_from_id, CyclicPayment)
     
-    @staticmethod
-    def find_by_recipient_id(cyclic_payment_to_id: str) -> CyclicPayment | None:
-        query = {'recipient_id': cyclic_payment_to_id}
-        cyclic_payment_dict = Database.find_one(CyclicPaymentRepository.COLLECTION, query)
-        if cyclic_payment_dict:
-            return CyclicPayment.from_dict(cyclic_payment_dict)
-        return None
+    def find_by_recipient_id(self, cyclic_payment_to_id: str) -> CyclicPayment | None:
+        return super().find_by_field('cyclic_payment_to_id', cyclic_payment_to_id, CyclicPayment)

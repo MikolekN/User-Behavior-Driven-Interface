@@ -14,6 +14,9 @@ months = ['', 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oc
 
 transfer_blueprint = Blueprint('transfer', __name__, url_prefix='/api')
 
+user_repository = UserRepository()
+transfer_repository = TransferRepository()
+
 def validate_transfer_data(data: Mapping[str, Any] | None) -> str | None:
     if not data:
         return "emptyRequestPayload"
@@ -77,12 +80,12 @@ def sanitize_transfer_dict(transfer: dict) -> dict[str, any]:
 def set_income_flag(transfer: dict) -> dict[str, any]:
     if 'transfer_from_id' in transfer and transfer['transfer_from_id'] == current_user._id:
         transfer['income'] = False
-        issuer = UserRepository.find_by_id(transfer['transfer_to_id'], User)
+        issuer = user_repository.find_by_id(transfer['transfer_to_id'], User)
         transfer['issuer_name'] = issuer.login # Tutaj uznałem, że może zostać login. Jeszcze powiedz Dawid czy się zgadzasz.
 
     elif 'transfer_to_id' in transfer and transfer['transfer_to_id'] == current_user._id:
         transfer['income'] = True
-        issuer = UserRepository.find_by_id(transfer['transfer_from_id'], User)
+        issuer = user_repository.find_by_id(transfer['transfer_from_id'], User)
         transfer['issuer_name'] = issuer.login
 
     return transfer
@@ -237,19 +240,19 @@ def create_loan_transfer() -> tuple[Response, int]:
     if error:
         return jsonify(message=error), 400
     
-    recipient_user = UserRepository.find_by_id(current_user._id, User)
+    recipient_user = user_repository.find_by_id(current_user._id, User)
     if not recipient_user:
         return jsonify(message="userWithAccountNumberNotExist"), 404
     
-    bank = UserRepository.find_by_account_number(BANK_ACCOUNT_NUMBER)
+    bank = user_repository.find_by_account_number(BANK_ACCOUNT_NUMBER)
     if not bank:
         return jsonify(message="bankAccountNotExist"), 404
 
     transfer = Transfer(created=datetime.now(), transfer_from_id=bank._id,
                         transfer_to_id=recipient_user._id, title=data['transferTitle'], amount=float(data['amount']))
-    transfer = TransferRepository.insert(transfer)
+    transfer = transfer_repository.insert(transfer)
 
-    UserRepository.update(current_user._id, {'balance': add(float(current_user.balance), float(data['amount']))})
+    user_repository.update(current_user._id, {'balance': add(float(current_user.balance), float(data['amount']))})
 
     return jsonify(message="loanCreatedSuccessful"), 200
 
@@ -262,21 +265,21 @@ def create_transfer() -> tuple[Response, int]:
     if error:
         return jsonify(message=error), 400
     
-    recipient_user = UserRepository.find_by_account_number(data['recipientAccountNumber'])
+    recipient_user = user_repository.find_by_account_number(data['recipientAccountNumber'])
     
     if not recipient_user:
         return jsonify(message="userWithAccountNumberNotExist"), 404
     
-    curr_user = UserRepository.find_by_id(current_user._id)
+    curr_user = user_repository.find_by_id(current_user._id)
     if curr_user.get_available_funds() - float(data['amount']) < 0:
         return jsonify(message="userDontHaveEnoughMoney"), 403
 
     transfer = Transfer(created=datetime.now(), transfer_from_id=current_user._id,
                         transfer_to_id=recipient_user._id, title=data['transferTitle'], amount=float(data['amount']))
-    transfer = TransferRepository.insert(transfer)
+    transfer = transfer_repository.insert(transfer)
 
-    UserRepository.update(curr_user._id, {'balance': substract(float(curr_user.balance), float(data['amount']))})
-    UserRepository.update(recipient_user._id, {'balance': add(float(recipient_user.balance), float(data['amount']))})
+    user_repository.update(curr_user._id, {'balance': substract(float(curr_user.balance), float(data['amount']))})
+    user_repository.update(recipient_user._id, {'balance': add(float(recipient_user.balance), float(data['amount']))})
 
     return jsonify(message="transferCreatedSuccessful"), 200
 
@@ -290,7 +293,7 @@ def get_all_user_transfers() -> tuple[Response, int]:
         ]
     }
     sort_criteria = [("created", -1)]
-    transfers = TransferRepository.find_transfers(query, sort_criteria)
+    transfers = transfer_repository.find_transfers(query, sort_criteria)
     if not transfers:
         return jsonify(message="transferListEmpty"), 404
     
@@ -321,7 +324,7 @@ def get_all_user_transfers_monthly() -> tuple[Response, int]:
         }
     }
 
-    transfers = TransferRepository.find_transfers(query)
+    transfers = transfer_repository.find_transfers(query)
     if not transfers:
         return jsonify(message="monthlyAnalysisEmpty"), 404
 
@@ -352,7 +355,7 @@ def get_all_user_transfers_yearly() -> tuple[Response, int]:
         }
     }
 
-    transfers = TransferRepository.find_transfers(query)
+    transfers = transfer_repository.find_transfers(query)
     if not transfers:
         return jsonify(message="yearlyAnalysisEmpty"), 404
     

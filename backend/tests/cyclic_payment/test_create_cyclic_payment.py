@@ -1,6 +1,8 @@
 from unittest.mock import MagicMock, patch
-from backend.tests.cyclic_payment.constants import TEST_AVAILABLE_USER_FUNDS, TEST_NEGATIVE_AMOUNT, TEST_NOT_ENOUGH_USER_FUNDS
-from backend.tests.cyclic_payment.helpers import get_cyclic_payment, get_cyclic_payment_not_valid
+
+from tests.cyclic_payment.constants import TEST_NEGATIVE_AMOUNT, TEST_NOT_ENOUGH_USER_FUNDS, TEST_AVAILABLE_USER_FUNDS
+from tests.cyclic_payment.helpers import get_cyclic_payment_not_valid, get_cyclic_payment
+
 
 def test_create_cyclic_payment_unauthorized(client):
     response = client.post('/api/cyclic-payment')
@@ -13,7 +15,7 @@ def test_create_cyclic_payment_empty_data(client, test_user):
         assert response.status_code == 400
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Request payload is empty"
+        assert json_data['message'] == "emptyRequestPayload"
 
 def test_create_cyclic_payment_invalid_data(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
@@ -22,7 +24,7 @@ def test_create_cyclic_payment_invalid_data(client, test_user):
         assert response.status_code == 400
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Fields: 'interval' are required"
+        assert json_data['message'] == "missingFields;interval"
 
 def test_create_cyclic_payment_negative_amount(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
@@ -31,7 +33,7 @@ def test_create_cyclic_payment_negative_amount(client, test_user):
         assert response.status_code == 400
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Amount must be a positive number"
+        assert json_data['message'] == "negativeAmount"
 
 def test_create_cyclic_payment_invalid_date_format(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
@@ -40,7 +42,7 @@ def test_create_cyclic_payment_invalid_date_format(client, test_user):
         assert response.status_code == 400
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Invalid date format. Expected ISO 8601 format"
+        assert json_data['message'] == "invalidDateFormat"
 
 @patch('backend.users.user_repository.UserRepository.find_by_account_number')
 def test_create_cyclic_payment_recipient_user_not_exist(mock_find_by_account_number, client, test_user):
@@ -52,8 +54,9 @@ def test_create_cyclic_payment_recipient_user_not_exist(mock_find_by_account_num
         assert response.status_code == 404
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "User with given account number does not exist"
+        assert json_data['message'] == "userWithAccountNumberNotExist"
 
+# TODO: FIX
 @patch('backend.users.user_repository.UserRepository.find_by_id')
 @patch('backend.users.user_repository.UserRepository.find_by_account_number')
 def test_create_cyclic_payment_not_enough_money(mock_find_by_account_number, mock_find_by_id, client, test_issuer_user, test_recipient_user):
@@ -69,6 +72,7 @@ def test_create_cyclic_payment_not_enough_money(mock_find_by_account_number, moc
         assert 'message' in json_data
         assert json_data['message'] == "User does not have enough money"
 
+# TODO: FIX
 @patch('backend.users.user_repository.UserRepository.find_by_id')
 @patch('backend.users.user_repository.UserRepository.find_by_account_number')
 @patch('backend.users.user_repository.UserRepository.update')

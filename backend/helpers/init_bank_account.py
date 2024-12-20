@@ -5,8 +5,8 @@ from users import UserRepository, User
 
 
 def init_bank_account() -> User | None:
-
-    bank = UserRepository.find_by_account_number(BANK_ACCOUNT_NUMBER)
+    user_repository = UserRepository()
+    bank = user_repository.find_by_account_number(BANK_ACCOUNT_NUMBER)
     if bank:
         return None
     
