@@ -80,12 +80,12 @@ def sanitize_transfer_dict(transfer: dict) -> dict[str, any]:
 def set_income_flag(transfer: dict) -> dict[str, any]:
     if 'transfer_from_id' in transfer and transfer['transfer_from_id'] == current_user._id:
         transfer['income'] = False
-        issuer = user_repository.find_by_id(transfer['transfer_to_id'], User)
+        issuer = user_repository.find_by_id(transfer['transfer_to_id'])
         transfer['issuer_name'] = issuer.login # Tutaj uznałem, że może zostać login. Jeszcze powiedz Dawid czy się zgadzasz.
 
     elif 'transfer_to_id' in transfer and transfer['transfer_to_id'] == current_user._id:
         transfer['income'] = True
-        issuer = user_repository.find_by_id(transfer['transfer_from_id'], User)
+        issuer = user_repository.find_by_id(transfer['transfer_from_id'])
         transfer['issuer_name'] = issuer.login
 
     return transfer
@@ -240,7 +240,7 @@ def create_loan_transfer() -> tuple[Response, int]:
     if error:
         return jsonify(message=error), 400
     
-    recipient_user = user_repository.find_by_id(current_user._id, User)
+    recipient_user = user_repository.find_by_id(current_user._id)
     if not recipient_user:
         return jsonify(message="userWithAccountNumberNotExist"), 404
     

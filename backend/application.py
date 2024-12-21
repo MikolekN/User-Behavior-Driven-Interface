@@ -22,7 +22,7 @@ def create_app():
     @login_manager.user_loader
     def load_user(id: str) -> User | None:
         user_repository = UserRepository()
-        return user_repository.find_by_id(id, User)
+        return user_repository.find_by_id(id)
 
     with app.app_context():
         init_bank_account()

@@ -32,7 +32,7 @@ def upload_user_icon() -> tuple[Response, int]:
     if not allowed_file(icon.filename):
         return jsonify(message="invalidFileType"), 400
 
-    user_data = user_repository.find_by_id(current_user._id, User)
+    user_data = user_repository.find_by_id(current_user._id)
     if user_data and user_data.user_icon:
         old_icon_path = user_data.user_icon
         if os.path.exists(old_icon_path):
@@ -57,7 +57,7 @@ def upload_user_icon() -> tuple[Response, int]:
 @user_icon_blueprint.route('/user/icon', methods=['GET'])
 @login_required
 def get_user_icon() -> tuple[Response, int]:
-    user_data = user_repository.find_by_id(current_user._id, User)
+    user_data = user_repository.find_by_id(current_user._id)
     if not user_data or not user_data.user_icon:
         return jsonify(message="iconNotSetForUser"), 404
 
@@ -66,6 +66,6 @@ def get_user_icon() -> tuple[Response, int]:
         return jsonify(message="iconUserNotFound"), 404
 
     try:
-        return send_file(icon_path, mimetype='image/png')
+        return send_file(icon_path, mimetype='image/png'), 200
     except Exception as e:
         return jsonify(message=f"sendIconFailed;{str(e)}"), 500

@@ -122,7 +122,7 @@ def create_cyclic_payment() -> tuple[Response, int]:
     if not recipient_user:
         return jsonify(message="userWithAccountNumberNotExist"), 404
     
-    curr_user = user_repository.find_by_id(current_user._id, User)
+    curr_user = user_repository.find_by_id(current_user._id)
     if curr_user.get_available_funds() - float(data['amount']) < 0:
         return jsonify(message="userDontHaveEnoughMoney"), 403
     
@@ -149,7 +149,7 @@ def get_cyclic_payment(id) -> tuple[Response, int]:
     if error:
         return jsonify(message=error), 400
 
-    cyclic_payment = cyclic_payment_repository.find_by_id(str(id), User)
+    cyclic_payment = cyclic_payment_repository.find_by_id(str(id))
     if not cyclic_payment:
         return jsonify(message="cyclicPaymentNotExist"), 404
  
@@ -166,7 +166,7 @@ def delete_cyclic_payment(id) -> tuple[Response, int]:
         return jsonify(message=error), 400
     
     # substracting cyclic payment amount from current user's blockades
-    cyclic_payment = cyclic_payment_repository.find_by_id(str(id), User)
+    cyclic_payment = cyclic_payment_repository.find_by_id(str(id))
     if not cyclic_payment:
         return jsonify(message="cyclicPaymentNotExist"), 404
     
