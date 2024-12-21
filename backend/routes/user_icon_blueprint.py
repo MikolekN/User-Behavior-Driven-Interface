@@ -50,7 +50,7 @@ def upload_user_icon() -> tuple[Response, int]:
     except Exception as e:
         return jsonify(message=f"errorImageProcess;{str(e)}"), 500
 
-    user_repository.update(current_user._id, {'user_icon': icon_path}, User)
+    user_repository.update(current_user._id, {'user_icon': icon_path})
 
     return jsonify(message="iconUploadSuccessful"), 200
 
