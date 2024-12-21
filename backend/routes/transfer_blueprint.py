@@ -14,6 +14,8 @@ months = ['', 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oc
 
 transfer_blueprint = Blueprint('transfer', __name__, url_prefix='/api')
 
+# TODO: uniemożliwić robienie transferu do samego siebie
+
 user_repository = UserRepository()
 transfer_repository = TransferRepository()
 

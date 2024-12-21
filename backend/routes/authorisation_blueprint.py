@@ -1,83 +1,87 @@
+from typing import Optional
+from datetime import datetime
+
+import bcrypt
 from flask import Blueprint, request, jsonify, Response
 from flask_login import current_user, login_user, logout_user, login_required
-import bcrypt
-from datetime import datetime
-from collections.abc import Mapping
-from typing import Any
-from users import *
 
-import random
+from routes.helpers import create_response, validate_login_data, hash_password, generate_account_number
+from users import *
 
 authorisation_blueprint = Blueprint('authorisation', __name__, url_prefix='/api')
 
 user_repository = UserRepository()
 
-def validate_login_data(data: Mapping[str, Any] | None) -> str | None:
-    if not data:
-        return "emptyRequestPayload"
-    if 'email' not in data or 'password' not in data:
-        return "authFieldsRequired"
-    return None
+
+def authenticate_user(email: str, password: str) -> tuple[Optional[User], Optional[str]]:
+    user = user_repository.find_by_email(email)
+    if user is None:
+        return None, "userNotExist"
+
+    if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+        return None, "invalidCredentials"
+
+    return user, None
 
 @authorisation_blueprint.route('/login', methods=['POST'])
 def login() -> tuple[Response, int]:
     if current_user.is_authenticated:
-        return jsonify(message="alreadyLogged"), 409
+        return create_response("alreadyLogged", 409)
 
     data = request.get_json()
+
+    # Validate request data
     error = validate_login_data(data)
     if error:
-        return jsonify(message=error), 400
+        return create_response(error, 400)
 
-    user = user_repository.find_by_email(data['email'])
+    # Authenticate user
+    user, error = authenticate_user(data['email'], data['password'])
     if user is None:
-        return jsonify(message="userNotExist"), 404
+        return create_response(error, 404)
 
-    if not bcrypt.checkpw(data['password'].encode('utf-8'), user.password.encode('utf-8')):
-        return jsonify(message="invalidCredentials"), 401
-
+    # Log the user in
     login_user(user)
     sanitized_user = user.sanitize_user_dict()
-    return jsonify(message="loginSuccessful", user=sanitized_user), 200
+    return create_response("loginSuccessful", 200, sanitized_user)
 
 @authorisation_blueprint.route('/logout', methods=['POST'])
 @login_required
 def logout() -> tuple[Response, int]:
     logout_user()
-    return jsonify(message="logoutSuccessful"), 200
+    return create_response("logoutSuccessful", 200)
 
 @authorisation_blueprint.route('/register', methods=['POST'])
 def register() -> tuple[Response, int]:
     if current_user.is_authenticated:
-        return jsonify(message="alreadyLogged"), 409
+        return create_response("alreadyLogged", 409)
 
     data = request.get_json()
+
+    # Validate request data
     error = validate_login_data(data)
     if error:
-        return jsonify(message=error), 400
+        return create_response(error, 400)
 
     if user_repository.find_by_email(data['email']):
-        return jsonify(message="userExist"), 409
+        return create_response("userExist", 409)
 
-    hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-    
-    # na razie dodaję tutaj w konstruktorze dodatkowe dane o użytkowniku dla ułatwienia
-    # trzeba bedzie dogadać jak to finalnie rozwiążemy
-    generated_account_number = ''.join(random.choices('0123456789', k=26))
-
+    # Create a new User object
+    # TODO: figure out 'account_name', 'account_number', and 'balance'
     user = User(
         login=data['email'],
         email=data['email'],
-        password=hashed_password,
+        password=hash_password(data['password']),
         created=datetime.now(),
-        account_name='Przykladowa nazwa konta',
-        account_number=generated_account_number,
+        account_name='Account name',
+        account_number=generate_account_number(),
         blockades=0,
         balance=2000,
         currency='PLN',
         user_icon=None,
         role='USER')
-    user = user_repository.insert(user) # teraz przy tworzeniu zapisuje w bazie 'user_icon: null'. Trzeba będzie zrobić, żeby nic nie zapisywał.
 
+    # Create a user
+    user = user_repository.insert(user)
     sanitized_user = user.sanitize_user_dict()
     return jsonify(message="registerSuccessful", user=sanitized_user), 201
