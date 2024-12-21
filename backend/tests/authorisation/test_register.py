@@ -32,7 +32,8 @@ def test_register_invalid_data(client):
     json_data = response.get_json()
     assert 'message' in json_data
     assert json_data['message'] == "authFieldsRequired"
-    
+
+# Test user has to be created first for the test to work
 def test_register_already_exists(client, test_user):
     with patch('backend.users.user_repository.UserRepository.find_by_email', return_value=test_user):
         response = client.post('/api/register', json={

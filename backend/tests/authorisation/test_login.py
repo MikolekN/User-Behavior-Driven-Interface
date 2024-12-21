@@ -3,6 +3,7 @@ from unittest.mock import patch
 from tests.constants import TEST_EMAIL, TEST_PASSWORD
 
 
+# Test user has to be created first for the test to work
 def test_login_success(client, test_user):
     with patch('backend.users.user_repository.UserRepository.find_by_email', return_value=test_user):
         response = client.post('/api/login', json={
@@ -40,6 +41,7 @@ def test_login_user_not_exist(client):
         assert 'message' in json_data
         assert json_data['message'] == "userNotExist"
 
+# Test user has to be created first for the test to work
 def test_login_invalid_password(client, test_user):
     with patch('backend.users.user_repository.UserRepository.find_by_email', return_value=test_user):
         response = client.post('/api/login', json={
