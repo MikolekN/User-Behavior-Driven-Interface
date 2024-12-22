@@ -1,7 +1,8 @@
-from typing import Any, Optional, Type
+from typing import Optional, Type
 
 from cyclic_payments import CyclicPayment
 from repository import BaseRepository
+
 
 class CyclicPaymentRepository(BaseRepository):
     COLLECTION: str = 'CyclicPayments'

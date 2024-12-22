@@ -1,11 +1,11 @@
+import bcrypt
 from flask import Response, request, jsonify, Blueprint
-from flask_login import current_user, login_required
+from flask_login import current_user
 from flask_login import login_required
 
-from users import User
+from routes.helpers import create_response
 from users import UserRepository
-
-import bcrypt
+from users.user_dto import UserDto
 
 user_blueprint = Blueprint('user_update', __name__, url_prefix='/api')
 
@@ -16,9 +16,10 @@ user_repository = UserRepository()
 def get_user() -> tuple[Response, int]:
     user = user_repository.find_by_id(current_user._id)
     if not user:
-        return jsonify(message='userNotExist'), 404
-    sanitized_user = user.sanitize_user_dict()
-    return jsonify(user=sanitized_user), 200
+        return create_response("userNotExist", 404)
+
+    get_user_dto = UserDto.from_user(user)
+    return create_response("userFetchSuccessful", 200, get_user_dto.to_dict())
 
 @user_blueprint.route("/user/update", methods=['PATCH'])
 @login_required

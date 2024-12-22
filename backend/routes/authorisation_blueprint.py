@@ -7,6 +7,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 
 from routes.helpers import create_response, validate_login_data, hash_password, generate_account_number
 from users import *
+from users.user_dto import UserDto
 
 authorisation_blueprint = Blueprint('authorisation', __name__, url_prefix='/api')
 
@@ -42,8 +43,8 @@ def login() -> tuple[Response, int]:
 
     # Log the user in
     login_user(user)
-    sanitized_user = user.sanitize_user_dict()
-    return create_response("loginSuccessful", 200, sanitized_user)
+    user_dto = UserDto.from_user(user)
+    return create_response("loginSuccessful", 200, user_dto.to_dict())
 
 @authorisation_blueprint.route('/logout', methods=['POST'])
 @login_required
@@ -83,5 +84,5 @@ def register() -> tuple[Response, int]:
 
     # Create a user
     user = user_repository.insert(user)
-    sanitized_user = user.sanitize_user_dict()
-    return jsonify(message="registerSuccessful", user=sanitized_user), 201
+    user_dto = UserDto.from_user(user)
+    return jsonify(message="registerSuccessful", user=user_dto.to_dict()), 201

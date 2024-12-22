@@ -1,5 +1,7 @@
 from unittest.mock import patch
 
+from users.user_dto import UserDto
+
 
 def test_get_user_not_logged_in(client):
     response = client.get('/api/user')
@@ -26,4 +28,4 @@ def test_get_user_success(mock_find_by_id, client, test_user):
         assert response.status_code == 200
         json_data = response.get_json()
         assert 'user' in json_data
-        assert json_data['user'] == test_user.sanitize_user_dict()
+        assert json_data['user'] == UserDto.from_user(test_user).to_dict()
