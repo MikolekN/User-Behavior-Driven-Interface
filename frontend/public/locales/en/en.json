@@ -234,8 +234,8 @@
             "loading": "Loading..."
         },
         "password": {
-            "password": "Password",
-            "newPassword": "Confirm password",
+            "password": "Current password",
+            "newPassword": "New password",
             "submit": "Change password",
             "loading": "Loading..."
         }

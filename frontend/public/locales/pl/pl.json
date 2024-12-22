@@ -235,8 +235,8 @@
             "loading": "Ładowanie..."
         },
         "password": {
-            "password": "Hasło",
-            "newPassword": "Powtórz hasło",
+            "password": "Obecne hasło",
+            "newPassword": "Nowe hasło",
             "submit": "Zmień hasło",
             "loading": "Ładowanie..."
         }
