@@ -1,7 +1,6 @@
 from typing import Optional
 
-import bcrypt
-from flask import Response, request, jsonify, Blueprint
+from flask import Response, request, Blueprint
 from flask_login import current_user
 from flask_login import login_required
 
