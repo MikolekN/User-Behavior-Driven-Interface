@@ -321,7 +321,12 @@
             "amountBiggerThan": "Wprowadzona kwota nie może być większa niż",
             "password": "Hasło musi posiadać conajmniej 8 znaków, w tym małą literę, wielką literę i liczbę",
             "confirmPassword": "Wprowadzone hasła nie pasują",
-            "invalidAccountNumber": "Nieprawidłowy numer konta"
+            "invalidAccountNumber": "Nieprawidłowy numer konta",
+            "invalidFieldSelected": "Wybrano nieprawidłowe pole",
+            "invalidCurrencyFormat": "Kod waluty musi składać się z trzech wielkich liter",
+            "fileRequired": "Plik jest wymagany",
+            "invalidFileType": "Typ pliku jest niedozwolony",
+            "maximumFileSize": "Maksymalny rozmiar pliku to 8 MB"
         }
     },
     "chart": {

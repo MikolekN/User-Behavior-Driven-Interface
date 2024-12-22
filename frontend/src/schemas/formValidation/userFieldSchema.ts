@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { CURRENCY_REGEX, REQUIRED_TEXT_INPUT_LENGTH } from './constants';
 
 export const UserFieldFormDataSchema = z.object({
-    field: z.string().trim().min(1, { message: 'Value is required' }),
+    field: z.string().trim().min(1, { message: 'required' }),
     value: z.string().trim()
 }).superRefine((data, ctx) => {
     const selectedField = data.field;
@@ -11,7 +11,7 @@ export const UserFieldFormDataSchema = z.object({
             if (data.value.length < REQUIRED_TEXT_INPUT_LENGTH) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
-                    message: 'Należy podać nową nazwę użytkownika',
+                    message: 'required',
                     path: ['value']
                 });
             }
@@ -21,7 +21,7 @@ export const UserFieldFormDataSchema = z.object({
             if (data.value.length < REQUIRED_TEXT_INPUT_LENGTH) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
-                    message: 'Należy podać nową nazwę konta',
+                    message: 'required',
                     path: ['value']
                 });
             }
@@ -31,7 +31,7 @@ export const UserFieldFormDataSchema = z.object({
             if (data.value.length < REQUIRED_TEXT_INPUT_LENGTH) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
-                    message: 'Należy podać nową walutę',
+                    message: 'required',
                     path: ['value']
                 });
             }
@@ -39,7 +39,7 @@ export const UserFieldFormDataSchema = z.object({
             if (!CURRENCY_REGEX.test(data.value)) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
-                    message: 'Kod waluty musi składać się z trzech wielkich liter',
+                    message: 'invalidCurrencyFormat',
                     path: ['value']
                 });
             }
@@ -48,7 +48,7 @@ export const UserFieldFormDataSchema = z.object({
         default:
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                message: 'Invalid field selected',
+                message: 'invalidFieldSelected',
                 path: ['field']
             });
             break;

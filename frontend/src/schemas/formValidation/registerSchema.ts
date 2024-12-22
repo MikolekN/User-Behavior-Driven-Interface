@@ -5,8 +5,7 @@ import { MIN_PASSWORD_LENGTH, PASSWORD_REGEX } from './constants';
 export const RegisterFormDataSchema = z.object({
     email: requiredStringField().email(),
     password: requiredStringField().min(MIN_PASSWORD_LENGTH).regex(new RegExp(PASSWORD_REGEX), {
-        message:
-            `password`
+        message: 'password'
     }),
     confirmPassword: requiredStringField()
     })

@@ -322,7 +322,12 @@
             "amountBiggerThan": "The entered amount cannot be greater than",
             "password": "The password must be at least 8 characters long, including a lowercase letter, an uppercase letter, and a number",
             "confirmPassword": "The entered passwords do not match",
-            "invalidAccountNumber": "Invalid account number"
+            "invalidAccountNumber": "Invalid account number",
+            "invalidFieldSelected": "Invalid field selected",
+            "invalidCurrencyFormat": "Currency code must consist of three capital letters",
+            "fileRequired": "File is required",
+            "invalidFileType": "Unsupported file type",
+            "maximumFileSize": "Maximum size of a file is 8 MB"
         }
     },
     "chart": {

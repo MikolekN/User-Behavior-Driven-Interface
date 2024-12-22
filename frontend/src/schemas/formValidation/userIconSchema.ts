@@ -11,21 +11,21 @@ export const UserIconFormDataSchema = z.object({
         .refine((files) => {
             return Array.from(files ?? []).length !== 0;
         }, {
-            message: 'File is required',
+            message: 'fileRequired',
         })
         .refine((files) => {
             return Array.from(files ?? []).every(
                 (file) => sizeInMB(file.size) <= MAX_IMAGE_SIZE
             );
         }, {
-            message: `The maximum file size is: ${MAX_IMAGE_SIZE} MB`,
+            message: 'maximumFileSize',
         })
         .refine((files) => {
             return Array.from(files ?? []).every((file) =>
                 ACCEPTED_IMAGE_TYPES.includes(file.type)
             );
         }, {
-            message: `Unsupported file type. Please provide file with type: ${ACCEPTED_IMAGE_TYPES_ERR_MSG.join(' or ')}`,
+            message: 'invalidFileType',
         })
     }
 );
