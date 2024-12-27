@@ -254,6 +254,8 @@
     },
     "errors": {
         "api": {
+            "unexpectedResponse": "Nieoczekiwana odpowiedź.",
+            "sthWentWrong": "Coś poszło nie tak z żądaniem API.",
             "unknownError": "Wystąpił nieznany błąd. Spróbuj pownownie później.",
             "emptyRequestPayload": "Treść żądania jest pusta",
             "authFieldsRequired": "Pola email i/lub hasło są wymagane",
