@@ -1,4 +1,4 @@
-import Tile from '../components/Tile/Tile';
+import Tile from '../../components/Tile/Tile';
 import './Info.css';
 import { useTranslation } from 'react-i18next';
 

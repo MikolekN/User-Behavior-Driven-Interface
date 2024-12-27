@@ -1,21 +1,21 @@
 import { useState, useContext, useEffect, ChangeEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Tile from '../components/Tile/Tile';
-import FormInput from '../components/FormInput/FormInput';
+import Tile from '../../components/Tile/Tile';
+import FormInput from '../../components/FormInput/FormInput';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LoanFormData, LoanFormDataSchema } from '../schemas/formValidation/loanSchema';
-import { UserContext } from '../context/UserContext';
-import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MAX_LOAN_AMOUNT_TEXT, MIN_LOAN_AMOUNT, MIN_LOAN_AMOUNT_TEXT } from './constants';
-import { TransferContext } from '../context/TransferContext';
-import useApiErrorHandler from '../hooks/useApiErrorHandler';
+import { LoanFormData, LoanFormDataSchema } from '../../schemas/formValidation/loanSchema';
+import { UserContext } from '../../context/UserContext';
+import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MAX_LOAN_AMOUNT_TEXT, MIN_LOAN_AMOUNT, MIN_LOAN_AMOUNT_TEXT } from '.././constants';
+import { TransferContext } from '../../context/TransferContext';
+import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { FlowbiteRangeSliderTheme, RangeSlider } from 'flowbite-react';
-import { scrollToTop } from '../components/utils/scroll';
-import ErrorAlert from '../components/Alerts/ErrorAlert';
-import Label from '../components/utils/Label';
-import AccountDetails from '../components/utils/AccountDetails';
+import { scrollToTop } from '../../components/utils/scroll';
+import ErrorAlert from '../../components/Alerts/ErrorAlert';
+import Label from '../../components/utils/Label';
+import AccountDetails from '../../components/utils/AccountDetails';
 import { useTranslation } from 'react-i18next';
-import Button from '../components/utils/Button';
+import Button from '../../components/utils/Button';
 
 const rangeSliderTheme: FlowbiteRangeSliderTheme = {
     "root": {

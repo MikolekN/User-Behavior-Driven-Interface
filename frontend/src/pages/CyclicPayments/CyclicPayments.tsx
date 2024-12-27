@@ -1,13 +1,12 @@
 import { useContext, useEffect } from 'react';
-import CyclicPaymentList from '../components/CyclicPaymentList/CyclicPaymentList';
-import { UserContext } from '../context/UserContext';
+import CyclicPaymentList from '../../components/CyclicPaymentList/CyclicPaymentList';
+import { UserContext } from '../../context/UserContext';
 import { Link } from 'react-router-dom';
-import Tile from '../components/Tile/Tile';
-import Button from '../components/utils/Button';
-import EmptyResponseInfoAlert from '../components/EmptyResponseInfoAlert/EmptyResponseInfoAlert';
-import './CyclicPayments.css';
-import { CyclicPaymentContext } from '../context/CyclicPaymentContext';
-import useApiErrorHandler from '../hooks/useApiErrorHandler';
+import Tile from '../../components/Tile/Tile';
+import Button from '../../components/utils/Button';
+import EmptyResponseInfoAlert from '../../components/EmptyResponseInfoAlert/EmptyResponseInfoAlert';
+import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
+import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { useTranslation } from 'react-i18next';
 
 const CyclicPayments = () => {
@@ -46,8 +45,8 @@ const CyclicPayments = () => {
 
     return (
         <div id='cyclic-payments-wrapper' className='flex overflow-hidden flex-col flex-grow justify-center items-center h-full max-h-full'>
-            <Tile title={t('cyclicPaymentList.tile.title')} className='cyclic-payments-tile'>
-                <div className="cyclic-payments-container">
+            <Tile title={t('cyclicPaymentList.tile.title')} className='flex flex-col w-1/2 mx-auto mb-2.5 bg-white shadow-md rounded-lg min-h-1/2 max-h-[95%]'>
+                <div className="flex flex-col gap-4 overflow-y-auto p-2.5">
                     {!cyclicPayments && (
                         <div>Cyclic Payments are loading...</div>
                     )}

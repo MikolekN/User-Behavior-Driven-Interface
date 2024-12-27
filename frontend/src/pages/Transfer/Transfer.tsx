@@ -1,17 +1,17 @@
 import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import Tile from '../components/Tile/Tile';
-import FormInput from '../components/FormInput/FormInput';
+import Tile from '../../components/Tile/Tile';
+import FormInput from '../../components/FormInput/FormInput';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TransferFormData, TransferFormDataSchema } from '../schemas/formValidation/transferSchema';
-import { UserContext } from '../context/UserContext';
-import Button from '../components/utils/Button';
-import { TransferContext } from '../context/TransferContext';
-import useApiErrorHandler from '../hooks/useApiErrorHandler';
-import { scrollToTop } from '../components/utils/scroll';
-import ErrorAlert from '../components/Alerts/ErrorAlert';
-import AccountDetails from '../components/utils/AccountDetails';
+import { TransferFormData, TransferFormDataSchema } from '../../schemas/formValidation/transferSchema';
+import { UserContext } from '../../context/UserContext';
+import Button from '../../components/utils/Button';
+import { TransferContext } from '../../context/TransferContext';
+import useApiErrorHandler from '../../hooks/useApiErrorHandler';
+import { scrollToTop } from '../../components/utils/scroll';
+import ErrorAlert from '../../components/Alerts/ErrorAlert';
+import AccountDetails from '../../components/utils/AccountDetails';
 import { useTranslation } from 'react-i18next';
 
 const Transfer = () => {
