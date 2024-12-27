@@ -51,6 +51,11 @@
         "register": "Rejstracja",
         "adminPanel": "Panel administratora"
     },
+    "pageNotFound": {
+        "title": "Czegoś tutaj brakuje...",
+        "message": "Przepraszamy, nie możemy znaleźć tej strony. Znajdziesz wiele wracając na stronę główną.",
+        "backToDashboard": "Wróć na stronę główną"
+    },
     "login": {
         "tile": {
             "title": "Logowanie"

@@ -51,6 +51,11 @@
         "register": "Register",
         "adminPanel": "Admin panel"
     },
+    "pageNotFound": {
+        "title": "Something's missing...",
+        "message": "Sorry, we can't find that page. You'll find lots to explore on the home page.",
+        "backToDashboard": "Back to Dashboard"
+    },
     "login": {
         "tile": {
             "title": "Sign in"
