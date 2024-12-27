@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import CyclicPaymentList from '../../components/CyclicPaymentList/CyclicPaymentList';
 import { UserContext } from '../../context/UserContext';
 import { Link } from 'react-router-dom';
@@ -8,11 +8,13 @@ import EmptyResponseInfoAlert from '../../components/EmptyResponseInfoAlert/Empt
 import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { useTranslation } from 'react-i18next';
+import DefaultLoadingSkeleton from '../../components/Loading/DefaultLoadingSkeleton';
 
 const CyclicPayments = () => {
     const { t } = useTranslation();
     const { user } = useContext(UserContext);
     const { apiError, handleError } = useApiErrorHandler();
+    const [ loading, setLoading ] = useState(true);
     const { cyclicPayments, getCyclicPayments } = useContext(CyclicPaymentContext);
 
     useEffect(() => {
@@ -23,11 +25,15 @@ const CyclicPayments = () => {
                 await getCyclicPayments();
             } catch (error) {
                 handleError(error);
+            } finally {
+                setLoading(false);
             }
         };
 
         void fetchCyclicPayments();
     }, [user, getCyclicPayments]);
+
+    if (loading) return <DefaultLoadingSkeleton />;
     
     if (apiError.isError) {
         return (

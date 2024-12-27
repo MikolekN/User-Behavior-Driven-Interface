@@ -9,11 +9,12 @@ import arrowDownDark from '../../assets/images/chevron-down-dark.svg';
 import { TransferContext } from '../../context/TransferContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { useTranslation } from 'react-i18next';
+import DefaultLoadingSkeleton from '../Loading/DefaultLoadingSkeleton';
 
 const TransactionsHistory = () => {
     const { t } = useTranslation();
     const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
-    const [loading, setLoading] = useState(true);
+    const [ loading, setLoading ] = useState(true);
     const { user } = useContext(UserContext);
     const { transfers, fetchTransfers } = useContext(TransferContext);
     const { apiError, handleError } = useApiErrorHandler();
@@ -27,7 +28,7 @@ const TransactionsHistory = () => {
             } catch (error) {
                 handleError(error);
             } finally {
-                setLoading(false); // TUTAJ CHYBA TROCHĘ BEZ SENSU BO I TAK NIGDZIE NIE JEST USTAWIANE NA true
+                setLoading(false);
             }
         };
 
@@ -48,7 +49,8 @@ const TransactionsHistory = () => {
         }));
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <DefaultLoadingSkeleton />;
+
     if (apiError.isError) { 
         return (
             <EmptyResponseInfoAlert

@@ -6,6 +6,7 @@ import EmptyResponseInfoAlert from '../EmptyResponseInfoAlert/EmptyResponseInfoA
 import { TransferContext } from '../../context/TransferContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { useTranslation } from 'react-i18next';
+import ChartLoadingSkeleton from '../Loading/ChartLoadingSkeleton';
 
 const TransactionsYearlyAnalysis = () => {
     const { t } = useTranslation();
@@ -35,7 +36,7 @@ const TransactionsYearlyAnalysis = () => {
         void fetchChartData();
     }, [user, fetchTransfersAnalysis]);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <ChartLoadingSkeleton />;
     
     if (apiError.isError) { 
         return (
