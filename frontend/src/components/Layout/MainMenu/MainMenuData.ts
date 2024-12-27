@@ -42,6 +42,14 @@ export const menuOptions: MenuOption[] = [
         ]
     },
     {
+        key: 'myProducts',
+        accessLevel: AccessLevels.Authorised,
+        submenu: [
+            { key: 'accounts', path: '/accounts' },
+            { key: 'cards', path: '/cards' }
+        ]
+    },
+    {
         key: 'customerService',
         accessLevel: AccessLevels.Authorised,
         submenu: [

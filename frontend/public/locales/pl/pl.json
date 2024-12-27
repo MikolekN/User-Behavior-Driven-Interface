@@ -25,6 +25,13 @@
                 "info": "Kontakt"
             }
         },
+        "myProducts": {
+            "title": "Moje produkty",
+            "submenu": {
+                "accounts": "Konta",
+                "cards": "Karty"
+            }
+        },
         "profile": {
             "profile": "Profil",
             "login": "Logowanie",

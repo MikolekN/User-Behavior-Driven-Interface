@@ -17,6 +17,7 @@ import Profile from '../pages/Profile/Profile';
 import Loan from '../pages/Loan/Loan';
 import PageNotFound from '../pages/PageNotFound/PageNotFound';
 import PrivateRoute from './PrivateRoute';
+import Accounts from '../pages/Accounts/Accounts';
 
 export const router = createBrowserRouter([
     {
@@ -44,7 +45,8 @@ export const router = createBrowserRouter([
                     { path: '/create-cyclic-payment', element: <CyclicPaymentsForm key="create"/> },
                     { path: '/edit-cyclic-payment/:id', element: <CyclicPaymentsForm key="edit"/> },
                     { path: '/cyclic-payments', element: <CyclicPayments /> },
-                    { path: '/profile', element: <Profile /> }
+                    { path: '/profile', element: <Profile /> },
+                    { path: '/accounts', element: <Accounts /> }
                 ]
             },
         ],
