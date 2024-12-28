@@ -1,4 +1,4 @@
-from typing import Type, Optional
+from typing import Type, Optional, List
 
 from repository import BaseRepository
 from transfers import Transfer
@@ -13,7 +13,7 @@ class TransferRepository(BaseRepository):
     def _entity_class(self) -> Type[Transfer]:
         return Transfer
 
-    def find_transfers(self, query: dict, sort_criteria: list[tuple[str, int]] = None):
+    def find_transfers(self, query: dict, sort_criteria: list[tuple[str, int]] = None) -> Optional[List[Transfer]]:
         return super().find_many(query, sort_criteria)
 
     def find_by_transfer_from_id(self, transfer_from_id: str) -> Optional[Transfer]:

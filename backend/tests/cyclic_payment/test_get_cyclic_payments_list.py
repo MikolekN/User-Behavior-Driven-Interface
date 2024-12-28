@@ -27,5 +27,5 @@ def test_get_cyclic_payment_list_success(mock_find_by_id, client, test_user, tes
         assert response.status_code == 200
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "cyclicPaymentListGetSuccesful"
+        assert json_data['message'] == "cyclicPaymentListGetSuccessful"
         assert 'cyclic_payments' in json_data

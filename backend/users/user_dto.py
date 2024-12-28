@@ -11,6 +11,7 @@ class UserDto:
     account_name: str
     account_number: str
     balance: float
+    blockades: float
     currency: str
     role: str
 
@@ -22,6 +23,7 @@ class UserDto:
             account_name=user.account_name or '',
             account_number=user.account_number or '',
             balance=float(user.balance or 0),
+            blockades=float(user.blockades or 0),
             currency=user.currency or '',
             role=user.role or 'USER'
         )
@@ -33,6 +35,7 @@ class UserDto:
             "account_name": self.account_name,
             "account_number": self.account_number,
             "balance": self.balance,
+            "blockades": self.blockades,
             "currency": self.currency,
             "role": self.role,
         }

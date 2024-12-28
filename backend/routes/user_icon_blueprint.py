@@ -1,15 +1,14 @@
 import os
 import uuid
-from typing import Optional
 
 from PIL import Image
-from flask import Blueprint, request, jsonify, Response, send_file, Request
+from flask import Blueprint, request, Response, send_file, Request
 from flask_login import current_user, login_required
 from werkzeug.datastructures import FileStorage
 
 from constants import UPLOAD_FOLDER
 from routes.helpers import allowed_file_extension, create_response
-from users import UserRepository
+from users import UserRepository, User
 
 user_icon_blueprint = Blueprint('user_icon', __name__, url_prefix='/api')
 
@@ -76,10 +75,10 @@ def upload_user_icon() -> tuple[Response, int]:
     return create_response("iconUploadSuccessful", 200)
 
 def get_user_data_and_icon_path(user_id: str) -> tuple[dict | None, str | None]:
-    user_data = user_repository.find_by_id(user_id)
-    if not user_data or not user_data.get('user_icon'):
+    user_data: User = user_repository.find_by_id(user_id)
+    if not user_data or not user_data.user_icon:
         return None, None
-    return user_data, user_data['user_icon']
+    return user_data.to_dict(), user_data.user_icon
 
 def validate_icon_path(icon_path: str) -> tuple[bool, str | None]:
     if not os.path.exists(icon_path):

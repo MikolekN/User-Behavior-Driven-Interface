@@ -7,7 +7,7 @@ from collections.abc import Mapping
 from typing import Any
 
 from cyclic_payments import CyclicPayment, CyclicPaymentRepository
-from helpers import add, substract
+from helpers import add, subtract
 from users import User, UserRepository
 
 cyclic_payment_blueprint = Blueprint('cyclic_payment', __name__, url_prefix='/api')
@@ -140,7 +140,7 @@ def create_cyclic_payment() -> tuple[Response, int]:
     sanitized_cyclic_payment = sanitize_cyclic_payment_dict(cyclic_payment)
     formatted_cyclic_payment = format_cyclic_payment_dict(sanitized_cyclic_payment)
     
-    return jsonify(message="cyclicPaymentCreatedSuccesful", cyclic_payment=formatted_cyclic_payment), 200
+    return jsonify(message="cyclicPaymentCreatedSuccessful", cyclic_payment=formatted_cyclic_payment), 200
 
 @cyclic_payment_blueprint.route('/cyclic-payment/<id>', methods=['GET'])
 @login_required
@@ -156,7 +156,7 @@ def get_cyclic_payment(id) -> tuple[Response, int]:
     sanitized_cyclic_payment = sanitize_cyclic_payment_dict(cyclic_payment)
     formatted_cyclic_payment = format_cyclic_payment_dict(sanitized_cyclic_payment)
 
-    return jsonify(message="cyclicPaymentGetSuccesful", cyclic_payment=formatted_cyclic_payment), 200
+    return jsonify(message="cyclicPaymentGetSuccessful", cyclic_payment=formatted_cyclic_payment), 200
 
 @cyclic_payment_blueprint.route('/cyclic-payment/<id>', methods=['DELETE'])
 @login_required
@@ -165,17 +165,17 @@ def delete_cyclic_payment(id) -> tuple[Response, int]:
     if error:
         return jsonify(message=error), 400
     
-    # substracting cyclic payment amount from current user's blockades
+    # subtracting cyclic payment amount from current user's blockades
     cyclic_payment = cyclic_payment_repository.find_by_id(str(id))
     if not cyclic_payment:
         return jsonify(message="cyclicPaymentNotExist"), 404
     
     curr_user = user_repository.find_by_id(current_user._id)
-    user_repository.update(curr_user._id, {'blockades': substract(float(curr_user.blockades), float(cyclic_payment.amount))})
+    user_repository.update(curr_user._id, {'blockades': subtract(float(curr_user.blockades), float(cyclic_payment.amount))})
 
     cyclic_payment_repository.delete_by_id(str(id))
  
-    return jsonify(message="cyclicPaymentDeletedSuccesful"), 200
+    return jsonify(message="cyclicPaymentDeletedSuccessful"), 200
 
 @cyclic_payment_blueprint.route('/cyclic-payment/<id>', methods=['PUT'])
 @login_required
@@ -189,7 +189,7 @@ def update_cyclic_payment(id) -> tuple[Response, int]:
     if not recipient_user:
         return jsonify(message="userWithAccountNumberNotExist"), 404
     
-    # clear user blockades by substracting old cyclic payment amount and adding updated cyclic payment amount to the current user blockades
+    # clear user blockades by subtracting old cyclic payment amount and adding updated cyclic payment amount to the current user blockades
     
     cyclic_payment = cyclic_payment_repository.find_by_id(str(id))
     if not cyclic_payment:
@@ -199,7 +199,7 @@ def update_cyclic_payment(id) -> tuple[Response, int]:
     if curr_user.get_available_funds() + float(cyclic_payment.amount) - float(data['amount']) < 0:
         return jsonify(message="userDontHaveEnoughMoney"), 403
     
-    user_repository.update(curr_user._id, {'blockades': add(substract(float(curr_user.blockades), float(cyclic_payment.amount)), float(data["amount"]))})
+    user_repository.update(curr_user._id, {'blockades': add(subtract(float(curr_user.blockades), float(cyclic_payment.amount)), float(data["amount"]))})
     
     query, cyclic_payment_content = get_cyclic_payment_update_content_and_query(id, data, recipient_user)
     updated_cyclic_payment = cyclic_payment_repository.update(str(id), query, cyclic_payment_content)
@@ -208,7 +208,7 @@ def update_cyclic_payment(id) -> tuple[Response, int]:
 
     sanitized_cyclic_payment = sanitize_cyclic_payment_dict(updated_cyclic_payment)
 
-    return jsonify(message="cyclicPaymentUpdatedSuccesful", cyclic_payment=sanitized_cyclic_payment), 200
+    return jsonify(message="cyclicPaymentUpdatedSuccessful", cyclic_payment=sanitized_cyclic_payment), 200
 
 @cyclic_payment_blueprint.route('/cyclic-payments', methods=['GET'])
 @login_required
@@ -223,4 +223,4 @@ def get_all_user_cyclic_payment() -> tuple[Response, int]:
     
     cyclic_payments = serialize_cyclic_payments(cyclic_payments)
 
-    return jsonify(message="cyclicPaymentListGetSuccesful", cyclic_payments=cyclic_payments), 200
+    return jsonify(message="cyclicPaymentListGetSuccessful", cyclic_payments=cyclic_payments), 200

@@ -23,4 +23,5 @@ def init_bank_account() -> User | None:
         user_icon=None,
         role='BANK')
     
-    user = UserRepository.insert(user)
+    user_repository = UserRepository()
+    user_repository.insert(user)
