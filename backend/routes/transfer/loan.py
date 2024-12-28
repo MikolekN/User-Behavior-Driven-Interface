@@ -16,8 +16,8 @@ transfer_repository = TransferRepository()
 @login_required
 def create_loan_transfer() -> tuple[Response, int]:
     data = request.get_json()
-    error = validate_loan_data(data)
 
+    error = validate_loan_data(data)
     if error:
         return create_response(error, 400)
 
@@ -30,12 +30,12 @@ def create_loan_transfer() -> tuple[Response, int]:
         return create_response("bankAccountNotExist", 404)
 
     transfer = Transfer(created=datetime.now(),
-                        transfer_from_id=bank._id,
-                        transfer_to_id=recipient_user._id,
+                        transfer_from_id=bank.id,
+                        transfer_to_id=recipient_user.id,
                         title=data['transferTitle'],
                         amount=float(data['amount']))
     transfer_repository.insert(transfer)
 
-    user_repository.update(current_user._id, {'balance': add(float(current_user.balance), float(data['amount']))})
+    user_repository.update(recipient_user.id, {'balance': add(float(recipient_user.balance), float(data['amount']))})
 
     return create_response("loanCreatedSuccessful", 200)

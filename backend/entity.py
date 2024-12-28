@@ -10,7 +10,7 @@ class BaseEntity(ABC):
     created: Optional[datetime] = field(default_factory=datetime.now)
 
     def to_dict(self) -> Dict[str, Any]:
-        entity_dict = asdict(self)
+        entity_dict = asdict(self) # this works because the class is abstract and the classes that implement this class are of typ 'DataclassInstance'
         if self._id is None:
             entity_dict.pop('_id', None)
         else:
@@ -24,8 +24,9 @@ class BaseEntity(ABC):
     def from_dict(data: Dict[str, Any]) -> 'BaseEntity':
         pass
 
-    def get_id(self) -> str:
-        return str(self._id) if self._id else ""
-
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(_id={self._id}, created={self.created})"
+
+    @property
+    def id(self):
+        return self._id

@@ -7,7 +7,7 @@ from helpers import add, subtract
 from routes.helpers import create_response
 from routes.transfer.helpers import validate_transfer_data, prevent_self_transfer
 from transfers import Transfer, TransferRepository
-from users import UserRepository
+from users import UserRepository, User
 
 user_repository = UserRepository()
 transfer_repository = TransferRepository()
@@ -29,18 +29,18 @@ def create_transfer() -> tuple[Response, int]:
     if not recipient_user:
         return create_response("userWithAccountNumberNotExist", 404)
 
-    curr_user = user_repository.find_by_id(current_user._id)
-    if curr_user.get_available_funds() - float(data['amount']) < 0:
+    user: User = user_repository.find_by_id(current_user._id)
+    if user.get_available_funds() - float(data['amount']) < 0:
         return create_response("userDontHaveEnoughMoney", 403)
 
     transfer = Transfer(created=datetime.now(),
-                        transfer_from_id=current_user._id,
-                        transfer_to_id=recipient_user._id,
+                        transfer_from_id=user.id,
+                        transfer_to_id=recipient_user.id,
                         title=data['transferTitle'],
                         amount=float(data['amount']))
     transfer_repository.insert(transfer)
 
-    user_repository.update(str(current_user._id), {'balance': subtract(float(curr_user.balance), float(data['amount']))})
-    user_repository.update(str(recipient_user._id), {'balance': add(float(recipient_user.balance), float(data['amount']))})
+    user_repository.update(str(user.id), {'balance': subtract(float(user.balance), float(data['amount']))})
+    user_repository.update(str(recipient_user.id), {'balance': add(float(recipient_user.balance), float(data['amount']))})
 
     return create_response("transferCreatedSuccessful", 200)

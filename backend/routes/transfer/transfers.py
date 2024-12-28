@@ -1,11 +1,15 @@
-from typing import Any
+from collections import defaultdict
 
 from flask import Response
 from flask_login import login_required, current_user
 
-from routes.transfer.helpers import format_transfers_date, get_date_from_datetime, serialize_transfers, create_response
+from routes.transfer.helpers import create_response
 from transfers import TransferRepository, Transfer
+from transfers.history_transfer_dto import HistoryTransferDto
+from transfers.grouped_history_transfers_dto import GroupedHistoryTransfersDto
+from users import UserRepository, User
 
+user_repository = UserRepository()
 transfer_repository = TransferRepository()
 
 
@@ -16,10 +20,24 @@ def get_all_user_transfers() -> tuple[Response, int]:
     if not transfers:
         return create_response("transferListEmpty", 404)
 
-    serialized_transfers = serialize_transfers(transfers)
-    response_data = prepare_transfers_response(serialized_transfers)
+    user: User = user_repository.find_by_id(current_user._id)
+    history_transfer_dtos: list[HistoryTransferDto] = [prepare_user_transfer(transfer, user) for transfer in transfers]
 
-    return create_response(message="transferListGetSuccessful", status_code=200, data=response_data)
+    user_transfer_groups = group_transfers_by_date(history_transfer_dtos)
+    grouped_transfers_dtos: list[dict] = [
+        GroupedHistoryTransfersDto.from_transfer_group(date, user_transfers).to_dict()
+        for date, user_transfers in user_transfer_groups.items()
+    ]
+
+    return create_response(message="transferListGetSuccessful", status_code=200, data=grouped_transfers_dtos)
+
+
+def prepare_user_transfer(transfer: Transfer, user: User) -> HistoryTransferDto:
+    is_income = transfer.transfer_to_id == user.id
+    transfer_from_user = user_repository.find_by_id(str(transfer.transfer_from_id))
+    transfer_to_user = user_repository.find_by_id(str(transfer.transfer_to_id))
+    issuer_name = transfer_to_user.login if is_income else transfer_from_user.login
+    return HistoryTransferDto.from_transfer(transfer, is_income, issuer_name)
 
 
 def fetch_user_transfers() -> list[Transfer]:
@@ -33,19 +51,10 @@ def fetch_user_transfers() -> list[Transfer]:
     return transfer_repository.find_transfers(query, sort_criteria)
 
 
-def prepare_transfers_response(transfers: list[dict]) -> list[dict[str, Any]]:
-    formatted_transfers = format_transfers_date(transfers, get_date_from_datetime)
-    grouped_transfers = group_transfers_by_date(formatted_transfers)
-    return build_response_from_grouped_transfers(grouped_transfers)
+def group_transfers_by_date(history_transfer_dtos: list[HistoryTransferDto]) -> dict[str, list[HistoryTransferDto]]:
+    grouped_transfers = defaultdict(list)
 
+    for dto in history_transfer_dtos:
+        grouped_transfers[dto.created].append(dto)
 
-def group_transfers_by_date(transfers: list[dict]) -> dict[str, Any]:
-    grouped = {}
-    for t in transfers:
-        date = t['created']
-        grouped.setdefault(date, []).append(t)
-    return grouped
-
-
-def build_response_from_grouped_transfers(transfers: dict) -> list[dict[str, Any]]:
-    return [{"date": date, "transactions": transactions} for date, transactions in transfers.items()]
+    return dict(grouped_transfers)
