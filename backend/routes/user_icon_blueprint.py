@@ -56,9 +56,9 @@ def upload_user_icon() -> tuple[Response, int]:
     icon: FileStorage = validation_result
 
     # Fetch user data and remove old icon if it exists
-    user_data = user_repository.find_by_id(current_user._id)
+    user_data: User = user_repository.find_by_id(current_user._id)
     if user_data:
-        remove_old_icon(user_data)
+        remove_old_icon(user_data.to_dict())
 
     # Generate a unique filename and determine the save path
     unique_filename = f"{uuid.uuid4().hex}.png"
