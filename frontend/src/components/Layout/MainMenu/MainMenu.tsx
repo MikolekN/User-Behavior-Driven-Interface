@@ -1,134 +1,85 @@
-import React, { useState, useContext, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import Dropdown from '../Dropdown';
+import { Navbar } from 'flowbite-react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../../context/UserContext';
-import { customerServiceSubmenuOptions, financesSubmenuOptions, settingsSubmenuOptions, transferSubmenuOptions } from './MainMenuData';
+import { AccessLevels, MenuOption, menuOptions } from './MainMenuData';
+import { Link } from 'react-router-dom';
+import { Dropdown } from '../Dropdown';
+import { User } from '../../utils/User';
+import { blackTextTheme } from '../NavbarLinkBlackText';
 import { useTranslation } from 'react-i18next';
 
-const MainMenu: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
+export const MainMenu = () => {
     const { t } = useTranslation();
     const { user } = useContext(UserContext);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-    const [persistentDropdown, setPersistentDropdown] = useState<string | null>(null);
 
-    const handleDropdownToggle = useCallback((dropdownName: string) => {
-        if (persistentDropdown === dropdownName) {
-            setPersistentDropdown(null);
-            setActiveDropdown(null);
-        } else {
-            setPersistentDropdown(dropdownName);
-            setActiveDropdown(dropdownName);
-        }
-    }, [persistentDropdown]);
+    const handleDropdownState = useCallback((dropdownName: string | null) => {
+        setActiveDropdown((prev) => (prev === dropdownName ? null : dropdownName));
+    }, []);
 
-    const handleDropdownHover = (dropdownName: string) => {
-        setActiveDropdown(dropdownName);
-        if (persistentDropdown !== dropdownName) {
-            setPersistentDropdown(null);
-        }
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const menus = document.querySelectorAll('.menu');
+            menus.forEach((menu) => {
+                if (!menu.contains(event.target as Node)) {
+                    setActiveDropdown(null);
+                }
+            });
+        };
+
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
+
+    const canAccessOption = (option: MenuOption, user: User | null) => {
+        return (
+            option.accessLevel === AccessLevels.All ||
+            (option.accessLevel === AccessLevels.Unauthorised && !user) ||
+            (option.accessLevel === AccessLevels.Authorised && user) ||
+            (option.accessLevel === AccessLevels.Admin && user?.role === 'ADMIN')
+        );
     };
 
-    const handleMouseLeave = (dropdownName: string) => {
-        if (persistentDropdown !== dropdownName) {
-            setActiveDropdown(null);
-        }
-    };
-
-    const handleOtherOptionHover = () => {
-        setPersistentDropdown(null);
+    const handleLinkClick = () => {
         setActiveDropdown(null);
     };
 
-    const handleOptionClick = () => {
-        setPersistentDropdown(null);
+    const closeDropdown = () => {
         setActiveDropdown(null);
     };
 
     return (
-        <div id='main-menu-container' className={`${isOpen ? 'block' : 'hidden'} md:block`}>
-            <nav id='navigation' className='flex items-center absolute left-1/2 -translate-x-1/2 top-0 h-full'>
-                <ul id='navigation-list' className='flex items-center list-none'>
-                    <li id='navigation-option-start' className='mr-5 flex items-center'>
-                        <Link to="/" onMouseEnter={handleOtherOptionHover} className='hover:font-semibold'>{t('menu.home')}</Link>
-                    </li>
-
-                    {!user && (
-                        <>
-                            <li id='navigation-option-login' className='mr-5 flex items-center'>
-                                <Link to="/login" className='hover:font-semibold'>{t('menu.login')}</Link>
-                            </li>
-                            <li id='navigation-option-register' className='flex items-center'>
-                                <Link to="/register" className='hover:font-semibold'>{t('menu.register')}</Link>
-                            </li>
-                        </>
-                    )}
-
-                    {user && (
-                        <>
-                            {/* REWRITE TO AVOID COPYING CODE - object with code definitions (e.g. transfers) and map to human readable (e.g. Przelewy) */}
-                            <Dropdown
-                                title="transfers"
-                                options={transferSubmenuOptions}
-                                isOpen={activeDropdown === 'przelewy'}
-                                isPersistent={persistentDropdown === 'przelewy'}
-                                onToggle={() => handleDropdownToggle('przelewy')}
-                                onHover={() => handleDropdownHover('przelewy')}
-                                onMouseLeave={() => handleMouseLeave('przelewy')}
-                                onOptionClick={() => handleOptionClick()}
-                                id='navigation-option-transfer'
-                                className='mr-5 flex items-center'
-                            />
-
-                            <Dropdown
-                                title="settings"
-                                options={settingsSubmenuOptions}
-                                isOpen={activeDropdown === 'ustawienia'}
-                                isPersistent={persistentDropdown === 'ustawienia'}
-                                onToggle={() => handleDropdownToggle('ustawienia')}
-                                onHover={() => handleDropdownHover('ustawienia')}
-                                onMouseLeave={() => handleMouseLeave('ustawienia')}
-                                onOptionClick={() => handleOptionClick()}
-                                id='settings'
-                                className='mr-5 flex items-center' 
-                            />
-
-                            <Dropdown
-                                title="analysis"
-                                options={financesSubmenuOptions}
-                                isOpen={activeDropdown === 'finanse'}
-                                isPersistent={persistentDropdown === 'finanse'}
-                                onToggle={() => handleDropdownToggle('finanse')}
-                                onHover={() => handleDropdownHover('finanse')}
-                                onMouseLeave={() => handleMouseLeave('finanse')}
-                                onOptionClick={() => handleOptionClick()}
-                                id='finance'
-                                className='mr-5 flex items-center'
-                            />
-
-                            <Dropdown
-                                title="customerService"
-                                options={customerServiceSubmenuOptions}
-                                isOpen={activeDropdown === 'obsługa_klienta'}
-                                isPersistent={persistentDropdown === 'obsługa_klienta'}
-                                onToggle={() => handleDropdownToggle('obsługa_klienta')}
-                                onHover={() => handleDropdownHover('obsługa_klienta')}
-                                onMouseLeave={() => handleMouseLeave('obsługa_klienta')}
-                                onOptionClick={() => handleOptionClick()}
-                                id='customer-service'
-                                className={`${user.role === 'ADMIN' ? 'mr-5' : ''} flex items-center`}
-                            />
-
-                            {user.role === 'ADMIN' && (
-                                <li id='navigation-option-admin-panel' className='flex items-center'>
-                                    <Link to="\login" onMouseEnter={handleOtherOptionHover} className='hover:font-semibold'>Panel administratora</Link>
-                                </li>
-                            )}
-                        </>
-                    )}
-                </ul>
-            </nav>
-        </div>
+        <Navbar.Collapse className="menu order-4 md:order-2">
+            {menuOptions
+                .filter((option) => canAccessOption(option, user))
+                .map((option) =>
+                    'path' in option ? (
+                        <Navbar.Link
+                            key={option.key}
+                            as={Link}
+                            to={option.path}
+                            theme={blackTextTheme}
+                            className='text-base font-normal hover:text-black hover:font-semibold'
+                            onClick={handleLinkClick}
+                        >
+                            {t('menu.' + option.key)}
+                        </Navbar.Link>
+                    ) : ( 'submenu' in option && (
+                        <Dropdown
+                            key={option.key}
+                            menu={option}
+                            isOpen={activeDropdown === option.key}
+                            onClick={() => handleDropdownState(option.key)}
+                            closeDropdown={closeDropdown}
+                            className="text-base font-normal text-black hover:text-black hover:font-semibold"
+                        />
+                        )
+                    )
+                )
+            }
+        </Navbar.Collapse>
     );
 };
-
-export default MainMenu;

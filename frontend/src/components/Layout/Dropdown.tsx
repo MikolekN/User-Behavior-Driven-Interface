@@ -1,85 +1,53 @@
-import React, { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Navbar } from 'flowbite-react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { blackTextTheme } from './NavbarLinkBlackText';
+import { MenuOptionWithSubmenu } from './MainMenu/MainMenuData';
+import { useTranslation } from 'react-i18next';
 
 interface DropdownProps {
-    title: string;
-    options: {
-        id: string; 
-        label: string; 
-        path: string 
-    }[];
+    menu: MenuOptionWithSubmenu;
     isOpen: boolean;
-    isPersistent: boolean;
-    onToggle: () => void;
-    onHover: () => void;
-    onMouseLeave: () => void;
-    onOptionClick: () => void;
-    id: string;
+    onClick: () => void;
+    closeDropdown: () => void;
     className: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ title, options, isOpen, isPersistent, onToggle, onHover, onMouseLeave, onOptionClick, id, className }) => {
-    const dropdownRef = useRef<HTMLLIElement>(null);
+export const Dropdown: React.FC<DropdownProps> = ({ menu, isOpen, onClick, closeDropdown, className }) => {
     const { t } = useTranslation();
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                onToggle();
-            }
-        };
-
-        if (isPersistent) {
-            document.addEventListener('mousedown', handleClickOutside);
-        } else {
-            document.removeEventListener('mousedown', handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [isPersistent, onToggle]);
-
     return (
-        <li
-            ref={dropdownRef}
-            className={`${className} relative`}
-            onMouseEnter={onHover}
-            onMouseLeave={onMouseLeave}
-            onClick={onToggle}
-            id={`navigation-option-${id}`}
-        >
-            <span id={`navigation-dropdown-label-${id}`} className={`cursor-pointer ${isPersistent ? 'font-semibold' : 'font-normal'} hover:font-semibold`}>
-                {t(`menu.${title}.title`)}
-            </span>
-            {isOpen && (
-                <ul id={`navigation-dropdown-list-${id}`} className="block whitespace-nowrap absolute top-full left-1/2 -translate-x-1/2 z-10 pb-2 max-w-max">
-                    {options.map((option) => (
-                        <li
-                            id={`navigation-dropdown-item-${option.label}`}
-                            className='block list-none cursor-pointer text-center m-0 hover:font-semibold'
-                            key={option.label}
-                            onClick={() => {
-                                onOptionClick();
-                            }}
-                        >
-                            <Link 
-                                to={option.path}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    onOptionClick();
-                                }}
-                                className='py-2 px-4 block hover:font-semibold'
-                            >
-                                {t(`menu.${title}.submenu.${option.id}`)}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            )}
+        <li className={`${className} relative`}>
+            <button
+                onClick={onClick}
+                className="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded bg-transparent md:p-0 md:w-auto dark:text-gray-400 dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+            >
+                <span className="flex items-center font-normal hover:font-semibold md:hover:dark:text-white">
+                    {t('menu.' + menu.key + '.title')}
+                    <svg
+                        className="w-2.5 h-2.5 ms-1 transition-transform duration-300"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 10 6"
+                        style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(360deg)' }}
+                    >
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+                    </svg>
+                </span>
+                <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gray-100 dark:bg-gray-700 md:hidden"></div>
+            </button>
+
+            <ul
+                className={`transition-all duration-300 ease-in-out transform overflow-hidden ${isOpen ? 'max-h-[500px] visibility-visible md:border' : 'max-h-0 visibility-hidden'} left-0 w-full block md:-translate-x-1/4 md:absolute md:text-nowrap md:w-fit md:bg-white md:dark:bg-gray-700 md:border-gray-300 md:dark:border-gray-700 md:rounded md:shadow-lg md:mt-2`}
+            >
+                {menu.submenu.map((option) => (
+                    <li key={option.key}
+                        className="block list-none text-center md:hover:font-semibold text-sm hover:bg-gray-200 hover:dark:bg-gray-600 ">
+                        <Navbar.Link as={Link} to={option.path} theme={blackTextTheme} onClick={closeDropdown} className="font-normal hover:font-semibold md:p-2">
+                            {t('menu.' + menu.key + '.submenu.' + option.key)}
+                        </Navbar.Link>
+                    </li>
+                ))}
+            </ul>
         </li>
     );
 };
-
-export default Dropdown;

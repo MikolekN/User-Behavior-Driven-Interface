@@ -10,13 +10,6 @@
                 "loan": "Loan" 
             }
         },
-        "settings": {
-            "title": "Settings",
-            "submenu": {
-                "settings1": "Settings 1",
-                "settings2": "Settings 2"
-            }
-        },
         "analysis": {
             "title": "Finances",
             "submenu": {
@@ -28,7 +21,7 @@
             "title": "Customer service",
             "submenu": {
                 "chat": "Chat",
-                "faq": "FAQ",
+                "faq": "Frequently asked questions",
                 "info": "Contact"
             }
         },
@@ -36,10 +29,20 @@
             "profile": "Profile",
             "login": "Login",
             "register": "Register",
-            "logout": "Sign out"
+            "settings": "Settings",
+            "logout": "Sign out",
+            "mode": {
+                "light": "Light theme",
+                "dark": "Dark theme"
+            }
+        },
+        "languages": {
+            "polish": "Polish",
+            "english": "English"
         },
         "login": "Login",
-        "register": "Register"
+        "register": "Register",
+        "adminPanel": "Admin panel"
     },
     "login": {
         "tile": {
@@ -79,8 +82,9 @@
     },
     "transactionHistory": {
         "tile": {
-            "title": "Transaction history"
-        }
+            "title": "Transaction History"
+        },
+        "emptyList": "List is empty"
     },
     "cyclicPaymentList": {
         "tile": {
@@ -97,7 +101,8 @@
         "startDate": "Start date",
         "transferInterval": "Transfer interval",
         "edit": "Edit",
-        "delete": "Delete"
+        "delete": "Delete",
+        "emptyList": "List is empty"
     },
     "cyclicPaymentForm": {
         "tile": {
@@ -142,7 +147,7 @@
         },
         "writeMessage": "Write a message...",
         "welcomeMessage": "Welcome to our customer service chat! Don't hesitate to ask any questions and we'll be happy to help.",
-        "reponseMessage": "Thank you for your message! Our team will contact you as soon as possible."
+        "responseMessage": "Thank you for your message! Our team will contact you as soon as possible."
     },
     "faq": {
         "tile": {
@@ -229,8 +234,8 @@
             "loading": "Loading..."
         },
         "password": {
-            "password": "Password",
-            "newPassword": "Confirm password",
+            "password": "Current password",
+            "newPassword": "New password",
             "submit": "Change password",
             "loading": "Loading..."
         }
@@ -304,7 +309,8 @@
             "errorUpdatePassword": "Error updating password: ",
             "errorUpdateUser": "Error updating user data: ",
             "errorImageProcess": "Image processing failed: ",
-            "sendIconFailed": "Failed to send the icon: "
+            "sendIconFailed": "Failed to send the icon: ",
+            "Failed to fetch": "Unexpected server error"
         },
         "zod": {
             "required": "The field is required",
@@ -316,7 +322,12 @@
             "amountBiggerThan": "The entered amount cannot be greater than",
             "password": "The password must be at least 8 characters long, including a lowercase letter, an uppercase letter, and a number",
             "confirmPassword": "The entered passwords do not match",
-            "invalidAccountNumber": "Invalid account number"
+            "invalidAccountNumber": "Invalid account number",
+            "invalidFieldSelected": "Invalid field selected",
+            "invalidCurrencyFormat": "Currency code must consist of three capital letters",
+            "fileRequired": "File is required",
+            "invalidFileType": "Unsupported file type",
+            "maximumFileSize": "Maximum size of a file is 8 MB"
         }
     },
     "chart": {

@@ -10,13 +10,6 @@
                 "loan": "Pożyczki" 
             }
         },
-        "settings": {
-            "title": "Ustawienia",
-            "submenu": {
-                "settings1": "Ustawienia 1",
-                "settings2": "Ustawienia 2"
-            }
-        },
         "analysis": {
             "title": "Finanse",
             "submenu": {
@@ -28,7 +21,7 @@
             "title": "Obsługa klienta",
             "submenu": {
                 "chat": "Czat",
-                "faq": "FAQ",
+                "faq": "Najczęściej zadawane pytania",
                 "info": "Kontakt"
             }
         },
@@ -36,10 +29,20 @@
             "profile": "Profil",
             "login": "Logowanie",
             "register": "Rejestracja",
-            "logout": "Wyloguj się"
+            "settings": "Ustawienia",
+            "logout": "Wyloguj się",
+            "mode": {
+                "light": "Jasny motyw",
+                "dark": "Ciemny motyw"
+            }
+        },
+        "languages": {
+            "polish": "Polski",
+            "english": "Angielski"
         },
         "login": "Logowanie",
-        "register": "Rejestracja"
+        "register": "Rejstracja",
+        "adminPanel": "Panel administratora"
     },
     "login": {
         "tile": {
@@ -79,8 +82,9 @@
     },
     "transactionHistory": {
         "tile": {
-            "title": "Historia transakcji"
-        }
+            "title": "Historia Transakcji"
+        },
+        "emptyList":"Lista jest pusta"
     },
     "cyclicPaymentList": {
         "tile": {
@@ -97,7 +101,8 @@
         "startDate": "Data początkowa",
         "transferInterval": "Interwał przelewu",
         "edit": "Edytuj",
-        "delete": "Usuń"
+        "delete": "Usuń",
+        "emptyList": "Lista jest pusta"
     },
     "cyclicPaymentForm": {
         "tile": {
@@ -230,8 +235,8 @@
             "loading": "Ładowanie..."
         },
         "password": {
-            "password": "Hasło",
-            "newPassword": "Powtórz hasło",
+            "password": "Obecne hasło",
+            "newPassword": "Nowe hasło",
             "submit": "Zmień hasło",
             "loading": "Ładowanie..."
         }
@@ -255,10 +260,10 @@
             "alreadyLogged": "Użytkownik jest już zalogowany",
             "userNotExist": "Użytkownik nie istnieje",
             "invalidCredentials": "Nieprawidłowe dane logowania",
-            "loginSuccesful": "Zalogowano pomyślnie",
-            "logoutSuccesful": "Wylogowano pomyślnie",
+            "loginSuccessful": "Zalogowano pomyślnie",
+            "logoutSuccessful": "Wylogowano pomyślnie",
             "userExist": "Użytkownik już istnieje",
-            "registerSuccesful": "Użytkownik został pomyślnie zarejestrowany",
+            "registerSuccessful": "Użytkownik został pomyślnie zarejestrowany",
             "negativeAmount": "Kwota musi być liczbą dodatnią",
             "invalidDateFormat": "Nieprawidłowy format daty. Oczekiwany format ISO 8601",
             "invalidObjectId": "Nieprawidłowy identyfikator obiektu",
@@ -303,7 +308,8 @@
             "errorUpdatePassword": "Błąd podczas aktualizacji hasła: ",
             "errorUpdateUser": "Błąd podczas aktualizacji danych użytkownika: ",
             "errorImageProcess": "Przetwarzanie obrazu nie powiodło się: ",
-            "sendIconFailed": "Nie udało się wysłać ikony: " 
+            "sendIconFailed": "Nie udało się wysłać ikony: ",
+            "Failed to fetch": "Nieoczekiwany błąd serwera"
         },
         "zod": {
             "required": "Pole jest wymagane",
@@ -315,7 +321,12 @@
             "amountBiggerThan": "Wprowadzona kwota nie może być większa niż",
             "password": "Hasło musi posiadać conajmniej 8 znaków, w tym małą literę, wielką literę i liczbę",
             "confirmPassword": "Wprowadzone hasła nie pasują",
-            "invalidAccountNumber": "Nieprawidłowy numer konta"
+            "invalidAccountNumber": "Nieprawidłowy numer konta",
+            "invalidFieldSelected": "Wybrano nieprawidłowe pole",
+            "invalidCurrencyFormat": "Kod waluty musi składać się z trzech wielkich liter",
+            "fileRequired": "Plik jest wymagany",
+            "invalidFileType": "Typ pliku jest niedozwolony",
+            "maximumFileSize": "Maksymalny rozmiar pliku to 8 MB"
         }
     },
     "chart": {

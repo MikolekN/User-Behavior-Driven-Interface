@@ -7,6 +7,13 @@ function useApiErrorHandler() {
     const [errorMessage, setErrorMessage] = useState('');
     const [apiError, setApiError] = useState({ isError: false, errorMessage: '' });
 
+    const clearApiError = () => {
+        setApiError({
+            isError: false,
+            errorMessage: ''
+        });
+    };
+
     const handleError = (error: unknown) => {
         if (isZodError(error)) {
             setErrorMessage(`${t('errors.zod.zodApiError')}`);
@@ -27,7 +34,7 @@ function useApiErrorHandler() {
         }
     }, [errorMessage]);
 
-    return { apiError, handleError };
+    return { apiError, handleError, clearApiError };
 }
 
 export default useApiErrorHandler;

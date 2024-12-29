@@ -9,7 +9,7 @@ import { UserContext } from '../context/UserContext';
 import { AVAILABLE_LOAN_LENGTH, LOAN_AMOUNT_STEP, MAX_LOAN_AMOUNT, MAX_LOAN_AMOUNT_TEXT, MIN_LOAN_AMOUNT, MIN_LOAN_AMOUNT_TEXT } from './constants';
 import { TransferContext } from '../context/TransferContext';
 import useApiErrorHandler from '../hooks/useApiErrorHandler';
-import { RangeSlider } from 'flowbite-react';
+import { FlowbiteRangeSliderTheme, RangeSlider } from 'flowbite-react';
 import { scrollToTop } from '../components/utils/scroll';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
 import Label from '../components/utils/Label';
@@ -17,9 +17,26 @@ import AccountDetails from '../components/utils/AccountDetails';
 import { useTranslation } from 'react-i18next';
 import Button from '../components/utils/Button';
 
+const rangeSliderTheme: FlowbiteRangeSliderTheme = {
+    "root": {
+        "base": "flex"
+    },
+    "field": {
+        "base": "relative w-full",
+        "input": {
+        "base": "w-full cursor-pointer appearance-none rounded-lg bg-gray-200 dark:bg-gray-400",
+        "sizes": {
+            "sm": "h-1",
+            "md": "h-2",
+            "lg": "h-3"
+        }
+        }
+    }
+}
+
 const Loan = () => {
     const { t } = useTranslation();
-    const { apiError, handleError } = useApiErrorHandler();
+    const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext)
     const { createLoan } = useContext(TransferContext);
     const [ sliderValue, setSliderValue ] = useState<number | null>(null);
@@ -48,6 +65,7 @@ const Loan = () => {
     };
     
     const onSubmit: SubmitHandler<LoanFormData> = async ({ amount }: LoanFormData) => {
+        clearApiError();
         try {
             const requestBody = {
                 transferTitle: 'Pożyczka gotówkowa',
@@ -97,6 +115,7 @@ const Loan = () => {
                                     min={MIN_LOAN_AMOUNT}
                                     step={LOAN_AMOUNT_STEP}
                                     max={MAX_LOAN_AMOUNT}
+                                    theme={rangeSliderTheme}
                                 />
                                 <div className="flex justify-between">
                                     <Label label={MIN_LOAN_AMOUNT_TEXT} />

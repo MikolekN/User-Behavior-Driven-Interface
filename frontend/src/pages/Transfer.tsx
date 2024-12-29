@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 
 const Transfer = () => {
     const { t } = useTranslation();
-    const { apiError, handleError } = useApiErrorHandler();
+    const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
     const { createTransfer } = useContext(TransferContext);
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<TransferFormData>({
@@ -31,6 +31,7 @@ const Transfer = () => {
     const navigate = useNavigate();
     
     const onSubmit: SubmitHandler<TransferFormData> = async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
+        clearApiError();
         try {
             const requestBody = {
                 recipientAccountNumber: recipientAccountNumber,
