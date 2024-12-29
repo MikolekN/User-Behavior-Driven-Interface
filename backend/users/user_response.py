@@ -4,7 +4,7 @@ from flask import jsonify, Response
 
 
 @dataclass
-class LoginResponse:
+class UserResponse:
 
     @classmethod
     def create_response(cls, message: str, user: dict, status_code: int) -> tuple[Response, int]:

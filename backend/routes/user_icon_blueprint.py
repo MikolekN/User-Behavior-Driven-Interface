@@ -7,7 +7,7 @@ from flask_login import current_user, login_required
 from werkzeug.datastructures import FileStorage
 
 from constants import UPLOAD_FOLDER
-from routes.helpers import allowed_file_extension, create_response
+from routes.helpers import allowed_file_extension, create_simple_response
 from users import UserRepository, User
 
 user_icon_blueprint = Blueprint('user_icon', __name__, url_prefix='/api')
@@ -21,14 +21,14 @@ def ensure_upload_folder_exists() -> None:
 
 def validate_icon_file(request: Request) -> tuple[Response, int] | FileStorage:
     if 'icon' not in request.files:
-        return create_response("fileRequired", 400)
+        return create_simple_response("fileRequired", 400)
 
     icon: FileStorage | None = request.files['icon']
     if icon is None or icon.filename == '':
-        return create_response("iconNotInRequest", 400)
+        return create_simple_response("iconNotInRequest", 400)
 
     if not allowed_file_extension(icon.filename):
-        return create_response("invalidFileType", 400)
+        return create_simple_response("invalidFileType", 400)
 
     return icon
 
@@ -68,11 +68,11 @@ def upload_user_icon() -> tuple[Response, int]:
     try:
         process_and_save_icon(icon, icon_path)
     except Exception as e:
-        return create_response(f"errorImageProcess;{str(e)}", 500)
+        return create_simple_response(f"errorImageProcess;{str(e)}", 500)
 
     user_repository.update(current_user._id, {'user_icon': icon_path})
 
-    return create_response("iconUploadSuccessful", 200)
+    return create_simple_response("iconUploadSuccessful", 200)
 
 def get_user_data_and_icon_path(user_id: str) -> tuple[dict | None, str | None]:
     user_data: User = user_repository.find_by_id(user_id)
@@ -91,15 +91,15 @@ def get_user_icon() -> tuple[Response, int]:
     # Retrieve user data and icon path
     user_data, icon_path = get_user_data_and_icon_path(current_user._id)
     if not user_data or not icon_path:
-        return create_response("iconNotSetForUser", 404)
+        return create_simple_response("iconNotSetForUser", 404)
 
     # Validate the icon path
     is_valid, error_message = validate_icon_path(icon_path)
     if not is_valid:
-        return create_response(error_message, 404)
+        return create_simple_response(error_message, 404)
 
     # Attempt to send the icon file
     try:
         return send_file(icon_path, mimetype='image/png'), 200
     except Exception as e:
-        return create_response(f"sendIconFailed;{str(e)}", 500)
+        return create_simple_response(f"sendIconFailed;{str(e)}", 500)
