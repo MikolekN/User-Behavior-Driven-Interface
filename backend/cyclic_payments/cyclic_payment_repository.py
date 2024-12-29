@@ -1,4 +1,4 @@
-from typing import Optional, Type
+from typing import Optional, Type, List
 
 from cyclic_payments import CyclicPayment
 from repository import BaseRepository
@@ -13,7 +13,7 @@ class CyclicPaymentRepository(BaseRepository):
     def _entity_class(self) -> Type[CyclicPayment]:
         return CyclicPayment
 
-    def find_cyclic_payments(self, query: dict, sort_criteria: list[tuple[str, int]] = None) -> Optional[CyclicPayment]:
+    def find_cyclic_payments(self, query: dict, sort_criteria: list[tuple[str, int]] = None) -> Optional[List[CyclicPayment]]:
         return super().find_many(query, sort_criteria)
 
     def find_by_issuer_id(self, cyclic_payment_from_id: str) -> Optional[CyclicPayment]:
