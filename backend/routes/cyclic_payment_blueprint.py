@@ -126,7 +126,7 @@ def create_cyclic_payment() -> tuple[Response, int]:
     if curr_user.get_available_funds() - float(data['amount']) < 0:
         return jsonify(message="userDontHaveEnoughMoney"), 403
     
-    cyclic_payment = CyclicPayment(created=datetime.now(), issuer_id=current_user._id, recipient_id=recipient_user._id, 
+    cyclic_payment = CyclicPayment(created=datetime.now(), issuer_id=curr_user.id, recipient_id=recipient_user.id,
                                    recipient_account_number=data['recipientAccountNumber'], recipient_name=recipient_user.login,
                                    cyclic_payment_name=data['cyclicPaymentName'], transfer_title=data['transferTitle'], 
                                    amount=float(data['amount']), start_date=datetime.fromisoformat(data['startDate']), 
@@ -171,7 +171,7 @@ def delete_cyclic_payment(id) -> tuple[Response, int]:
         return jsonify(message="cyclicPaymentNotExist"), 404
     
     curr_user = user_repository.find_by_id(current_user._id)
-    user_repository.update(curr_user._id, {'blockades': subtract(float(curr_user.blockades), float(cyclic_payment.amount))})
+    user_repository.update(curr_user.id, {'blockades': subtract(float(curr_user.blockades), float(cyclic_payment.amount))})
 
     cyclic_payment_repository.delete_by_id(str(id))
  
@@ -199,7 +199,7 @@ def update_cyclic_payment(id) -> tuple[Response, int]:
     if curr_user.get_available_funds() + float(cyclic_payment.amount) - float(data['amount']) < 0:
         return jsonify(message="userDontHaveEnoughMoney"), 403
     
-    user_repository.update(curr_user._id, {'blockades': add(subtract(float(curr_user.blockades), float(cyclic_payment.amount)), float(data["amount"]))})
+    user_repository.update(curr_user.id, {'blockades': add(subtract(float(curr_user.blockades), float(cyclic_payment.amount)), float(data["amount"]))})
     
     query, cyclic_payment_content = get_cyclic_payment_update_content_and_query(id, data, recipient_user)
     updated_cyclic_payment = cyclic_payment_repository.update(str(id), query, cyclic_payment_content)
