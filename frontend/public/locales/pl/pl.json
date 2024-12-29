@@ -281,6 +281,7 @@
             "negativeAmount": "Kwota musi być liczbą dodatnią",
             "invalidDateFormat": "Nieprawidłowy format daty. Oczekiwany format ISO 8601",
             "invalidObjectId": "Nieprawidłowy identyfikator obiektu",
+            "cannotTransferToSelf": "Nie można dokonywać przelewów na samego siebie.",
             "userWithAccountNumberNotExist": "Użytkownik o podanym numerze konta nie istnieje",
             "userDontHaveEnoughMoney": "Użytkownik nie ma wystarczających środków",
             "cyclicPaymentCreatedSuccessful": "Cykliczna płatność została pomyślnie utworzona",

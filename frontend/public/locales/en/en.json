@@ -280,6 +280,7 @@
             "negativeAmount": "Amount must be a positive number",
             "invalidDateFormat": "Invalid date format. Expected ISO 8601 format",
             "invalidObjectId": "Invalid Object ID",
+            "cannotTransferToSelf": "You are not allowed to make a self transfer",
             "userWithAccountNumberNotExist": "User with given account number does not exist",
             "userDontHaveEnoughMoney": "User does not have enough money",
             "cyclicPaymentCreatedSuccessful": "Cyclic Payment created successfully",
