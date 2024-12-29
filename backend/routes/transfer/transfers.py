@@ -5,6 +5,7 @@ from flask_login import login_required, current_user
 
 from routes.transfer.helpers import create_response
 from transfers import TransferRepository, Transfer
+from transfers.history_response import HistoryResponse
 from transfers.history_transfer_dto import HistoryTransferDto
 from transfers.grouped_history_transfers_dto import GroupedHistoryTransfersDto
 from users import UserRepository, User
@@ -29,7 +30,7 @@ def get_all_user_transfers() -> tuple[Response, int]:
         for date, user_transfers in user_transfer_groups.items()
     ]
 
-    return create_response(message="transferListGetSuccessful", status_code=200, data=grouped_transfers_dtos)
+    return HistoryResponse.create_response("transferListGetSuccessful", grouped_transfers_dtos, 200)
 
 
 def prepare_user_transfer(transfer: Transfer, user: User) -> HistoryTransferDto:

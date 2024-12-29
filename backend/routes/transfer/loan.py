@@ -5,8 +5,8 @@ from flask_login import login_required, current_user
 
 from constants import BANK_ACCOUNT_NUMBER
 from helpers import add
-from routes.helpers import create_response
-from routes.transfer.helpers import validate_loan_data, prevent_self_transfer
+from routes.helpers import create_simple_response
+from routes.transfer.helpers import validate_loan_data
 from transfers import Transfer, TransferRepository
 from users import UserRepository
 
@@ -19,15 +19,15 @@ def create_loan_transfer() -> tuple[Response, int]:
 
     error = validate_loan_data(data)
     if error:
-        return create_response(error, 400)
+        return create_simple_response(error, 400)
 
     recipient_user = user_repository.find_by_id(current_user._id)
     if not recipient_user:
-        return create_response("userWithAccountNumberNotExist", 404)
+        return create_simple_response("userWithAccountNumberNotExist", 404)
 
     bank = user_repository.find_by_account_number(BANK_ACCOUNT_NUMBER)
     if not bank:
-        return create_response("bankAccountNotExist", 404)
+        return create_simple_response("bankAccountNotExist", 404)
 
     transfer = Transfer(created=datetime.now(),
                         transfer_from_id=bank.id,
@@ -38,4 +38,4 @@ def create_loan_transfer() -> tuple[Response, int]:
 
     user_repository.update(recipient_user.id, {'balance': add(float(recipient_user.balance), float(data['amount']))})
 
-    return create_response("loanCreatedSuccessful", 200)
+    return create_simple_response("loanCreatedSuccessful", 200)

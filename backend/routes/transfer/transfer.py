@@ -4,7 +4,7 @@ from flask import Response, request
 from flask_login import login_required, current_user
 
 from helpers import add, subtract
-from routes.helpers import create_response
+from routes.helpers import create_simple_response
 from routes.transfer.helpers import validate_transfer_data, prevent_self_transfer
 from transfers import Transfer, TransferRepository
 from users import UserRepository, User
@@ -19,19 +19,19 @@ def create_transfer() -> tuple[Response, int]:
 
     error = validate_transfer_data(data)
     if error:
-        return create_response(error, 400)
+        return create_simple_response(error, 400)
 
     if prevent_self_transfer(data):
-        return create_response("cannotTransferToSelf", 400)
+        return create_simple_response("cannotTransferToSelf", 400)
     # TODO: dodać na frontend odpowiednią wiadomość
 
     recipient_user = user_repository.find_by_account_number(data['recipientAccountNumber'])
     if not recipient_user:
-        return create_response("userWithAccountNumberNotExist", 404)
+        return create_simple_response("userWithAccountNumberNotExist", 404)
 
     user: User = user_repository.find_by_id(current_user._id)
     if user.get_available_funds() - float(data['amount']) < 0:
-        return create_response("userDontHaveEnoughMoney", 403)
+        return create_simple_response("userDontHaveEnoughMoney", 403)
 
     transfer = Transfer(created=datetime.now(),
                         transfer_from_id=user.id,
@@ -43,4 +43,4 @@ def create_transfer() -> tuple[Response, int]:
     user_repository.update(str(user.id), {'balance': subtract(float(user.balance), float(data['amount']))})
     user_repository.update(str(recipient_user.id), {'balance': add(float(recipient_user.balance), float(data['amount']))})
 
-    return create_response("transferCreatedSuccessful", 200)
+    return create_simple_response("transferCreatedSuccessful", 200)
