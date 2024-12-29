@@ -4,10 +4,12 @@ from typing import Any, Optional
 from flask import Response, request
 from flask_login import login_required, current_user
 
+from routes.helpers import create_simple_response
 from routes.transfer.helpers import serialize_transfers, \
     set_missing_years, format_transfers_date, get_year_from_datetime, format_grouped_transfers, \
-    accumulate_transactions_income_and_outcome, get_response_yearly, create_response
+    accumulate_transactions_income_and_outcome, get_response_yearly
 from transfers import TransferRepository
+from transfers.analysis_response import AnalysisResponse
 
 transfer_repository = TransferRepository()
 
@@ -18,7 +20,7 @@ def get_all_user_transfers_yearly() -> tuple[Response, int]:
 
     error = validate_get_all_user_transfers_yearly(data)
     if error:
-        return create_response(error, 400)
+        return create_simple_response(error, 400)
 
     start_date = f"{data['startYear']}-01-01T00:00:00"
     end_date = f"{data['endYear']}-12-31T23:59:59"
@@ -35,13 +37,13 @@ def get_all_user_transfers_yearly() -> tuple[Response, int]:
 
     transfers = transfer_repository.find_transfers(query)
     if not transfers:
-        return create_response("yearlyAnalysisEmpty", 404)
+        return create_simple_response("yearlyAnalysisEmpty", 404)
 
     serialized_transfers = serialize_transfers(transfers)
     response = set_missing_years(get_transfers_analysis_yearly(serialized_transfers), data['startYear'],
                                  data['endYear'])
 
-    return create_response("yearlyAnalysisSuccessful", data=response, status_code=200)
+    return AnalysisResponse.create_response("yearlyAnalysisSuccessful", response, 200)
 
 
 def validate_get_all_user_transfers_yearly(data: Mapping[str, Any]) -> Optional[str]:

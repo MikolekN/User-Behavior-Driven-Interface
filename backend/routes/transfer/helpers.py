@@ -94,10 +94,6 @@ def format_transfers_date(transfers: list[dict], date_func: Callable[[datetime],
     return transfers
 
 
-def get_date_from_datetime(date: datetime) -> str:
-    return date.strftime('%d.%m.%Y')
-
-
 def accumulate_transactions_income_and_outcome(transfers: list[dict]) -> dict[str, any]:
     accumulated_groups = {}
 
@@ -181,10 +177,3 @@ def set_missing_years(response: list[dict], start_year: int, end_year: int) -> l
     response.sort(key=lambda x: int(x['interval']))
 
     return response
-
-
-def create_response(message: str, status_code: int, data: Optional[list[dict]] = None) -> tuple[Response, int]:
-    response = {"message": message}
-    if data:
-        response['transfers'] = data
-    return jsonify(response), status_code

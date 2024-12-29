@@ -3,7 +3,7 @@ from collections import defaultdict
 from flask import Response
 from flask_login import login_required, current_user
 
-from routes.transfer.helpers import create_response
+from routes.helpers import create_simple_response
 from transfers import TransferRepository, Transfer
 from transfers.history_response import HistoryResponse
 from transfers.history_transfer_dto import HistoryTransferDto
@@ -19,7 +19,7 @@ def get_all_user_transfers() -> tuple[Response, int]:
     transfers = fetch_user_transfers()
 
     if not transfers:
-        return create_response("transferListEmpty", 404)
+        return create_simple_response("transferListEmpty", 404)
 
     user: User = user_repository.find_by_id(current_user._id)
     history_transfer_dtos: list[HistoryTransferDto] = [prepare_user_transfer(transfer, user) for transfer in transfers]
