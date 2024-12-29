@@ -27,7 +27,7 @@ const CyclicPaymentsForm = () => {
     const { t } = useTranslation();
     const { id } = useParams();
     const [ date, setDate ] = useState<Date | undefined | null>(undefined);
-    const [ minDate, ] = useState<Date | undefined>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
+    const [ minDate, setMinDate ] = useState<Date | undefined | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
     const { cyclicPayment, setCyclicPayment, createCyclicPayment, getCyclicPayment, 
@@ -49,6 +49,7 @@ const CyclicPaymentsForm = () => {
         setValue('recipientAccountNumber', '');
         setValue('transferTitle', '');
         setValue('amount', '');
+        setMinDate(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
         setDate(null);
         setValue('interval', '');
     }, [setValue]);
@@ -58,6 +59,7 @@ const CyclicPaymentsForm = () => {
         setValue('recipientAccountNumber', cyclicPayment.recipientAccountNumber);
         setValue('transferTitle', cyclicPayment.transferTitle);
         setValue('amount', cyclicPayment.amount.toString());
+        setMinDate(cyclicPayment.startDate)
         setDate(cyclicPayment.startDate);
         setValue('interval', cyclicPayment.interval);
     }, [setValue]);
@@ -188,7 +190,7 @@ const CyclicPaymentsForm = () => {
                                                 onChange={handleDateChange}
                                                 showClearButton={false}
                                                 showTodayButton={false}
-                                                defaultValue={undefined}
+                                                defaultValue={date!}
                                                 value={date}
                                                 label={t('cyclicPaymentForm.startDatePlaceholder')}
                                             />
