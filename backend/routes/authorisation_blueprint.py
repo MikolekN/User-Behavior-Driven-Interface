@@ -5,8 +5,9 @@ import bcrypt
 from flask import Blueprint, request, jsonify, Response
 from flask_login import current_user, login_user, logout_user, login_required
 
-from routes.helpers import create_response, validate_login_data, hash_password, generate_account_number
+from routes.helpers import create_simple_response, validate_login_data, hash_password, generate_account_number
 from users import *
+from users.login_response import LoginResponse
 from users.user_dto import UserDto
 
 authorisation_blueprint = Blueprint('authorisation', __name__, url_prefix='/api')
@@ -27,45 +28,45 @@ def authenticate_user(email: str, password: str) -> tuple[Optional[User], Option
 @authorisation_blueprint.route('/login', methods=['POST'])
 def login() -> tuple[Response, int]:
     if current_user.is_authenticated:
-        return create_response("alreadyLogged", 409)
+        return create_simple_response("alreadyLogged", 409)
 
     data = request.get_json()
 
     # Validate request data
     error = validate_login_data(data)
     if error:
-        return create_response(error, 400)
+        return create_simple_response(error, 400)
 
     # Authenticate user
     user, error = authenticate_user(data['email'], data['password'])
     if user is None:
-        return create_response(error, 404)
+        return create_simple_response(error, 404)
 
     # Log the user in
     login_user(user)
     user_dto = UserDto.from_user(user)
-    return create_response("loginSuccessful", 200, user_dto.to_dict())
+    return LoginResponse.create_response("loginSuccessful", user_dto.to_dict(), 200)
 
 @authorisation_blueprint.route('/logout', methods=['POST'])
 @login_required
 def logout() -> tuple[Response, int]:
     logout_user()
-    return create_response("logoutSuccessful", 200)
+    return create_simple_response("logoutSuccessful", 200)
 
 @authorisation_blueprint.route('/register', methods=['POST'])
 def register() -> tuple[Response, int]:
     if current_user.is_authenticated:
-        return create_response("alreadyLogged", 409)
+        return create_simple_response("alreadyLogged", 409)
 
     data = request.get_json()
 
     # Validate request data
     error = validate_login_data(data)
     if error:
-        return create_response(error, 400)
+        return create_simple_response(error, 400)
 
     if user_repository.find_by_email(data['email']):
-        return create_response("userExist", 409)
+        return create_simple_response("userExist", 409)
 
     # Create a new User object
     # TODO: figure out 'account_name', 'account_number', and 'balance'
@@ -85,4 +86,4 @@ def register() -> tuple[Response, int]:
     # Create a user
     user = user_repository.insert(user)
     user_dto = UserDto.from_user(user)
-    return jsonify(message="registerSuccessful", user=user_dto.to_dict()), 201
+    return LoginResponse.create_response("registerSuccessful", user_dto.to_dict(), 201)

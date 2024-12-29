@@ -8,10 +8,8 @@ from flask import Response, jsonify
 from constants import ALLOWED_EXTENSIONS
 
 
-def create_response(message: str, status_code: int, data: Optional[dict] = None) -> tuple[Response, int]:
+def create_simple_response(message: str, status_code: int) -> tuple[Response, int]:
     response = {"message": message}
-    if data:
-        response['user'] = data
     return jsonify(response), status_code
 
 def validate_login_data(data: Optional[Mapping[str, Any]]) -> Optional[str]:
