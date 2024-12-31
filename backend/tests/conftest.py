@@ -11,6 +11,7 @@ from tests.cyclic_payment.constants import TEST_ISSUER_ACCOUNT_NUMBER, TEST_CYCL
 from tests.transfer.constants import TEST_RECIPIENT_ACCOUNT_NUMBER, TEST_TRANSFER_TITLE
 from transfers import Transfer
 from users import User
+from users.user_dto import UserDto
 
 
 def generate_hashed_password(password: str) -> str:
@@ -54,6 +55,10 @@ def create_user():
 @pytest.fixture
 def test_user(create_user):
     yield create_user("testuser", TEST_EMAIL, "1234567890")
+
+@pytest.fixture
+def test_user_dto(test_user):
+    yield UserDto.from_user(test_user)
 
 @pytest.fixture
 def test_recipient_user(create_user):
