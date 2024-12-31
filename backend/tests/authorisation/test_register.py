@@ -44,7 +44,7 @@ def test_register_already_exists(client, test_user):
         json_data = response.get_json()
         assert 'message' in json_data
         assert json_data['message'] == "userExist"
-    
+
 def test_register_success(client, test_user):
     with patch('users.user_repository.UserRepository.find_by_email', return_value=None), \
             patch('users.user_repository.UserRepository.insert', return_value=test_user):
