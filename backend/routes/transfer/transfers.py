@@ -37,7 +37,7 @@ def prepare_user_transfer(transfer: Transfer, user: User) -> HistoryTransferDto:
     is_income = transfer.transfer_to_id == user.id
     transfer_from_user = user_repository.find_by_id(str(transfer.transfer_from_id))
     transfer_to_user = user_repository.find_by_id(str(transfer.transfer_to_id))
-    issuer_name = transfer_to_user.login if is_income else transfer_from_user.login
+    issuer_name = transfer_from_user.login if is_income else transfer_to_user.login
     return HistoryTransferDto.from_transfer(transfer, is_income, issuer_name)
 
 

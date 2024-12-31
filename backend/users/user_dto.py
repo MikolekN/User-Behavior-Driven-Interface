@@ -16,7 +16,7 @@ class UserDto:
     role: str
 
     @classmethod
-    def from_user(cls, user: "User") -> "UserDto":
+    def from_user(cls, user: User) -> "UserDto":
         return cls(
             login=user.login or '',
             email=user.email or '',

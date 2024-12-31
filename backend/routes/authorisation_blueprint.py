@@ -2,7 +2,7 @@ from typing import Optional
 from datetime import datetime
 
 import bcrypt
-from flask import Blueprint, request, jsonify, Response
+from flask import Blueprint, request, Response
 from flask_login import current_user, login_user, logout_user, login_required
 
 from routes.helpers import create_simple_response, validate_login_data, hash_password, generate_account_number
@@ -13,17 +13,18 @@ from users.user_dto import UserDto
 authorisation_blueprint = Blueprint('authorisation', __name__, url_prefix='/api')
 
 user_repository = UserRepository()
+print(user_repository.find_by_email)
 
 
-def authenticate_user(email: str, password: str) -> tuple[Optional[User], Optional[str]]:
+def authenticate_user(email: str, password: str) -> tuple[Optional[User], Optional[str], Optional[int]]:
     user = user_repository.find_by_email(email)
     if user is None:
-        return None, "userNotExist"
+        return None, "userNotExist", 404
 
     if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
-        return None, "invalidCredentials"
+        return None, "invalidCredentials", 401
 
-    return user, None
+    return user, None, None
 
 @authorisation_blueprint.route('/login', methods=['POST'])
 def login() -> tuple[Response, int]:
@@ -38,9 +39,9 @@ def login() -> tuple[Response, int]:
         return create_simple_response(error, 400)
 
     # Authenticate user
-    user, error = authenticate_user(data['email'], data['password'])
+    user, error, status_code = authenticate_user(data['email'], data['password'])
     if user is None:
-        return create_simple_response(error, 404)
+        return create_simple_response(error, status_code)
 
     # Log the user in
     login_user(user)
