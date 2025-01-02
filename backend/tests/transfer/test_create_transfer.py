@@ -51,6 +51,19 @@ def test_create_transfer_negative_amount(client, test_user):
         assert 'message' in json_data
         assert json_data['message'] == "negativeAmount"
 
+@patch('users.user_repository.UserRepository.find_by_id')
+def test_create_transfer_to_self(mock_find_by_id, client, test_user):
+    with patch('flask_login.utils._get_user', return_value=test_user):
+        mock_find_by_id.return_value = test_user
+
+        response = client.post('/api/transfer', json=get_transfer({'recipientAccountNumber': test_user.account_number}))
+
+        assert response.status_code == 400
+        json_data = response.get_json()
+        assert 'message' in json_data
+        assert json_data['message'] == "cannotTransferToSelf"
+
+
 @patch('users.user_repository.UserRepository.find_by_account_number')
 @patch('users.user_repository.UserRepository.find_by_id')
 def test_create_transfer_recipient_user_not_exist(mock_find_by_id, mock_find_by_account_number, client, test_user):

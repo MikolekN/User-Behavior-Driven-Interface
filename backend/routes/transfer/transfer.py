@@ -23,7 +23,6 @@ def create_transfer() -> tuple[Response, int]:
 
     if prevent_self_transfer(data):
         return create_simple_response("cannotTransferToSelf", 400)
-    # TODO: dodać na frontend odpowiednią wiadomość
 
     recipient_user = user_repository.find_by_account_number(data['recipientAccountNumber'])
     if not recipient_user:
