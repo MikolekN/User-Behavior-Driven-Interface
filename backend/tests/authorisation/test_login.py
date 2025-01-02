@@ -1,8 +1,10 @@
 from unittest.mock import patch
-from ..constants import TEST_EMAIL, TEST_PASSWORD
+
+from tests.constants import TEST_EMAIL, TEST_PASSWORD
+
 
 def test_login_success(client, test_user):
-    with patch('backend.users.user_repository.UserRepository.find_by_email', return_value=test_user):
+    with patch('users.user_repository.UserRepository.find_by_email', return_value=test_user):
         response = client.post('/api/login', json={
             'email': TEST_EMAIL,
             'password': TEST_PASSWORD
@@ -11,7 +13,7 @@ def test_login_success(client, test_user):
         assert response.status_code == 200
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Logged in successfully"
+        assert json_data['message'] == "loginSuccessful"
         assert 'user' in json_data
 
 def test_login_already_logged_in(client, test_user):
@@ -24,10 +26,10 @@ def test_login_already_logged_in(client, test_user):
         assert response.status_code == 409
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Already logged in"
+        assert json_data['message'] == "alreadyLogged"
 
 def test_login_user_not_exist(client):
-    with patch('backend.users.user_repository.UserRepository.find_by_email', return_value=None):
+    with patch('users.user_repository.UserRepository.find_by_email', return_value=None):
         response = client.post('/api/login', json={
             'email': TEST_EMAIL,
             'password': TEST_PASSWORD
@@ -36,10 +38,10 @@ def test_login_user_not_exist(client):
         assert response.status_code == 404
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "User does not exist"
+        assert json_data['message'] == "userNotExist"
 
 def test_login_invalid_password(client, test_user):
-    with patch('backend.users.user_repository.UserRepository.find_by_email', return_value=test_user):
+    with patch('users.user_repository.UserRepository.find_by_email', return_value=test_user):
         response = client.post('/api/login', json={
             'email': TEST_EMAIL,
             'password': "WrongPassword123"
@@ -48,7 +50,7 @@ def test_login_invalid_password(client, test_user):
         assert response.status_code == 401
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Invalid login credentials"
+        assert json_data['message'] == "invalidCredentials"
 
 def test_login_empty_data(client):
     response = client.post('/api/login', json={})
@@ -56,7 +58,7 @@ def test_login_empty_data(client):
     assert response.status_code == 400
     json_data = response.get_json()
     assert 'message' in json_data
-    assert json_data['message'] == "Request payload is empty"
+    assert json_data['message'] == "emptyRequestPayload"
 
 def test_login_invalid_data(client):
     response = client.post('/api/login', json={
@@ -66,5 +68,4 @@ def test_login_invalid_data(client):
     assert response.status_code == 400
     json_data = response.get_json()
     assert 'message' in json_data
-    assert json_data['message'] == "Email and password fields are required"
-    
+    assert json_data['message'] == "authFieldsRequired"

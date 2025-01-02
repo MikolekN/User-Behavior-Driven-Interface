@@ -1,64 +1,93 @@
-from flask import Response, request, jsonify, Blueprint
-from flask_login import current_user, login_required
-from flask_login import login_required
-from ..users import UserRepository
+from typing import Optional
 
-import bcrypt
+from flask import Response, request, Blueprint
+from flask_login import current_user
+from flask_login import login_required
+
+from routes.helpers import create_simple_response, hash_password, verify_password
+from users import UserRepository, User
+from users.user_dto import UserDto
+from users.user_response import UserResponse
 
 user_blueprint = Blueprint('user_update', __name__, url_prefix='/api')
+
+user_repository = UserRepository()
 
 @user_blueprint.route('/user', methods=['GET'])
 @login_required
 def get_user() -> tuple[Response, int]:
-    user = UserRepository.find_by_id(current_user._id)
+    user = user_repository.find_by_id(current_user._id)
     if not user:
-        return jsonify(message='userNotExist'), 404
-    sanitized_user = user.sanitize_user_dict()
-    return jsonify(user=sanitized_user), 200
+        return create_simple_response("userNotExist", 404)
+
+    user_dto = UserDto.from_user(user)
+    return UserResponse.create_response("userFetchSuccessful", user_dto.to_dict(), 200)
+
+def validate_user_field_data(user_data: dict) -> Optional[tuple[Response, int]]:
+    if not user_data:
+        return create_simple_response("emptyRequestPayload", 400)
+
+    valid_fields = {'login', 'account_name', 'currency'}
+    invalid_fields = [field for field in user_data if field not in valid_fields]
+
+    if invalid_fields:
+        # Można zrobić tak i wtedy będzie zwracać wszystkie niepasujące pola
+        # return create_response(f"invalidFields;{', '.join(invalid_fields)}", 400)
+        return create_simple_response(f"missingFields;{invalid_fields[0]}", 400)
+
+    return None
 
 @user_blueprint.route("/user/update", methods=['PATCH'])
 @login_required
-def update_user_field() -> Response:
+def update_user_field() -> tuple[Response, int]:
     user_data = request.json
 
-    if not user_data:
-        return jsonify(message="emptyRequestPayload"), 400
+    # Validate the request payload
+    error = validate_user_field_data(user_data)
+    if error:
+        return error
 
-    valid_fields = {'login', 'account_name', 'currency'}
-    
-    for field, _ in user_data.items():
-        if field not in valid_fields:
-            return jsonify(message=f"missingFields;{field}"), 400
-
+    # Update user record
     try:
-        UserRepository.update(current_user._id, user_data)
+        user_repository.update(current_user._id, user_data)
 
-        updated_user = UserRepository.find_by_id(current_user._id)
+        # Fetch the updated user record
+        updated_user = user_repository.find_by_id(current_user._id)
         if not updated_user:
-            return jsonify(message="userUpdateNotFound"), 404
+            return create_simple_response("userUpdateNotFound", 404)
 
-        return jsonify(message="userUpdateSuccessful", user=updated_user.to_dict()), 200
+        updated_user_dto = UserDto.from_user(updated_user)
+        return UserResponse.create_response("userUpdateSuccessful", updated_user_dto.to_dict(), 200)
     except Exception as e:
-        return jsonify(message=f"errorUpdateUser;{str(e)}"), 500
+        return create_simple_response(f"errorUpdateUser;{str(e)}", 500)
+
+def validate_password_change_request(data: dict) -> Optional[tuple[Response, int]]:
+    if not data or 'current_password' not in data or 'new_password' not in data:
+        return create_simple_response("userPasswordRequiredFields", 400)
+    return None
 
 @user_blueprint.route("/user/password", methods=['PATCH'])
 @login_required
-def change_user_password() -> Response:
+def change_user_password() -> tuple[Response, int]:
     data = request.json
 
-    if not data or 'current_password' not in data or 'new_password' not in data:
-        return jsonify(message="userPasswordRequiredFields"), 400
+    # Validate the request payload
+    error = validate_password_change_request(data)
+    if error:
+        return error
 
     current_password = data['current_password']
     new_password = data['new_password']
 
-    user = UserRepository.find_by_id(current_user._id)
-    if not bcrypt.checkpw(current_password.encode('utf-8'), user.password.encode('utf-8')):
-        return jsonify(message="incorrectCurrentPassword"), 401
+    # Retrieve the user and verify the password
+    user: User = user_repository.find_by_id(current_user._id)
+    if not user or not verify_password(user.password, current_password):
+        return create_simple_response("incorrectCurrentPassword", 401)
 
+    # Hash the new password and update it
     try:
-        hashed_new_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        UserRepository.update(current_user._id, {'password': hashed_new_password})
-        return jsonify(message="passwordUpdateSuccessful"), 200
+        hashed_new_password = hash_password(new_password)
+        user_repository.update(current_user._id, {'password': hashed_new_password})
+        return create_simple_response("passwordUpdateSuccessful", 200)
     except Exception as e:
-        return jsonify(message=f"errorUpdatePassword;{str(e)}"), 500
+        return create_simple_response(f"errorUpdatePassword;{str(e)}", 500)

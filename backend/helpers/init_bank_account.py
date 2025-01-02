@@ -1,10 +1,12 @@
 from datetime import datetime
-from ..users import *
-from ..constants import BANK_ACCOUNT_NUMBER
+
+from constants import BANK_ACCOUNT_NUMBER
+from users import UserRepository, User
+
 
 def init_bank_account() -> User | None:
-
-    bank = UserRepository.find_by_account_number(BANK_ACCOUNT_NUMBER)
+    user_repository = UserRepository()
+    bank = user_repository.find_by_account_number(BANK_ACCOUNT_NUMBER)
     if bank:
         return None
     
@@ -21,4 +23,5 @@ def init_bank_account() -> User | None:
         user_icon=None,
         role='BANK')
     
-    user = UserRepository.insert(user)
+    user_repository = UserRepository()
+    user_repository.insert(user)

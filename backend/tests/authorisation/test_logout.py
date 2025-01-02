@@ -6,7 +6,7 @@ def test_logout_success(client, test_user):
         assert response.status_code == 200
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Logged out successfully"
+        assert json_data['message'] == "logoutSuccessful"
         # Not able to check because still in the _get_user=test_user context
         # assert not current_user.is_authenticated
         

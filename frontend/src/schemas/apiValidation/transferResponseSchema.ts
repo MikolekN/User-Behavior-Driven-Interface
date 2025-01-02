@@ -20,14 +20,13 @@ export type GetTransfersAnalysisResponse = z.infer<typeof GetTransfersAnalysisRe
 // GetTransfers
 
 export const TransactionData = z.object({
-    _id: requiredStringField(),
+    transfer_from_id: requiredStringField(),
+    transfer_to_id: requiredStringField(),
+    title: requiredStringField(),
     amount: z.number(),
-    created: requiredStringField(),
     income: z.boolean(),
     issuer_name: requiredStringField(),
-    title: requiredStringField(),
-    transfer_from_id: requiredStringField(),
-    transfer_to_id: requiredStringField()
+    created: requiredStringField(),
 });
 
 export const TransactionsHistoryData = z.object({
