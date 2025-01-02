@@ -1,7 +1,7 @@
 from unittest.mock import MagicMock, patch
 
 from tests.cyclic_payment.constants import TEST_NEGATIVE_AMOUNT, TEST_NOT_ENOUGH_USER_FUNDS, TEST_AVAILABLE_USER_FUNDS
-from tests.transfer.helpers import get_transfer_not_valid, get_transfer
+from tests.transfer.helpers import get_transfer
 
 
 def test_create_transfer_unauthorized(client):
@@ -16,8 +16,6 @@ def test_create_transfer_empty_data(client, test_user):
         json_data = response.get_json()
         assert 'message' in json_data
         assert json_data['message'] == "emptyRequestPayload"
-
-#TODO: dodać testowanie wysyłania do siebie
 
 def test_create_transfer_invalid_data(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
