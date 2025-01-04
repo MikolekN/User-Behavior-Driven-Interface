@@ -13,7 +13,6 @@ from users.user_dto import UserDto
 authorisation_blueprint = Blueprint('authorisation', __name__, url_prefix='/api')
 
 user_repository = UserRepository()
-print(user_repository.find_by_email)
 
 
 def authenticate_user(email: str, password: str) -> tuple[Optional[User], Optional[str], Optional[int]]:
