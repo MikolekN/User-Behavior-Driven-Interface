@@ -12,7 +12,7 @@ def test_upload_user_icon_no_file_in_request(client, test_user):
         assert response.status_code == 400
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "No files in the request"
+        assert json_data['message'] == "fileRequired"
 
 def test_upload_user_icon_missing_icon_file(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
@@ -22,7 +22,7 @@ def test_upload_user_icon_missing_icon_file(client, test_user):
         assert response.status_code == 400
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Icon missing in the request"
+        assert json_data['message'] == "iconNotInRequest"
 
 def test_upload_user_icon_invalid_file_type(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
@@ -32,7 +32,7 @@ def test_upload_user_icon_invalid_file_type(client, test_user):
         assert response.status_code == 400
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "File type not allowed"
+        assert json_data['message'] == "invalidFileType"
 
 @patch('backend.users.user_repository.UserRepository.find_by_id', return_value=MagicMock(user_icon=None))
 @patch('PIL.Image.open', side_effect=Exception("Image processing error"))
@@ -44,7 +44,7 @@ def test_upload_user_icon_image_processing_fail(mock_image_open, mock_find_by_id
         assert response.status_code == 500
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Image processing failed: Image processing error"
+        assert json_data['message'] == "errorImageProcess;Image processing error"
     
 @patch('backend.users.user_repository.UserRepository.find_by_id', return_value=MagicMock(user_icon=None))
 @patch('backend.users.user_repository.UserRepository.update', return_value=True)
@@ -61,4 +61,4 @@ def test_upload_user_icon_success(mock_image_open, mock_update, mock_find_by_id,
         assert response.status_code == 200
         json_data = response.get_json()
         assert 'message' in json_data
-        assert json_data['message'] == "Icon uploaded successfully"
+        assert json_data['message'] == "iconUploadSuccessful"

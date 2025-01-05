@@ -1,4 +1,4 @@
-from backend.tests.cyclic_payment.constants import DEFAULT_CYCLIC_PAYMENT, INVALID_CYCLIC_PAYMENT
+from tests.cyclic_payment.constants import DEFAULT_CYCLIC_PAYMENT, INVALID_CYCLIC_PAYMENT
 
 
 def get_cyclic_payment(overrides=None):
