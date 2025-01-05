@@ -1,7 +1,6 @@
 from typing import Type, Optional
 
 import bson
-from flask_login import current_user
 
 from accounts import Account
 from repository import BaseRepository

@@ -26,7 +26,7 @@ class Account(BaseEntity):
     balance: Optional[float] = ''
     currency: Optional[str] = ''
     user: Optional[bson.ObjectId] = None
-    
+
     @staticmethod
     def from_dict(data: Dict[str, Any]) -> 'Account':
         return Account(
