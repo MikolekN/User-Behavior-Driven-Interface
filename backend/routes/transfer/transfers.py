@@ -1,4 +1,5 @@
 from collections import defaultdict
+from typing import Optional
 
 import bson
 from flask import Response
@@ -48,19 +49,30 @@ def get_all_user_transfers() -> tuple[Response, int]:
 
 def prepare_transfer(transfer: Transfer, account: Account) -> HistoryTransferDto:
     is_income = transfer.transfer_to_id == account.id
-    transfer_from_account = account_repository.find_by_id(str(transfer.transfer_from_id))
-    transfer_from_user = user_repository.find_by_id(transfer_from_account.user)
-    transfer_to_account = account_repository.find_by_id(str(transfer.transfer_to_id))
-    transfer_to_user = user_repository.find_by_id(transfer_to_account.user)
-    issuer_name = transfer_from_user.login if is_income else transfer_to_user.login
+
+    transfer_from_account: Account = account_repository.find_by_id(str(transfer.transfer_from_id))
+    if transfer_from_account.user:
+        transfer_from_user = user_repository.find_by_id(str(transfer_from_account.user))
+        issuer_name_from = transfer_from_user.login if transfer_from_user else "Unknown"
+    else:
+        issuer_name_from = transfer_from_account.account_name
+
+    transfer_to_account: Account = account_repository.find_by_id(str(transfer.transfer_to_id))
+    if transfer_to_account.user:
+        transfer_to_user = user_repository.find_by_id(str(transfer_to_account.user))
+        issuer_name_to = transfer_to_user.login if transfer_to_user else "Unknown"
+    else:
+        issuer_name_to = transfer_to_account.account_name
+
+    issuer_name = issuer_name_from if is_income else issuer_name_to
     return HistoryTransferDto.from_transfer(transfer, is_income, issuer_name)
 
 
 def fetch_transfers(account_id: str) -> list[Transfer]:
     query = {
         '$or': [
-            {'transfer_from_id': account_id},
-            {'transfer_to_id': account_id}
+            {'transfer_from_id': bson.ObjectId(account_id)},
+            {'transfer_to_id': bson.ObjectId(account_id)}
         ]
     }
     sort_criteria = [("created", -1)]

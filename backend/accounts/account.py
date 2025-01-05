@@ -42,7 +42,6 @@ class Account(BaseEntity):
 
     def to_dict(self) -> Dict[str, Any]:
         account_dict = super().to_dict()
-        account_dict.pop('user', None)
         return account_dict
 
     def get_available_funds(self) -> float:
