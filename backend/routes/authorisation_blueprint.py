@@ -1,14 +1,13 @@
 from typing import Optional
-from datetime import datetime
 
 import bcrypt
 from flask import Blueprint, request, Response
 from flask_login import current_user, login_user, logout_user, login_required
 
-from routes.helpers import create_simple_response, validate_login_data, hash_password, generate_account_number
+from routes.helpers import create_simple_response, validate_login_data, hash_password
 from users import *
-from users.user_response import UserResponse
 from users.user_dto import UserDto
+from users.user_response import UserResponse
 
 authorisation_blueprint = Blueprint('authorisation', __name__, url_prefix='/api')
 

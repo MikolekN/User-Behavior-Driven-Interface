@@ -13,6 +13,7 @@ account_types = [
     'youth',
     'student',
     'retirement',
+    'BANK',
     'other'
 ]
 
