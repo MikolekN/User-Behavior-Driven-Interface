@@ -47,31 +47,39 @@ def update_user() -> tuple[Response, int]:
     if error:
         return create_simple_response(error, 400)
 
+    result = None
     for field in data:
         match field:
             case 'login':
-                return update_login(data['login'])
+                result = update_login(data['login'])
             case 'new_password':
-                return update_password(data['current_password'], data['new_password'])
+                result = update_password(data['current_password'], data['new_password'])
+    if isinstance(result, tuple):
+        return result
+    elif isinstance(result, User):
+        return UserResponse.create_response("userUpdateSuccessful", UserDto.from_user(result).to_dict(), 200)
 
 
-def update_login(login: str) -> tuple[Response, int]:
+def update_login(login: str) -> tuple[Response, int] | User:
     login_data = {'login': login}
     try:
-        updated_user = user_repository.update(current_user._id, login_data)
+        updated_user: User = user_repository.update(current_user._id, login_data)
         if not updated_user:
             return create_simple_response("userUpdateNotFound", 404)
+        return updated_user
     except Exception as e:
         return create_simple_response(f"errorUpdateUser;{str(e)}", 500)
 
-def update_password(current_password: str, new_password: str) -> tuple[Response, int]:
+def update_password(current_password: str, new_password: str) -> tuple[Response, int] | User:
     user: User = user_repository.find_by_id(current_user._id)
     if not user or not verify_password(user.password, current_password):
         return create_simple_response("incorrectCurrentPassword", 401)
 
     try:
         hashed_new_password = hash_password(new_password)
-        user_repository.update(current_user._id, {'password': hashed_new_password})
-        return create_simple_response("passwordUpdateSuccessful", 200)
+        updated_user: User = user_repository.update(current_user._id, {'password': hashed_new_password})
+        if not updated_user:
+            return create_simple_response("userUpdateNotFound", 404)
+        return updated_user
     except Exception as e:
         return create_simple_response(f"errorUpdatePassword;{str(e)}", 500)

@@ -9,6 +9,7 @@ from accounts.account_dto import AccountDto
 from accounts.account_response import AccountResponse
 from accounts.accounts_response import AccountsResponse
 from routes.helpers import create_simple_response
+from routes.transfer.helpers import prevent_unauthorised_account_access
 from users import UserRepository, User
 
 account_blueprint = Blueprint('account', __name__, url_prefix='/api')
@@ -32,7 +33,6 @@ def get_active_account() -> tuple[Response, int]:
 @login_required
 def get_account(account_number) -> tuple[Response, int]:
     account: Account = account_repository.find_by_account_number(account_number)
-
     if not account:
         return create_simple_response("accountNotExist", 404)
 
@@ -43,8 +43,8 @@ def get_account(account_number) -> tuple[Response, int]:
 @login_required
 def get_accounts() -> tuple[Response, int]:
     user: User = user_repository.find_by_id(current_user._id)
-    accounts: list[Account] = account_repository.find_accounts(str(user.id))
 
+    accounts: list[Account] = account_repository.find_accounts(str(user.id))
     if not accounts:
         return create_simple_response("accountsNotExist", 404)
 
@@ -55,11 +55,16 @@ def get_accounts() -> tuple[Response, int]:
 @account_blueprint.route('/accounts/set_active/<account_number>', methods=['PUT'])
 @login_required
 def set_active_account(account_number: str) -> tuple[Response, int]:
-    user: User = user_repository.find_by_id(current_user._id)
     account: Account = account_repository.find_by_account_number(account_number)
-
     if not account:
         return create_simple_response("accountNotExist", 404)
+
+    if prevent_unauthorised_account_access(account):
+        return create_simple_response("unauthorisedAccountAccess", 403)
+
+    user: User = user_repository.find_by_id(current_user._id)
+    if not user:
+        return create_simple_response("userNotExist", 404)
 
     user.active_account = account.id
     user_repository.update(user.id, {'active_account': account.id})
@@ -79,7 +84,7 @@ def create_account() -> tuple[Response, int]:
     account: Account = Account(
         account_name=data['account_name'],
         account_number=generate_account_number(),
-        type=data['accountType'],
+        type=data['account_type'],
         blockades=0,
         balance=0,
         currency=data['currency'],
@@ -92,9 +97,9 @@ def create_account() -> tuple[Response, int]:
 def validate_create_account_data(data) -> str | None:
     if not data.get('account_name'):
         return "accountNameRequired"
-    if not data.get('accountType'):
+    if not data.get('account_type'):
         return "accountTypeRequired"
-    if data.get('accountType') not in account_types:
+    if data.get('account_type') not in account_types:
         return "accountTypeInvalid"
     if not data.get('currency'):
         return "currencyRequired"

@@ -1,5 +1,6 @@
 from typing import Type, Optional
 
+import bson
 from flask_login import current_user
 
 from accounts import Account
@@ -20,7 +21,7 @@ class AccountRepository(BaseRepository):
 
     def find_accounts(self, id:str) -> list[Account]:
         query = {
-            'user': id
+            'user': bson.ObjectId(id)
         }
         sort_criteria = [("created", -1)]
         return super().find_many(query, sort_criteria)
