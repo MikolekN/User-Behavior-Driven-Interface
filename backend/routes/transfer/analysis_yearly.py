@@ -4,13 +4,17 @@ from typing import Any, Optional
 from flask import Response, request
 from flask_login import login_required, current_user
 
+from accounts import Account, AccountRepository
 from routes.helpers import create_simple_response
 from routes.transfer.helpers import serialize_transfers, \
     set_missing_years, format_transfers_date, get_year_from_datetime, format_grouped_transfers, \
     accumulate_transactions_income_and_outcome, get_response_yearly
 from transfers import TransferRepository
 from transfers.analysis_response import AnalysisResponse
+from users import User, UserRepository
 
+user_repository = UserRepository()
+account_repository = AccountRepository()
 transfer_repository = TransferRepository()
 
 
@@ -22,12 +26,20 @@ def get_all_user_transfers_yearly() -> tuple[Response, int]:
     if error:
         return create_simple_response(error, 400)
 
+    user: User = user_repository.find_by_id(current_user._id)
+    if not user:
+        return create_simple_response("userNotExist", 404)
+
+    account: Account = account_repository.find_by_id(str(user.active_account))
+    if not account:
+        return create_simple_response("accountNotExist", 404)
+
     start_date = f"{data['startYear']}-01-01T00:00:00"
     end_date = f"{data['endYear']}-12-31T23:59:59"
     query = {
         '$or': [
-            {'transfer_from_id': current_user._id},
-            {'transfer_to_id': current_user._id}
+            {'transfer_from_id': account.id},
+            {'transfer_to_id': account.id}
         ],
         'created': {
             '$gte': start_date,
@@ -39,7 +51,7 @@ def get_all_user_transfers_yearly() -> tuple[Response, int]:
     if not transfers:
         return create_simple_response("yearlyAnalysisEmpty", 404)
 
-    serialized_transfers = serialize_transfers(transfers)
+    serialized_transfers = serialize_transfers(transfers, account)
     response = set_missing_years(get_transfers_analysis_yearly(serialized_transfers), data['startYear'],
                                  data['endYear'])
 

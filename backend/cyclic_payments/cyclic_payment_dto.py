@@ -16,11 +16,11 @@ class CyclicPaymentDto:
     interval: str
 
     @classmethod
-    def from_cyclic_payment(cls, cyclic_payment: "CyclicPayment") -> "CyclicPaymentDto":
+    def from_cyclic_payment(cls, cyclic_payment: "CyclicPayment", recipient_account_number: str, recipient_name: str) -> "CyclicPaymentDto":
         return cls(
             _id=str(cyclic_payment.id),
-            recipient_account_number=cyclic_payment.recipient_account_number,
-            recipient_name=cyclic_payment.recipient_name,
+            recipient_account_number=recipient_account_number,
+            recipient_name=recipient_name,
             cyclic_payment_name=cyclic_payment.cyclic_payment_name,
             transfer_title=cyclic_payment.transfer_title,
             amount=cyclic_payment.amount,

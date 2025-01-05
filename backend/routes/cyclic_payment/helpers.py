@@ -29,8 +29,13 @@ def validate_cyclic_payment_data(data: Optional[Mapping[str, Any]]) -> Optional[
 
 
 def validate_required_cyclic_payment_fields(data: Mapping[str, Any]) -> str | None:
-    required_fields = ['cyclicPaymentName', 'recipientAccountNumber', 'transferTitle', 'amount', 'startDate',
-                       'interval']
+    required_fields = [
+        'cyclicPaymentName',
+        'recipientAccountNumber',
+        'transferTitle',
+        'amount',
+        'startDate',
+        'interval']
     field_names = ""
     for field in required_fields:
         if field not in data:

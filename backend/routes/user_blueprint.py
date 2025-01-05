@@ -23,68 +23,52 @@ def get_user() -> tuple[Response, int]:
     user_dto = UserDto.from_user(user)
     return UserResponse.create_response("userFetchSuccessful", user_dto.to_dict(), 200)
 
-def validate_user_field_data(user_data: dict) -> Optional[tuple[Response, int]]:
+def validate_user_update_data(user_data: dict) -> Optional[str]:
     if not user_data:
-        return create_simple_response("emptyRequestPayload", 400)
+        return "emptyRequestPayload"
 
-    valid_fields = {'login', 'account_name', 'currency'}
+    valid_fields = {'login', 'current_password', 'new_password'}
     invalid_fields = [field for field in user_data if field not in valid_fields]
 
     if invalid_fields:
-        # Można zrobić tak i wtedy będzie zwracać wszystkie niepasujące pola
-        # return create_response(f"invalidFields;{', '.join(invalid_fields)}", 400)
-        return create_simple_response(f"missingFields;{invalid_fields[0]}", 400)
+        return f"missingFields;{', '.join(invalid_fields)}"
+
+    if ('current_password' in user_data or 'new_password' in user_data) and ('current_password' not in user_data or 'new_password' not in user_data):
+        return "userPasswordRequiredFields"
 
     return None
 
 @user_blueprint.route("/user/update", methods=['PATCH'])
 @login_required
-def update_user_field() -> tuple[Response, int]:
-    user_data = request.json
+def update_user() -> tuple[Response, int]:
+    data = request.json
 
-    # Validate the request payload
-    error = validate_user_field_data(user_data)
+    error = validate_user_update_data(data)
     if error:
-        return error
+        return create_simple_response(error, 400)
 
-    # Update user record
+    for field in data:
+        match field:
+            case 'login':
+                return update_login(data['login'])
+            case 'new_password':
+                return update_password(data['current_password'], data['new_password'])
+
+
+def update_login(login: str) -> tuple[Response, int]:
+    login_data = {'login': login}
     try:
-        user_repository.update(current_user._id, user_data)
-
-        # Fetch the updated user record
-        updated_user = user_repository.find_by_id(current_user._id)
+        updated_user = user_repository.update(current_user._id, login_data)
         if not updated_user:
             return create_simple_response("userUpdateNotFound", 404)
-
-        updated_user_dto = UserDto.from_user(updated_user)
-        return UserResponse.create_response("userUpdateSuccessful", updated_user_dto.to_dict(), 200)
     except Exception as e:
         return create_simple_response(f"errorUpdateUser;{str(e)}", 500)
 
-def validate_password_change_request(data: dict) -> Optional[tuple[Response, int]]:
-    if not data or 'current_password' not in data or 'new_password' not in data:
-        return create_simple_response("userPasswordRequiredFields", 400)
-    return None
-
-@user_blueprint.route("/user/password", methods=['PATCH'])
-@login_required
-def change_user_password() -> tuple[Response, int]:
-    data = request.json
-
-    # Validate the request payload
-    error = validate_password_change_request(data)
-    if error:
-        return error
-
-    current_password = data['current_password']
-    new_password = data['new_password']
-
-    # Retrieve the user and verify the password
+def update_password(current_password: str, new_password: str) -> tuple[Response, int]:
     user: User = user_repository.find_by_id(current_user._id)
     if not user or not verify_password(user.password, current_password):
         return create_simple_response("incorrectCurrentPassword", 401)
 
-    # Hash the new password and update it
     try:
         hashed_new_password = hash_password(new_password)
         user_repository.update(current_user._id, {'password': hashed_new_password})

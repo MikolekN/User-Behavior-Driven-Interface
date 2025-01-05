@@ -4,15 +4,16 @@ from datetime import datetime
 from typing import Optional, Any, Callable
 
 from bson import ObjectId
-from flask import jsonify, Response
 from flask_login import current_user
 
+from accounts import Account, AccountRepository
 from constants import MIN_LOAN_VALUE, MAX_LOAN_VALUE
 from transfers import Transfer, TransferRepository
-from users import User, UserRepository
+from users import UserRepository
 
 months = ['', 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 user_repository = UserRepository()
+account_repository = AccountRepository()
 transfer_repository = TransferRepository()
 
 
@@ -53,32 +54,44 @@ def validate_data(
 
 
 def validate_transfer_data(data: Mapping[str, Any]) -> Optional[str]:
-    return validate_data(data, ['recipientAccountNumber', 'transferTitle', 'amount'], amount_check=True)
+    return validate_data(
+        data,
+        ['senderAccountNumber', 'recipientAccountNumber', 'transferTitle', 'amount'],
+        amount_check=True)
 
 
 def validate_loan_data(data: Mapping[str, Any]) -> Optional[str]:
-    return validate_data(data, ['transferTitle', 'amount'], amount_check=True, min_value=MIN_LOAN_VALUE,
-                         max_value=MAX_LOAN_VALUE, multiple_of=1000)
+    return validate_data(
+        data,
+        ['recipientAccountNumber', 'transferTitle', 'amount'],
+        amount_check=True,
+        min_value=MIN_LOAN_VALUE,
+        max_value=MAX_LOAN_VALUE,
+        multiple_of=1000)
 
 
 def prevent_self_transfer(data: Mapping[str, Any]) -> bool:
-    user: User = user_repository.find_by_id(current_user._id)
-    return data['recipientAccountNumber'] == user.account_number
+    return data['recipientAccountNumber'] == data['senderAccountNumber']
 
 
-def serialize_transfers(transfers: list[Transfer]) -> list[dict[str, Any]]:
-    return [serialize_transfer(transfer) for transfer in transfers]
+def prevent_unauthorised_account_access(sender_account: Account) -> bool:
+    return not (sender_account.user == current_user._id)
 
 
-def serialize_transfer(transfer: Transfer) -> dict[str, Any]:
+def serialize_transfers(transfers: list[Transfer], account: Account) -> list[dict[str, Any]]:
+    return [serialize_transfer(transfer, account) for transfer in transfers]
+
+
+def serialize_transfer(transfer: Transfer, account: Account) -> dict[str, Any]:
     transfer_dict = transfer.to_dict()
 
-    is_income = transfer.transfer_to_id == current_user._id
+    is_income = transfer.transfer_to_id == account.id
     transfer_dict['income'] = is_income
 
-    # TODO: czy to znaczy, że zawsze będzie się wyświetlał login wysyłającego?
-    transfer_from_user = user_repository.find_by_id(str(transfer.transfer_from_id))
-    transfer_to_user = user_repository.find_by_id(str(transfer.transfer_to_id))
+    transfer_from_account = account_repository.find_by_id(str(transfer.transfer_from_id))
+    transfer_from_user = user_repository.find_by_id(transfer_from_account.user)
+    transfer_to_account = account_repository.find_by_id(str(transfer.transfer_to_id))
+    transfer_to_user = user_repository.find_by_id(transfer_to_account.user)
     transfer_dict['issuer_name'] = transfer_to_user.login if is_income else transfer_from_user.login
 
     return sanitize_transfer_dict(transfer_dict)

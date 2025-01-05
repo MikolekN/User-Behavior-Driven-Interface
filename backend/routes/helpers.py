@@ -19,9 +19,6 @@ def validate_login_data(data: Optional[Mapping[str, Any]]) -> Optional[str]:
         return "authFieldsRequired"
     return None
 
-def generate_account_number() -> str:
-    return ''.join(random.choices('0123456789', k=26))
-
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 

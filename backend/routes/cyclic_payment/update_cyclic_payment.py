@@ -1,15 +1,18 @@
 from flask import Response, request
 from flask_login import login_required, current_user
 
+from accounts import Account, AccountRepository
 from cyclic_payments import CyclicPaymentRepository
 from cyclic_payments.cyclic_payment_dto import CyclicPaymentDto
 from cyclic_payments.cyclic_payment_response import CyclicPaymentResponse
 from helpers import add, subtract
 from routes.cyclic_payment.helpers import validate_update_cyclic_payment
 from routes.helpers import create_simple_response
-from users import UserRepository
+from routes.transfer.helpers import prevent_unauthorised_account_access
+from users import UserRepository, User
 
 user_repository = UserRepository()
+account_repository = AccountRepository()
 cyclic_payment_repository = CyclicPaymentRepository()
 
 @login_required
@@ -20,7 +23,11 @@ def update_cyclic_payment(id) -> tuple[Response, int]:
     if error:
         return create_simple_response(error, 400)
 
-    recipient_user = user_repository.find_by_account_number(data['recipientAccountNumber'])
+    recipient_account: Account = account_repository.find_by_account_number(data['recipientAccountNumber'])
+    if not recipient_account:
+        return create_simple_response("accountNotExist", 404)
+
+    recipient_user: User = user_repository.find_by_id(str(recipient_account.user))
     if not recipient_user:
         return create_simple_response("userWithAccountNumberNotExist", 404)
 
@@ -28,27 +35,22 @@ def update_cyclic_payment(id) -> tuple[Response, int]:
     if not cyclic_payment:
         return create_simple_response("cyclicPaymentNotExist", 404)
 
-    curr_user = user_repository.find_by_id(current_user._id)
-    if curr_user.get_available_funds() + float(cyclic_payment.amount) - float(data['amount']) < 0:
+    issuer_account: Account = account_repository.find_by_id(cyclic_payment.issuer_id)
+    if not issuer_account:
+        return create_simple_response("accountNotExist", 404)
+
+    if prevent_unauthorised_account_access(issuer_account):
+        return create_simple_response("unauthorisedAccountAccess", 403)
+
+    if issuer_account.get_available_funds() + float(cyclic_payment.amount) - float(data['amount']) < 0:
         return create_simple_response("userDontHaveEnoughMoney", 403)
 
-    user_repository.update(curr_user.id, {'blockades': add(subtract(float(curr_user.blockades), float(cyclic_payment.amount)), float(data["amount"]))})
+    account_repository.update(issuer_account.id, {'blockades': add(float(issuer_account.blockades), float(cyclic_payment.amount))})
 
-    cyclic_payment_content = {
-        "recipient_id": recipient_user.id,
-        "amount": float(data['amount']),
-        "cyclic_payment_name": data['cyclicPaymentName'],
-        "interval": data['interval'],
-        "recipient_account_number": data['recipientAccountNumber'],
-        "recipient_name": recipient_user.login,
-        "start_date": data['startDate'],
-        "transfer_title": data['transferTitle']
-    }
-
-    updated_cyclic_payment = cyclic_payment_repository.update(str(id), cyclic_payment_content)
+    updated_cyclic_payment = cyclic_payment_repository.update(str(id), data)
     if not updated_cyclic_payment:
         return create_simple_response("cyclicPaymentNotExist", 404)
 
-    cyclic_payment_dto = CyclicPaymentDto.from_cyclic_payment(updated_cyclic_payment)
+    cyclic_payment_dto = CyclicPaymentDto.from_cyclic_payment(updated_cyclic_payment, recipient_account.account_number, recipient_user.login)
 
     return CyclicPaymentResponse.create_response("cyclicPaymentUpdatedSuccessful", cyclic_payment_dto.to_dict(), 200)

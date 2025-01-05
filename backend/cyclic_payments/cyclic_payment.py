@@ -10,8 +10,6 @@ from entity import BaseEntity
 class CyclicPayment(BaseEntity):
     issuer_id: Optional[bson.ObjectId] = None
     recipient_id: Optional[bson.ObjectId] = None
-    recipient_account_number: Optional[str] = ''
-    recipient_name: Optional[str] = ''
     cyclic_payment_name: Optional[str] = ''
     transfer_title: Optional[str] = ''
     amount: Optional[float] = ''
@@ -30,8 +28,6 @@ class CyclicPayment(BaseEntity):
             created=datetime.fromisoformat(data['created']) if 'created' in data else None,
             issuer_id=bson.ObjectId(data['issuer_id']) if 'issuer_id' in data else None,
             recipient_id=bson.ObjectId(data['recipient_id']) if 'recipient_id' in data else None,
-            recipient_account_number=data.get('recipient_account_number', ''),
-            recipient_name=data.get('recipient_name', ''),
             cyclic_payment_name=data.get('cyclic_payment_name', ''),
             transfer_title=data.get('transfer_title', ''),
             amount=data.get('amount', 0),
@@ -44,8 +40,6 @@ class CyclicPayment(BaseEntity):
                 f"created={self.created!r}, "
                 f"issuer_id={self.issuer_id!r}, "
                 f"recipient_id={self.recipient_id!r}, "
-                f"recipient_account_number='{self.recipient_account_number!r}', "
-                f"recipient_name={self.recipient_name!r}', "
                 f"cyclic_payment_name={self.cyclic_payment_name!r}', "
                 f"transfer_title={self.transfer_title!r}', "
                 f"amount={self.amount!r}', "

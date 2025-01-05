@@ -13,11 +13,7 @@ class User(BaseEntity, UserMixin):
     login: Optional[str] = ''
     email: Optional[str] = ''
     password: Optional[str] = ''
-    account_name: Optional[str] = ''
-    account_number: Optional[str] = ''
-    blockades: Optional[float] = ''
-    balance: Optional[float] = ''
-    currency: Optional[str] = ''
+    active_account: Optional[bson.ObjectId] = None
     role: Optional[str] = ''
     user_icon: Optional[str] = None
 
@@ -35,17 +31,11 @@ class User(BaseEntity, UserMixin):
             login=data.get('login', ''),
             email=data.get('email', ''),
             password=data.get('password', ''),
-            account_name=data.get('account_name', ''),
-            account_number=data.get('account_number', ''),
-            blockades=data.get('blockades', 0),
-            balance=data.get('balance', 0),
-            currency=data.get('currency', ''),
+            active_account=bson.ObjectId(data['active_account']) if 'active_account' in data else None,
             user_icon=data.get('user_icon', None),
             role=data.get('role', '')
         )
-    
-    def get_available_funds(self) -> float:
-        return float(self.balance) - float(self.blockades)
+
 
     def __repr__(self) -> str:
         return (f"User(login={self.login!r}, "
@@ -53,10 +43,6 @@ class User(BaseEntity, UserMixin):
                 f"password={self.password!r}, "
                 f"_id={self._id!r}, "
                 f"created={self.created!r}, "
-                f"account_name={self.account_name!r}, "
-                f"account_number={self.account_number!r}, "
-                f"blockades={self.blockades!r}, "
-                f"balance={self.balance!r}, "
-                f"currency={self.currency!r}, "
+                f"active_account={str(self.active_account)!r}, "
                 f"user_icon={self.user_icon!r}, "
                 f"role={self.role!r})")

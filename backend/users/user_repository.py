@@ -15,6 +15,3 @@ class UserRepository(BaseRepository):
 
     def find_by_email(self, email: str) -> Optional[User]:
         return super().find_by_field('email', email)
-
-    def find_by_account_number(self, account_number: str) -> Optional[User]:
-        return super().find_by_field('account_number', account_number)

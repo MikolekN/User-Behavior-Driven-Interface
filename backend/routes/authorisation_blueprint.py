@@ -32,17 +32,14 @@ def login() -> tuple[Response, int]:
 
     data = request.get_json()
 
-    # Validate request data
     error = validate_login_data(data)
     if error:
         return create_simple_response(error, 400)
 
-    # Authenticate user
     user, error, status_code = authenticate_user(data['email'], data['password'])
     if user is None:
         return create_simple_response(error, status_code)
 
-    # Log the user in
     login_user(user)
     user_dto = UserDto.from_user(user)
     return UserResponse.create_response("loginSuccessful", user_dto.to_dict(), 200)
@@ -60,7 +57,6 @@ def register() -> tuple[Response, int]:
 
     data = request.get_json()
 
-    # Validate request data
     error = validate_login_data(data)
     if error:
         return create_simple_response(error, 400)
@@ -68,22 +64,15 @@ def register() -> tuple[Response, int]:
     if user_repository.find_by_email(data['email']):
         return create_simple_response("userExist", 409)
 
-    # Create a new User object
-    # TODO: figure out 'account_name', 'account_number', and 'balance'
     user = User(
         login=data['email'],
         email=data['email'],
         password=hash_password(data['password']),
-        created=datetime.now(),
-        account_name='Account name',
-        account_number=generate_account_number(),
-        blockades=0,
-        balance=2000,
-        currency='PLN',
-        user_icon=None,
-        role='USER')
-
-    # Create a user
+        active_account=None,
+        role='USER',
+        user_icon=None
+    )
     user = user_repository.insert(user)
+
     user_dto = UserDto.from_user(user)
     return UserResponse.create_response("registerSuccessful", user_dto.to_dict(), 201)

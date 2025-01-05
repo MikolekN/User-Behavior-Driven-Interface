@@ -4,13 +4,17 @@ from typing import Any, Optional
 from flask import Response, request
 from flask_login import login_required, current_user
 
+from accounts import Account, AccountRepository
 from routes.helpers import create_simple_response
 from routes.transfer.helpers import serialize_transfers, \
     format_transfers_date, format_grouped_transfers, get_month_from_datetime, \
     accumulate_transactions_income_and_outcome, get_response_monthly
 from transfers import TransferRepository
 from transfers.analysis_response import AnalysisResponse
+from users import User, UserRepository
 
+user_repository = UserRepository()
+account_repository = AccountRepository()
 transfer_repository = TransferRepository()
 
 
@@ -22,12 +26,20 @@ def get_all_user_transfers_monthly() -> tuple[Response, int]:
     if error:
         return create_simple_response(error, 400)
 
+    user: User = user_repository.find_by_id(current_user._id)
+    if not user:
+        return create_simple_response("userNotExist", 404)
+
+    account: Account = account_repository.find_by_id(str(user.active_account))
+    if not account:
+        return create_simple_response("accountNotExist", 404)
+
     year = data['year']
     start_date, end_date = f"{year}-01-01T00:00:00", f"{year}-12-31T23:59:59"
     query = {
         '$or': [
-            {'transfer_from_id': current_user._id},
-            {'transfer_to_id': current_user._id}
+            {'transfer_from_id': account.id},
+            {'transfer_to_id': account.id}
         ],
         'created': {'$gte': start_date, '$lt': end_date}
     }
@@ -36,7 +48,7 @@ def get_all_user_transfers_monthly() -> tuple[Response, int]:
     if not transfers:
         return create_simple_response("monthlyAnalysisEmpty", 404)
 
-    serialized_transfers = serialize_transfers(transfers)
+    serialized_transfers = serialize_transfers(transfers, account)
     response = get_transfers_analysis_monthly(serialized_transfers)
 
     return AnalysisResponse.create_response("monthlyAnalysisSuccessful", response, 200)
