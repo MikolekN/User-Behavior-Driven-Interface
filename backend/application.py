@@ -7,7 +7,7 @@ from database import Database
 from helpers import init_bank_account
 from routes import authorisation_blueprint, transfer_blueprint, user_icon_blueprint, user_blueprint, \
     cyclic_payment_blueprint
-from routes.account_blueprint import account_blueprint
+from routes.account.account_blueprint import account_blueprint
 from users import UserRepository, User
 
 

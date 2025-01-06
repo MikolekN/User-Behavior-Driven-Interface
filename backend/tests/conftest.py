@@ -47,7 +47,7 @@ def test_account_dto(test_account):
 
 @pytest.fixture
 def test_accounts():
-    yield [_create_account() for _ in range(3)]
+    yield [_create_account(user=TEST_USER_ID) for _ in range(3)]
 
 # --- Transfer fixtures --- #
 # @pytest.fixture
