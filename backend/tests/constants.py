@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 # --- User constants --- #
 TEST_USER_ID = "67209cb58255eea645b444a4"
 TEST_USER_LOGIN = "test_user"
@@ -28,5 +31,5 @@ TEST_TRANSFER_AMOUNT = 1000
 TEST_CYCLIC_PAYMENT_NAME = "test_cyclic_payment_name"
 TEST_CYCLIC_PAYMENT_TRANSFER_TITLE = "test_cyclic_payment_transfer_title"
 TEST_CYCLIC_PAYMENT_AMOUNT = 1000
-TEST_CYCLIC_PAYMENT_START_DATE = "2023-01-01"
+TEST_CYCLIC_PAYMENT_START_DATE = datetime.fromisoformat("2023-01-01")
 TEST_CYCLIC_PAYMENT_INTERVAL = "month"

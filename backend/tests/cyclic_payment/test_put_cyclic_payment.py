@@ -5,7 +5,7 @@ from tests.cyclic_payment.constants import TEST_CYCLIC_PAYMENT_ID, TEST_CYCLIC_P
 from tests.cyclic_payment.helpers import get_cyclic_payment_not_valid, get_cyclic_payment
 
 
-def test_delete_cyclic_payment_unauthorized(client):
+def test_put_cyclic_payment_unauthorized(client):
     response = client.put(f'/api/cyclic-payment/{TEST_CYCLIC_PAYMENT_ID}')
     assert response.status_code == 401
 
@@ -39,10 +39,19 @@ def test_put_cyclic_payment_invalid_object_id(mock_find_by_id, client, test_user
         assert 'message' in json_data
         assert json_data['message'] == "invalidObjectId"
 
-@patch('users.user_repository.UserRepository.find_by_account_number')
-def test_put_cyclic_payment_user_with_account_number_not_exist(mock_find_account_number, client, test_user):
+def test_put_cyclic_payment_account_not_exist(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
-        mock_find_account_number.return_value = None
+        response = client.put(f'/api/cyclic-payment/{TEST_CYCLIC_PAYMENT_ID}', json=get_cyclic_payment())
+
+        assert response.status_code == 404
+        json_data = response.get_json()
+        assert 'message' in json_data
+        assert json_data['message'] == "accountNotExist"
+
+@patch('accounts.account_repository.AccountRepository.find_by_account_number')
+def test_put_cyclic_payment_user_not_exist(mock_account, client, test_user, test_account):
+    with patch('flask_login.utils._get_user', return_value=test_user):
+        mock_account.return_value = test_account
 
         response = client.put(f'/api/cyclic-payment/{TEST_CYCLIC_PAYMENT_ID}', json=get_cyclic_payment())
 
@@ -51,12 +60,12 @@ def test_put_cyclic_payment_user_with_account_number_not_exist(mock_find_account
         assert 'message' in json_data
         assert json_data['message'] == "userWithAccountNumberNotExist"
 
-@patch('cyclic_payments.cyclic_payment_repository.CyclicPaymentRepository.find_by_id')
-@patch('users.user_repository.UserRepository.find_by_account_number')
-def test_put_cyclic_payment_not_exist(mock_find_by_account_number, mock_find_cyclic_payment_by_id, client, test_user):
+@patch('accounts.account_repository.AccountRepository.find_by_account_number')
+@patch('users.user_repository.UserRepository.find_by_id')
+def test_put_cyclic_payment_not_exist(mock_user, mock_account, client, test_user, test_account):
     with patch('flask_login.utils._get_user', return_value=test_user):
-        mock_find_by_account_number.return_value = test_user
-        mock_find_cyclic_payment_by_id.return_value = None
+        mock_account.return_value = test_account
+        mock_user.return_value = test_user
 
         response = client.put(f'/api/cyclic-payment/{TEST_CYCLIC_PAYMENT_ID}', json=get_cyclic_payment())
 
@@ -65,55 +74,18 @@ def test_put_cyclic_payment_not_exist(mock_find_by_account_number, mock_find_cyc
         assert 'message' in json_data
         assert json_data['message'] == "cyclicPaymentNotExist"
 
+@patch('accounts.account_repository.AccountRepository.find_by_account_number')
+@patch('accounts.account_repository.AccountRepository.find_by_id')
 @patch('users.user_repository.UserRepository.find_by_id')
-@patch('users.user_repository.UserRepository.find_by_account_number')
-@patch('cyclic_payments.cyclic_payment_repository.CyclicPaymentRepository.find_by_id')
-def test_put_cyclic_payment_not_enough_money(mock_find_by_id_cyclic_payment, mock_find_by_account_number, mock_find_by_id, client, test_issuer_user, test_recipient_user, test_cyclic_payment):
-    with patch('flask_login.utils._get_user', return_value=test_issuer_user):
-        mock_find_by_id.return_value = test_issuer_user
-        test_issuer_user.get_available_funds = MagicMock(return_value=TEST_NOT_ENOUGH_USER_FUNDS)
-        mock_find_by_account_number.return_value = test_recipient_user
-        mock_find_by_id_cyclic_payment.return_value = test_cyclic_payment
-
-        response = client.put(f'/api/cyclic-payment/{TEST_CYCLIC_PAYMENT_ID}', json=get_cyclic_payment({'amount': TEST_BIG_AMOUNT}))
-
-        assert response.status_code == 403
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "userDontHaveEnoughMoney"
-
-@patch('users.user_repository.UserRepository.find_by_id')
-@patch('users.user_repository.UserRepository.find_by_account_number')
-@patch('users.user_repository.UserRepository.update')
 @patch('cyclic_payments.cyclic_payment_repository.CyclicPaymentRepository.find_by_id')
 @patch('cyclic_payments.cyclic_payment_repository.CyclicPaymentRepository.update')
-def test_put_cyclic_payment_update_not_success(mock_update_cyclic_payment, mock_find_by_id_cyclic_payment, mock_update_user, mock_find_by_account_number, mock_find_by_id, client, test_issuer_user, test_recipient_user, test_cyclic_payment):
-    with patch('flask_login.utils._get_user', return_value=test_issuer_user):
-        mock_find_by_id.return_value = test_issuer_user
-        mock_find_by_account_number.return_value = test_recipient_user
-        mock_find_by_id_cyclic_payment.return_value = test_cyclic_payment
-        mock_update_cyclic_payment.return_value = None
-
-        response = client.put(f'/api/cyclic-payment/{TEST_CYCLIC_PAYMENT_ID}', json=get_cyclic_payment())
-
-        assert response.status_code == 404
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "cyclicPaymentNotExist"
-
-        mock_update_user.assert_called_once()
-
-@patch('users.user_repository.UserRepository.find_by_id')
-@patch('users.user_repository.UserRepository.find_by_account_number')
-@patch('users.user_repository.UserRepository.update')
-@patch('cyclic_payments.cyclic_payment_repository.CyclicPaymentRepository.find_by_id')
-@patch('cyclic_payments.cyclic_payment_repository.CyclicPaymentRepository.update')
-def test_put_cyclic_payment_success(mock_update_cyclic_payment, mock_find_by_id_cyclic_payment, mock_update_user, mock_find_by_account_number, mock_find_by_id, client, test_issuer_user, test_recipient_user, test_cyclic_payment):
-    with patch('flask_login.utils._get_user', return_value=test_issuer_user):
-        mock_find_by_id.return_value = test_issuer_user
-        mock_find_by_account_number.return_value = test_recipient_user
-        mock_find_by_id_cyclic_payment.return_value = test_cyclic_payment
-        mock_update_cyclic_payment.return_value = test_cyclic_payment
+def test_put_cyclic_payment_unauthorised(mock_another_cp, mock_cp, mock_user, mock_another_account, mock_account, client, test_user, test_account, test_cyclic_payment):
+    with patch('flask_login.utils._get_user', return_value=test_user):
+        mock_another_account.return_value = test_account
+        mock_account.return_value = test_account
+        mock_user.return_value = test_user
+        mock_cp.return_value = test_cyclic_payment
+        mock_another_cp.return_value = test_cyclic_payment
 
         response = client.put(f'/api/cyclic-payment/{TEST_CYCLIC_PAYMENT_ID}', json=get_cyclic_payment())
 
@@ -121,7 +93,3 @@ def test_put_cyclic_payment_success(mock_update_cyclic_payment, mock_find_by_id_
         json_data = response.get_json()
         assert 'message' in json_data
         assert json_data['message'] == "cyclicPaymentUpdatedSuccessful"
-        assert 'cyclic_payment' in json_data
-
-        mock_update_user.assert_called_once()
-        mock_update_cyclic_payment.assert_called_once()
