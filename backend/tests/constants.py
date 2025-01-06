@@ -1,3 +1,15 @@
-TEST_EMAIL = "testuser@example.com"
-TEST_PASSWORD = "TestPassword123"
-TEST_ID = "67209cb58255eea645b444a4"
+# --- User constants --- #
+TEST_USER_ID = "67209cb58255eea645b444a4"
+TEST_USER_LOGIN = "testuser"
+TEST_USER_EMAIL = "testuser@example.com"
+TEST_USER_PASSWORD = "TestPassword123"
+TEST_USER_ROLE = "USER"
+
+# --- Account constants --- #
+TEST_ACCOUNT_ID = "677bbcc567a26587d5f65607"
+TEST_ACCOUNT_NAME = ""
+TEST_ACCOUNT_NUMBER = ""
+TEST_ACCOUNT_TYPE = ""
+TEST_ACCOUNT_BLOCKADES = ""
+TEST_ACCOUNT_BALANCE = ""
+TEST_ACCOUNT_CURRENCY = ""
