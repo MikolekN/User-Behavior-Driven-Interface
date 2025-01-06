@@ -1,4 +1,4 @@
-from .authorisation_blueprint import authorisation_blueprint
+from routes.authorisation.authorisation_blueprint import authorisation_blueprint
 from .user_blueprint import user_blueprint
 from .user_icon_blueprint import user_icon_blueprint
 from routes.transfer.transfer_blueprint import transfer_blueprint
