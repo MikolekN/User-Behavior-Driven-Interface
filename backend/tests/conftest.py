@@ -4,7 +4,7 @@ import application
 from accounts.account_dto import AccountDto
 from tests.constants import TEST_USER_LOGIN, TEST_USER_EMAIL, TEST_USER_ID, TEST_DIFFERENT_USER_ID
 from users.user_dto import UserDto
-from utils import _create_user, _create_account
+from utils import _create_user, _create_account, _create_transfer, _create_cyclic_payment
 
 
 @pytest.fixture
@@ -50,27 +50,23 @@ def test_accounts():
     yield [_create_account(user=TEST_USER_ID) for _ in range(3)]
 
 # --- Transfer fixtures --- #
-# @pytest.fixture
-# def test_cyclic_payment():
-#     yield CyclicPayment(
-#         issuer_id=TEST_ID, recipient_id=TEST_ID,
-#         recipient_account_number=TEST_RECIPIENT_ACCOUNT_NUMBER, recipient_name="test name",
-#         cyclic_payment_name=TEST_CYCLIC_PAYMENT_NAME, transfer_title=TEST_CYCLIC_PAYMENT_TRANSFER_TITLE,
-#         amount=float(TEST_AMOUNT), start_date=datetime.fromisoformat(TEST_CYCLIC_PAYMENT_START_DATE),
-#         interval=TEST_CYCLIC_PAYMENT_INTERVAL
-#     )
-#
-# def create_transfer(title, amount):
-#     return Transfer(
-#         created=datetime.now(),
-#         transfer_from_id=TEST_ID,
-#         transfer_to_id=TEST_ID,
-#         title=title,
-#         amount=amount
-#     )
-#
-# @pytest.fixture
-# def test_transfers():
-#     yield [create_transfer(TEST_TRANSFER_TITLE, float(TEST_AMOUNT)) for _ in range(3)]
+@pytest.fixture
+def test_transfer():
+    yield _create_transfer()
+
+@pytest.fixture
+def test_unauthorised_transfer():
+    yield _create_transfer()
+
+@pytest.fixture
+def test_transfers():
+    yield [_create_transfer() for _ in range(3)]
 
 # --- Cyclic payment fixtures --- #
+@pytest.fixture
+def test_cyclic_payment():
+    yield _create_cyclic_payment()
+
+@pytest.fixture
+def test_cyclic_payments():
+    yield [_create_cyclic_payment() for _ in range(3)]

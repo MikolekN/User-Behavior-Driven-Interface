@@ -24,6 +24,12 @@ class Transfer(BaseEntity):
             amount=data.get('amount', 0)
         )
 
+    def to_dict(self) -> Dict[str, Any]:
+        transfer_dict = super().to_dict()
+        transfer_dict['transfer_from_id'] = str(self.transfer_from_id)
+        transfer_dict['transfer_to_id'] = str(self.transfer_to_id)
+        return transfer_dict
+
     def __repr__(self) -> str:
         return (f"Transfer(_id={self._id!r}, "
                 f"created={self.created!r}, "
