@@ -1,17 +1,10 @@
-import bcrypt
 import pytest
 
 import application
-from accounts import Account
-from tests.constants import TEST_USER_LOGIN, TEST_USER_EMAIL, TEST_USER_ID, TEST_USER_PASSWORD, TEST_ACCOUNT_ID, \
-    TEST_USER_ROLE, TEST_ACCOUNT_CURRENCY, TEST_ACCOUNT_BALANCE, TEST_ACCOUNT_BLOCKADES, TEST_ACCOUNT_TYPE, \
-    TEST_ACCOUNT_NUMBER, TEST_ACCOUNT_NAME
-from users import User
+from accounts.account_dto import AccountDto
+from tests.constants import TEST_USER_LOGIN, TEST_USER_EMAIL, TEST_USER_ID, TEST_DIFFERENT_USER_ID
 from users.user_dto import UserDto
-
-
-def generate_hashed_password(password: str) -> str:
-    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+from utils import _create_user, _create_account
 
 
 @pytest.fixture
@@ -31,17 +24,6 @@ def runner(app):
         yield runner
 
 # --- User fixtures --- #
-def _create_user(login, email):
-    return User(
-        _id=TEST_USER_ID,
-        login=login,
-        email=email,
-        password=generate_hashed_password(TEST_USER_PASSWORD),
-        active_account=TEST_ACCOUNT_ID,
-        role=TEST_USER_ROLE,
-        user_icon=None
-    )
-
 @pytest.fixture
 def test_user():
     yield _create_user(TEST_USER_LOGIN, TEST_USER_EMAIL)
@@ -51,21 +33,21 @@ def test_user_dto(test_user):
     yield UserDto.from_user(test_user)
 
 # --- Account fixtures --- #
-def _create_account():
-    return Account(
-        _id=TEST_ACCOUNT_ID,
-        account_name=TEST_ACCOUNT_NAME,
-        account_number=TEST_ACCOUNT_NUMBER,
-        type=TEST_ACCOUNT_TYPE,
-        blockades=TEST_ACCOUNT_BLOCKADES,
-        balance=TEST_ACCOUNT_BALANCE,
-        currency=TEST_ACCOUNT_CURRENCY,
-        user=TEST_USER_ID
-    )
-
 @pytest.fixture
 def test_account():
-    yield _create_account()
+    yield _create_account(user=TEST_USER_ID)
+
+@pytest.fixture
+def test_unauthorised_account():
+    yield _create_account(user=TEST_DIFFERENT_USER_ID)
+
+@pytest.fixture
+def test_account_dto(test_account):
+    yield AccountDto.from_account(test_account)
+
+@pytest.fixture
+def test_accounts():
+    yield [_create_account() for _ in range(3)]
 
 # --- Transfer fixtures --- #
 # @pytest.fixture

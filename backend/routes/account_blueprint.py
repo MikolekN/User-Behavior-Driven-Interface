@@ -21,8 +21,8 @@ account_repository = AccountRepository()
 @login_required
 def get_active_account() -> tuple[Response, int]:
     user: User = user_repository.find_by_id(current_user._id)
-    account: Account = account_repository.find_by_id(str(user.active_account))
 
+    account: Account = account_repository.find_by_id(str(user.active_account))
     if not account:
         return create_simple_response("accountNotExist", 404)
 

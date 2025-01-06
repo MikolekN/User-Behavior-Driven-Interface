@@ -75,7 +75,9 @@ def prevent_self_transfer(data: Mapping[str, Any]) -> bool:
 
 
 def prevent_unauthorised_account_access(sender_account: Account) -> bool:
-    return not (sender_account.user == current_user._id)
+    a = sender_account.user
+    b = current_user._id
+    return not (str(sender_account.user) == str(current_user._id))
 
 
 def serialize_transfers(transfers: list[Transfer], account: Account) -> list[dict[str, Any]]:
