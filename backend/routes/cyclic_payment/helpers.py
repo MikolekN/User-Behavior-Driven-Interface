@@ -8,6 +8,9 @@ from cyclic_payments import CyclicPayment
 
 
 def validate_cyclic_payment_data(data: Optional[Mapping[str, Any]]) -> Optional[str]:
+    # TODO: lepsza walidacja na typy i zawartość np.
+    # - amount jak nie jest liczbą wywala backend, bez podania przyczyny
+    # - name i interval mogą być puste
     if not data:
         return "emptyRequestPayload"
 
@@ -20,7 +23,7 @@ def validate_cyclic_payment_data(data: Optional[Mapping[str, Any]]) -> Optional[
         return "negativeAmount"
 
     try:
-        start_date = data.get('startDate')
+        start_date = data.get('start_date')
         datetime.fromisoformat(start_date.replace('Z', '+00:00'))
     except (TypeError, ValueError):
         return "invalidDateFormat"
@@ -30,11 +33,11 @@ def validate_cyclic_payment_data(data: Optional[Mapping[str, Any]]) -> Optional[
 
 def validate_required_cyclic_payment_fields(data: Mapping[str, Any]) -> str | None:
     required_fields = [
-        'cyclicPaymentName',
+        'cyclic_payment_name',
         'recipientAccountNumber',
-        'transferTitle',
+        'transfer_title',
         'amount',
-        'startDate',
+        'start_date',
         'interval']
     field_names = ""
     for field in required_fields:

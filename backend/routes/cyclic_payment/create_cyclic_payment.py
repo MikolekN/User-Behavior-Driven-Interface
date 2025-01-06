@@ -46,10 +46,10 @@ def create_cyclic_payment() -> tuple[Response, int]:
     cyclic_payment = CyclicPayment(
         issuer_id=account.id,
         recipient_id=recipient_account.id,
-        cyclic_payment_name=data['cyclicPaymentName'],
-        transfer_title=data['transferTitle'],
+        cyclic_payment_name=data['cyclic_payment_name'],
+        transfer_title=data['transfer_title'],
         amount=float(data['amount']),
-        start_date=datetime.fromisoformat(data['startDate']),
+        start_date=datetime.fromisoformat(data['start_date']),
         interval=data['interval'])
     cyclic_payment = cyclic_payment_repository.insert(cyclic_payment)
 
