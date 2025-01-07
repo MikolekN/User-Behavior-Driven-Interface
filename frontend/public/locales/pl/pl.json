@@ -94,7 +94,7 @@
     },
     "transactionHistory": {
         "tile": {
-            "title": "Historia Transakcji"
+            "title": "Historia transakcji"
         },
         "emptyList":"Lista jest pusta"
     },
@@ -109,7 +109,7 @@
         "recipient": "Odbiorca",
         "recipientAccountNumber": "Numer konta odbiorcy",
         "fromAccount": "Z konta",
-        "title": "Tytuł",
+        "title": "Tytuł cyklicznego przelewu",
         "startDate": "Data początkowa",
         "transferInterval": "Interwał przelewu",
         "edit": "Edytuj",
@@ -121,12 +121,12 @@
             "title": "Płatność cykliczna"
         },
         "fromAccount": "Z konta",
-        "cyclicPaymentName": "Nazwa",
+        "cyclicPaymentName": "Nazwa płatności cyklicznej",
         "recipientAccountNumber": "Numer konta odbiorcy",
         "startDate": "Data początkowa",
         "startDatePlaceholder": "Wybierz datę początkową",
         "transferInterval": "Interwał przelewu",
-        "title": "Tytuł",
+        "title": "Tytuł cyklicznego przelewu",
         "amount": "Kwota",
         "submit": "Utwórz",
         "loading": "Ładowanie..."

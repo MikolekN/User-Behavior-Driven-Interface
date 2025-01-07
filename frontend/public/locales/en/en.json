@@ -94,7 +94,7 @@
     },
     "transactionHistory": {
         "tile": {
-            "title": "Transaction History"
+            "title": "Transaction history"
         },
         "emptyList": "List is empty"
     },
@@ -109,7 +109,7 @@
         "recipient": "Recipient",
         "recipientAccountNumber": "Recipient account number",
         "fromAccount": "From account",
-        "title": "Title",
+        "title": "Cyclic transfer title",
         "startDate": "Start date",
         "transferInterval": "Transfer interval",
         "edit": "Edit",
@@ -121,12 +121,12 @@
             "title": "Cyclic payment"
         },
         "fromAccount": "From account",
-        "cyclicPaymentName": "Name",
+        "cyclicPaymentName": "Cyclic Payment name",
         "recipientAccountNumber": "Recipient account number",
         "startDate": "Start date",
         "startDatePlaceholder": "Select start date",
         "transferInterval": "Transfer interval",
-        "title": "Title",
+        "title": "Cyclic transfer title",
         "amount": "Amout",
         "submit": "Submit",
         "loading": "Loading..."
