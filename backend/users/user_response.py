@@ -1,15 +1,14 @@
 from dataclasses import dataclass
+from http import HTTPStatus
 
-from flask import jsonify, Response
+from flask import jsonify, Response, make_response
 
 
 @dataclass
 class UserResponse:
 
     @classmethod
-    def create_response(cls, message: str, user: dict, status_code: int) -> tuple[Response, int]:
-        response = {
-            "message": message,
-            "user": user
-        }
-        return jsonify(response), status_code
+    def create_response(cls, message: str, user: dict, status: HTTPStatus) -> Response:
+        response = make_response(jsonify({"message": message, "user": user}), status)
+        response.headers["Content-Type"] = "application/json"
+        return response
