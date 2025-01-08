@@ -7,6 +7,7 @@ TEST_USER_LOGIN = "test_user"
 TEST_USER_EMAIL = "testuser@example.com"
 TEST_USER_PASSWORD = "TestPassword123"
 TEST_USER_ROLE = "USER"
+TEST_USER_ICON = "path/to/icon"
 
 TEST_DIFFERENT_USER_ID = "677bd27ebe8e8797326ed0f4"
 

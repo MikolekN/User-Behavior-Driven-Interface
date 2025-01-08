@@ -2,7 +2,7 @@ import pytest
 
 import application
 from accounts.account_dto import AccountDto
-from tests.constants import TEST_USER_LOGIN, TEST_USER_EMAIL, TEST_USER_ID, TEST_DIFFERENT_USER_ID, TEST_USER_PASSWORD, TEST_ACCOUNT_NAME, TEST_ACCOUNT_CURRENCY, TEST_ACCOUNT_TYPE
+from tests.constants import TEST_USER_LOGIN, TEST_USER_EMAIL, TEST_USER_ID, TEST_DIFFERENT_USER_ID, TEST_USER_PASSWORD, TEST_ACCOUNT_NAME, TEST_ACCOUNT_CURRENCY, TEST_ACCOUNT_TYPE, TEST_USER_ICON
 from users.user_dto import UserDto
 from utils import _create_user, _create_account, _create_transfer, _create_cyclic_payment
 
@@ -26,7 +26,11 @@ def runner(app):
 #region # --- User fixtures --- #
 @pytest.fixture
 def test_user():
-    yield _create_user(TEST_USER_LOGIN, TEST_USER_EMAIL)
+    yield _create_user(TEST_USER_LOGIN, TEST_USER_EMAIL, TEST_USER_ICON)
+
+@pytest.fixture
+def test_user_without_icon():
+    yield _create_user(TEST_USER_LOGIN, TEST_USER_EMAIL, None)
 
 @pytest.fixture
 def test_user_dto(test_user):
@@ -60,7 +64,6 @@ def empty_email_user_data():
 
 def empty_password_user_data():
     return {'email': TEST_USER_EMAIL, 'password': ""}
-# TODO: get the rest of the possible errors
 #endregion
 
 #region # --- Account fixtures --- #

@@ -5,7 +5,7 @@ from flask_cors import CORS
 
 from database import Database
 from helpers import init_bank_account
-from routes import authentication_blueprint, transfer_blueprint, user_icon_blueprint, user_blueprint, \
+from routes import authentication_blueprint, transfer_blueprint, user_blueprint, \
     cyclic_payment_blueprint
 from routes.account.account_blueprint import account_blueprint
 from users import UserRepository, User
@@ -30,7 +30,6 @@ def create_app():
 
     app.register_blueprint(authentication_blueprint)
     app.register_blueprint(transfer_blueprint)
-    app.register_blueprint(user_icon_blueprint)
     app.register_blueprint(user_blueprint)
     app.register_blueprint(cyclic_payment_blueprint)
     app.register_blueprint(account_blueprint)
