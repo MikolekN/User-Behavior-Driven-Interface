@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from flask import Response
 from flask_login import login_required, current_user
 
@@ -10,44 +12,15 @@ user_repository = UserRepository()
 account_repository = AccountRepository()
 
 @login_required
-def get_accounts() -> tuple[Response, int]:
-    """
-        GET /api/accounts/
-        ---
-        summary: Get all accounts for the authenticated user.
-        description: Returns a list of accounts associated with the authenticated user.
-        tags:
-          - Account Management
-        responses:
-          200:
-            description: Accounts fetched successfully.
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                    accounts:
-                      type: array
-                      items:
-                        type: object
-          404:
-            description: No accounts exist for the user.
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-    """
-    user: User = user_repository.find_by_id(current_user._id)
+def get_accounts() -> Response:
+    user: User = user_repository.find_by_id(current_user.get_id())
+    if not user:
+        return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
 
     accounts: list[Account] = account_repository.find_accounts(str(user.id))
     if not accounts:
-        return create_simple_response("accountsNotExist", 404)
+        return create_simple_response("accountsNotExist", HTTPStatus.NOT_FOUND)
 
     accounts_dto = [account.to_dict() for account in accounts]
 
-    return AccountsResponse.create_response("accountsFetchSuccessful", accounts_dto, 200)
+    return AccountsResponse.create_response("accountsFetchSuccessful", accounts_dto, HTTPStatus.OK)

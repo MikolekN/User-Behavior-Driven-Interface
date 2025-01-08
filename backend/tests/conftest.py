@@ -77,10 +77,71 @@ def test_account_dto(test_account):
     yield AccountDto.from_account(test_account)
 
 @pytest.fixture
+def valid_account_data():
+    return {'account_name': TEST_ACCOUNT_NAME, 'type': TEST_ACCOUNT_TYPE, 'currency': TEST_ACCOUNT_CURRENCY}
+
+@pytest.fixture
 def test_accounts():
     yield [_create_account(user=TEST_USER_ID) for _ in range(3)]
 
-# --- Transfer fixtures --- #
+def empty_account_data():
+    return {}
+
+def invalid_account_data():
+    return "invalid_account_data"
+
+def missing_fields_user_data():
+    return {'hallo': "hallo"}
+
+def extra_fields_user_data():
+    return {
+        'account_name': TEST_ACCOUNT_NAME,
+        'type': TEST_ACCOUNT_TYPE,
+        'currency': TEST_ACCOUNT_CURRENCY,
+        'hallo': "hallo"
+    }
+
+def invalid_fields_user_data():
+    return {
+        'account_name': 0,
+        'type': 0,
+        'currency': 0
+    }
+
+def empty_fields_user_data():
+    return {
+        'account_name': "",
+        'type': "",
+        'currency': ""
+    }
+
+def invalid_currency_format_user_data():
+    return {
+        'account_name': TEST_ACCOUNT_NAME,
+        'type': TEST_ACCOUNT_TYPE,
+        'currency': 'hallo',
+    }
+
+def invalid_account_type_user_data():
+    return {
+        'account_name': TEST_ACCOUNT_NAME,
+        'type': 'hallo',
+        'currency': TEST_ACCOUNT_CURRENCY,
+    }
+
+def invalid_account_number():
+    return 0
+
+def wrong_length_account_number():
+    return "0"
+
+def non_digit_account_number():
+    return "0000000000000000000000000a"
+
+
+#endregion
+
+#region # --- Transfer fixtures --- #
 @pytest.fixture
 def test_transfer():
     yield _create_transfer()
@@ -92,8 +153,9 @@ def test_unauthorised_transfer():
 @pytest.fixture
 def test_transfers():
     yield [_create_transfer() for _ in range(3)]
+#endregion
 
-# --- Cyclic payment fixtures --- #
+#region # --- Cyclic payment fixtures --- #
 @pytest.fixture
 def test_cyclic_payment():
     yield _create_cyclic_payment()
@@ -101,3 +163,4 @@ def test_cyclic_payment():
 @pytest.fixture
 def test_cyclic_payments():
     yield [_create_cyclic_payment() for _ in range(3)]
+#endregion
