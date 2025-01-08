@@ -1,7 +1,9 @@
-import bson
-from dataclasses import dataclass, field, asdict
-from typing import Optional, Dict, Any
+import random
+from dataclasses import dataclass
 from datetime import datetime
+from typing import Optional, Dict, Any
+
+import bson
 
 from entity import BaseEntity
 
@@ -28,12 +30,16 @@ class Account(BaseEntity):
     user: Optional[bson.ObjectId] = None
 
     @staticmethod
+    def generate_account_number() -> str:
+        return ''.join(random.choices('0123456789', k=26))
+
+    @staticmethod
     def from_dict(data: Dict[str, Any]) -> 'Account':
         return Account(
             _id=bson.ObjectId(data['_id']) if '_id' in data else None,
             created=datetime.fromisoformat(data['created']) if 'created' in data else None,
             account_name=data.get('account_name', ''),
-            account_number=data.get('account_number', ''),
+            account_number=data.get('account_number', Account.generate_account_number()),
             type=data.get('type', 'other'),
             blockades=data.get('blockades', 0),
             balance=data.get('balance', 0),

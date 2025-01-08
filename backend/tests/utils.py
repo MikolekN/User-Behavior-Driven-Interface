@@ -3,7 +3,6 @@ import bson
 
 from accounts import Account
 from cyclic_payments import CyclicPayment
-
 from tests.constants import TEST_USER_ID, TEST_USER_PASSWORD, TEST_ACCOUNT_ID, TEST_USER_ROLE, TEST_ACCOUNT_NAME, \
     TEST_ACCOUNT_TYPE, TEST_ACCOUNT_NUMBER, TEST_ACCOUNT_BLOCKADES, TEST_ACCOUNT_BALANCE, TEST_ACCOUNT_CURRENCY, \
     TEST_TRANSFER_ID, TEST_ACCOUNT_DIFFERENT_ID, TEST_TRANSFER_TITLE, TEST_TRANSFER_AMOUNT, TEST_CYCLIC_PAYMENT_NAME, \
@@ -25,7 +24,7 @@ def generate_hashed_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
 
-def _create_user(login, email):
+def _create_user(login, email, icon):
     return User(
         _id=TEST_USER_ID,
         login=login,
@@ -33,7 +32,7 @@ def _create_user(login, email):
         password=generate_hashed_password(TEST_USER_PASSWORD),
         active_account=TEST_ACCOUNT_ID,
         role=TEST_USER_ROLE,
-        user_icon=None
+        user_icon=icon
     )
 
 

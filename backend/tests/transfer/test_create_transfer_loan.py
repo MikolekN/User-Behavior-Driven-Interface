@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from unittest.mock import patch
 
 from utils import assert_json_response
@@ -5,26 +6,26 @@ from utils import assert_json_response
 
 def test_create_loan_unauthorized(client):
     response = client.post('/api/transfer/loan')
-    assert response.status_code == 401
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
 
 def test_create_loan_empty_data(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         response = client.post('/api/transfer/loan', json={})
-        assert_json_response(response, 400, 'emptyRequestPayload')
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'emptyRequestPayload')
 
 def test_create_loan_invalid_data(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         response = client.post('/api/transfer/loan', json={"hallo": "hallo"})
-        assert_json_response(response, 400, 'recipientAccountNumberRequired')
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'recipientAccountNumberRequired')
 
         response = client.post('/api/transfer/loan', json={ "recipientAccountNumber": "" })
-        assert_json_response(response, 400, 'transferTitleRequired')
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'transferTitleRequired')
 
         response = client.post('/api/transfer/loan', json={
             "recipientAccountNumber": "",
             "transferTitle": ""
         })
-        assert_json_response(response, 400, 'amountRequired')
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'amountRequired')
 
 def test_create_loan_invalid_amount(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
@@ -33,7 +34,7 @@ def test_create_loan_invalid_amount(client, test_user):
             "transferTitle": "",
             'amount': "hallo"
         })
-        assert_json_response(response, 400, 'invalidAmount')
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'invalidAmount')
 
 def test_create_loan_negative_amount(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
@@ -42,7 +43,7 @@ def test_create_loan_negative_amount(client, test_user):
             "transferTitle": "",
             'amount': -1
         })
-        assert_json_response(response, 400, 'negativeAmount')
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'negativeAmount')
 
 def test_create_loan_small_amount(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
@@ -51,7 +52,7 @@ def test_create_loan_small_amount(client, test_user):
             "transferTitle": "",
             'amount': 1
         })
-        assert_json_response(response, 400, 'amountTooSmall;1000')
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'amountTooSmall;1000')
 
 def test_create_loan_big_amount(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
@@ -60,7 +61,7 @@ def test_create_loan_big_amount(client, test_user):
             "transferTitle": "",
             'amount': 1000000
         })
-        assert_json_response(response, 400, 'amountTooBig;100000')
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'amountTooBig;100000')
 
 def test_create_loan_invalid_amount_format(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
@@ -69,7 +70,7 @@ def test_create_loan_invalid_amount_format(client, test_user):
             "transferTitle": "",
             'amount': 9999
         })
-        assert_json_response(response, 400, 'invalidAmountFormat')
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'invalidAmountFormat')
 
 def test_create_loan_sender_account_not_exist(client, test_user, test_account):
     with patch('flask_login.utils._get_user', return_value=test_user), \
@@ -79,7 +80,7 @@ def test_create_loan_sender_account_not_exist(client, test_user, test_account):
             "transferTitle": "",
             'amount': 1000
         })
-        assert_json_response(response, 404, 'recipientAccountNotExist')
+        assert_json_response(response, HTTPStatus.NOT_FOUND, 'recipientAccountNotExist')
 
 def test_create_loan_unauthorised(client, test_user, test_unauthorised_account):
     with patch('flask_login.utils._get_user', return_value=test_user), \
@@ -89,7 +90,7 @@ def test_create_loan_unauthorised(client, test_user, test_unauthorised_account):
             "transferTitle": "",
             'amount': 1000
         })
-        assert_json_response(response, 403, 'unauthorisedAccountAccess')
+        assert_json_response(response, HTTPStatus.UNAUTHORIZED, 'unauthorisedAccountAccess')
 
 def test_create_loan_successful(client, test_user, test_account):
     with patch('flask_login.utils._get_user', return_value=test_user), \
@@ -101,4 +102,4 @@ def test_create_loan_successful(client, test_user, test_account):
             "transferTitle": "",
             'amount': 1000
         })
-        assert_json_response(response, 200, 'loanCreatedSuccessful')
+        assert_json_response(response, HTTPStatus.OK, 'loanCreatedSuccessful')

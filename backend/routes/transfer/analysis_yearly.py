@@ -1,4 +1,5 @@
 from collections.abc import Mapping
+from http import HTTPStatus
 from typing import Any, Optional
 
 from flask import Response, request
@@ -19,20 +20,20 @@ transfer_repository = TransferRepository()
 
 
 @login_required
-def get_all_user_transfers_yearly() -> tuple[Response, int]:
+def get_all_user_transfers_yearly() -> Response:
     data = request.get_json()
 
     error = validate_get_all_user_transfers_yearly(data)
     if error:
-        return create_simple_response(error, 400)
+        return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
-    user: User = user_repository.find_by_id(current_user._id)
+    user: User = user_repository.find_by_id(current_user.get_id())
     if not user:
-        return create_simple_response("userNotExist", 404)
+        return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
 
     account: Account = account_repository.find_by_id(str(user.active_account))
     if not account:
-        return create_simple_response("accountNotExist", 404)
+        return create_simple_response("accountNotExist", HTTPStatus.NOT_FOUND)
 
     start_date = f"{data['startYear']}-01-01T00:00:00"
     end_date = f"{data['endYear']}-12-31T23:59:59"
@@ -49,13 +50,13 @@ def get_all_user_transfers_yearly() -> tuple[Response, int]:
 
     transfers = transfer_repository.find_transfers(query)
     if not transfers:
-        return create_simple_response("yearlyAnalysisEmpty", 404)
+        return create_simple_response("yearlyAnalysisEmpty", HTTPStatus.NOT_FOUND)
 
     serialized_transfers = serialize_transfers(transfers, account)
     response = set_missing_years(get_transfers_analysis_yearly(serialized_transfers), data['startYear'],
                                  data['endYear'])
 
-    return AnalysisResponse.create_response("yearlyAnalysisSuccessful", response, 200)
+    return AnalysisResponse.create_response("yearlyAnalysisSuccessful", response, HTTPStatus.OK)
 
 
 def validate_get_all_user_transfers_yearly(data: Mapping[str, Any]) -> Optional[str]:

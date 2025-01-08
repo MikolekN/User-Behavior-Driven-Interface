@@ -1,4 +1,5 @@
 from collections.abc import Mapping
+from http import HTTPStatus
 from typing import Any, Optional
 
 from flask import Response, request
@@ -19,20 +20,20 @@ transfer_repository = TransferRepository()
 
 
 @login_required
-def get_all_user_transfers_monthly() -> tuple[Response, int]:
+def get_all_user_transfers_monthly() -> Response:
     data = request.get_json()
 
     error = validate_get_all_user_transfers_monthly(data)
     if error:
-        return create_simple_response(error, 400)
+        return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
-    user: User = user_repository.find_by_id(current_user._id)
+    user: User = user_repository.find_by_id(current_user.get_id())
     if not user:
-        return create_simple_response("userNotExist", 404)
+        return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
 
     account: Account = account_repository.find_by_id(str(user.active_account))
     if not account:
-        return create_simple_response("accountNotExist", 404)
+        return create_simple_response("accountNotExist", HTTPStatus.NOT_FOUND)
 
     year = data['year']
     start_date, end_date = f"{year}-01-01T00:00:00", f"{year}-12-31T23:59:59"
@@ -46,12 +47,12 @@ def get_all_user_transfers_monthly() -> tuple[Response, int]:
 
     transfers = transfer_repository.find_transfers(query)
     if not transfers:
-        return create_simple_response("monthlyAnalysisEmpty", 404)
+        return create_simple_response("monthlyAnalysisEmpty", HTTPStatus.NOT_FOUND)
 
     serialized_transfers = serialize_transfers(transfers, account)
     response = get_transfers_analysis_monthly(serialized_transfers)
 
-    return AnalysisResponse.create_response("monthlyAnalysisSuccessful", response, 200)
+    return AnalysisResponse.create_response("monthlyAnalysisSuccessful", response, HTTPStatus.OK)
 
 
 def validate_get_all_user_transfers_monthly(data: Optional[Mapping[str, Any]]) -> Optional[str]:

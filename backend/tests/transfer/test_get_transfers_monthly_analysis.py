@@ -1,11 +1,13 @@
+from http import HTTPStatus
 from unittest.mock import patch
 
 from tests.transfer.constants import TEST_YEAR_INVALID, TEST_YEAR
+from utils import assert_json_response
 
 
 def test_get_transfers_monthly_analysis_unauthorized(client):
     response = client.post('/api/transfers/analysis/monthly')
-    assert response.status_code == 401
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
 
 @patch('transfers.transfer_repository.TransferRepository.find_transfers')
 def test_get_transfers_monthly_analysis_empty_data(mock_find_transfers, client, test_user):
@@ -13,11 +15,7 @@ def test_get_transfers_monthly_analysis_empty_data(mock_find_transfers, client, 
         mock_find_transfers.return_value = None
 
         response = client.post('/api/transfers/analysis/monthly', json={})
-
-        assert response.status_code == 400
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "emptyRequestPayload"
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'emptyRequestPayload')
 
 @patch('transfers.transfer_repository.TransferRepository.find_transfers')
 def test_get_transfers_monthly_analysis_invalid_data(mock_find_transfers, client, test_user):
@@ -25,11 +23,7 @@ def test_get_transfers_monthly_analysis_invalid_data(mock_find_transfers, client
         mock_find_transfers.return_value = None
 
         response = client.post('/api/transfers/analysis/monthly', json={'invalid_field': "invalid"})
-
-        assert response.status_code == 400
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "yearNotProvided"
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'yearNotProvided')
 
 @patch('transfers.transfer_repository.TransferRepository.find_transfers')
 def test_get_transfers_monthly_analysis_invalid_data_type(mock_find_transfers, client, test_user):
@@ -37,11 +31,7 @@ def test_get_transfers_monthly_analysis_invalid_data_type(mock_find_transfers, c
         mock_find_transfers.return_value = None
 
         response = client.post('/api/transfers/analysis/monthly', json={'year': TEST_YEAR_INVALID})
-
-        assert response.status_code == 400
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "yearInvalidType"
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'yearInvalidType')
 
 @patch('transfers.transfer_repository.TransferRepository.find_transfers')
 def test_get_transfers_monthly_analysis_user_not_exist(mock_find_transfers, client, test_user, test_account):
@@ -49,11 +39,7 @@ def test_get_transfers_monthly_analysis_user_not_exist(mock_find_transfers, clie
         mock_find_transfers.return_value = None
 
         response = client.post('/api/transfers/analysis/monthly', json={'year': TEST_YEAR})
-
-        assert response.status_code == 404
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "userNotExist"
+        assert_json_response(response, HTTPStatus.NOT_FOUND, 'userNotExist')
 
 @patch('transfers.transfer_repository.TransferRepository.find_transfers')
 @patch('users.user_repository.UserRepository.find_by_id')
@@ -63,11 +49,7 @@ def test_get_transfers_monthly_analysis_account_not_exist(mock_user, mock_find_t
         mock_user.return_value = test_user
 
         response = client.post('/api/transfers/analysis/monthly', json={'year': TEST_YEAR})
-
-        assert response.status_code == 404
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "accountNotExist"
+        assert_json_response(response, HTTPStatus.NOT_FOUND, 'accountNotExist')
 
 @patch('transfers.transfer_repository.TransferRepository.find_transfers')
 @patch('users.user_repository.UserRepository.find_by_id')
@@ -79,11 +61,7 @@ def test_get_transfers_monthly_analysis_not_exist(mock_account, mock_user, mock_
         mock_account.return_value = test_account
 
         response = client.post('/api/transfers/analysis/monthly', json={'year': TEST_YEAR})
-
-        assert response.status_code == 404
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "monthlyAnalysisEmpty"
+        assert_json_response(response, HTTPStatus.NOT_FOUND, 'monthlyAnalysisEmpty')
 
 @patch('transfers.transfer_repository.TransferRepository.find_transfers')
 @patch('users.user_repository.UserRepository.find_by_id')
@@ -95,9 +73,5 @@ def test_get_transfers_monthly_analysis_success(mock_account, mock_find_user_by_
         mock_account.return_value = test_account
 
         response = client.post('/api/transfers/analysis/monthly', json={'year': TEST_YEAR})
-
-        assert response.status_code == 200
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "monthlyAnalysisSuccessful"
+        json_data = assert_json_response(response, HTTPStatus.OK, 'monthlyAnalysisSuccessful')
         assert 'transfers' in json_data
