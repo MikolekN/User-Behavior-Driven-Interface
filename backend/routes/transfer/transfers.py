@@ -1,4 +1,5 @@
 from collections import defaultdict
+from http import HTTPStatus
 from typing import Optional
 
 import bson
@@ -20,21 +21,21 @@ transfer_repository = TransferRepository()
 
 
 @login_required
-def get_all_user_transfers() -> tuple[Response, int]:
-    user: User = user_repository.find_by_id(current_user._id)
+def get_all_user_transfers() -> Response:
+    user: User = user_repository.find_by_id(current_user.get_id())
     if not user:
-        return create_simple_response("userNotExist", 404)
+        return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
 
     account: Account = account_repository.find_by_id(str(user.active_account))
     if not account:
-        return create_simple_response("accountNotExist", 404)
+        return create_simple_response("accountNotExist", HTTPStatus.NOT_FOUND)
 
     transfers = fetch_transfers(str(account.id))
     if not transfers:
-        return create_simple_response("transferListEmpty", 404)
+        return create_simple_response("transferListEmpty", HTTPStatus.NOT_FOUND)
 
     if prevent_unauthorised_account_access(account):
-        return create_simple_response("unauthorisedAccountAccess", 403)
+        return create_simple_response("unauthorisedAccountAccess", HTTPStatus.UNAUTHORIZED)
 
     history_transfer_dtos: list[HistoryTransferDto] = [prepare_transfer(transfer, account) for transfer in transfers]
 
@@ -44,7 +45,7 @@ def get_all_user_transfers() -> tuple[Response, int]:
         for date, user_transfers in user_transfer_groups.items()
     ]
 
-    return HistoryResponse.create_response("transferListGetSuccessful", grouped_transfers_dtos, 200)
+    return HistoryResponse.create_response("transferListGetSuccessful", grouped_transfers_dtos, HTTPStatus.OK)
 
 
 def prepare_transfer(transfer: Transfer, account: Account) -> HistoryTransferDto:

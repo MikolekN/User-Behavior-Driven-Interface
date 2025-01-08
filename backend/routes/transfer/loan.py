@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from flask import Response, request
 from flask_login import login_required, current_user
 
@@ -15,23 +17,23 @@ transfer_repository = TransferRepository()
 
 
 @login_required
-def create_loan_transfer() -> tuple[Response, int]:
+def create_loan_transfer() -> Response:
     data = request.get_json()
 
     error = validate_loan_data(data)
     if error:
-        return create_simple_response(error, 400)
+        return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
     recipient_account = account_repository.find_by_account_number(data['recipientAccountNumber'])
     if not recipient_account:
-        return create_simple_response("recipientAccountNotExist", 404)
+        return create_simple_response("recipientAccountNotExist", HTTPStatus.NOT_FOUND)
 
     if prevent_unauthorised_account_access(recipient_account):
-        return create_simple_response("unauthorisedAccountAccess", 403)
+        return create_simple_response("unauthorisedAccountAccess", HTTPStatus.UNAUTHORIZED)
 
     bank_account = account_repository.find_by_account_number(BANK_ACCOUNT_NUMBER)
     if not bank_account:
-        return create_simple_response("bankAccountNotExist", 404)
+        return create_simple_response("bankAccountNotExist", HTTPStatus.NOT_FOUND)
 
     transfer = Transfer(
                         transfer_from_id=bank_account.id,
@@ -42,4 +44,4 @@ def create_loan_transfer() -> tuple[Response, int]:
 
     account_repository.update(str(recipient_account.id), {'balance': add(float(recipient_account.balance), float(data['amount']))})
 
-    return create_simple_response("loanCreatedSuccessful", 200)
+    return create_simple_response("loanCreatedSuccessful", HTTPStatus.OK)
