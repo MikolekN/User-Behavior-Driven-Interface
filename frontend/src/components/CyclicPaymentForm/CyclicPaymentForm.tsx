@@ -204,7 +204,7 @@ const CyclicPaymentsForm = () => {
                             <FormSelect
                                 label={t('cyclicPaymentForm.transferInterval')}
                                 options={INTERVAL_SELECT_OPTIONS}
-                                defaultOption='-- Select Interval --'
+                                defaultOption={t('cyclicPaymentForm.selectInterval')}
                                 register={register('interval')}
                                 error={errors.interval}
                                 className="w-full"

@@ -130,6 +130,9 @@
         "amount": "Amout",
         "submit": "Submit",
         "loading": "Loading..."
+        "loading": "Loading...",
+        "selectInterval": "-- select interval --"
+    },
     },
     "loan": {
         "tile": {

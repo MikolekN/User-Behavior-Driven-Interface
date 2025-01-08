@@ -130,6 +130,9 @@
         "amount": "Kwota",
         "submit": "Utwórz",
         "loading": "Ładowanie..."
+        "loading": "Ładowanie...",
+        "selectInterval": "-- wybierz interwał --"
+    },
     },
     "loan": {
         "tile": {
