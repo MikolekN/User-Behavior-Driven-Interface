@@ -129,10 +129,27 @@
         "title": "Tytuł cyklicznego przelewu",
         "amount": "Kwota",
         "submit": "Utwórz",
-        "loading": "Ładowanie..."
         "loading": "Ładowanie...",
         "selectInterval": "-- wybierz interwał --"
     },
+    "accountList": {
+        "tile": {
+            "title": "Konta"
+        },
+        "submit": "Dodaj konto",
+        "edit": "Edytuj",
+        "setActive": "Ustaw jako aktywne"
+    },
+    "accountFrom": {
+        "tile": {
+            "title": "Dodaj konto"
+        },
+        "accountName": "Nazwa konta",
+        "accountType": "Rodzaj konta",
+        "selectAccountType": "-- wybierz rodzaj konta --",
+        "currency": "Waluta",
+        "loading": "Ładowanie...",
+        "submit": "Dodaj konto"
     },
     "loan": {
         "tile": {
@@ -265,7 +282,14 @@
         "quarter": "Co kwartał",
         "halfYear": "Co pół roku",
         "en": "English",
-        "pl": "Polski"
+        "pl": "Polski",
+        "personalAccount": "osobiste",
+        "savingsAccount": "oszczędnościowe",
+        "currencyAccount": "walutowe",
+        "businessAccount": "biznesowe",
+        "youthAccount": "młodzieżowe",
+        "studentAccount": "studenckie",
+        "retirementAccount": "emerytalne"
     },
     "errors": {
         "api": {

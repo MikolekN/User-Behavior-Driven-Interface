@@ -129,10 +129,27 @@
         "title": "Cyclic transfer title",
         "amount": "Amout",
         "submit": "Submit",
-        "loading": "Loading..."
         "loading": "Loading...",
         "selectInterval": "-- select interval --"
     },
+    "accountList": {
+        "tile": {
+            "title": "Accounts"
+        },
+        "submit": "Add account",
+        "edit": "Edit",
+        "setActive": "Set active"
+    },
+    "accountFrom": {
+        "tile": {
+            "title": "Add account"
+        },
+        "accountName": "Account name",
+        "accountType": "Account type",
+        "selectAccountType": "-- select account type --",
+        "currency": "Currency",
+        "loading": "Loading...",
+        "submit": "Add account"
     },
     "loan": {
         "tile": {
@@ -264,7 +281,14 @@
         "quarter": "Every quarter",
         "halfYear": "Every half a year",
         "en": "English",
-        "pl": "Polski"
+        "pl": "Polski",
+        "personalAccount": "Personal account",
+        "savingsAccount": "Savings account",
+        "currencyAccount": "Currency account",
+        "businessAccount": "Business account",
+        "youthAccount": "Youth account",
+        "studentAccount": "Student account",
+        "retirementAccount": "Retirement account"
     },
     "errors": {
         "api": {
