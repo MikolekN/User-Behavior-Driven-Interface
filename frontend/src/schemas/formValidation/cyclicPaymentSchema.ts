@@ -5,7 +5,7 @@ import { ACCOUNT_NUMBER_REGEX, AMOUNT_REGEX, ZERO } from './constants';
 export const CyclicPaymentFormDataSchema = z.object({
     cyclicPaymentName: requiredStringField(),
     recipientAccountNumber: requiredStringField().regex(new RegExp(ACCOUNT_NUMBER_REGEX), {
-        message: 'accountNumber'
+        message: 'invalidAccountNumber'
     }),
     transferTitle: requiredStringField(),
     amount: requiredStringField(),

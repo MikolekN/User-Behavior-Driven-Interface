@@ -51,7 +51,7 @@ const CyclicPayments = () => {
 
     return (
         <div id='cyclic-payments-wrapper' className='flex overflow-hidden flex-col flex-grow justify-center items-center h-full max-h-full'>
-            <Tile title={t('cyclicPaymentList.tile.title')} className='flex flex-col w-1/2 mx-auto mb-2.5 bg-white shadow-md rounded-lg min-h-1/2 max-h-[95%]'>
+            <Tile title={t('cyclicPaymentList.tile.title')} className='flex flex-col w-10/12 shadow-md h-[95%] max-h-[95%] mb-2.5 mx-auto rounded-lg md:w-1/2'>
                 <div className="flex flex-col gap-4 overflow-y-auto p-2.5">
                     {!cyclicPayments && (
                         <div>Cyclic Payments are loading...</div>
