@@ -1,4 +1,4 @@
-from backend.tests.transfer.constants import DEFAULT_TRANSFER, INVALID_TRANSFER
+from tests.transfer.constants import DEFAULT_TRANSFER, INVALID_TRANSFER
 
 
 def get_transfer(overrides=None):
