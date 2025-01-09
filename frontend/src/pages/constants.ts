@@ -29,6 +29,16 @@ export const INTERVAL_SELECT_OPTIONS = [
     { value: 'Every 6 months', key: 'halfYear' }
 ];
 
+export const ACCOUNT_TYPE_SELECT_OPTIONS = [
+    { value: 'personal', key: 'personalAccount' },
+    { value: 'savings', key: 'savingsAccount' },
+    { value: 'currency', key: 'currencyAccount' },
+    { value: 'business', key: 'businessAccount' },
+    { value: 'youth', key: 'youthAccount' },
+    { value: 'student', key: 'studentAccount' },
+    { value: 'retirement', key: 'retirementAccount' }
+]
+
 export const LANGUAGES = [
     {
         key: "english",
