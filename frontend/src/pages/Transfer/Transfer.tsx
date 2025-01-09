@@ -83,7 +83,7 @@ const Transfer = () => {
                                 {user!.currency}
                             </FormInput>
                             <div>
-                                <Button isSubmitting={isSubmitting} className="w-full">
+                                <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
                                     {isSubmitting ? `${t('transfer.loading')}` : `${t('transfer.submit')}`}
                                 </Button>
                             </div>

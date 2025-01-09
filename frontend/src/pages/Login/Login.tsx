@@ -67,7 +67,7 @@ const Login = () => {
                                 error={errors.password}
                                 className="w-full"
                             />
-                            <Button isSubmitting={isSubmitting} className="w-full">
+                            <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
 						        {isSubmitting ? `${t('login.loading')}` : `${t('login.submit')}`}
                             </Button>
                         </form>

@@ -55,7 +55,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
         <div>
             <Link to={'/create-cyclic-payment/'} className="pr-12 pb-4">
                 <div className="grid">
-                    <Button className="justify-self-end mb-2">+ {t('cyclicPaymentList.submit')}</Button>
+                    <Button className="justify-self-end mb-2 dark:bg-slate-900 dark:hover:bg-slate-800">+ {t('cyclicPaymentList.submit')}</Button>
                 </div>
             </Link>
             <CollapsibleTable
@@ -130,7 +130,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                         </div>
                         <div className="flex justify-end space-x-4 w-full">
                             <Link to={`/edit-cyclic-payment/${cyclicPayment.id}`} className="w-1/6">
-                                <Button className="w-full mt-1">
+                                <Button className="w-full mt-1 dark:bg-slate-900 dark:hover:bg-slate-800">
                                     {t('cyclicPaymentList.edit')}
                                 </Button>
                             </Link>

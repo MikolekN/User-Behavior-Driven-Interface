@@ -74,7 +74,7 @@ const Register = () => {
                                 error={errors.confirmPassword}
                                 className="w-full"
                             />
-                            <Button isSubmitting={isSubmitting} className="w-full">
+                            <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
 						        {isSubmitting ? `${t('register.loading')}` : `${t('register.submit')}`}
                             </Button>
                         </form>
