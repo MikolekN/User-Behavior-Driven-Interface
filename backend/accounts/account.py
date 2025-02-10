@@ -43,6 +43,7 @@ class Account(BaseEntity):
             type=data.get('type', 'other'),
             blockades=data.get('blockades', 0),
             balance=data.get('balance', 0),
+            currency=data.get('currency', data['currency']),
             user=bson.ObjectId(data['user']) if 'user' in data else None,
         )
 

@@ -6,9 +6,9 @@ from flask_login import login_required
 from accounts import AccountRepository
 from helpers import add, subtract
 from routes.helpers import create_simple_response
-from routes.transfer.helpers import validate_transfer_data, prevent_self_transfer, prevent_unauthorised_account_access
+from routes.transfer.helpers import prevent_self_transfer, prevent_unauthorised_account_access
 from transfers import Transfer, TransferRepository
-
+from transfers.requests.create_transfer_request_dto import CreateTransferRequestDto
 
 account_repository = AccountRepository()
 transfer_repository = TransferRepository()
@@ -18,18 +18,18 @@ transfer_repository = TransferRepository()
 def create_transfer() -> Response:
     data = request.get_json()
 
-    error = validate_transfer_data(data)
+    error = CreateTransferRequestDto.validate_request(data)
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
     if prevent_self_transfer(data):
         return create_simple_response("cannotTransferToSelf", HTTPStatus.BAD_REQUEST)
 
-    sender_account = account_repository.find_by_account_number(data['senderAccountNumber'])
+    sender_account = account_repository.find_by_account_number(data['sender_account_number'])
     if not sender_account:
         return create_simple_response("senderAccountNotExist", HTTPStatus.NOT_FOUND)
 
-    recipient_account = account_repository.find_by_account_number(data['recipientAccountNumber'])
+    recipient_account = account_repository.find_by_account_number(data['recipient_account_number'])
     if not recipient_account:
         return create_simple_response("recipientAccountNotExist", HTTPStatus.NOT_FOUND)
 
@@ -40,9 +40,9 @@ def create_transfer() -> Response:
         return create_simple_response("accountDontHaveEnoughMoney", HTTPStatus.BAD_REQUEST)
 
     transfer = Transfer(
-        transfer_from_id=sender_account.id,
-        transfer_to_id=recipient_account.id,
-        title=data['transferTitle'],
+        sender_account_number=sender_account.id,
+        recipient_account_number=recipient_account.id,
+        title=data['title'],
         amount=float(data['amount']))
     transfer_repository.insert(transfer)
 

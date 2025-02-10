@@ -11,7 +11,8 @@ from routes.transfer.helpers import serialize_transfers, \
     format_transfers_date, format_grouped_transfers, get_month_from_datetime, \
     accumulate_transactions_income_and_outcome, get_response_monthly
 from transfers import TransferRepository
-from transfers.analysis_response import AnalysisResponse
+from transfers.requests.monthly_analysis_request_dto import MonthlyAnalysisRequestDto
+from transfers.responses.analysis_response import AnalysisResponse
 from users import User, UserRepository
 
 user_repository = UserRepository()
@@ -23,7 +24,7 @@ transfer_repository = TransferRepository()
 def get_all_user_transfers_monthly() -> Response:
     data = request.get_json()
 
-    error = validate_get_all_user_transfers_monthly(data)
+    error = MonthlyAnalysisRequestDto.validate_request(data)
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
@@ -53,16 +54,6 @@ def get_all_user_transfers_monthly() -> Response:
     response = get_transfers_analysis_monthly(serialized_transfers)
 
     return AnalysisResponse.create_response("monthlyAnalysisSuccessful", response, HTTPStatus.OK)
-
-
-def validate_get_all_user_transfers_monthly(data: Optional[Mapping[str, Any]]) -> Optional[str]:
-    if not data:
-        return "emptyRequestPayload"
-    if 'year' not in data:
-        return "yearNotProvided"
-    if 'year' in data and not isinstance(data['year'], int):
-        return "yearInvalidType"
-    return None
 
 
 def get_transfers_analysis_monthly(transfers: list[dict]) -> list[dict[str, Any]]:

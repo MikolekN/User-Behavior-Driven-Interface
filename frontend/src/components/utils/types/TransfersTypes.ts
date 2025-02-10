@@ -56,11 +56,11 @@ export const mapBackendTransfersListDataToTransfers = (transfersBackendData: Bac
         transfer.transactions.forEach((transaction) => {
             const transactionFrontendData = mapBackendTransfersDataToTransfers(transaction);
             transactions.push(transactionFrontendData);
-        }); 
+        });
         const formattedTransfer: TransactionsHistoryType = {
             date: transfer.date,
             transactions: transactions
-        } 
+        }
         formattedTransfers.push(formattedTransfer);
     });
     return formattedTransfers;
@@ -72,10 +72,10 @@ export const mapBackendChartDataToChartData = (chartBackendData: BackendChartDat
         const formattedChartData: ChartData = {
             income: chartData.income,
             outcome: chartData.outcome,
-            interval: i18n.exists(`chart.months.${chartData.interval}`) 
-                    ? t(`chart.months.${chartData.interval}`) 
+            interval: i18n.exists(`chart.months.${chartData.interval}`)
+                    ? t(`chart.months.${chartData.interval}`)
                     : chartData.interval
-        } 
+        }
         formattedAnalysisChartData.push(formattedChartData);
     });
     return formattedAnalysisChartData;

@@ -20,7 +20,7 @@ class AccountRepository(BaseRepository):
 
     def find_accounts(self, id:str) -> list[Account]:
         query = {
-            'user': bson.ObjectId(id)
+            'user': id
         }
         sort_criteria = [("created", -1)]
         return super().find_many(query, sort_criteria)

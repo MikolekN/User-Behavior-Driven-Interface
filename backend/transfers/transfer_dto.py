@@ -14,8 +14,8 @@ class TransferDto:
     @classmethod
     def from_transfer(cls, transfer: "Transfer") -> "TransferDto":
         return cls(
-            transfer_from_id=transfer.transfer_from_id or '',
-            transfer_to_id=transfer.transfer_to_id or '',
+            transfer_from_id=transfer.sender_account_number or '',
+            transfer_to_id=transfer.recipient_account_number or '',
             title=transfer.title or '',
             amount=float(transfer.amount or 0)
         )

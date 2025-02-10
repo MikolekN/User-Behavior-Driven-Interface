@@ -52,8 +52,8 @@ def _create_account(user: str):
 def _create_transfer():
     return Transfer(
         _id=TEST_TRANSFER_ID,
-        transfer_from_id=TEST_ACCOUNT_ID,
-        transfer_to_id=TEST_ACCOUNT_DIFFERENT_ID,
+        sender_account_number=TEST_ACCOUNT_ID,
+        recipient_account_number=TEST_ACCOUNT_DIFFERENT_ID,
         title=TEST_TRANSFER_TITLE,
         amount=TEST_TRANSFER_AMOUNT
     )

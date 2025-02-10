@@ -23,6 +23,7 @@ def create_account() -> Response:
     user: User = user_repository.find_by_id(current_user.get_id())
     if not user:
         return create_simple_response("userNotFound", HTTPStatus.NOT_FOUND)
+    data['user'] = user.id
 
     account: Account = Account.from_dict(data)
     account_repository.insert(account)

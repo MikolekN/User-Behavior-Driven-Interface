@@ -1,13 +1,11 @@
 from collections.abc import Mapping
-# TODO: czy to musi być mapping z collections a nie np. z typing?
 from datetime import datetime
-from typing import Optional, Any, Callable
+from typing import Any, Callable
 
 from bson import ObjectId
 from flask_login import current_user
 
 from accounts import Account, AccountRepository
-from constants import MIN_LOAN_VALUE, MAX_LOAN_VALUE
 from transfers import Transfer, TransferRepository
 from users import UserRepository
 
@@ -17,61 +15,8 @@ account_repository = AccountRepository()
 transfer_repository = TransferRepository()
 
 
-def validate_data(
-        data: Mapping[str, Any],
-        required_fields: list[str],
-        amount_check: bool = False,
-        min_value: float = 0,
-        max_value: float = float('inf'),
-        multiple_of: float = 1
-) -> Optional[str]:
-    if not data:
-        return "emptyRequestPayload"
-
-    for field in required_fields:
-        if field not in data:
-            return f"{field}Required"
-
-    if amount_check:
-        try:
-            amount = float(data['amount'])
-        except (ValueError, TypeError):
-            return "invalidAmount"
-
-        if amount <= 0:
-            return "negativeAmount"
-
-        if amount < min_value:
-            return f"amountTooSmall;{min_value}"
-
-        if amount > max_value:
-            return f"amountTooBig;{max_value}"
-
-        if amount % multiple_of != 0:
-            return "invalidAmountFormat"
-
-    return None
-
-
-def validate_transfer_data(data: Mapping[str, Any]) -> Optional[str]:
-    return validate_data(
-        data,
-        ['senderAccountNumber', 'recipientAccountNumber', 'transferTitle', 'amount'],
-        amount_check=True)
-
-
-def validate_loan_data(data: Mapping[str, Any]) -> Optional[str]:
-    return validate_data(
-        data,
-        ['recipientAccountNumber', 'transferTitle', 'amount'],
-        amount_check=True,
-        min_value=MIN_LOAN_VALUE,
-        max_value=MAX_LOAN_VALUE,
-        multiple_of=1000)
-
-
 def prevent_self_transfer(data: Mapping[str, Any]) -> bool:
-    return data['recipientAccountNumber'] == data['senderAccountNumber']
+    return data['recipient_account_number'] == data['sender_account_number']
 
 
 def prevent_unauthorised_account_access(sender_account: Account) -> bool:
@@ -85,12 +30,12 @@ def serialize_transfers(transfers: list[Transfer], account: Account) -> list[dic
 def serialize_transfer(transfer: Transfer, account: Account) -> dict[str, Any]:
     transfer_dict = transfer.to_dict()
 
-    is_income = transfer.transfer_to_id == account.id
+    is_income = transfer.recipient_account_number == account.id
     transfer_dict['income'] = is_income
 
-    transfer_from_account = account_repository.find_by_id(str(transfer.transfer_from_id))
+    transfer_from_account = account_repository.find_by_id(str(transfer.sender_account_number))
     transfer_from_user = user_repository.find_by_id(transfer_from_account.user)
-    transfer_to_account = account_repository.find_by_id(str(transfer.transfer_to_id))
+    transfer_to_account = account_repository.find_by_id(str(transfer.recipient_account_number))
     transfer_to_user = user_repository.find_by_id(transfer_to_account.user)
     transfer_dict['issuer_name'] = transfer_to_user.login if is_income else transfer_from_user.login
 

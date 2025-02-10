@@ -17,8 +17,8 @@ class HistoryTransferDto:
     @classmethod
     def from_transfer(cls, transfer: "Transfer", is_income: bool, issuer_name: str) -> "HistoryTransferDto":
         return cls(
-            transfer_from_id=str(transfer.transfer_from_id) or '',
-            transfer_to_id=str(transfer.transfer_to_id) or '',
+            transfer_from_id=str(transfer.sender_account_number) or '',
+            transfer_to_id=str(transfer.recipient_account_number) or '',
             title=transfer.title or '',
             amount=float(transfer.amount or 0),
             income=is_income,

@@ -17,6 +17,7 @@ def get_accounts() -> Response:
     if not user:
         return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
 
+    print(str(user.id))
     accounts: list[Account] = account_repository.find_accounts(str(user.id))
     if not accounts:
         return create_simple_response("accountsNotExist", HTTPStatus.NOT_FOUND)

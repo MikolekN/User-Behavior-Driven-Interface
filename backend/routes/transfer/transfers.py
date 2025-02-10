@@ -1,6 +1,5 @@
 from collections import defaultdict
 from http import HTTPStatus
-from typing import Optional
 
 import bson
 from flask import Response
@@ -10,7 +9,7 @@ from accounts import Account, AccountRepository
 from routes.helpers import create_simple_response
 from routes.transfer.helpers import prevent_unauthorised_account_access
 from transfers import TransferRepository, Transfer
-from transfers.history_response import HistoryResponse
+from transfers.responses.get_transfers_response import GetTransfersResponseDto
 from transfers.history_transfer_dto import HistoryTransferDto
 from transfers.grouped_history_transfers_dto import GroupedHistoryTransfersDto
 from users import UserRepository, User
@@ -45,20 +44,20 @@ def get_all_user_transfers() -> Response:
         for date, user_transfers in user_transfer_groups.items()
     ]
 
-    return HistoryResponse.create_response("transferListGetSuccessful", grouped_transfers_dtos, HTTPStatus.OK)
+    return GetTransfersResponseDto.create_response("transferListGetSuccessful", grouped_transfers_dtos, HTTPStatus.OK)
 
 
 def prepare_transfer(transfer: Transfer, account: Account) -> HistoryTransferDto:
-    is_income = transfer.transfer_to_id == account.id
+    is_income = transfer.recipient_account_number == account.id
 
-    transfer_from_account: Account = account_repository.find_by_id(str(transfer.transfer_from_id))
+    transfer_from_account: Account = account_repository.find_by_id(str(transfer.sender_account_number))
     if transfer_from_account.user:
         transfer_from_user = user_repository.find_by_id(str(transfer_from_account.user))
         issuer_name_from = transfer_from_user.login if transfer_from_user else "Unknown"
     else:
         issuer_name_from = transfer_from_account.account_name
 
-    transfer_to_account: Account = account_repository.find_by_id(str(transfer.transfer_to_id))
+    transfer_to_account: Account = account_repository.find_by_id(str(transfer.recipient_account_number))
     if transfer_to_account.user:
         transfer_to_user = user_repository.find_by_id(str(transfer_to_account.user))
         issuer_name_to = transfer_to_user.login if transfer_to_user else "Unknown"

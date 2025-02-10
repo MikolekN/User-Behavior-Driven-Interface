@@ -14,9 +14,13 @@ class BaseEntity(ABC):
         if self._id is None:
             entity_dict.pop('_id', None)
         else:
+            self._id = bson.ObjectId()
             entity_dict['_id'] = str(self._id)
         if self.created:
-            entity_dict['created'] = self.created.isoformat()
+            entity_dict['created'] = str(self.created.isoformat())
+        else:
+            self.created = datetime.now()
+            entity_dict['created'] = str(self.created.isoformat())
         return entity_dict
 
     @staticmethod
