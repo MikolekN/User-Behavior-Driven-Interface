@@ -1,13 +1,12 @@
 from http import HTTPStatus
-from typing import Optional
 
 from flask import request, Response
 from flask_login import login_required, current_user
 
 from routes.helpers import create_simple_response, verify_password, hash_password
 from users import User, UserRepository
-from users.user_dto import UserDto
-from users.user_response import UserResponse
+from users.requests.update_user_request import UpdateUserRequest
+from users.responses.update_user_response import UpdateUserResponse
 
 user_repository = UserRepository()
 
@@ -15,7 +14,7 @@ user_repository = UserRepository()
 def update_user() -> Response:
     data = request.json
 
-    error = validate_user_update_data(data)
+    error = UpdateUserRequest.validate_request(data)
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
@@ -29,23 +28,7 @@ def update_user() -> Response:
     if isinstance(result, Response):
         return result
     elif isinstance(result, User):
-        return UserResponse.create_response("userUpdateSuccessful", UserDto.from_user(result).to_dict(), HTTPStatus.OK)
-
-
-def validate_user_update_data(user_data: dict) -> Optional[str]:
-    if not user_data:
-        return "emptyRequestPayload"
-
-    valid_fields = {'login', 'current_password', 'new_password'}
-    invalid_fields = [field for field in user_data if field not in valid_fields]
-
-    if invalid_fields:
-        return f"missingFields;{', '.join(invalid_fields)}"
-
-    if ('current_password' in user_data or 'new_password' in user_data) and ('current_password' not in user_data or 'new_password' not in user_data):
-        return "userPasswordRequiredFields"
-
-    return None
+        return UpdateUserResponse.create_response("userUpdateSuccessful", result.to_dict(), HTTPStatus.OK)
 
 def update_login(login: str) -> Response | User:
     login_data = {'login': login}

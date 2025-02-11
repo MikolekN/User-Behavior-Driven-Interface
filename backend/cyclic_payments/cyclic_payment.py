@@ -19,6 +19,8 @@ class CyclicPayment(BaseEntity):
     def to_dict(self) -> Dict[str, any]:
         cyclic_payment_dict = super().to_dict()
         cyclic_payment_dict['start_date'] = self.start_date.isoformat()
+        cyclic_payment_dict['issuer_id'] = str(self.issuer_id)
+        cyclic_payment_dict['recipient_id'] = str(self.recipient_id)
         return cyclic_payment_dict
     
     @staticmethod

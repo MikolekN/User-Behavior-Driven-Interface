@@ -18,27 +18,19 @@ def test_create_cyclic_payment_empty_data(client, test_user):
 def test_create_cyclic_payment_missing_data(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         response = client.post('/api/cyclic-payment', json={'a': ""})
-        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'missingFields;recipient_account_number,recipient_name,cyclic_payment_name,transfer_title,amount,start_date,interval')
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'missingFields;recipient_account_number,cyclic_payment_name,transfer_title,amount,start_date,interval')
 
         response = client.post('/api/cyclic-payment', json={'recipient_account_number': ""})
-        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'missingFields;recipient_name,cyclic_payment_name,transfer_title,amount,start_date,interval')
-
-        response = client.post('/api/cyclic-payment', json={
-            'recipient_account_number': "",
-            'recipient_name': ""
-        })
         assert_json_response(response, HTTPStatus.BAD_REQUEST, 'missingFields;cyclic_payment_name,transfer_title,amount,start_date,interval')
 
         response = client.post('/api/cyclic-payment', json={
             'recipient_account_number': "",
-            'recipient_name': "",
             'cyclic_payment_name': ""
         })
         assert_json_response(response, HTTPStatus.BAD_REQUEST, 'missingFields;transfer_title,amount,start_date,interval')
 
         response = client.post('/api/cyclic-payment', json={
             'recipient_account_number': "",
-            'recipient_name': "",
             'cyclic_payment_name': "",
             'transfer_title': ""
         })
@@ -46,7 +38,6 @@ def test_create_cyclic_payment_missing_data(client, test_user):
 
         response = client.post('/api/cyclic-payment', json={
             'recipient_account_number': "",
-            'recipient_name': "",
             'cyclic_payment_name': "",
             'transfer_title': "",
             'amount': ""
@@ -55,7 +46,6 @@ def test_create_cyclic_payment_missing_data(client, test_user):
 
         response = client.post('/api/cyclic-payment', json={
             'recipient_account_number': "",
-            'recipient_name': "",
             'cyclic_payment_name': "",
             'transfer_title': "",
             'amount': "",
@@ -67,7 +57,6 @@ def test_create_cyclic_payment_extra_data(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         response = client.post('/api/cyclic-payment', json={
             'recipient_account_number': "",
-            'recipient_name': "",
             'cyclic_payment_name': "",
             'transfer_title': "",
             'amount': "",
@@ -81,33 +70,30 @@ def test_create_cyclic_payment_invalid_data(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         response = client.post('/api/cyclic-payment', json={
             'recipient_account_number': 0,
-            'recipient_name': 0,
             'cyclic_payment_name': 0,
             'transfer_title': 0,
             'amount': "",
             'start_date': 0,
             'interval': 0
         })
-        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'invalidTypeFields;recipient_account_number,recipient_name,cyclic_payment_name,transfer_title,amount,start_date,interval')
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'invalidTypeFields;recipient_account_number,cyclic_payment_name,transfer_title,amount,start_date,interval')
 
 def test_create_cyclic_payment_empty_field_data(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         response = client.post('/api/cyclic-payment', json={
             'recipient_account_number': "",
-            'recipient_name': "",
             'cyclic_payment_name': "",
             'transfer_title': "",
             'amount': 0.0,
             'start_date': "",
             'interval': ""
         })
-        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'emptyFields;recipient_account_number,recipient_name,cyclic_payment_name,transfer_title,start_date,interval')
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'emptyFields;recipient_account_number,cyclic_payment_name,transfer_title,start_date,interval')
 
 def test_create_cyclic_payment_negative_amount(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         response = client.post('/api/cyclic-payment', json={
             'recipient_account_number': "recipient_account_number",
-            'recipient_name': "recipient_name",
             'cyclic_payment_name': "cyclic_payment_name",
             'transfer_title': "transfer_title",
             'amount': -1.0,
@@ -120,7 +106,6 @@ def test_create_cyclic_payment_invalid_date_format(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         response = client.post('/api/cyclic-payment', json={
             'recipient_account_number': "recipient_account_number",
-            'recipient_name': "recipient_name",
             'cyclic_payment_name': "cyclic_payment_name",
             'transfer_title': "transfer_title",
             'amount': 1.0,
@@ -133,7 +118,6 @@ def test_create_cyclic_payment_recipient_user_not_exist(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         response = client.post('/api/cyclic-payment', json={
             'recipient_account_number': "recipient_account_number",
-            'recipient_name': "recipient_name",
             'cyclic_payment_name': "cyclic_payment_name",
             'transfer_title': "transfer_title",
             'amount': 1.0,
@@ -149,7 +133,6 @@ def test_create_cyclic_payment_recipient_account_not_exist(mock_find_by_id, clie
 
         response = client.post('/api/cyclic-payment', json={
             'recipient_account_number': "recipient_account_number",
-            'recipient_name': "recipient_name",
             'cyclic_payment_name': "cyclic_payment_name",
             'transfer_title': "transfer_title",
             'amount': 1.0,
@@ -170,7 +153,6 @@ def test_create_cyclic_payment_recipient_account_not_enough_money(mock_another_a
 
         response = client.post('/api/cyclic-payment', json={
             'recipient_account_number': "recipient_account_number",
-            'recipient_name': "recipient_name",
             'cyclic_payment_name': "cyclic_payment_name",
             'transfer_title': "transfer_title",
             'amount': 10001.0,
@@ -194,7 +176,6 @@ def test_create_cyclic_payment_successful(mock_insert, mock_update, mock_another
 
         response = client.post('/api/cyclic-payment', json={
             'recipient_account_number': "recipient_account_number",
-            'recipient_name': "recipient_name",
             'cyclic_payment_name': "cyclic_payment_name",
             'transfer_title': "transfer_title",
             'amount': 1.0,

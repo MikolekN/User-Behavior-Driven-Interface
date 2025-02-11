@@ -5,7 +5,7 @@ from flask import jsonify, Response, make_response
 
 
 @dataclass
-class UserResponse:
+class UpdateUserResponse:
 
     @classmethod
     def create_response(cls, message: str, user: dict, status: HTTPStatus) -> Response:

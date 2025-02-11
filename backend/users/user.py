@@ -14,12 +14,15 @@ class User(BaseEntity, UserMixin):
     email: Optional[str] = ''
     password: Optional[str] = ''
     active_account: Optional[bson.ObjectId] = None
-    role: Optional[str] = ''
     user_icon: Optional[str] = None
+    role: Optional[str] = ''
 
-    def to_dict(self) -> Dict[str, Any]:
-        user_dict = super().to_dict()
-        if self.user_icon is None:
+    def to_dict(self, for_db: bool = False) -> Dict[str, Any]:
+        user_dict = super().to_dict(for_db)
+        if self.active_account:
+            user_dict['active_account'] = self.active_account if for_db else str(self.active_account)
+        if not for_db:
+            user_dict.pop('password', None)
             user_dict.pop('user_icon', None)
         return user_dict
 

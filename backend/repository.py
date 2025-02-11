@@ -32,9 +32,9 @@ class BaseRepository:
         return [self._entity_class().from_dict(item) for item in entities]
 
     def insert(self, entity: T) -> T:
-        entity_dict = entity.to_dict()
+        entity_dict = entity.to_dict(True)
         result = Database.insert_one(self.COLLECTION, entity_dict)
-        inserted_entity = self.find_by_id(str(result.inserted_id))
+        inserted_entity = self.find_by_id(result.inserted_id)
         if inserted_entity is None:
             raise ValueError(f"Failed to retrieve the {entity.__class__.__name__} after insertion.")
         return inserted_entity

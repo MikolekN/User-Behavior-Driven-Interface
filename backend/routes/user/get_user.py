@@ -5,8 +5,7 @@ from flask_login import login_required, current_user
 
 from routes.helpers import create_simple_response
 from users import UserRepository
-from users.user_dto import UserDto
-from users.user_response import UserResponse
+from users.responses.get_user_response import GetUserResponse
 
 user_repository = UserRepository()
 
@@ -16,5 +15,4 @@ def get_user() -> Response:
     if not user:
         return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
 
-    user_dto = UserDto.from_user(user)
-    return UserResponse.create_response("userFetchSuccessful", user_dto.to_dict(), HTTPStatus.OK)
+    return GetUserResponse.create_response("userFetchSuccessful", user.to_dict(), HTTPStatus.OK)

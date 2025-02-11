@@ -6,21 +6,15 @@ import bson
 
 @dataclass
 class BaseEntity(ABC):
-    _id: Optional[bson.ObjectId] = None
+    _id: Optional[bson.ObjectId] = field(default_factory=bson.ObjectId)
     created: Optional[datetime] = field(default_factory=datetime.now)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self, for_db: bool = False) -> Dict[str, Any]:
         entity_dict = asdict(self) # this works because the class is abstract and the classes that implement this class are of typ 'DataclassInstance'
-        if self._id is None:
-            entity_dict.pop('_id', None)
-        else:
-            self._id = bson.ObjectId()
-            entity_dict['_id'] = str(self._id)
+        if self._id:
+            entity_dict['_id'] = self._id if for_db else str(self._id)  # Keep as ObjectId if for_db=True
         if self.created:
-            entity_dict['created'] = str(self.created.isoformat())
-        else:
-            self.created = datetime.now()
-            entity_dict['created'] = str(self.created.isoformat())
+            entity_dict['created'] = self.created.isoformat()
         return entity_dict
 
     @staticmethod

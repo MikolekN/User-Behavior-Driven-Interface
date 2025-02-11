@@ -2,11 +2,9 @@ from http import HTTPStatus
 
 from flask import Response, request
 
-from routes.authentication.helpers import validate_login_data
 from routes.helpers import create_simple_response, hash_password, unauthenticated_required
 from users import UserRepository, User
-from users.user_dto import UserDto
-from users.user_response import UserResponse
+from users.requests.register_request import RegisterRequest
 
 user_repository = UserRepository()
 
@@ -14,7 +12,7 @@ user_repository = UserRepository()
 def register() -> Response:
     data = request.get_json()
 
-    error = validate_login_data(data)
+    error = RegisterRequest.validate_request(data)
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
@@ -26,11 +24,10 @@ def register() -> Response:
         login=data['email'],
         email=data['email'],
         password=hash_password(data['password']),
-        active_account=None,
         role='USER',
         user_icon=None
     )
-    user = user_repository.insert(user)
+    print(user)
+    user_repository.insert(user)
 
-    user_dto = UserDto.from_user(user)
-    return UserResponse.create_response("registerSuccessful", user_dto.to_dict(), HTTPStatus.CREATED)
+    return create_simple_response("registerSuccessful", HTTPStatus.CREATED)

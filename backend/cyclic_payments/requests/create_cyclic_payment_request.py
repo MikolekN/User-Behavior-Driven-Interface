@@ -9,7 +9,6 @@ from request_dto import BaseRequestDto
 @dataclass
 class CreateCyclicPaymentRequest(BaseRequestDto):
     recipient_account_number: str
-    recipient_name: str
     cyclic_payment_name: str
     transfer_title: str
     amount: float
