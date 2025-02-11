@@ -29,7 +29,7 @@ def get_all_user_transfers() -> Response:
     if not account:
         return create_simple_response("accountNotExist", HTTPStatus.NOT_FOUND)
 
-    transfers = fetch_transfers(str(account.id))
+    transfers = fetch_transfers(str(account.account_number))
     if not transfers:
         return create_simple_response("transferListEmpty", HTTPStatus.NOT_FOUND)
 
@@ -50,14 +50,14 @@ def get_all_user_transfers() -> Response:
 def prepare_transfer(transfer: Transfer, account: Account) -> HistoryTransferDto:
     is_income = transfer.recipient_account_number == account.id
 
-    transfer_from_account: Account = account_repository.find_by_id(str(transfer.sender_account_number))
+    transfer_from_account: Account = account_repository.find_by_account_number(transfer.sender_account_number)
     if transfer_from_account.user:
         transfer_from_user = user_repository.find_by_id(str(transfer_from_account.user))
         issuer_name_from = transfer_from_user.login if transfer_from_user else "Unknown"
     else:
         issuer_name_from = transfer_from_account.account_name
 
-    transfer_to_account: Account = account_repository.find_by_id(str(transfer.recipient_account_number))
+    transfer_to_account: Account = account_repository.find_by_account_number(transfer.recipient_account_number)
     if transfer_to_account.user:
         transfer_to_user = user_repository.find_by_id(str(transfer_to_account.user))
         issuer_name_to = transfer_to_user.login if transfer_to_user else "Unknown"
@@ -68,11 +68,11 @@ def prepare_transfer(transfer: Transfer, account: Account) -> HistoryTransferDto
     return HistoryTransferDto.from_transfer(transfer, is_income, issuer_name)
 
 
-def fetch_transfers(account_id: str) -> list[Transfer]:
+def fetch_transfers(account_number: str) -> list[Transfer]:
     query = {
         '$or': [
-            {'transfer_from_id': bson.ObjectId(account_id)},
-            {'transfer_to_id': bson.ObjectId(account_id)}
+            {'sender_account_number': account_number},
+            {'recipient_account_number': account_number}
         ]
     }
     sort_criteria = [("created", -1)]

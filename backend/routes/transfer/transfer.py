@@ -40,8 +40,8 @@ def create_transfer() -> Response:
         return create_simple_response("accountDontHaveEnoughMoney", HTTPStatus.BAD_REQUEST)
 
     transfer = Transfer(
-        sender_account_number=sender_account.id,
-        recipient_account_number=recipient_account.id,
+        sender_account_number=sender_account.account_number,
+        recipient_account_number=recipient_account.account_number,
         title=data['title'],
         amount=float(data['amount']))
     transfer_repository.insert(transfer)

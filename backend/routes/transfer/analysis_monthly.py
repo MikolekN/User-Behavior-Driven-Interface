@@ -40,8 +40,8 @@ def get_all_user_transfers_monthly() -> Response:
     start_date, end_date = f"{year}-01-01T00:00:00", f"{year}-12-31T23:59:59"
     query = {
         '$or': [
-            {'transfer_from_id': account.id},
-            {'transfer_to_id': account.id}
+            {'sender_account_number': account.account_number},
+            {'recipient_account_number': account.account_number}
         ],
         'created': {'$gte': start_date, '$lt': end_date}
     }

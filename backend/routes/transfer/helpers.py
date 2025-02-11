@@ -33,9 +33,9 @@ def serialize_transfer(transfer: Transfer, account: Account) -> dict[str, Any]:
     is_income = transfer.recipient_account_number == account.id
     transfer_dict['income'] = is_income
 
-    transfer_from_account = account_repository.find_by_id(str(transfer.sender_account_number))
+    transfer_from_account = account_repository.find_by_account_number(transfer.sender_account_number)
     transfer_from_user = user_repository.find_by_id(transfer_from_account.user)
-    transfer_to_account = account_repository.find_by_id(str(transfer.recipient_account_number))
+    transfer_to_account = account_repository.find_by_account_number(transfer.recipient_account_number)
     transfer_to_user = user_repository.find_by_id(transfer_to_account.user)
     transfer_dict['issuer_name'] = transfer_to_user.login if is_income else transfer_from_user.login
 

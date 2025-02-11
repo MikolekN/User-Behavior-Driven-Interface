@@ -8,8 +8,8 @@ from entity import BaseEntity
 
 @dataclass
 class Transfer(BaseEntity):
-    sender_account_number: Optional[bson.ObjectId] = None
-    recipient_account_number: Optional[bson.ObjectId] = None
+    sender_account_number: str = None
+    recipient_account_number: str = None
     title: Optional[str] = ''
     amount: Optional[float] = ''
 
@@ -18,8 +18,8 @@ class Transfer(BaseEntity):
         return Transfer(
             _id=bson.ObjectId(data['_id']) if '_id' in data else None,
             created=datetime.fromisoformat(data['created']) if 'created' in data else None,
-            sender_account_number=bson.ObjectId(data['sender_account_number']) if 'sender_account_number' in data else None,
-            recipient_account_number=bson.ObjectId(data['recipient_account_number']) if 'recipient_account_number' in data else None,
+            sender_account_number=data['sender_account_number'] if 'sender_account_number' in data else None,
+            recipient_account_number=data['recipient_account_number'] if 'recipient_account_number' in data else None,
             title=data.get('title', ''),
             amount=data.get('amount', 0)
         )
