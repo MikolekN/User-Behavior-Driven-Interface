@@ -163,4 +163,4 @@ def test_create_transfer_successful(client, test_user, test_account):
             "title": "title",
             'amount': 1.0
         })
-        assert_json_response(response, HTTPStatus.OK, 'transferCreatedSuccessful')
+        assert_json_response(response, HTTPStatus.CREATED, 'transferCreatedSuccessful')

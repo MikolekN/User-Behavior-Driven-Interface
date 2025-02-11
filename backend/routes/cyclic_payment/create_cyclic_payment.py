@@ -6,10 +6,8 @@ from flask_login import login_required, current_user
 
 from accounts import AccountRepository, Account
 from cyclic_payments import CyclicPayment, CyclicPaymentRepository
-from cyclic_payments.cyclic_payment_dto import CyclicPaymentDto
-from cyclic_payments.cyclic_payment_response import CyclicPaymentResponse
+from cyclic_payments.requests.create_cyclic_payment_request import CreateCyclicPaymentRequest
 from helpers import add
-from routes.cyclic_payment.helpers import validate_cyclic_payment_data
 from routes.helpers import create_simple_response
 from users import UserRepository, User
 
@@ -21,7 +19,7 @@ cyclic_payment_repository = CyclicPaymentRepository()
 def create_cyclic_payment() -> Response:
     data = request.get_json()
 
-    error = validate_cyclic_payment_data(data)
+    error = CreateCyclicPaymentRequest.validate_request(data)
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
@@ -33,7 +31,7 @@ def create_cyclic_payment() -> Response:
     if not account:
         return create_simple_response("accountNotExist", HTTPStatus.NOT_FOUND)
 
-    recipient_account = account_repository.find_by_account_number(data['recipientAccountNumber'])
+    recipient_account = account_repository.find_by_account_number(data['recipient_account_number'])
     if not recipient_account:
         return create_simple_response("accountNotExist", HTTPStatus.NOT_FOUND)
 
@@ -52,10 +50,8 @@ def create_cyclic_payment() -> Response:
         amount=float(data['amount']),
         start_date=datetime.fromisoformat(data['start_date']),
         interval=data['interval'])
-    cyclic_payment = cyclic_payment_repository.insert(cyclic_payment)
+    cyclic_payment_repository.insert(cyclic_payment)
 
     account_repository.update(account.id, {'blockades': add(float(account.blockades), float(data['amount']))})
 
-    cyclic_payment_dto = CyclicPaymentDto.from_cyclic_payment(cyclic_payment, recipient_account.account_number, recipient_user.login)
-
-    return CyclicPaymentResponse.create_response("cyclicPaymentCreatedSuccessful", cyclic_payment_dto.to_dict(), HTTPStatus.CREATED)
+    return create_simple_response("cyclicPaymentCreatedSuccessful", HTTPStatus.CREATED)

@@ -49,4 +49,4 @@ def create_transfer() -> Response:
     account_repository.update(str(sender_account.id), {'balance': subtract(float(sender_account.balance), float(data['amount']))})
     account_repository.update(str(recipient_account.id), {'balance': add(float(recipient_account.balance), float(data['amount']))})
 
-    return create_simple_response("transferCreatedSuccessful", HTTPStatus.OK)
+    return create_simple_response("transferCreatedSuccessful", HTTPStatus.CREATED)

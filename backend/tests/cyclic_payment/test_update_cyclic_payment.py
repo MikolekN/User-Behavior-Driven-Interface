@@ -1,8 +1,7 @@
 from http import HTTPStatus
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
-from tests.cyclic_payment.constants import TEST_CYCLIC_PAYMENT_ID, TEST_CYCLIC_PAYMENT_INVALID_ID, \
-    TEST_NOT_ENOUGH_USER_FUNDS, TEST_BIG_AMOUNT
+from tests.cyclic_payment.constants import TEST_CYCLIC_PAYMENT_ID, TEST_CYCLIC_PAYMENT_INVALID_ID
 from tests.cyclic_payment.helpers import get_cyclic_payment_not_valid, get_cyclic_payment
 from utils import assert_json_response
 

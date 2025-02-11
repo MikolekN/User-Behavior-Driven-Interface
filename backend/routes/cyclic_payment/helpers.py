@@ -1,34 +1,7 @@
 from collections.abc import Mapping
-from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from bson import ObjectId
-
-from cyclic_payments import CyclicPayment
-
-
-def validate_cyclic_payment_data(data: Optional[Mapping[str, Any]]) -> Optional[str]:
-    # TODO: lepsza walidacja na typy i zawartość np.
-    # - amount jak nie jest liczbą wywala backend, bez podania przyczyny
-    # - name i interval mogą być puste
-    if not data:
-        return "emptyRequestPayload"
-
-    message = validate_required_cyclic_payment_fields(data)
-    if message:
-        return message
-
-    amount = float(data.get('amount'))
-    if amount <= 0:
-        return "negativeAmount"
-
-    try:
-        start_date = data.get('start_date')
-        datetime.fromisoformat(start_date.replace('Z', '+00:00'))
-    except (TypeError, ValueError):
-        return "invalidDateFormat"
-
-    return None
 
 
 def validate_required_cyclic_payment_fields(data: Mapping[str, Any]) -> str | None:

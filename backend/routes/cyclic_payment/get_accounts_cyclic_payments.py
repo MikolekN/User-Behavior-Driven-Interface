@@ -5,8 +5,7 @@ from flask_login import login_required, current_user
 
 from accounts import AccountRepository, Account
 from cyclic_payments import CyclicPaymentRepository, CyclicPayment
-from cyclic_payments.cyclic_payment_dto import CyclicPaymentDto
-from cyclic_payments.user_cyclic_payments_response import UserCyclicPaymentsResponse
+from cyclic_payments.responses.get_accounts_cyclic_payments_response import GetAccountsCyclicPaymentsResponse
 from routes.helpers import create_simple_response
 from users import UserRepository, User
 
@@ -15,7 +14,7 @@ account_repository = AccountRepository()
 cyclic_payment_repository = CyclicPaymentRepository()
 
 @login_required
-def get_all_user_cyclic_payment() -> Response:
+def get_accounts_cyclic_payments() -> Response:
     user: User = user_repository.find_by_id(current_user.get_id())
     if not user:
         return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
@@ -32,11 +31,6 @@ def get_all_user_cyclic_payment() -> Response:
     if not cyclic_payments:
         return create_simple_response("cyclicPaymentListEmpty", HTTPStatus.NOT_FOUND)
 
-    cyclic_payment_dtos: list[dict] = [get_cyclic_payment_dto(cyclic_payment).to_dict() for cyclic_payment in cyclic_payments]
+    cyclic_payment_dtos: list[dict] = [cyclic_payment.to_dict() for cyclic_payment in cyclic_payments]
 
-    return UserCyclicPaymentsResponse.create_response("cyclicPaymentListGetSuccessful", cyclic_payment_dtos, HTTPStatus.OK)
-
-def get_cyclic_payment_dto(cyclic_payment: CyclicPayment) -> CyclicPaymentDto:
-    recipient_account: Account = account_repository.find_by_id(str(cyclic_payment.recipient_id))
-    recipient_user: User = user_repository.find_by_id(str(recipient_account.user))
-    return CyclicPaymentDto.from_cyclic_payment(cyclic_payment, recipient_account.account_number, recipient_user.login)
+    return GetAccountsCyclicPaymentsResponse.create_response("cyclicPaymentListGetSuccessful", cyclic_payment_dtos, HTTPStatus.OK)

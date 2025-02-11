@@ -1,13 +1,12 @@
 from http import HTTPStatus
 
 from flask import Response, request
-from flask_login import login_required, current_user
+from flask_login import login_required
 
 from accounts import Account, AccountRepository
 from cyclic_payments import CyclicPaymentRepository
-from cyclic_payments.cyclic_payment_dto import CyclicPaymentDto
-from cyclic_payments.cyclic_payment_response import CyclicPaymentResponse
-from helpers import add, subtract
+from cyclic_payments.responses.update_cyclic_payment_response import UpdateCyclicPaymentResponse
+from helpers import add
 from routes.cyclic_payment.helpers import validate_update_cyclic_payment
 from routes.helpers import create_simple_response
 from routes.transfer.helpers import prevent_unauthorised_account_access
@@ -53,6 +52,4 @@ def update_cyclic_payment(id) -> Response:
     if not updated_cyclic_payment:
         return create_simple_response("cyclicPaymentNotExist", HTTPStatus.NOT_FOUND)
 
-    cyclic_payment_dto = CyclicPaymentDto.from_cyclic_payment(updated_cyclic_payment, recipient_account.account_number, recipient_user.login)
-
-    return CyclicPaymentResponse.create_response("cyclicPaymentUpdatedSuccessful", cyclic_payment_dto.to_dict(), HTTPStatus.OK)
+    return UpdateCyclicPaymentResponse.create_response("cyclicPaymentUpdatedSuccessful", cyclic_payment.to_dict(), HTTPStatus.OK)

@@ -5,7 +5,7 @@ from flask import jsonify, Response, make_response
 
 
 @dataclass
-class UserCyclicPaymentsResponse:
+class GetAccountsCyclicPaymentsResponse:
 
     @classmethod
     def create_response(cls, message: str, cyclic_payments: list[dict], status: HTTPStatus) -> Response:
