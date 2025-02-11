@@ -27,7 +27,6 @@ def register() -> Response:
         role='USER',
         user_icon=None
     )
-    print(user)
     user_repository.insert(user)
 
     return create_simple_response("registerSuccessful", HTTPStatus.CREATED)

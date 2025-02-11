@@ -14,7 +14,7 @@ class BaseEntity(ABC):
         if self._id:
             entity_dict['_id'] = self._id if for_db else str(self._id)  # Keep as ObjectId if for_db=True
         if self.created:
-            entity_dict['created'] = self.created.isoformat()
+            entity_dict['created'] = self.created if for_db else self.created.isoformat()
         return entity_dict
 
     @staticmethod

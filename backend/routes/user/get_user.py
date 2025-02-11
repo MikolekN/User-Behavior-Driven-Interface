@@ -14,5 +14,4 @@ def get_user() -> Response:
     user = user_repository.find_by_id(current_user.get_id())
     if not user:
         return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
-
     return GetUserResponse.create_response("userFetchSuccessful", user.to_dict(), HTTPStatus.OK)

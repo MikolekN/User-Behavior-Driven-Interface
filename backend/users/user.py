@@ -30,11 +30,11 @@ class User(BaseEntity, UserMixin):
     def from_dict(data: Dict[str, Any]) -> 'User':
         return User(
             _id=bson.ObjectId(data['_id']) if '_id' in data else None,
-            created=datetime.fromisoformat(data['created']) if 'created' in data else None,
+            created=data['created'] if 'created' in data else None,
             login=data.get('login', ''),
             email=data.get('email', ''),
             password=data.get('password', ''),
-            active_account=bson.ObjectId(data['active_account']) if 'active_account' in data else None,
+            active_account=bson.ObjectId(data['active_account']) if data.get('active_account', None) else None,
             user_icon=data.get('user_icon', None),
             role=data.get('role', '')
         )
