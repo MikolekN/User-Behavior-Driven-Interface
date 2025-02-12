@@ -44,7 +44,7 @@ const CollapsibleTable = <T,>({ headers, rows, renderRow, renderRowDetails, acti
                                 onMouseLeave={() => setHovering(null)}
                             >
                                 {renderRow(row, activeIndex, hovering, idx)}
-                                <td className={`px-4 py-2 text-center rounded-tr ${activeIndex !== idx ? 'rounded-br' : ''}  ${hovering === idx && activeIndex !== idx ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}>
+                                <td className={`px-4 py-2 text-center rounded-tr ${activeIndex !== idx ? 'rounded-br' : ''}  ${hovering === idx && activeIndex !== idx ? 'bg-gray-100 dark:bg-gray-600' : 'bg-gray-50 dark:bg-gray-700'}`}>
                                     {activeIndex === idx ? 
                                         <>
                                             <img src={arrowUp} alt="▼" className='dark:hidden'/>

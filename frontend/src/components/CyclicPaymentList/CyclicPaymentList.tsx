@@ -71,7 +71,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                     setActiveIndex={setActiveIndex}
                     renderRow={(cyclicPayment, activeIndex, hovering, idx) => (
                         <>
-                            <td className={`px-4 py-2 text-center font-bold rounded-tl ${activeIndex !== idx ? 'rounded-bl' : ''} ${hovering === idx && activeIndex !== idx ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'} dark:text-gray-300`}>
+                            <td className={`px-4 py-2 text-center font-bold rounded-tl ${activeIndex !== idx ? 'rounded-bl' : ''} ${hovering === idx && activeIndex !== idx ? 'bg-gray-100 dark:bg-gray-600' : 'bg-gray-50 dark:bg-gray-700'} dark:text-gray-300`}>
                                 <div>
                                     <span className="block py-1">
                                         <b>{cyclicPayment.cyclicPaymentName}</b>
@@ -81,8 +81,8 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                     </span>
                                 </div>
                             </td>
-                            <td className={`px-4 py-2 text-center  ${hovering === idx && activeIndex !== idx ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'} dark:text-gray-300`}>{cyclicPayment.amount}</td>
-                            <td className={`px-4 py-2 text-center  ${hovering === idx && activeIndex !== idx ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'} dark:text-gray-300`}>{formatDate(cyclicPayment.startDate)}</td>
+                            <td className={`px-4 py-2 text-center  ${hovering === idx && activeIndex !== idx ? 'bg-gray-100 dark:bg-gray-600' : 'bg-gray-50 dark:bg-gray-700'} dark:text-gray-300`}>{cyclicPayment.amount}</td>
+                            <td className={`px-4 py-2 text-center  ${hovering === idx && activeIndex !== idx ? 'bg-gray-100 dark:bg-gray-600' : 'bg-gray-50 dark:bg-gray-700'} dark:text-gray-300`}>{formatDate(cyclicPayment.startDate)}</td>
                         </>
                     )}
                     renderRowDetails={(cyclicPayment) => (
