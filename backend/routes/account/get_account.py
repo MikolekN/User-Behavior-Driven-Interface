@@ -4,8 +4,7 @@ from flask import Response
 from flask_login import login_required, current_user
 
 from accounts import Account, AccountRepository
-from accounts.account_dto import AccountDto
-from accounts.account_response import AccountResponse
+from accounts.responses.get_account_response import GetAccountResponse
 from routes.helpers import create_simple_response
 
 account_repository = AccountRepository()
@@ -22,5 +21,4 @@ def get_account(account_number) -> Response:
     if not (str(account.user) == str(current_user.get_id())):
         return create_simple_response("unauthorisedAccountAccess", HTTPStatus.UNAUTHORIZED)
 
-    account_dto = AccountDto.from_account(account)
-    return AccountResponse.create_response("accountFetchSuccessful", account_dto.to_dict(), 200)
+    return GetAccountResponse.create_response("accountFetchSuccessful", account.to_dict(), HTTPStatus.OK)

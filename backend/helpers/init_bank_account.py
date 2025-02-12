@@ -12,8 +12,8 @@ def init_bank_account() -> Account | None:
         return None
 
     account: Account = Account(
-        account_name='BankName',
-        account_number=BANK_ACCOUNT_NUMBER,
+        name='BankName',
+        number=BANK_ACCOUNT_NUMBER,
         type='BANK',
         blockades=0,
         balance=0,

@@ -5,10 +5,10 @@ from flask import jsonify, Response, make_response
 
 
 @dataclass
-class AccountsResponse:
+class GetActiveAccountResponse:
 
     @classmethod
-    def create_response(cls, message: str, account: list[dict], status: HTTPStatus) -> Response:
+    def create_response(cls, message: str, account: dict, status: HTTPStatus) -> Response:
         response = make_response(jsonify({"message": message, "account": account}), status)
         response.headers["Content-Type"] = "application/json"
         return response

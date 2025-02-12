@@ -39,7 +39,6 @@ class User(BaseEntity, UserMixin):
             role=data.get('role', '')
         )
 
-
     def __repr__(self) -> str:
         return (f"User(login={self.login!r}, "
                 f"email={self.email!r}, "

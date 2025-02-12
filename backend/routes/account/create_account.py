@@ -4,7 +4,8 @@ from flask import Response, request
 from flask_login import login_required, current_user
 
 from accounts import AccountRepository, Account
-from routes.account.helpers import validate_account_data
+
+from accounts.requests.create_account_request import CreateAccountRequest
 from routes.helpers import create_simple_response
 from users import UserRepository, User
 
@@ -16,16 +17,24 @@ account_repository = AccountRepository()
 def create_account() -> Response:
     data = request.get_json()
 
-    error = validate_account_data(data)
+    error = CreateAccountRequest.validate_request(data)
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
     user: User = user_repository.find_by_id(current_user.get_id())
     if not user:
         return create_simple_response("userNotFound", HTTPStatus.NOT_FOUND)
-    data['user'] = user.id
 
-    account: Account = Account.from_dict(data)
+    account = Account(
+        name=data['name'],
+        type=data['type'],
+        currency=data['currency'],
+        number=Account.generate_account_number(),
+        blockades=0.0,
+        balance=0.0,
+        user=user.id
+    )
+    print(account)
     account_repository.insert(account)
 
     return create_simple_response("accountCreatedSuccessfully", HTTPStatus.CREATED)

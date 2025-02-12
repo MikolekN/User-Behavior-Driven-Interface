@@ -4,7 +4,7 @@ from flask import Response
 from flask_login import login_required, current_user
 
 from accounts import AccountRepository, Account
-from accounts.accounts_response import AccountsResponse
+from accounts.responses.get_accounts_response import GetAccountsResponse
 from routes.helpers import create_simple_response
 from users import UserRepository, User
 
@@ -17,11 +17,10 @@ def get_accounts() -> Response:
     if not user:
         return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
 
-    print(str(user.id))
     accounts: list[Account] = account_repository.find_accounts(str(user.id))
     if not accounts:
         return create_simple_response("accountsNotExist", HTTPStatus.NOT_FOUND)
 
     accounts_dto = [account.to_dict() for account in accounts]
 
-    return AccountsResponse.create_response("accountsFetchSuccessful", accounts_dto, HTTPStatus.OK)
+    return GetAccountsResponse.create_response("accountsFetchSuccessful", accounts_dto, HTTPStatus.OK)
