@@ -7,7 +7,7 @@ from bson import ObjectId
 def validate_required_cyclic_payment_fields(data: Mapping[str, Any]) -> str | None:
     required_fields = [
         'cyclic_payment_name',
-        'recipientAccountNumber',
+        'recipient_id',
         'transfer_title',
         'amount',
         'start_date',

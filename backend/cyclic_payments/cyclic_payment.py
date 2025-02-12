@@ -13,27 +13,28 @@ class CyclicPayment(BaseEntity):
     cyclic_payment_name: Optional[str] = ''
     transfer_title: Optional[str] = ''
     amount: Optional[float] = ''
-    start_date: datetime = field(default_factory=datetime.now)
+    start_date: Optional[datetime] = field(default_factory=datetime.now)
     interval: Optional[str] = ''
 
-    def to_dict(self) -> Dict[str, any]:
-        cyclic_payment_dict = super().to_dict()
-        cyclic_payment_dict['start_date'] = self.start_date.isoformat()
-        cyclic_payment_dict['issuer_id'] = str(self.issuer_id)
-        cyclic_payment_dict['recipient_id'] = str(self.recipient_id)
+    def to_dict(self, for_db: bool = False) -> Dict[str, any]:
+        cyclic_payment_dict = super().to_dict(for_db)
+        if not for_db:
+            cyclic_payment_dict['start_date'] = self.start_date.isoformat()
+            cyclic_payment_dict['issuer_id'] = str(self.issuer_id)
+            cyclic_payment_dict['recipient_id'] = str(self.recipient_id)
         return cyclic_payment_dict
     
     @staticmethod
     def from_dict(data: Dict[str, Any]) -> 'CyclicPayment':
         return CyclicPayment(
             _id=bson.ObjectId(data['_id']) if '_id' in data else None,
-            created=datetime.fromisoformat(data['created']) if 'created' in data else None,
-            issuer_id=bson.ObjectId(data['issuer_id']) if 'issuer_id' in data else None,
-            recipient_id=bson.ObjectId(data['recipient_id']) if 'recipient_id' in data else None,
+            created=data.get('created', None),
+            issuer_id=bson.ObjectId(data['issuer_id']) if data.get('issuer_id', None) else None,
+            recipient_id=bson.ObjectId(data['recipient_id']) if data.get('recipient_id', None) else None,
             cyclic_payment_name=data.get('cyclic_payment_name', ''),
             transfer_title=data.get('transfer_title', ''),
             amount=data.get('amount', 0),
-            start_date=datetime.fromisoformat(data['start_date']),
+            start_date=data.get('start_date', None),
             interval=data.get('interval', '')
         )
         

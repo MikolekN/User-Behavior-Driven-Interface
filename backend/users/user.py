@@ -30,7 +30,7 @@ class User(BaseEntity, UserMixin):
     def from_dict(data: Dict[str, Any]) -> 'User':
         return User(
             _id=bson.ObjectId(data['_id']) if '_id' in data else None,
-            created=data['created'] if 'created' in data else None,
+            created=data.get('created', None),
             login=data.get('login', ''),
             email=data.get('email', ''),
             password=data.get('password', ''),
