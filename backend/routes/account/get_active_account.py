@@ -17,6 +17,9 @@ def get_active_account() -> Response:
     if not user:
         return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
 
+    if not user.active_account:
+        return create_simple_response("activeAccountNotSet", HTTPStatus.BAD_REQUEST)
+
     account: Account = account_repository.find_by_id(str(user.active_account))
     if not account:
         return create_simple_response("accountNotExist", HTTPStatus.NOT_FOUND)

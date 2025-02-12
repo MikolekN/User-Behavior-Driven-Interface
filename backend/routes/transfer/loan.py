@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 from flask import Response, request
-from flask_login import login_required, current_user
+from flask_login import login_required
 
 from accounts import AccountRepository
 from constants import BANK_ACCOUNT_NUMBER
@@ -10,7 +10,7 @@ from routes.helpers import create_simple_response
 from routes.transfer.helpers import prevent_unauthorised_account_access
 from transfers import Transfer, TransferRepository
 from transfers.requests.create_loan_request_dto import CreateLoanRequestDto
-from users import User, UserRepository
+from users import UserRepository
 
 user_repository = UserRepository()
 account_repository = AccountRepository()
@@ -37,8 +37,8 @@ def create_loan_transfer() -> Response:
         return create_simple_response("bankAccountNotExist", HTTPStatus.NOT_FOUND)
 
     transfer = Transfer(
-                        sender_account_number=bank_account.account_number,
-                        recipient_account_number=recipient_account.account_number,
+                        sender_account_number=bank_account.number,
+                        recipient_account_number=recipient_account.number,
                         title=data['title'],
                         amount=float(data['amount']))
     transfer_repository.insert(transfer)

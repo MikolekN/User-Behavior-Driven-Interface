@@ -1,4 +1,5 @@
 from collections.abc import Mapping
+from datetime import datetime
 from http import HTTPStatus
 from typing import Any, Optional
 
@@ -40,10 +41,10 @@ def get_all_user_transfers_monthly() -> Response:
     start_date, end_date = f"{year}-01-01T00:00:00", f"{year}-12-31T23:59:59"
     query = {
         '$or': [
-            {'sender_account_number': account.account_number},
-            {'recipient_account_number': account.account_number}
+            {'sender_account_number': account.number},
+            {'recipient_account_number': account.number}
         ],
-        'created': {'$gte': start_date, '$lt': end_date}
+        'created': {'$gte': datetime.fromisoformat(start_date), '$lt': datetime.fromisoformat(end_date)}
     }
 
     transfers = transfer_repository.find_transfers(query)

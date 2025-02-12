@@ -17,17 +17,15 @@ class Transfer(BaseEntity):
     def from_dict(data: Dict[str, Any]) -> 'Transfer':
         return Transfer(
             _id=bson.ObjectId(data['_id']) if '_id' in data else None,
-            created=datetime.fromisoformat(data['created']) if 'created' in data else None,
+            created=data['created'] if 'created' in data else None,
             sender_account_number=data['sender_account_number'] if 'sender_account_number' in data else None,
             recipient_account_number=data['recipient_account_number'] if 'recipient_account_number' in data else None,
             title=data.get('title', ''),
             amount=data.get('amount', 0)
         )
 
-    def to_dict(self) -> Dict[str, Any]:
-        transfer_dict = super().to_dict()
-        transfer_dict['sender_account_number'] = str(self.sender_account_number)
-        transfer_dict['recipient_account_number'] = str(self.recipient_account_number)
+    def to_dict(self, for_db: bool = False) -> Dict[str, Any]:
+        transfer_dict = super().to_dict(for_db)
         return transfer_dict
 
     def __repr__(self) -> str:
