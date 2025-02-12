@@ -136,9 +136,26 @@
         "tile": {
             "title": "Konta"
         },
+        "accountName": "Nazwa konta",
+        "accountNumber": "Numer konta",
+        "blockades": "Blokady",
+        "balance": "Balans",
+        "currency": "Waluta",
+        "type": "Typ konta",
         "submit": "Dodaj konto",
         "edit": "Edytuj",
         "setActive": "Ustaw jako aktywne"
+    },
+    "accountTypes": {
+        "personal": "Konto osobiste",
+        "savings": "Konto oszczędnościowe",
+        "currency": "Konto walutowe",
+        "busines": "Konto biznesowe",
+        "youth": "Konto młodzieżowe",
+        "student": "Konto studenckie",
+        "retirement": "Konto emerytalne",
+        "BANK": "Bank",
+        "other": "Inne"
     },
     "accountFrom": {
         "tile": {

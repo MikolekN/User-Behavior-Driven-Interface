@@ -136,9 +136,26 @@
         "tile": {
             "title": "Accounts"
         },
+        "accountName": "Account name",
+        "accountNumber": "Account number",
+        "blockades": "Blockades",
+        "balance": "Balance",
+        "currency": "Currency",
+        "type": "Account type",
         "submit": "Add account",
         "edit": "Edit",
         "setActive": "Set active"
+    },
+    "accountTypes": {
+        "personal": "Personal account",
+        "savings": "Savings account",
+        "currency": "Currency account",
+        "busines": "Business account",
+        "youth": "Youth account",
+        "student": "Student account",
+        "retirement": "Retirement account",
+        "BANK": "Bank",
+        "other": "Other"
     },
     "accountFrom": {
         "tile": {
