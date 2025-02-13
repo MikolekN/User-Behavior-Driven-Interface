@@ -67,4 +67,4 @@ def update_cyclic_payment(id) -> Response:
     if not updated_cyclic_payment:
         return create_simple_response("cyclicPaymentNotExist", HTTPStatus.NOT_FOUND)
 
-    return UpdateCyclicPaymentResponse.create_response("cyclicPaymentUpdatedSuccessful", updated_cyclic_payment.to_dict(), HTTPStatus.OK)
+    return UpdateCyclicPaymentResponse.create_response("cyclicPaymentUpdateSuccessful", updated_cyclic_payment.to_dict(), HTTPStatus.OK)
