@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 from flask import request, Response
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, logout_user
 
 from routes.helpers import create_simple_response, verify_password, hash_password
 from users import User, UserRepository
@@ -28,6 +28,8 @@ def update_user() -> Response:
     if isinstance(result, Response):
         return result
     elif isinstance(result, User):
+        if 'new_password' in data:
+            logout_user()
         return UpdateUserResponse.create_response("userUpdateSuccessful", result.to_dict(), HTTPStatus.OK)
 
 def update_login(login: str) -> Response | User:
