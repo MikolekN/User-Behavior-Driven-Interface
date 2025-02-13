@@ -81,7 +81,7 @@ const CyclicPaymentsForm = () => {
             setCyclicPayment(null);
         }
 
-    }, [user, id, setCyclicPayment, getCyclicPayment, setCyclicPaymentFormDefaultValues]);
+    }, [user, id, setCyclicPayment, getCyclicPayment]);
 
     useEffect(() => {
         if (cyclicPayment) {
@@ -96,18 +96,22 @@ const CyclicPaymentsForm = () => {
         return localDate.toISOString();
     };
 
+    const getCyclicPaymentRequestBody = (data: CyclicPaymentFormData) => {
+        return {
+            cyclicPaymentName: data.cyclicPaymentName,
+            recipientAccountNumber: data.recipientAccountNumber,
+            transferTitle: data.transferTitle,
+            amount: data.amount,
+            startDate: toLocalISOString(data.startDate!),
+            interval: data.interval
+        };
+    };
+
     const onSubmit: SubmitHandler<CyclicPaymentFormData> = async (data: CyclicPaymentFormData) => {
         clearApiError();
+        const requestBody = getCyclicPaymentRequestBody(data);
         if (cyclicPayment === null) {
             try {
-                const requestBody = {
-                    cyclicPaymentName: data.cyclicPaymentName,
-                    recipientAccountNumber: data.recipientAccountNumber,
-                    transferTitle: data.transferTitle,
-                    amount: data.amount,
-                    startDate: toLocalISOString(data.startDate!),
-                    interval: data.interval
-                };
                 await createCyclicPayment(requestBody);
                 await getUser();
                 navigate('/dashboard');
@@ -117,14 +121,6 @@ const CyclicPaymentsForm = () => {
             }
         } else {
             try {
-                const requestBody = {
-                    cyclicPaymentName: data.cyclicPaymentName,
-                    recipientAccountNumber: data.recipientAccountNumber,
-                    transferTitle: data.transferTitle,
-                    amount: data.amount,
-                    startDate: toLocalISOString(data.startDate!),
-                    interval: data.interval
-                };
                 await updateCyclicPayment(id!, requestBody);
                 await getUser();
                 navigate('/dashboard');
