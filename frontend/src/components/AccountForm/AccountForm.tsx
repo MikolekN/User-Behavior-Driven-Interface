@@ -1,6 +1,6 @@
-import { useContext } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
 import { AccountContext } from '../../context/AccountContext';
 import Tile from '../Tile/Tile';
@@ -14,14 +14,16 @@ import ErrorAlert from '../Alerts/ErrorAlert';
 import { useTranslation } from 'react-i18next';
 import FormSelect from '../FormSelect/FormSelect';
 import { ACCOUNT_TYPE_SELECT_OPTIONS } from '../../pages/constants';
+import { Account } from '../utils/types/Account';
 
-const Account = () => {
+const AccountForm = () => {
     const { t } = useTranslation();
-    const { user } = useContext(UserContext);
-    const { createAccount, updateAccount } = useContext(AccountContext);
+    const { user, getUser } = useContext(UserContext);
+    const { accountNumber } = useParams();
+    const { account, setAccount, getAccount, createAccount, updateAccount } = useContext(AccountContext);
     const navigate = useNavigate();
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<AccountFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = useForm<AccountFormData>({
         resolver: zodResolver(AccountFormDataSchema),
         defaultValues: {
             accountName: '',
@@ -31,16 +33,73 @@ const Account = () => {
         mode: 'onSubmit'
     });
 
-    const onSubmit: SubmitHandler<AccountFormData> = async (data) => {
-        console.log(data);
+    const setAccountFormDefaultValues = useCallback(() => {
+        setValue('accountName', '');
+        setValue('accountType', '');
+        setValue('currency', '');
+    }, [setValue]);
+    
+    const setAccountFormEditValues = useCallback((account: Account) => {
+        setValue('accountName', account.accountName);
+        setValue('accountType', account.accountType);
+        setValue('currency', account.currency);
+    }, [setValue]);
+
+    useEffect(() => {
+        if (!user) return;
+
+        if (accountNumber) {
+            const fetchAccountByAccountNumber = async () => {
+                try {
+                    await getAccount(accountNumber);
+                } catch (error) {
+                    handleError(error);
+                }
+            };
+
+            void fetchAccountByAccountNumber();
+        } else {
+            setAccount(null);
+        }
+
+    }, [user, accountNumber, setAccount, getAccount]);
+
+    useEffect(() => {
+        if (account) {
+            setAccountFormEditValues(account);
+        } else {
+            setAccountFormDefaultValues();
+        }
+    }, [account, setAccountFormEditValues, setAccountFormDefaultValues]);
+
+    const getAccountRequestBody = (data: AccountFormData) => {
+        return {
+            accountName: data.accountName,
+            accountType: data.accountType,
+            currency: data.currency
+        };
+    };
+
+    const onSubmit: SubmitHandler<AccountFormData> = async (data: AccountFormData) => {
         clearApiError();
-        try {
-            createAccount({test: "test"}); // add real request body
-            navigate('/dashboard');
-        } catch (error) {
-            handleError(error);
-            ///////
-            scrollToTop('account-form-wrapper');
+        const requestBody = getAccountRequestBody(data);
+        if (account === null) {
+            try {
+                createAccount(requestBody);
+                navigate('/dashboard');
+            } catch (error) {
+                handleError(error);
+                scrollToTop('account-form-wrapper');
+            }
+        } else {
+            try {
+                await updateAccount(accountNumber!, requestBody);
+                await getUser();
+                navigate('/dashboard');
+            } catch (error) {
+                handleError(error);
+                scrollToTop('account-form-wrapper');
+            }
         }
     };
 
@@ -88,4 +147,4 @@ const Account = () => {
     );
 };
 
-export default Account;
+export default AccountForm;

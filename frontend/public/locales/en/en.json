@@ -148,7 +148,8 @@
         "accountType": "Account type",
         "submit": "Add account",
         "edit": "Edit",
-        "setActive": "Set active"
+        "setActive": "Set active",
+        "delete": "Delete"
     },
     "accountTypes": {
         "personal": "Personal account",

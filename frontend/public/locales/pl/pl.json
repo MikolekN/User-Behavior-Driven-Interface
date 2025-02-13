@@ -148,7 +148,8 @@
         "accountType": "Typ konta",
         "submit": "Dodaj konto",
         "edit": "Edytuj",
-        "setActive": "Ustaw jako aktywne"
+        "setActive": "Ustaw jako aktywne",
+        "delete": "Usuń"
     },
     "accountTypes": {
         "personal": "Konto osobiste",

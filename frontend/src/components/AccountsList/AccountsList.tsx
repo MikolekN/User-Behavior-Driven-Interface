@@ -3,21 +3,63 @@ import { Link } from 'react-router-dom';
 import Button from '../utils/Button';
 import { useTranslation } from 'react-i18next';
 import CollapsibleTable from '../CollapsibleTable/CollapsibleTable';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Label from '../utils/Label';
 import CollapsibleList from '../CollapsibleList/CollapsibleList';
+import { UserContext } from '../../context/UserContext';
+import { AccountContext } from '../../context/AccountContext';
+import useApiErrorHandler from '../../hooks/useApiErrorHandler';
+import { setActiveAccountData } from '../../services/accountService';
 
 interface AccountsListProps {
-    accounts: Account[];
+    accountsList: Account[];
 }
 
-const AccountsList = ({ accounts }: AccountsListProps) => {
+const AccountsList = ({ accountsList }: AccountsListProps) => {
     const { t } = useTranslation();
+    const { user, getUser } = useContext(UserContext);
+    const { deleteAccount } = useContext(AccountContext);
+    const { handleError } = useApiErrorHandler();
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
+    const [accounts, setAccounts] = useState<Account[]>([]);
 
-    const handleSetActive = (id: string) => {
-        console.log("activated account with id: ", id);
-    }
+    const resetActiveIndex = () => {
+        setActiveIndex(null);
+    };
+
+    useEffect(() => {
+        console.log(accountsList)
+        setAccounts(accountsList);
+    }, [accountsList]);
+
+    const handleSetActive = (accountNumber: string) => {
+        const setActiveAccount = async () => {
+            try {
+                await setActiveAccountData(accountNumber);
+                await getUser();
+            } catch (error) {
+                handleError(error);
+            }
+        }
+
+        setActiveAccount();
+    };
+
+    const handleDelete = (accountNumber: string) => {
+        const deleteCyclicPaymentItem = async () => {
+            try {
+                await deleteAccount(accountNumber);
+                resetActiveIndex();
+                await getUser();
+            } catch (error) {
+                handleError(error);
+            }
+        };
+
+        void deleteCyclicPaymentItem().then(() => {
+            setAccounts(accounts => accounts.filter(x => x.accountNumber !== accountNumber));
+        });
+    };
 
     return (
         <div>
@@ -78,13 +120,16 @@ const AccountsList = ({ accounts }: AccountsListProps) => {
                                 </div>
                             </div>
                             <div className="flex justify-end space-x-4 w-full">
+                                <Button onClick={() => handleSetActive(account.accountNumber)} className="w-2/6 bg-green-600 hover:bg-green-700 dark:bg-emerald-950 dark:hover:bg-emerald-900 mt-1 ml-10">
+                                    {t('accountList.setActive')}
+                                </Button>
                                 <Link to={`/create-account`} className="w-1/6">
                                     <Button className="w-full mt-1 dark:bg-slate-900 dark:hover:bg-slate-800">
                                         {t('accountList.edit')}
                                     </Button>
                                 </Link>
-                                <Button onClick={() => handleSetActive(account.id!)} className="w-2/6 bg-green-600 hover:bg-green-700 dark:bg-emerald-950 dark:hover:bg-emerald-900 mt-1 ml-10">
-                                    {t('accountList.setActive')}
+                                <Button onClick={() => handleDelete(account.accountNumber)} className="w-1/6 bg-red-600 hover:bg-red-700 dark:bg-rose-950 dark:hover:bg-rose-900 mt-1 ml-10">
+                                    {t('accountList.delete')}
                                 </Button>
                             </div>
                         </div>
@@ -116,10 +161,13 @@ const AccountsList = ({ accounts }: AccountsListProps) => {
                                     <Button className="dark:bg-slate-900 dark:hover:bg-slate-800">{t('accountList.edit')}</Button>
                                 </Link>
                                 <Button
-                                    onClick={() => handleSetActive(account.id!)}
+                                    onClick={() => handleSetActive(account.accountNumber)}
                                     className="bg-green-600 hover:bg-green-700 dark:bg-emerald-950 dark:hover:bg-emerald-900"
                                 >
                                     {t('accountList.setActive')}
+                                </Button>
+                                <Button onClick={() => handleDelete(account.accountNumber)} className="w-5/12 bg-red-600 hover:bg-red-700 dark:bg-rose-950 dark:hover:bg-rose-900 mt-1 ml-10">
+                                    {t('accountList.delete')}
                                 </Button>
                             </div>
                         </div>

@@ -15,10 +15,7 @@ const Accounts = () => {
     const { user } = useContext(UserContext);
     const { apiError, handleError } = useApiErrorHandler();
     const [ loading, setLoading ] = useState(true);
-    
-    //
     const { accounts, getAccounts } = useContext(AccountContext);
-    //
 
     useEffect(() => {
         if (!user) return;
@@ -59,7 +56,7 @@ const Accounts = () => {
                         <div>Accounts are loading...</div>
                     )}
                     {accounts && accounts.length > 0 && (
-                        <AccountsList accounts={accounts} />
+                        <AccountsList accountsList={accounts} />
                     )}
                 </div>
             </Tile>
