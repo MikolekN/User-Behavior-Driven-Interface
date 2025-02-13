@@ -29,5 +29,5 @@ def update_account(account_number) -> Response:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
     account_repository.update(str(account.id), data)
-    updated_account = account_repository.find_by_id(account.id)
+    updated_account = account_repository.find_by_id(str(account.id))
     return UpdateAccountResponse.create_response("accountUpdateSuccessful", updated_account.to_dict(), HTTPStatus.OK)

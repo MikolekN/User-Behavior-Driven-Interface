@@ -24,6 +24,7 @@ def get_user_icon() -> Response:
     except Exception as e:
         return create_simple_response(f"sendIconFailed;{str(e)}", HTTPStatus.INTERNAL_SERVER_ERROR)
 
+# TODO: separate for two different messages
 def get_user_data_and_icon_path(user_id: str) -> tuple[dict | None, str | None]:
     user_data: User = user_repository.find_by_id(user_id)
     if not user_data or not user_data.user_icon:

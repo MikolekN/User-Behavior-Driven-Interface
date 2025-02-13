@@ -33,7 +33,7 @@ def update_user() -> Response:
 def update_login(login: str) -> Response | User:
     login_data = {'login': login}
     try:
-        updated_user: User = user_repository.update(current_user._id, login_data)
+        updated_user: User = user_repository.update(str(current_user.id), login_data)
         if not updated_user:
             return create_simple_response("userUpdateNotFound", HTTPStatus.NOT_FOUND)
         return updated_user

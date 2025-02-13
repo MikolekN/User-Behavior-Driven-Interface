@@ -34,7 +34,6 @@ def create_account() -> Response:
         balance=0.0,
         user=user.id
     )
-    print(account)
     account_repository.insert(account)
 
     return create_simple_response("accountCreatedSuccessfully", HTTPStatus.CREATED)

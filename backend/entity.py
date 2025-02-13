@@ -8,6 +8,7 @@ import bson
 class BaseEntity(ABC):
     _id: Optional[bson.ObjectId] = field(default_factory=bson.ObjectId)
     created: Optional[datetime] = field(default_factory=datetime.now)
+    is_deleted: bool = field(default=False)
 
     def to_dict(self, for_db: bool = False) -> Dict[str, Any]:
         entity_dict = asdict(self) # this works because the class is abstract and the classes that implement this class are of typ 'DataclassInstance'
@@ -23,8 +24,8 @@ class BaseEntity(ABC):
         pass
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(_id={self._id}, created={self.created})"
+        return f"{self.__class__.__name__}(_id={self._id}, created={self.created}, is_deleted={self.is_deleted})"
 
     @property
-    def id(self):
+    def id(self) -> bson.ObjectId:
         return self._id

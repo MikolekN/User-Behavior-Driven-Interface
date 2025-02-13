@@ -26,6 +26,6 @@ def set_active_account(account_number: str) -> Response:
         return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
 
     user.active_account = account.id
-    user_repository.update(user.id, {'active_account': account.id})
+    user_repository.update(str(user.id), {'active_account': account.id})
 
     return create_simple_response("activeAccountSetSuccessful", HTTPStatus.OK)

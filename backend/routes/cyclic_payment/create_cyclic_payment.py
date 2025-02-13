@@ -52,6 +52,6 @@ def create_cyclic_payment() -> Response:
         interval=data['interval'])
     cyclic_payment_repository.insert(cyclic_payment)
 
-    account_repository.update(account.id, {'blockades': add(float(account.blockades), float(data['amount']))})
+    account_repository.update(str(account.id), {'blockades': add(float(account.blockades), float(data['amount']))})
 
     return create_simple_response("cyclicPaymentCreatedSuccessful", HTTPStatus.CREATED)

@@ -52,7 +52,7 @@ def update_cyclic_payment(id) -> Response:
     if issuer_account.get_available_funds() + float(cyclic_payment.amount) - float(data['amount']) < 0:
         return create_simple_response("userDontHaveEnoughMoney", HTTPStatus.BAD_REQUEST)
 
-    account_repository.update(issuer_account.id, {'blockades': add(float(issuer_account.blockades), float(cyclic_payment.amount))})
+    account_repository.update(str(issuer_account.id), {'blockades': add(float(issuer_account.blockades), float(cyclic_payment.amount))})
 
     data = {
         "issuer_id": issuer_account.id,

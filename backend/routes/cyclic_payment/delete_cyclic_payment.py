@@ -32,7 +32,7 @@ def delete_cyclic_payment(id) -> Response:
     if prevent_unauthorised_account_access(account):
         return create_simple_response("unauthorisedAccountAccess", HTTPStatus.UNAUTHORIZED)
 
-    account_repository.update(account.id, {'blockades': subtract(float(account.blockades), float(cyclic_payment.amount))})
+    account_repository.update(str(account.id), {'blockades': subtract(float(account.blockades), float(cyclic_payment.amount))})
 
     cyclic_payment_repository.delete(str(id))
 

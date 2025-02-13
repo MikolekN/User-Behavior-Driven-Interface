@@ -53,18 +53,18 @@ def get_all_user_transfers() -> Response:
 
 
 def prepare_transfer(transfer: Transfer, account: Account) -> (dict, bool, str):
-    is_income = transfer.recipient_account_number == account.id
+    is_income = transfer.recipient_account_number == account.number
 
-    transfer_from_account: Account = account_repository.find_by_account_number(transfer.sender_account_number)
+    transfer_from_account: Account = account_repository.find_by_account_number_full(transfer.sender_account_number)
     if transfer_from_account.user:
-        transfer_from_user = user_repository.find_by_id(str(transfer_from_account.user))
+        transfer_from_user = user_repository.find_by_id_full(str(transfer_from_account.user))
         issuer_name_from = transfer_from_user.login if transfer_from_user else "Unknown"
     else:
         issuer_name_from = transfer_from_account.name
 
-    transfer_to_account: Account = account_repository.find_by_account_number(transfer.recipient_account_number)
+    transfer_to_account: Account = account_repository.find_by_account_number_full(transfer.recipient_account_number)
     if transfer_to_account.user:
-        transfer_to_user = user_repository.find_by_id(str(transfer_to_account.user))
+        transfer_to_user = user_repository.find_by_id_full(str(transfer_to_account.user))
         issuer_name_to = transfer_to_user.login if transfer_to_user else "Unknown"
     else:
         issuer_name_to = transfer_to_account.name

@@ -16,10 +16,9 @@ def register() -> Response:
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
-    if user_repository.find_by_email(data['email']):
+    if user_repository.find_by_email_full(data['email']):
         return create_simple_response("userExist", HTTPStatus.CONFLICT)
 
-    # TODO: Separate user creation logic from register endpoint
     user = User(
         login=data['email'],
         email=data['email'],

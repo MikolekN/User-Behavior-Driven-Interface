@@ -30,14 +30,18 @@ def serialize_transfers(transfers: list[Transfer], account: Account) -> list[dic
 def serialize_transfer(transfer: Transfer, account: Account) -> dict[str, Any]:
     transfer_dict = transfer.to_dict()
 
-    is_income = transfer.recipient_account_number == account.id
+    is_income = transfer.recipient_account_number == account.number
     transfer_dict['income'] = is_income
 
-    transfer_from_account = account_repository.find_by_account_number(transfer.sender_account_number)
-    transfer_from_user = user_repository.find_by_id(transfer_from_account.user)
-    transfer_to_account = account_repository.find_by_account_number(transfer.recipient_account_number)
-    transfer_to_user = user_repository.find_by_id(transfer_to_account.user)
-    transfer_dict['issuer_name'] = transfer_to_user.login if is_income else transfer_from_user.login
+    transfer_to_account = account_repository.find_by_account_number_full(transfer.recipient_account_number)
+    transfer_to_user = user_repository.find_by_id_full(str(transfer_to_account.user))
+
+    transfer_from_account = account_repository.find_by_account_number_full(transfer.sender_account_number)
+    if transfer_from_account.user:
+        transfer_from_user = user_repository.find_by_id_full(str(transfer_from_account.user))
+        transfer_dict['issuer_name'] = transfer_to_user.login if is_income else transfer_from_user.login
+    else:
+        transfer_dict['issuer_name'] = transfer_to_user.login
 
     return sanitize_transfer_dict(transfer_dict)
 
