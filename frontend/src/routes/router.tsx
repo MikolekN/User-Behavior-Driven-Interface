@@ -18,7 +18,7 @@ import Loan from '../pages/Loan/Loan';
 import PageNotFound from '../pages/PageNotFound/PageNotFound';
 import PrivateRoute from './PrivateRoute';
 import Accounts from '../pages/Accounts/Accounts';
-import AccountFrom from '../components/AccountForm/AccountForm';
+import AccountForm from '../components/AccountForm/AccountForm';
 
 export const router = createBrowserRouter([
     {
@@ -43,12 +43,13 @@ export const router = createBrowserRouter([
                     { path: '/transactions/history', element: <TransactionsHistory /> },
                     { path: '/transactions/analysis/monthly', element: <TransactionsMonthlyAnalysis /> },
                     { path: '/transactions/analysis/yearly', element: <TransactionsYearlyAnalysis /> },
-                    { path: '/create-cyclic-payment', element: <CyclicPaymentsForm key="create"/> },
-                    { path: '/edit-cyclic-payment/:id', element: <CyclicPaymentsForm key="edit"/> },
+                    { path: '/create-cyclic-payment', element: <CyclicPaymentsForm key="create" /> },
+                    { path: '/edit-cyclic-payment/:id', element: <CyclicPaymentsForm key="edit" /> },
                     { path: '/cyclic-payments', element: <CyclicPayments /> },
                     { path: '/profile', element: <Profile /> },
                     { path: '/accounts', element: <Accounts /> },
-                    { path: 'create-account', element: <AccountFrom />}
+                    { path: '/create-account', element: <AccountForm key="create" />},
+                    { path: '/edit-account/:accountNumber', element: <AccountForm key="edit" />}
                 ]
             },
         ],
