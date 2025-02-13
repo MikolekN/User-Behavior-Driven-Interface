@@ -43,7 +43,7 @@ const CyclicPayments = () => {
                 alertMessage={apiError.errorMessage}
             >
                 <Link to={'/create-cyclic-payment/'} className="justify-self-end p-2">
-                    <Button>+ {t('cyclicPaymentList.submit')}</Button>
+                    <Button className="dark:bg-slate-900 dark:hover:bg-slate-800">+ {t('cyclicPaymentList.submit')}</Button>
                 </Link>
             </EmptyResponseInfoAlert>
         );

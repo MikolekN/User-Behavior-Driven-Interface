@@ -23,10 +23,10 @@ export const FIELD_SELECT_OPTIONS = [
 ];
 
 export const INTERVAL_SELECT_OPTIONS = [
-    { value: 'Every 7 days', key: 'week' },
-    { value: 'Every month', key: 'month' },
-    { value: 'Every 3 months', key: 'quarter' },
-    { value: 'Every 6 months', key: 'halfYear' }
+    { value: 'week', key: 'week' },
+    { value: 'month', key: 'month' },
+    { value: 'quarter', key: 'quarter' },
+    { value: 'halfYear', key: 'halfYear' }
 ];
 
 export const ACCOUNT_TYPE_SELECT_OPTIONS = [
