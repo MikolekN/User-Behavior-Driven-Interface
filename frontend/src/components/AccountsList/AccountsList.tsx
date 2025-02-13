@@ -70,9 +70,9 @@ const AccountsList = ({ accounts }: AccountsListProps) => {
                                         </div>
                                     </div>
                                     <div className="mb-4">
-                                        <Label label={t('accountList.type')}/>
+                                        <Label label={t('accountList.accountType')}/>
                                         <div className="pl-4 dark:text-gray-300">
-                                            <i>{t(`accountTypes.${account.type}`)}</i>
+                                            <i>{t(`accountTypes.${account.accountType}`)}</i>
                                         </div>
                                     </div>
                                 </div>

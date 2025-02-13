@@ -125,7 +125,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                     <div className="mb-4">
                                         <Label label={t('cyclicPaymentList.transferInterval')}/>
                                         <div className="pl-4 dark:text-gray-300">
-                                            <i>{cyclicPayment.interval}</i>
+                                            <i>{t(`cyclicPaymentList.${cyclicPayment.interval}`)}</i>
                                         </div>
                                     </div>
                                 </div>

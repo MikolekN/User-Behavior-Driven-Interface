@@ -114,7 +114,11 @@
         "transferInterval": "Interwał przelewu",
         "edit": "Edytuj",
         "delete": "Usuń",
-        "emptyList": "Lista jest pusta"
+        "emptyList": "Lista jest pusta",
+        "week": "Co tydzień",
+        "month": "Co miesiąc",
+        "quarter": "Co kwartał",
+        "halfYear": "Co pół roku"
     },
     "cyclicPaymentForm": {
         "tile": {
@@ -141,7 +145,7 @@
         "blockades": "Blokady",
         "balance": "Balans",
         "currency": "Waluta",
-        "type": "Typ konta",
+        "accountType": "Typ konta",
         "submit": "Dodaj konto",
         "edit": "Edytuj",
         "setActive": "Ustaw jako aktywne"

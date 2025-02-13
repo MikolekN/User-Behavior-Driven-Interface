@@ -114,7 +114,11 @@
         "transferInterval": "Transfer interval",
         "edit": "Edit",
         "delete": "Delete",
-        "emptyList": "List is empty"
+        "emptyList": "List is empty",
+        "week": "Every week",
+        "month": "Every month",
+        "quarter": "Every quarter",
+        "halfYear": "Every half a year"
     },
     "cyclicPaymentForm": {
         "tile": {
@@ -141,7 +145,7 @@
         "blockades": "Blockades",
         "balance": "Balance",
         "currency": "Currency",
-        "type": "Account type",
+        "accountType": "Account type",
         "submit": "Add account",
         "edit": "Edit",
         "setActive": "Set active"
@@ -157,7 +161,7 @@
         "BANK": "Bank",
         "other": "Other"
     },
-    "accountFrom": {
+    "accountForm": {
         "tile": {
             "title": "Add account"
         },
