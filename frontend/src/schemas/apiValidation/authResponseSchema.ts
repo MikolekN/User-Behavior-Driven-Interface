@@ -16,8 +16,7 @@ export const UserData = z.object({
 });
 
 export const LoginResponseSchema = z.object({
-    message: requiredStringField(),
-    user: UserData
+    message: requiredStringField()
 });
 
 export type LoginResponse = z.infer<typeof LoginResponseSchema>;

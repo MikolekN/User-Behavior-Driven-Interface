@@ -4,15 +4,13 @@ import { requiredStringField } from '../common/commonValidators';
 // GetLogin
 
 export const UserData = z.object({
+    _id: requiredStringField(),
     login: requiredStringField(),
     email: requiredStringField().email(),
-    account_name: requiredStringField(),
-    account_number: requiredStringField(),
-    blockades: z.number(),
-    balance: z.number(),
-    currency: requiredStringField(),
-    role: requiredStringField(),
-    icon: z.custom<File>().nullable().optional()
+    active_account: z.string().nullable(),
+    created: requiredStringField(),
+    is_deleted: z.boolean(),
+    role: requiredStringField()
 });
 
 export const GetUserResponseSchema = z.object({
