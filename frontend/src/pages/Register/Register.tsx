@@ -1,16 +1,16 @@
 import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
-import Tile from '../components/Tile/Tile';
-import FormInput from '../components/FormInput/FormInput';
-import Button from '../components/utils/Button';
-import { UserContext } from '../context/UserContext';
-import { AuthContext } from '../context/AuthContext';
+import Tile from '../../components/Tile/Tile';
+import FormInput from '../../components/FormInput/FormInput';
+import Button from '../../components/utils/Button';
+import { UserContext } from '../../context/UserContext';
+import { AuthContext } from '../../context/AuthContext';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { RegisterFormData, RegisterFormDataSchema } from '../schemas/formValidation/registerSchema';
-import useApiErrorHandler from '../hooks/useApiErrorHandler';
-import ErrorAlert from '../components/Alerts/ErrorAlert';
-import { scrollToTop } from '../components/utils/scroll';
+import { RegisterFormData, RegisterFormDataSchema } from '../../schemas/formValidation/registerSchema';
+import useApiErrorHandler from '../../hooks/useApiErrorHandler';
+import ErrorAlert from '../../components/Alerts/ErrorAlert';
+import { scrollToTop } from '../../components/utils/scroll';
 import { useTranslation } from 'react-i18next';
 
 const Register = () => {
@@ -74,7 +74,7 @@ const Register = () => {
                                 error={errors.confirmPassword}
                                 className="w-full"
                             />
-                            <Button isSubmitting={isSubmitting} className="w-full">
+                            <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
 						        {isSubmitting ? `${t('register.loading')}` : `${t('register.submit')}`}
                             </Button>
                         </form>

@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext, useRef, FC } from 'react';
-import Tile from '../components/Tile/Tile';
+import Tile from '../../components/Tile/Tile';
 import './Chat.css';
-import send_arrow from '../assets/images/send.png';
-import { UserContext } from '../context/UserContext';
+import send_arrow from '../../assets/images/send.png';
+import { UserContext } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
 
 type MessageType = 'user' | 'system';

@@ -27,7 +27,7 @@ const CyclicPaymentsForm = () => {
     const { t } = useTranslation();
     const { id } = useParams();
     const [ date, setDate ] = useState<Date | undefined | null>(undefined);
-    const [ minDate, ] = useState<Date | undefined>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
+    const [ minDate, setMinDate ] = useState<Date | undefined | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
     const { cyclicPayment, setCyclicPayment, createCyclicPayment, getCyclicPayment, 
@@ -49,6 +49,7 @@ const CyclicPaymentsForm = () => {
         setValue('recipientAccountNumber', '');
         setValue('transferTitle', '');
         setValue('amount', '');
+        setMinDate(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
         setDate(null);
         setValue('interval', '');
     }, [setValue]);
@@ -58,6 +59,7 @@ const CyclicPaymentsForm = () => {
         setValue('recipientAccountNumber', cyclicPayment.recipientAccountNumber);
         setValue('transferTitle', cyclicPayment.transferTitle);
         setValue('amount', cyclicPayment.amount.toString());
+        setMinDate(cyclicPayment.startDate)
         setDate(cyclicPayment.startDate);
         setValue('interval', cyclicPayment.interval);
     }, [setValue]);
@@ -79,7 +81,7 @@ const CyclicPaymentsForm = () => {
             setCyclicPayment(null);
         }
 
-    }, [user, id, setCyclicPayment, getCyclicPayment, setCyclicPaymentFormDefaultValues]);
+    }, [user, id, setCyclicPayment, getCyclicPayment]);
 
     useEffect(() => {
         if (cyclicPayment) {
@@ -94,18 +96,22 @@ const CyclicPaymentsForm = () => {
         return localDate.toISOString();
     };
 
+    const getCyclicPaymentRequestBody = (data: CyclicPaymentFormData) => {
+        return {
+            cyclicPaymentName: data.cyclicPaymentName,
+            recipientAccountNumber: data.recipientAccountNumber,
+            transferTitle: data.transferTitle,
+            amount: data.amount,
+            startDate: toLocalISOString(data.startDate!),
+            interval: data.interval
+        };
+    };
+
     const onSubmit: SubmitHandler<CyclicPaymentFormData> = async (data: CyclicPaymentFormData) => {
         clearApiError();
+        const requestBody = getCyclicPaymentRequestBody(data);
         if (cyclicPayment === null) {
             try {
-                const requestBody = {
-                    cyclicPaymentName: data.cyclicPaymentName,
-                    recipientAccountNumber: data.recipientAccountNumber,
-                    transferTitle: data.transferTitle,
-                    amount: data.amount,
-                    startDate: toLocalISOString(data.startDate!),
-                    interval: data.interval
-                };
                 await createCyclicPayment(requestBody);
                 await getUser();
                 navigate('/dashboard');
@@ -115,14 +121,6 @@ const CyclicPaymentsForm = () => {
             }
         } else {
             try {
-                const requestBody = {
-                    cyclicPaymentName: data.cyclicPaymentName,
-                    recipientAccountNumber: data.recipientAccountNumber,
-                    transferTitle: data.transferTitle,
-                    amount: data.amount,
-                    startDate: toLocalISOString(data.startDate!),
-                    interval: data.interval
-                };
                 await updateCyclicPayment(id!, requestBody);
                 await getUser();
                 navigate('/dashboard');
@@ -181,14 +179,12 @@ const CyclicPaymentsForm = () => {
                                         {/* TODO: inne kolory border i ring, oraz dark theme */}
                                         <Flowbite theme={{ theme: errors.startDate ? datepickerErrorTheme : datepickerTheme }}>
                                             <Datepicker
-                                                // dodanie jakiejś logiki przy i18next                             
                                                 language={localStorage.getItem('language') || 'en'}
                                                 minDate={minDate!}
                                                 weekStart={1} // Monday
                                                 onChange={handleDateChange}
                                                 showClearButton={false}
                                                 showTodayButton={false}
-                                                defaultValue={undefined}
                                                 value={date}
                                                 label={t('cyclicPaymentForm.startDatePlaceholder')}
                                             />
@@ -202,7 +198,7 @@ const CyclicPaymentsForm = () => {
                             <FormSelect
                                 label={t('cyclicPaymentForm.transferInterval')}
                                 options={INTERVAL_SELECT_OPTIONS}
-                                defaultOption='-- Select Interval --'
+                                defaultOption={t('cyclicPaymentForm.selectInterval')}
                                 register={register('interval')}
                                 error={errors.interval}
                                 className="w-full"
@@ -223,7 +219,7 @@ const CyclicPaymentsForm = () => {
                             >
                                 {user!.currency}
                             </FormInput>
-                            <Button isSubmitting={isSubmitting} className="w-full">
+                            <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
 						        {isSubmitting ? `${t('cyclicPaymentForm.loading')}` : `${t('cyclicPaymentForm.submit')}`}
                             </Button>
                         </form>

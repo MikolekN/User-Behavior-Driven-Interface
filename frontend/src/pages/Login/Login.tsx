@@ -1,16 +1,16 @@
 import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { UserContext } from '../context/UserContext';
-import { AuthContext } from '../context/AuthContext';
-import Tile from '../components/Tile/Tile';
-import FormInput from '../components/FormInput/FormInput';
-import Button from '../components/utils/Button';
+import { UserContext } from '../../context/UserContext';
+import { AuthContext } from '../../context/AuthContext';
+import Tile from '../../components/Tile/Tile';
+import FormInput from '../../components/FormInput/FormInput';
+import Button from '../../components/utils/Button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LoginFormData, LoginFormDataSchema } from '../schemas/formValidation/loginSchema';
-import useApiErrorHandler from '../hooks/useApiErrorHandler';
-import { scrollToTop } from '../components/utils/scroll';
-import ErrorAlert from '../components/Alerts/ErrorAlert';
+import { LoginFormData, LoginFormDataSchema } from '../../schemas/formValidation/loginSchema';
+import useApiErrorHandler from '../../hooks/useApiErrorHandler';
+import { scrollToTop } from '../../components/utils/scroll';
+import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import { useTranslation } from 'react-i18next';
 
 const Login = () => {
@@ -67,7 +67,7 @@ const Login = () => {
                                 error={errors.password}
                                 className="w-full"
                             />
-                            <Button isSubmitting={isSubmitting} className="w-full">
+                            <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
 						        {isSubmitting ? `${t('login.loading')}` : `${t('login.submit')}`}
                             </Button>
                         </form>

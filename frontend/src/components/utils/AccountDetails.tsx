@@ -11,7 +11,7 @@ const AccountDetails = ({ label, user, className = '' }: AccountDetailsProps) =>
     return (
         <div className="my-4">
             <Label label={label} />
-            <div className={`${className} text-gray-700 dark:text-gray-400 bg-gray-300 dark:bg-gray-600 border border-gray-300 dark:border-gray-600 rounded-lg`} >
+            <div className={`${className} text-gray-700 dark:text-gray-400 bg-gray-300 dark:bg-gray-600 border border-gray-300 dark:border-gray-600 rounded-lg text-sm md:text-base`} >
                 <p>
                     {user.accountName} {`(${user.availableFunds} ${user.currency})`}
                 </p>

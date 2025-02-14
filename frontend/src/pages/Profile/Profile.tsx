@@ -195,7 +195,7 @@ const ProfilePage = () => {
                                 className="w-full"
                             />
                             <div className="flex justify-center">
-                                <Button isSubmitting={isIconFormSubmitting}>
+                                <Button isSubmitting={isIconFormSubmitting} className="dark:bg-slate-900 dark:hover:bg-slate-800">
                                     {isIconFormSubmitting ? `${t('profile.icon.loading')}` : `${t('profile.icon.submit')}`}
                                 </Button>
                             </div>
@@ -228,7 +228,7 @@ const ProfilePage = () => {
                                 className="w-full"
                             />
                             <div className="flex justify-center">
-                                <Button isSubmitting={isFieldFormSubmitting}>
+                                <Button isSubmitting={isFieldFormSubmitting} className="dark:bg-slate-900 dark:hover:bg-slate-800">
                                     {isFieldFormSubmitting ? `${t('profile.field.loading')}` : `${t('profile.field.submit')}`}
                                 </Button>
                             </div>
@@ -259,7 +259,7 @@ const ProfilePage = () => {
                                 className="w-full"
                             />
                             <div className="flex justify-center">
-                                <Button isSubmitting={isPasswordFormSubmitting}>
+                                <Button isSubmitting={isPasswordFormSubmitting} className="dark:bg-slate-900 dark:hover:bg-slate-800">
                                     {isPasswordFormSubmitting ? `${t('profile.password.loading')}` : `${t('profile.password.submit')}`}
                                 </Button>
                             </div>

@@ -30,12 +30,12 @@ const Dashboard = () => {
                             <p>{user!.accountNumber}</p>
                         </div>
                         <Link to="/transfer" className='hidden md:block mt-2'>
-                            <Button>{t('dashboard.transfer')}</Button>
+                            <Button className="dark:bg-slate-900 dark:hover:bg-slate-800">{t('dashboard.transfer')}</Button>
                         </Link>
                     </div>
                     <div className="order-2 w-fit md:hidden">
                         <Link to="/transfer">
-                            <Button>{t('dashboard.transfer')}</Button>
+                            <Button className="dark:bg-slate-900 dark:hover:bg-slate-800">{t('dashboard.transfer')}</Button>
                         </Link>
                     </div>
                 </div>

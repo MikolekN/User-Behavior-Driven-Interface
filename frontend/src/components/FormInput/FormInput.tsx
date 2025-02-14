@@ -18,8 +18,6 @@ const getZodValidationErrorFormField = (error?: FieldError): string => {
     const fieldName: string = errorSplit[0];
     const fieldRestriction: string = errorSplit[1] || "";
 
-    console.log(t(`errors.zod.${fieldName}`));
-
     return (fieldRestriction === "") ? 
         t(`errors.zod.${fieldName}`) : 
         `${t(`errors.zod.${fieldName}`)} ${fieldRestriction}`;
