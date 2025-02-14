@@ -1,45 +1,52 @@
-from datetime import datetime
+from http import HTTPStatus
 
 from flask import Response, request
-from flask_login import login_required, current_user
+from flask_login import login_required
 
+from accounts import AccountRepository
 from helpers import add, subtract
 from routes.helpers import create_simple_response
-from routes.transfer.helpers import validate_transfer_data, prevent_self_transfer
+from routes.transfer.helpers import prevent_self_transfer, prevent_unauthorised_account_access
 from transfers import Transfer, TransferRepository
-from users import UserRepository, User
+from transfers.requests.create_transfer_request_dto import CreateTransferRequestDto
 
-user_repository = UserRepository()
+account_repository = AccountRepository()
 transfer_repository = TransferRepository()
 
 
 @login_required
-def create_transfer() -> tuple[Response, int]:
+def create_transfer() -> Response:
     data = request.get_json()
 
-    error = validate_transfer_data(data)
+    error = CreateTransferRequestDto.validate_request(data)
     if error:
-        return create_simple_response(error, 400)
+        return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
     if prevent_self_transfer(data):
-        return create_simple_response("cannotTransferToSelf", 400)
+        return create_simple_response("cannotTransferToSelf", HTTPStatus.BAD_REQUEST)
 
-    recipient_user = user_repository.find_by_account_number(data['recipientAccountNumber'])
-    if not recipient_user:
-        return create_simple_response("userWithAccountNumberNotExist", 404)
+    sender_account = account_repository.find_by_account_number(data['sender_account_number'])
+    if not sender_account:
+        return create_simple_response("senderAccountNotExist", HTTPStatus.NOT_FOUND)
 
-    user: User = user_repository.find_by_id(current_user._id)
-    if user.get_available_funds() - float(data['amount']) < 0:
-        return create_simple_response("userDontHaveEnoughMoney", 403)
+    recipient_account = account_repository.find_by_account_number(data['recipient_account_number'])
+    if not recipient_account:
+        return create_simple_response("recipientAccountNotExist", HTTPStatus.NOT_FOUND)
 
-    transfer = Transfer(created=datetime.now(),
-                        transfer_from_id=user.id,
-                        transfer_to_id=recipient_user.id,
-                        title=data['transferTitle'],
-                        amount=float(data['amount']))
+    if prevent_unauthorised_account_access(sender_account):
+        return create_simple_response("unauthorisedAccountAccess", HTTPStatus.UNAUTHORIZED)
+
+    if sender_account.get_available_funds() - float(data['amount']) < 0:
+        return create_simple_response("accountDontHaveEnoughMoney", HTTPStatus.BAD_REQUEST)
+
+    transfer = Transfer(
+        sender_account_number=sender_account.number,
+        recipient_account_number=recipient_account.number,
+        title=data['title'],
+        amount=float(data['amount']))
     transfer_repository.insert(transfer)
 
-    user_repository.update(str(user.id), {'balance': subtract(float(user.balance), float(data['amount']))})
-    user_repository.update(str(recipient_user.id), {'balance': add(float(recipient_user.balance), float(data['amount']))})
+    account_repository.update(str(sender_account.id), {'balance': subtract(float(sender_account.balance), float(data['amount']))})
+    account_repository.update(str(recipient_account.id), {'balance': add(float(recipient_account.balance), float(data['amount']))})
 
-    return create_simple_response("transferCreatedSuccessful", 200)
+    return create_simple_response("transferCreatedSuccessful", HTTPStatus.CREATED)

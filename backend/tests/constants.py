@@ -1,3 +1,36 @@
-TEST_EMAIL = "testuser@example.com"
-TEST_PASSWORD = "TestPassword123"
-TEST_ID = "67209cb58255eea645b444a4"
+from datetime import datetime
+
+
+# --- User constants --- #
+TEST_USER_ID = "67209cb58255eea645b444a4"
+TEST_USER_LOGIN = "test_user"
+TEST_USER_EMAIL = "testuser@example.com"
+TEST_USER_PASSWORD = "TestPassword123"
+TEST_USER_ROLE = "USER"
+TEST_USER_ICON = "path/to/icon"
+
+TEST_DIFFERENT_USER_ID = "677bd27ebe8e8797326ed0f4"
+
+# --- Account constants --- #
+TEST_ACCOUNT_ID = "677bbcc567a26587d5f65607"
+TEST_ACCOUNT_NAME = "test_account"
+TEST_ACCOUNT_NUMBER = "84624737841886044567121969"
+TEST_ACCOUNT_TYPE = "personal"
+TEST_ACCOUNT_BLOCKADES = 0
+TEST_ACCOUNT_BALANCE = 10_000
+TEST_ACCOUNT_CURRENCY = "PLN"
+
+TEST_ACCOUNT_DIFFERENT_ID = "677be480d1fb34a9d986a9e1"
+TEST_ACCOUNT_DIFFERENT_NUMBER = "677bfd5d626af2eed181ad83"
+
+# --- Transfer constants --- #
+TEST_TRANSFER_ID = "677be3ddedab595366bc467f"
+TEST_TRANSFER_TITLE = "test_transfer"
+TEST_TRANSFER_AMOUNT = 1000
+
+# --- Cyclic payment constants --- #
+TEST_CYCLIC_PAYMENT_NAME = "test_cyclic_payment_name"
+TEST_CYCLIC_PAYMENT_TRANSFER_TITLE = "test_cyclic_payment_transfer_title"
+TEST_CYCLIC_PAYMENT_AMOUNT = 1000
+TEST_CYCLIC_PAYMENT_START_DATE = datetime.fromisoformat("2023-01-01")
+TEST_CYCLIC_PAYMENT_INTERVAL = "month"

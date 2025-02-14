@@ -1,41 +1,48 @@
-from datetime import datetime
+from http import HTTPStatus
 
 from flask import Response, request
-from flask_login import login_required, current_user
+from flask_login import login_required
 
+from accounts import AccountRepository
 from constants import BANK_ACCOUNT_NUMBER
 from helpers import add
 from routes.helpers import create_simple_response
-from routes.transfer.helpers import validate_loan_data
+from routes.transfer.helpers import prevent_unauthorised_account_access
 from transfers import Transfer, TransferRepository
+from transfers.requests.create_loan_request_dto import CreateLoanRequestDto
 from users import UserRepository
 
 user_repository = UserRepository()
+account_repository = AccountRepository()
 transfer_repository = TransferRepository()
 
+
 @login_required
-def create_loan_transfer() -> tuple[Response, int]:
+def create_loan_transfer() -> Response:
     data = request.get_json()
 
-    error = validate_loan_data(data)
+    error = CreateLoanRequestDto.validate_request(data)
     if error:
-        return create_simple_response(error, 400)
+        return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
-    recipient_user = user_repository.find_by_id(current_user._id)
-    if not recipient_user:
-        return create_simple_response("userWithAccountNumberNotExist", 404)
+    recipient_account = account_repository.find_by_account_number(data['recipient_account_number'])
+    if not recipient_account:
+        return create_simple_response("recipientAccountNotExist", HTTPStatus.NOT_FOUND)
 
-    bank = user_repository.find_by_account_number(BANK_ACCOUNT_NUMBER)
-    if not bank:
-        return create_simple_response("bankAccountNotExist", 404)
+    if prevent_unauthorised_account_access(recipient_account):
+        return create_simple_response("unauthorisedAccountAccess", HTTPStatus.UNAUTHORIZED)
 
-    transfer = Transfer(created=datetime.now(),
-                        transfer_from_id=bank.id,
-                        transfer_to_id=recipient_user.id,
-                        title=data['transferTitle'],
+    bank_account = account_repository.find_by_account_number(BANK_ACCOUNT_NUMBER)
+    if not bank_account:
+        return create_simple_response("bankAccountNotExist", HTTPStatus.NOT_FOUND)
+
+    transfer = Transfer(
+                        sender_account_number=bank_account.number,
+                        recipient_account_number=recipient_account.number,
+                        title=data['title'],
                         amount=float(data['amount']))
     transfer_repository.insert(transfer)
 
-    user_repository.update(recipient_user.id, {'balance': add(float(recipient_user.balance), float(data['amount']))})
+    account_repository.update(str(recipient_account.id), {'balance': add(float(recipient_account.balance), float(data['amount']))})
 
-    return create_simple_response("loanCreatedSuccessful", 200)
+    return create_simple_response("loanCreatedSuccessful", HTTPStatus.OK)
