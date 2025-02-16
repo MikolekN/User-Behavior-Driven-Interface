@@ -17,6 +17,7 @@ const Login = () => {
     const { t } = useTranslation();
     const { user } = useContext(UserContext);
     const { login, logout } = useContext(AuthContext);
+    const { getUser } = useContext(UserContext);
     const navigate = useNavigate();
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormData>({
@@ -34,6 +35,7 @@ const Login = () => {
         clearApiError();
         try {
             await login(email, password);
+            await getUser();
             navigate('/dashboard');
         } catch (error) {
             handleError(error);

@@ -170,6 +170,7 @@ const ProfilePage = () => {
         clearPasswordError();
         try {
             await updatePassword(currentPassword, newPassword);
+            await getUser();
         } catch (error) {
             scrollToTop('password-form-wrapper');
             handlePasswordError(error);
