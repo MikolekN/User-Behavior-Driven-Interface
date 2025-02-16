@@ -8,7 +8,6 @@ from request_dto import BaseRequestDto
 
 @dataclass
 class CreateLoanRequestDto(BaseRequestDto):
-    recipient_account_number: str
     title: str
     amount: float
 

@@ -1,15 +1,17 @@
 from http import HTTPStatus
 
 from flask import Response, request
-from flask_login import login_required
+from flask_login import login_required, current_user
 
-from accounts import AccountRepository
+from accounts import AccountRepository, Account
 from helpers import add, subtract
 from routes.helpers import create_simple_response
-from routes.transfer.helpers import prevent_self_transfer, prevent_unauthorised_account_access
+from routes.transfer.helpers import prevent_unauthorised_account_access
 from transfers import Transfer, TransferRepository
 from transfers.requests.create_transfer_request_dto import CreateTransferRequestDto
+from users import UserRepository, User
 
+user_repository = UserRepository()
 account_repository = AccountRepository()
 transfer_repository = TransferRepository()
 
@@ -22,17 +24,25 @@ def create_transfer() -> Response:
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
-    if prevent_self_transfer(data):
-        return create_simple_response("cannotTransferToSelf", HTTPStatus.BAD_REQUEST)
+    user: User = user_repository.find_by_id(current_user.get_id())
+    if not user:
+        return create_simple_response('userNotExist', HTTPStatus.NOT_FOUND)
 
-    sender_account = account_repository.find_by_account_number(data['sender_account_number'])
+    if not user.active_account:
+        return create_simple_response('activeAccountNotSet', HTTPStatus.NOT_FOUND)
+
+    sender_account: Account = account_repository.find_by_id(str(user.active_account))
     if not sender_account:
         return create_simple_response("senderAccountNotExist", HTTPStatus.NOT_FOUND)
+
+    if data['recipient_account_number'] == sender_account.number:
+        return create_simple_response("cannotTransferToSelf", HTTPStatus.BAD_REQUEST)
 
     recipient_account = account_repository.find_by_account_number(data['recipient_account_number'])
     if not recipient_account:
         return create_simple_response("recipientAccountNotExist", HTTPStatus.NOT_FOUND)
 
+    # is that necessary after grabbing active account of the user?
     if prevent_unauthorised_account_access(sender_account):
         return create_simple_response("unauthorisedAccountAccess", HTTPStatus.UNAUTHORIZED)
 

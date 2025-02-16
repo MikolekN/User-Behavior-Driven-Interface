@@ -15,10 +15,6 @@ account_repository = AccountRepository()
 transfer_repository = TransferRepository()
 
 
-def prevent_self_transfer(data: Mapping[str, Any]) -> bool:
-    return data['recipient_account_number'] == data['sender_account_number']
-
-
 def prevent_unauthorised_account_access(sender_account: Account) -> bool:
     return not (str(sender_account.user) == str(current_user.get_id()))
 

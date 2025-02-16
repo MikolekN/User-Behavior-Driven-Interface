@@ -7,7 +7,6 @@ from request_dto import BaseRequestDto
 
 @dataclass
 class CreateTransferRequestDto(BaseRequestDto):
-    sender_account_number: str
     recipient_account_number: str
     title: str
     amount: float

@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 from flask import Response, request
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from accounts import AccountRepository
 from constants import BANK_ACCOUNT_NUMBER
@@ -10,7 +10,7 @@ from routes.helpers import create_simple_response
 from routes.transfer.helpers import prevent_unauthorised_account_access
 from transfers import Transfer, TransferRepository
 from transfers.requests.create_loan_request_dto import CreateLoanRequestDto
-from users import UserRepository
+from users import UserRepository, User
 
 user_repository = UserRepository()
 account_repository = AccountRepository()
@@ -25,10 +25,18 @@ def create_loan_transfer() -> Response:
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
-    recipient_account = account_repository.find_by_account_number(data['recipient_account_number'])
+    user: User = user_repository.find_by_id(current_user.get_id())
+    if not user:
+        return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
+
+    if not user.active_account:
+        return create_simple_response("activeAccountNotSet", HTTPStatus.NOT_FOUND)
+
+    recipient_account = account_repository.find_by_id(str(user.active_account))
     if not recipient_account:
         return create_simple_response("recipientAccountNotExist", HTTPStatus.NOT_FOUND)
 
+    # is that necessary after grabbing active account of the user?
     if prevent_unauthorised_account_access(recipient_account):
         return create_simple_response("unauthorisedAccountAccess", HTTPStatus.UNAUTHORIZED)
 
