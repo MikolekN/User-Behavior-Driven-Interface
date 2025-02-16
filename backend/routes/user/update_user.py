@@ -28,8 +28,6 @@ def update_user() -> Response:
     if isinstance(result, Response):
         return result
     elif isinstance(result, User):
-        if 'new_password' in data:
-            logout_user()
         return UpdateUserResponse.create_response("userUpdateSuccessful", result.to_dict(), HTTPStatus.OK)
 
 def update_login(login: str) -> Response | User:

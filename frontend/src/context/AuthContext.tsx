@@ -22,11 +22,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const { setUser, setLoading } = useContext(UserContext);
 
     const login = useCallback(async (email: string, password: string): Promise<void> => {
-        const { user: userBackendData } = await loginUser(email, password);
-        if (userBackendData) {
-            const userFrontendData = mapBackendUserToUser(userBackendData);
-            setUser(prevUser => new User({ ...userFrontendData, icon: prevUser?.icon || null, email: userFrontendData.email! }));
-        }
+        await loginUser(email, password);
     }, [setUser]);
 
     const register = useCallback(async (email: string, password: string): Promise<void> => {

@@ -17,9 +17,7 @@ export const MIN_LOAN_AMOUNT_TEXT = '1 000';
 export const MAX_LOAN_AMOUNT_TEXT = '100 000';
 
 export const FIELD_SELECT_OPTIONS = [
-    { value: 'login', key: 'userName' },
-    { value: 'accountName', key: 'accountName' },
-    { value: 'currency', key: 'currency' }
+    { value: 'login', key: 'userName' }
 ];
 
 export const INTERVAL_SELECT_OPTIONS = [
