@@ -38,7 +38,7 @@ def get_all_user_transfers() -> Response:
     if prevent_unauthorised_account_access(account):
         return create_simple_response("unauthorisedAccountAccess", HTTPStatus.UNAUTHORIZED)
 
-    transfer_dtos: list[(dict, bool, str)] = [prepare_transfer(transfer, account) for transfer in transfers]
+    transfer_dtos: list[dict] = [prepare_transfer(transfer, account) for transfer in transfers]
 
     transfer_groups = group_transfers_by_date(transfer_dtos)
     grouped_transfers_dtos: list[dict] = [
@@ -52,7 +52,7 @@ def get_all_user_transfers() -> Response:
     return GetTransfersResponseDto.create_response("transferListGetSuccessful", grouped_transfers_dtos, HTTPStatus.OK)
 
 
-def prepare_transfer(transfer: Transfer, account: Account) -> (dict, bool, str):
+def prepare_transfer(transfer: Transfer, account: Account) -> dict:
     is_income = transfer.recipient_account_number == account.number
 
     transfer_from_account: Account = account_repository.find_by_account_number_full(transfer.sender_account_number)
@@ -70,7 +70,12 @@ def prepare_transfer(transfer: Transfer, account: Account) -> (dict, bool, str):
         issuer_name_to = transfer_to_account.name
 
     issuer_name = issuer_name_from if is_income else issuer_name_to
-    return transfer.to_dict(), is_income, issuer_name
+
+    transfer = transfer.to_dict()
+    transfer["is_income"] = is_income
+    transfer["issuer_name"] = issuer_name
+
+    return transfer
 
 
 def fetch_transfers(account_number: str) -> list[Transfer]:
@@ -84,11 +89,10 @@ def fetch_transfers(account_number: str) -> list[Transfer]:
     return transfer_repository.find_transfers(query, sort_criteria)
 
 
-def group_transfers_by_date(transfer_dtos: list[(dict, bool, str)]) -> dict[str, list[(dict, bool, str)]]:
+def group_transfers_by_date(transfer_dtos: list[dict]) -> dict[str, list[dict]]:
     grouped_transfers = defaultdict(list)
 
     for dto in transfer_dtos:
-        transfer, is_income, issuer_name = dto
-        grouped_transfers[str(datetime.fromisoformat(transfer['created']).strftime('%d.%m.%Y'))].append(dto)
+        grouped_transfers[str(datetime.fromisoformat(dto['created']).strftime('%d.%m.%Y'))].append(dto)
 
     return dict(grouped_transfers)
