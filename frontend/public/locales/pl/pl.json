@@ -79,7 +79,8 @@
         "balance": "Balans",
         "blockades": "Blokady",
         "availableFunds": "Dostępne środki",
-        "transfer": "Przelew"
+        "transfer": "Przelew",
+        "userDontHaveAccount": "Użytkownik nie ma konta"
     },
     "transfer": {
         "tile": {
@@ -155,7 +156,7 @@
         "personal": "Konto osobiste",
         "savings": "Konto oszczędnościowe",
         "currency": "Konto walutowe",
-        "busines": "Konto biznesowe",
+        "business": "Konto biznesowe",
         "youth": "Konto młodzieżowe",
         "student": "Konto studenckie",
         "retirement": "Konto emerytalne",
@@ -373,7 +374,17 @@
             "errorUpdateUser": "Błąd podczas aktualizacji danych użytkownika: ",
             "errorImageProcess": "Przetwarzanie obrazu nie powiodło się: ",
             "sendIconFailed": "Nie udało się wysłać ikony: ",
-            "Failed to fetch": "Nieoczekiwany błąd serwera"
+            "Failed to fetch": "Nieoczekiwany błąd serwera",
+            "activeAccountNotSet": "Nie wybrano aktywnego konta",
+            "invalidTypeFields": "Niepoprawny typ pola:",
+            "userNotFound": "Nie znaleziono użytkownia",
+            "accountCreatedSucessfully": "Konto utworzone pomyślnie",
+            "accountNotExist": "Konto nie istnieje",
+            "unauthorizedAccountAccess": "Nieautoryzowany dostęp do konta",
+            "accountDeleteSucessful": "Konto usunięte pomyślnie",
+            "accountsNotExist": "Lista kont jest pusta",
+            "accountDontHaveEnoughMoney": "Brak wystarczających środków na aktywnym koncie",
+            "senderAccountNotExist": "Konto odbiorcy nie istnieje"
         },
         "zod": {
             "required": "Pole jest wymagane",

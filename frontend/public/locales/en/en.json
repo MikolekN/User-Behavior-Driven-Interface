@@ -79,7 +79,8 @@
         "balance": "Balance",
         "blockades": "Blockades",
         "availableFunds": "Available funds",
-        "transfer": "Transfer"
+        "transfer": "Transfer",
+        "userDontHaveAccount": "User does not have an account"
     },
     "transfer": {
         "tile": {
@@ -155,7 +156,7 @@
         "personal": "Personal account",
         "savings": "Savings account",
         "currency": "Currency account",
-        "busines": "Business account",
+        "business": "Business account",
         "youth": "Youth account",
         "student": "Student account",
         "retirement": "Retirement account",
@@ -372,7 +373,17 @@
             "errorUpdateUser": "Error updating user data: ",
             "errorImageProcess": "Image processing failed: ",
             "sendIconFailed": "Failed to send the icon: ",
-            "Failed to fetch": "Unexpected server error"
+            "Failed to fetch": "Unexpected server error",
+            "activeAccountNotSet": "Active account not set",
+            "invalidTypeFields": "Invalid field type:",
+            "userNotFound": "User not found",
+            "accountCreatedSucessfully": "Account created successfully",
+            "accountNotExist": "Account not exist",
+            "unauthorizedAccountAccess": "Unauthorized account access",
+            "accountDeleteSucessful": "Account deleted successfully",
+            "acountsNotExist": "Accounts list is empty",
+            "accountDontHaveEnoughMoney": "Not enough money in active account",
+            "senderAccountNotExist": "Sender's account not exist"
         },
         "zod": {
             "required": "The field is required",
