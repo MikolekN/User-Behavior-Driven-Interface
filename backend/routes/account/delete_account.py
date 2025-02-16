@@ -26,7 +26,7 @@ def delete_account(account_number) -> Response:
     if not (str(account.user) == str(current_user.get_id())):
         return create_simple_response("unauthorisedAccountAccess", HTTPStatus.UNAUTHORIZED)
 
-    if str(user.active_account) == str(account.id):
+    if user.active_account and str(user.active_account) == str(account.id):
         user_repository.update(str(user.id), {'active_account': None})
 
     account_repository.delete(str(account.id))
