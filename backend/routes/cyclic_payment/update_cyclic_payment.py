@@ -9,7 +9,7 @@ from cyclic_payments import CyclicPaymentRepository, CyclicPayment
 from cyclic_payments.requests.update_cyclic_payment_request import UpdateCyclicPaymentRequest
 from cyclic_payments.responses.update_cyclic_payment_response import UpdateCyclicPaymentResponse
 from helpers import add
-from routes.cyclic_payment.helpers import validate_object_id
+from routes.cyclic_payment.helpers import validate_object_id, prepare_cyclic_payment
 from routes.helpers import create_simple_response
 from routes.transfer.helpers import prevent_unauthorised_account_access
 from users import UserRepository, User
@@ -67,4 +67,4 @@ def update_cyclic_payment(id) -> Response:
     if not updated_cyclic_payment:
         return create_simple_response("cyclicPaymentNotExist", HTTPStatus.NOT_FOUND)
 
-    return UpdateCyclicPaymentResponse.create_response("cyclicPaymentUpdateSuccessful", updated_cyclic_payment.to_dict(), HTTPStatus.OK)
+    return UpdateCyclicPaymentResponse.create_response("cyclicPaymentUpdateSuccessful", prepare_cyclic_payment(updated_cyclic_payment), HTTPStatus.OK)

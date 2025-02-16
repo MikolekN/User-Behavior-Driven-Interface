@@ -6,6 +6,7 @@ from flask_login import login_required, current_user
 from accounts import AccountRepository, Account
 from cyclic_payments import CyclicPaymentRepository, CyclicPayment
 from cyclic_payments.responses.get_accounts_cyclic_payments_response import GetAccountsCyclicPaymentsResponse
+from routes.cyclic_payment.helpers import prepare_cyclic_payment
 from routes.helpers import create_simple_response
 from users import UserRepository, User
 
@@ -34,6 +35,6 @@ def get_accounts_cyclic_payments() -> Response:
     if not cyclic_payments:
         return create_simple_response("cyclicPaymentListEmpty", HTTPStatus.NOT_FOUND)
 
-    cyclic_payment_dtos: list[dict] = [cyclic_payment.to_dict() for cyclic_payment in cyclic_payments]
+    cyclic_payment_dtos: list[dict] = [prepare_cyclic_payment(cyclic_payment) for cyclic_payment in cyclic_payments]
 
     return GetAccountsCyclicPaymentsResponse.create_response("cyclicPaymentListGetSuccessful", cyclic_payment_dtos, HTTPStatus.OK)

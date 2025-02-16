@@ -6,7 +6,7 @@ from flask_login import login_required
 from accounts import AccountRepository, Account
 from cyclic_payments import CyclicPaymentRepository, CyclicPayment
 from cyclic_payments.responses.get_cyclic_payment_response import GetCyclicPaymentResponse
-from routes.cyclic_payment.helpers import validate_object_id
+from routes.cyclic_payment.helpers import validate_object_id, prepare_cyclic_payment
 from routes.helpers import create_simple_response
 from routes.transfer.helpers import prevent_unauthorised_account_access
 from users import UserRepository, User
@@ -40,4 +40,4 @@ def get_cyclic_payment(id) -> Response:
     if not recipient_user:
         return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
 
-    return GetCyclicPaymentResponse.create_response("cyclicPaymentGetSuccessful", cyclic_payment.to_dict(), HTTPStatus.OK)
+    return GetCyclicPaymentResponse.create_response("cyclicPaymentGetSuccessful", prepare_cyclic_payment(cyclic_payment), HTTPStatus.OK)
