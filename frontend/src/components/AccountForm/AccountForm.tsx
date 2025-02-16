@@ -105,7 +105,7 @@ const AccountForm = () => {
 
     return (
         <div id="account-form-wrapper" className="flex items-center justify-center">
-            <Tile title={t('accountFrom.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
+            <Tile title={t('accountForm.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
                 <div className="flex items-center justify-center">
                     <div className="max-w-md w-full mx-auto">
                         { apiError.isError && 
@@ -115,29 +115,29 @@ const AccountForm = () => {
                         }
                         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
-                                label={t('accountFrom.accountName')} 
+                                label={t('accountForm.accountName')} 
                                 fieldType="text"
                                 register={register('accountName')}
                                 error={errors.accountName}
                                 className="w-full"
                             />
                             <FormSelect
-                                label={t('accountFrom.accountType')}
+                                label={t('accountForm.accountType')}
                                 options={ACCOUNT_TYPE_SELECT_OPTIONS}
-                                defaultOption={t('accountFrom.selectAccountType')}
+                                defaultOption={t('accountForm.selectAccountType')}
                                 register={register('accountType')}
                                 error={errors.accountType}
                                 className="w-full"
                             />
                             <FormInput 
-                                label={t('accountFrom.currency')}
+                                label={t('accountForm.currency')}
                                 fieldType="text"
                                 register={register('currency')}
                                 error={errors.currency}
                                 className="w-full"
                             />
                             <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
-						        {isSubmitting ? `${t('accountFrom.loading')}` : `${t('accountFrom.submit')}`}
+						        {isSubmitting ? `${t('accountForm.loading')}` : `${t('accountForm.submit')}`}
                             </Button>
                         </form>
                     </div>

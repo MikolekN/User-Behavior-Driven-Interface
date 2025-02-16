@@ -162,7 +162,7 @@
         "BANK": "Bank",
         "other": "Inne"
     },
-    "accountFrom": {
+    "accountForm": {
         "tile": {
             "title": "Dodaj konto"
         },
