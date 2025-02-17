@@ -9,7 +9,7 @@ from request_dto import BaseRequestDto
 class CreateTransferRequestDto(BaseRequestDto):
     recipient_account_number: str
     title: str
-    amount: float
+    amount: str
 
     @staticmethod
     def validate_request(data: Mapping[str, Any]) -> Optional[str]:
@@ -17,7 +17,7 @@ class CreateTransferRequestDto(BaseRequestDto):
         if error:
             return error
 
-        if data['amount'] <= 0:
+        if float(data['amount']) <= 0:
             return "negativeAmount"
 
         return None
