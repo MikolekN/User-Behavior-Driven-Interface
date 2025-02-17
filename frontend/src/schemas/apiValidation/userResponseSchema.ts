@@ -14,6 +14,7 @@ export const UserData = z.object({
 });
 
 export const GetUserResponseSchema = z.object({
+    message: requiredStringField(),
     user: UserData
 });
 
@@ -22,6 +23,7 @@ export type GetUserResponse = z.infer<typeof GetUserResponseSchema>;
 // Update User
 
 export const UpdateUserResponseSchema = z.object({
+    message: requiredStringField(),
     user: UserData
 });
 
@@ -30,7 +32,8 @@ export type UpdateUserResponse = z.infer<typeof UpdateUserResponseSchema>;
 // Update User Password
 
 export const UpdateUserPasswordResponseSchema = z.object({
-    message: requiredStringField()
+    message: requiredStringField(),
+    user: UserData
 });
 
 export type UpdateUserPasswordResponse = z.infer<typeof UpdateUserPasswordResponseSchema>;

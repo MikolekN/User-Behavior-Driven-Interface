@@ -16,17 +16,18 @@ export const GetTransfersAnalysisResponseSchema = z.object({
 
 export type GetTransfersAnalysisResponse = z.infer<typeof GetTransfersAnalysisResponseSchema>;
 
-
-// GetTransfers
+//
 
 export const TransactionData = z.object({
-    transfer_from_id: requiredStringField(),
-    transfer_to_id: requiredStringField(),
-    title: requiredStringField(),
+    _id: requiredStringField(),
     amount: z.number(),
-    income: z.boolean(),
-    issuer_name: requiredStringField(),
     created: requiredStringField(),
+    is_deleted: z.boolean(),
+    is_income: z.boolean(),
+    title: requiredStringField(),
+    issuer_name: requiredStringField(),
+    recipient_account_number: requiredStringField(),
+    sender_account_number: requiredStringField()
 });
 
 export const TransactionsHistoryData = z.object({
@@ -34,9 +35,11 @@ export const TransactionsHistoryData = z.object({
     transactions: z.array(TransactionData)
 });
 
+// GetTransfers
+
 export const GetTransfersResponseSchema = z.object({
     message: requiredStringField(),
-    transfers: z.array(TransactionsHistoryData)
+    transactions: z.array(TransactionsHistoryData)
 });
 
 export type GetTransfersResponse = z.infer<typeof GetTransfersResponseSchema>;
