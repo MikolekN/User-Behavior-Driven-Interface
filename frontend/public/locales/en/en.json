@@ -97,7 +97,9 @@
         "tile": {
             "title": "Transaction history"
         },
-        "emptyList": "List is empty"
+        "emptyList": "List is empty",
+        "noTransactions": "List is empty",
+        "loan": "Cash loan"
     },
     "cyclicPaymentList": {
         "tile": {

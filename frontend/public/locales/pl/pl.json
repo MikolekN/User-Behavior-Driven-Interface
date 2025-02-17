@@ -97,7 +97,9 @@
         "tile": {
             "title": "Historia transakcji"
         },
-        "emptyList":"Lista jest pusta"
+        "emptyList": "Lista jest pusta",
+        "noTransactions": "Lista jest pusta",
+        "loan": "Pożyczka gotówkowa"
     },
     "cyclicPaymentList": {
         "tile": {

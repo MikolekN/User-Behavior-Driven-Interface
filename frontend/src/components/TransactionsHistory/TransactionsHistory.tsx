@@ -67,7 +67,7 @@ const TransactionsHistory = () => {
                                         <div>
                                             <span id="issuer-name" className="text-base font-semibold block">{item.issuerName}</span>
                                             <span id="transaction-title" className='text-sm font-normal mt-1 block'>
-                                                <i>{item.title}</i>
+                                            {item.title === 'loan' ? <i>{t(`transactionHistory.${item.title}`)}</i> : <i>{item.title}</i>}
                                             </span>
                                         </div>
                                         <div
