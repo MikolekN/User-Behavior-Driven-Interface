@@ -21,7 +21,7 @@ const TransactionsMonthlyAnalysis = () => {
         const fetchChartData = async () => {
             try {
                 const requestBody = {
-                    year: new Date().getUTCFullYear()
+                    year: (new Date().getUTCFullYear()).toString()
                 };
                 const interval = 'monthly';
                 await fetchTransfersAnalysis(interval, requestBody);

@@ -13,12 +13,14 @@ import { scrollToTop } from '../../components/utils/scroll';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import AccountDetails from '../../components/utils/AccountDetails';
 import { useTranslation } from 'react-i18next';
+import { AccountContext } from '../../context/AccountContext';
 
 const Transfer = () => {
     const { t } = useTranslation();
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
-    const { user, getUser } = useContext(UserContext);
+    const { getUser } = useContext(UserContext);
     const { createTransfer } = useContext(TransferContext);
+    const { account } = useContext(AccountContext);
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<TransferFormData>({
         resolver: zodResolver(TransferFormDataSchema),
         defaultValues: {
@@ -30,14 +32,18 @@ const Transfer = () => {
     });
     const navigate = useNavigate();
     
-    const onSubmit: SubmitHandler<TransferFormData> = async ({ recipientAccountNumber, transferTitle, amount }: TransferFormData) => {
+    const getTransferRequestBody = (data: TransferFormData) => {
+        return {
+            recipient_account_number: data.recipientAccountNumber,
+            title: data.transferTitle,
+            amount: data.amount
+        }
+    }
+
+    const onSubmit: SubmitHandler<TransferFormData> = async (data: TransferFormData) => {
         clearApiError();
         try {
-            const requestBody = {
-                recipientAccountNumber: recipientAccountNumber,
-                transferTitle: transferTitle,
-                amount: amount
-            };
+            const requestBody = getTransferRequestBody(data);
             await createTransfer(requestBody);
             await getUser();
             navigate('/dashboard');
@@ -57,7 +63,7 @@ const Transfer = () => {
                                 <ErrorAlert alertMessage={apiError.errorMessage} />
                             </div> 
                         }
-                        <AccountDetails label={t('transfer.fromAccount')} user={user!} className='w-full p-3 mb-6' />
+                        <AccountDetails label={t('transfer.fromAccount')} account={account!} className='w-full p-3 mb-6' />
                         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
                                 label={t('transfer.recipientAccountNumber')}
@@ -80,7 +86,7 @@ const Transfer = () => {
                                 error={errors.amount}
                                 className="w-10/12"
                             >
-                                {user!.currency}
+                                {account!.currency}
                             </FormInput>
                             <div>
                                 <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">

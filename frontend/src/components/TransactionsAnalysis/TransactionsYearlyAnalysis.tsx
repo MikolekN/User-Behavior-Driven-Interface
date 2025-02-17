@@ -21,8 +21,8 @@ const TransactionsYearlyAnalysis = () => {
         const fetchChartData = async () => {
             try {
                 const requestBody = {
-                    startYear: new Date().getUTCFullYear() - 2,
-                    endYear: new Date().getUTCFullYear() + 2
+                    start_year: (new Date().getUTCFullYear() - 2).toString(),
+                    end_year: (new Date().getUTCFullYear() + 2).toString()
                 };
                 const interval = 'yearly';
                 await fetchTransfersAnalysis(interval, requestBody);
