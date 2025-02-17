@@ -10,6 +10,7 @@ import Label from '../utils/Label';
 import AccountDetails from '../utils/AccountDetails';
 import { UserContext } from '../../context/UserContext';
 import CollapsibleList from '../CollapsibleList/CollapsibleList';
+import { AccountContext } from '../../context/AccountContext';
 
 interface CyclicPaymentListProps {
     cyclicPaymentsList: CyclicPayment[];
@@ -17,8 +18,9 @@ interface CyclicPaymentListProps {
 
 const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
     const { t } = useTranslation();
-    const { user, getUser } = useContext(UserContext);
+    const { getUser } = useContext(UserContext);
     const { deleteCyclicPayment } = useContext(CyclicPaymentContext);
+    const { account } = useContext(AccountContext);
     const { handleError } = useApiErrorHandler();
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [cyclicPayments, setCyclicPayments] = useState<CyclicPayment[]>([]);
@@ -101,7 +103,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                             <i>{cyclicPayment.recipientAccountNumber}</i>
                                         </div>
                                     </div>
-                                    <AccountDetails label={t('cyclicPaymentList.fromAccount')} user={user!} className='w-max pl-4 p-3' />
+                                    <AccountDetails label={t('cyclicPaymentList.fromAccount')} account={account!} className='w-max pl-4 p-3' />
                                     <div className="mb-4">
                                         <Label label={t('cyclicPaymentList.title')}/>
                                         <div className="pl-4 dark:text-gray-300">
@@ -113,7 +115,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                     <div className="mb-4">
                                         <Label label={t('cyclicPaymentList.amount')}/>
                                         <div className="pl-4 dark:text-gray-300">
-                                            <i>{cyclicPayment.amount} {user?.currency}</i>
+                                            <i>{cyclicPayment.amount} {account?.currency}</i>
                                         </div>
                                     </div>
                                     <div className="mb-4">
@@ -166,7 +168,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                             <i>{cyclicPayment.recipientAccountNumber}</i>
                                         </div>
                                     </div>
-                                    <AccountDetails label={t('cyclicPaymentList.fromAccount')} user={user!} className='w-fit pl-4 p-3' />
+                                    <AccountDetails label={t('cyclicPaymentList.fromAccount')} account={account!} className='w-fit pl-4 p-3' />
                                     <div className="mb-4">
                                         <Label label={t('cyclicPaymentList.title')}/>
                                         <div className="pl-4 dark:text-gray-300">
@@ -176,7 +178,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                     <div className="mb-4">
                                         <Label label={t('cyclicPaymentList.amount')}/>
                                         <div className="pl-4 dark:text-gray-300">
-                                            <i>{cyclicPayment.amount} {user?.currency}</i>
+                                            <i>{cyclicPayment.amount} {account?.currency}</i>
                                         </div>
                                     </div>
                                     <div className="mb-4">

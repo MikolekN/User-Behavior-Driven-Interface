@@ -22,6 +22,7 @@ import { datepickerErrorTheme } from '../utils/themes/datepickerErrorTheme';
 import ErrorMessage from '../utils/ErrorMessage';
 import { useTranslation } from 'react-i18next';
 import Button from '../utils/Button';
+import { AccountContext } from '../../context/AccountContext';
 
 const CyclicPaymentsForm = () => {
     const { t } = useTranslation();
@@ -30,6 +31,7 @@ const CyclicPaymentsForm = () => {
     const [ minDate, setMinDate ] = useState<Date | undefined | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
+    const { account } = useContext(AccountContext);
     const { cyclicPayment, setCyclicPayment, createCyclicPayment, getCyclicPayment, 
         updateCyclicPayment } = useContext(CyclicPaymentContext);
 
@@ -153,7 +155,7 @@ const CyclicPaymentsForm = () => {
                                 <ErrorAlert alertMessage={apiError.errorMessage} />
                             </div> 
                         }
-                        <AccountDetails label={t('cyclicPaymentForm.fromAccount')} user={user!} className='w-full p-3 mb-6' />
+                        <AccountDetails label={t('cyclicPaymentForm.fromAccount')} account={account!} className='w-full p-3 mb-6' />
                         <form id="cyclic-payment-form" className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
                                 label={t('cyclicPaymentForm.cyclicPaymentName')}
@@ -217,7 +219,7 @@ const CyclicPaymentsForm = () => {
                                 error={errors.amount}
                                 className="w-10/12"
                             >
-                                {user!.currency}
+                                {account!.currency}
                             </FormInput>
                             <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
 						        {isSubmitting ? `${t('cyclicPaymentForm.loading')}` : `${t('cyclicPaymentForm.submit')}`}

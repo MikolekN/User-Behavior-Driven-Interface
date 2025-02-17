@@ -7,11 +7,13 @@ import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { useTranslation } from 'react-i18next';
 import DefaultLoadingSkeleton from '../Loading/DefaultLoadingSkeleton';
 import CollapsibleList from '../CollapsibleList/CollapsibleList';
+import { AccountContext } from '../../context/AccountContext';
 
 const TransactionsHistory = () => {
     const { t } = useTranslation();
     const [ loading, setLoading ] = useState(true);
     const { user } = useContext(UserContext);
+    const { account } = useContext(AccountContext);
     const { transfers, fetchTransfers } = useContext(TransferContext);
     const { apiError, handleError } = useApiErrorHandler();
     
@@ -75,7 +77,7 @@ const TransactionsHistory = () => {
                                             }`}
                                         >
                                             {!item.income && <span>-</span>}
-                                            {item.amount} {user!.currency}
+                                            {item.amount} {account!.currency}
                                         </div>
                                     </div>
                                 ))}
