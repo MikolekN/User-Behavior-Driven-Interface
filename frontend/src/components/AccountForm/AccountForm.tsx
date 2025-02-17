@@ -20,7 +20,7 @@ const AccountForm = () => {
     const { t } = useTranslation();
     const { user, getUser } = useContext(UserContext);
     const { accountNumber } = useParams();
-    const { account, setAccount, getAccount, createAccount, updateAccount } = useContext(AccountContext);
+    const { account, setAccount, getAccount, createAccount, updateAccount, getActiveAccount } = useContext(AccountContext);
     const navigate = useNavigate();
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = useForm<AccountFormData>({
@@ -74,8 +74,8 @@ const AccountForm = () => {
 
     const getAccountRequestBody = (data: AccountFormData) => {
         return {
-            accountName: data.accountName,
-            accountType: data.accountType,
+            name: data.accountName,
+            type: data.accountType,
             currency: data.currency
         };
     };
@@ -85,8 +85,9 @@ const AccountForm = () => {
         const requestBody = getAccountRequestBody(data);
         if (account === null) {
             try {
-                createAccount(requestBody);
-                navigate('/dashboard');
+                await createAccount(requestBody);
+                await getActiveAccount();
+                navigate('/accounts');
             } catch (error) {
                 handleError(error);
                 scrollToTop('account-form-wrapper');
@@ -95,7 +96,8 @@ const AccountForm = () => {
             try {
                 await updateAccount(accountNumber!, requestBody);
                 await getUser();
-                navigate('/dashboard');
+                await getActiveAccount();
+                navigate('/accounts');
             } catch (error) {
                 handleError(error);
                 scrollToTop('account-form-wrapper');

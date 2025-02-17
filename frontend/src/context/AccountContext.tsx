@@ -40,14 +40,18 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
     const getAccount = useCallback(async (accountNumber: string): Promise<void> => {
         const {account: accountBackendData} = await getAccountData(accountNumber);
         if (accountBackendData) {
-            setAccount(mapBackendAccountToAccount(accountBackendData));
+            const frontendAccountData = mapBackendAccountToAccount(accountBackendData); 
+            setAccount(() => new Account({...frontendAccountData}));
         }
     }, []);
 
     const getAccounts = useCallback(async (): Promise<void> => {
         const { accounts: accountsBackendData } = await getAccountsData();
         if (accountsBackendData) {
-            setAccounts(mapBackendAccountListToAccounts(accountsBackendData));
+            const frontendAccountsData = mapBackendAccountListToAccounts(accountsBackendData); 
+            setAccounts(frontendAccountsData.map(accountData => new Account(
+                {...accountData}
+            )));
         }
     }, []);
 
@@ -66,7 +70,8 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
     const getActiveAccount = useCallback(async (): Promise<void> => {
         const {account: accountBackendData} = await getActiveAccountData();
         if (accountBackendData) {
-            setAccount(mapBackendAccountToAccount(accountBackendData));
+            const frontendAccountData = mapBackendAccountToAccount(accountBackendData); 
+            setAccount(() => new Account({...frontendAccountData}));
         }
     }, []);
 

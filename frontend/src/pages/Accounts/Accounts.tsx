@@ -41,7 +41,7 @@ const Accounts = () => {
                 alertTitle={t('accountList.emptyList')}
                 alertMessage={apiError.errorMessage}
             >
-                <Link to={'/create-cyclic-payment/'} className="justify-self-end p-2">
+                <Link to={'/create-account/'} className="justify-self-end p-2">
                     <Button className="dark:bg-slate-900 dark:hover:bg-slate-800">+ {t('accountList.submit')}</Button>
                 </Link>
             </EmptyResponseInfoAlert>

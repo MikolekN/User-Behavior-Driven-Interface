@@ -28,7 +28,6 @@ const AccountsList = ({ accountsList }: AccountsListProps) => {
     };
 
     useEffect(() => {
-        console.log(accountsList)
         setAccounts(accountsList);
     }, [accountsList]);
 
@@ -123,7 +122,7 @@ const AccountsList = ({ accountsList }: AccountsListProps) => {
                                 <Button onClick={() => handleSetActive(account.accountNumber)} className="w-2/6 bg-green-600 hover:bg-green-700 dark:bg-emerald-950 dark:hover:bg-emerald-900 mt-1 ml-10">
                                     {t('accountList.setActive')}
                                 </Button>
-                                <Link to={`/create-account`} className="w-1/6">
+                                <Link to={`/edit-account/${account.accountNumber}`} className="w-1/6">
                                     <Button className="w-full mt-1 dark:bg-slate-900 dark:hover:bg-slate-800">
                                         {t('accountList.edit')}
                                     </Button>
