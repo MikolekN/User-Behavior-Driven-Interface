@@ -9,7 +9,7 @@ from request_dto import BaseRequestDto
 @dataclass
 class CreateLoanRequestDto(BaseRequestDto):
     title: str
-    amount: float
+    amount: int
 
     @staticmethod
     def validate_request(data: Mapping[str, Any]) -> Optional[str]:
