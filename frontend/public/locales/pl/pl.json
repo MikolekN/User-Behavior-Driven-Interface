@@ -80,7 +80,7 @@
         "blockades": "Blokady",
         "availableFunds": "Dostępne środki",
         "transfer": "Przelew",
-        "userDontHaveAccount": "Użytkownik nie ma konta"
+        "userDontHaveAccount": "Użytkownik nie ma aktywnego konta"
     },
     "transfer": {
         "tile": {
@@ -152,7 +152,8 @@
         "submit": "Dodaj konto",
         "edit": "Edytuj",
         "setActive": "Ustaw jako aktywne",
-        "delete": "Usuń"
+        "delete": "Usuń",
+        "emptyList": "Lista jest pusta"
     },
     "accountTypes": {
         "personal": "Konto osobiste",
