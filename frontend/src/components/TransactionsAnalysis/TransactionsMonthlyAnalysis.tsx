@@ -53,7 +53,6 @@ const TransactionsMonthlyAnalysis = () => {
                 <TransfersAnalysisChart chartData={chartData} truncateText={true}/>
             </Tile>
         </div>
-
     );
 };
 
