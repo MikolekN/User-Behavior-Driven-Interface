@@ -100,11 +100,11 @@ const CyclicPaymentsForm = () => {
 
     const getCyclicPaymentRequestBody = (data: CyclicPaymentFormData) => {
         return {
-            cyclicPaymentName: data.cyclicPaymentName,
-            recipientAccountNumber: data.recipientAccountNumber,
-            transferTitle: data.transferTitle,
+            cyclic_payment_name: data.cyclicPaymentName,
+            recipient_account_number: data.recipientAccountNumber,
+            transfer_title: data.transferTitle,
             amount: data.amount,
-            startDate: toLocalISOString(data.startDate!),
+            start_date: toLocalISOString(data.startDate!),
             interval: data.interval
         };
     };
@@ -116,7 +116,7 @@ const CyclicPaymentsForm = () => {
             try {
                 await createCyclicPayment(requestBody);
                 await getUser();
-                navigate('/dashboard');
+                navigate('/cyclic-payments');
             } catch (error) {
                 handleError(error);
                 scrollToTop('cyclic-payment-form-wrapper');
@@ -125,7 +125,7 @@ const CyclicPaymentsForm = () => {
             try {
                 await updateCyclicPayment(id!, requestBody);
                 await getUser();
-                navigate('/dashboard');
+                navigate('/cyclic-payments');
             } catch (error) {
                 handleError(error);
                 scrollToTop('cyclic-payment-form-wrapper');
