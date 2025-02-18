@@ -77,7 +77,7 @@ const TransactionsHistory = () => {
                                             }`}
                                         >
                                             {!item.income && <span>-</span>}
-                                            {item.amount} {account!.currency}
+                                            {item.amount} {account?.currency}
                                         </div>
                                     </div>
                                 ))}

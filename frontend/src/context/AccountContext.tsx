@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useCallback, useMemo, useState } from 'react';
+import { createContext, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { Account, mapBackendAccountToAccount, mapBackendAccountListToAccounts } from '../components/utils/types/Account';
 import { createAccountData, deleteAccountData, getAccountData, getAccountsData, getActiveAccountData, setActiveAccountData, updateAccountData } from '../services/accountService';
 
@@ -78,6 +78,15 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
     const setActiveAccount = useCallback(async (accountNumber: string): Promise<void> => {
         await setActiveAccountData(accountNumber);
     }, []);
+
+    useEffect(() => {
+        const fetchAccount = async (): Promise<void> => {
+            if (!account) {
+                await getActiveAccount();
+            }
+        };
+        void fetchAccount();
+    }, [getActiveAccount, account]);
 
     const AccountContextValue = useMemo(() => ({
         account, setAccount, accounts, setAccounts, getAccount, getAccounts, createAccount, updateAccount, deleteAccount, getActiveAccount, setActiveAccount
