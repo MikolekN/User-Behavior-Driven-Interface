@@ -153,7 +153,8 @@
         "edit": "Edytuj",
         "setActive": "Ustaw jako aktywne",
         "delete": "Usuń",
-        "emptyList": "Lista jest pusta"
+        "emptyList": "Lista jest pusta",
+        "activeAccountNotSet": "Przejdź do zarządzania kontami i aktywuj swoje konto"
     },
     "accountTypes": {
         "personal": "Konto osobiste",

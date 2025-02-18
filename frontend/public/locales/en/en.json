@@ -153,7 +153,8 @@
         "edit": "Edit",
         "setActive": "Set active",
         "delete": "Delete",
-        "emptyList":"List is empty"
+        "emptyList":"List is empty",
+        "activeAccountNotSet": "Go to account management and activate your account"
     },
     "accountTypes": {
         "personal": "Personal account",
