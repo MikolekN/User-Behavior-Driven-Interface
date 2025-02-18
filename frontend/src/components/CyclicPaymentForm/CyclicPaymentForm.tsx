@@ -23,6 +23,7 @@ import ErrorMessage from '../utils/ErrorMessage';
 import { useTranslation } from 'react-i18next';
 import Button from '../utils/Button';
 import { AccountContext } from '../../context/AccountContext';
+import ActiveAccountError from '../ActiveAccountError/ActiveAccountError';
 
 const CyclicPaymentsForm = () => {
     const { t } = useTranslation();
@@ -144,6 +145,13 @@ const CyclicPaymentsForm = () => {
         });
         setDate(date);
     };
+
+    if (account === null) {
+        return (
+            <div id="cyclic-payment-form-wrapper" className="flex items-center justify-center">
+                <ActiveAccountError />
+            </div>);
+    }
 
     return (
         <div id="cyclic-payment-form-wrapper" className="flex items-center justify-center">

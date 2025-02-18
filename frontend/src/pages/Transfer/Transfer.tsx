@@ -14,6 +14,7 @@ import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import AccountDetails from '../../components/utils/AccountDetails';
 import { useTranslation } from 'react-i18next';
 import { AccountContext } from '../../context/AccountContext';
+import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
 
 const Transfer = () => {
     const { t } = useTranslation();
@@ -52,6 +53,13 @@ const Transfer = () => {
             scrollToTop('transfer-form-wrapper');
         }
     };
+
+    if (account === null) {
+        return (
+            <div id="transfer-form-wrapper" className="flex items-center justify-center">
+                <ActiveAccountError />
+            </div>);
+    }
 
     return (
         <div id="transfer-form-wrapper" className="flex items-center justify-center">

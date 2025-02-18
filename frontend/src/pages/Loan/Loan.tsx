@@ -17,6 +17,7 @@ import AccountDetails from '../../components/utils/AccountDetails';
 import { useTranslation } from 'react-i18next';
 import Button from '../../components/utils/Button';
 import { AccountContext } from '../../context/AccountContext';
+import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
 
 const rangeSliderTheme: FlowbiteRangeSliderTheme = {
     "root": {
@@ -87,6 +88,13 @@ const Loan = () => {
         setSliderValue(newValue);
         setValue('amount', newValue.toString());
     };
+
+    if (account === null) {
+        return (
+            <div id="loan-form-wrapper" className="flex items-center justify-center">
+                <ActiveAccountError />
+            </div>);
+    }
 
     return (
         <div id='loan-form-wrapper' className="flex items-center justify-center">
