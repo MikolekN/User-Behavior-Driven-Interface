@@ -38,7 +38,7 @@ const AccountsList = ({ accountsList }: AccountsListProps) => {
         fetchActiveAccount();
         setAccounts(accountsList);
         setActiveAccountId(user!.activeAccount);
-    }, [accountsList]);
+    }, [accountsList, getActiveAccount]);
 
     const handleSetActive = (accountNumber: string) => {
         const setActiveAccount = async () => {

@@ -1,6 +1,3 @@
-
-import { scryRenderedComponentsWithType } from "react-dom/test-utils";
-import { Account, BackendAccount } from "../components/utils/types/Account";
 import { CreateAccountResponse, CreateAccountResponseSchema, DeleteAccountResponse, DeleteAccountResponseSchema, GetAccountResponse, GetAccountResponseSchema, GetAccountsListResponse, GetAccountsListResponseSchema, GetActiveAccountResponse, GetActiveAccountResponseSchema, SetActiveAccountResponse, SetActiveAccountResponseSchema, UpdateAccountResponse, UpdateAccountResponseSchema } from "../schemas/apiValidation/accountResponseSchema";
 import { validateSchema } from "../schemas/apiValidation/validator";
 import { API_URL } from "./constants";

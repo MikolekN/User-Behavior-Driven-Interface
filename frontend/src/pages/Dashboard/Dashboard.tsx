@@ -7,20 +7,24 @@ import { useTranslation } from 'react-i18next';
 import { useContext, useEffect } from 'react';
 import { AccountContext } from '../../context/AccountContext';
 import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
+import { UserContext } from '../../context/UserContext';
 
 const Dashboard = () => {
     const { t } = useTranslation();
-    const { account, getActiveAccount } = useContext(AccountContext);
+    const { account, setAccount, getActiveAccount } = useContext(AccountContext);
+    const { getUser } = useContext(UserContext);
 
     useEffect(() => {
-        const getActiveUserAccount = async () => {
-            await getActiveAccount();
+        const getUserActiveAccount = async () => {
+            try {
+                await getActiveAccount();
+            } catch {
+                setAccount(null);
+            }   
         }
 
-        getActiveUserAccount();
-    }, []);
-
-    console.log(account)
+        getUserActiveAccount();
+    }, [getUser, getActiveAccount]);
 
     return (
         <div className="flex items-center justify-center">
