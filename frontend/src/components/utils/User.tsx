@@ -34,7 +34,7 @@ export class User implements IUser {
     constructor(user: Partial<IUser> & { email: string }) {
         this.login = user.login ?? user.email;
         this.email = user.email;
-        this.activeAccount = user.activeAccount ?? '';
+        this.activeAccount = user.activeAccount ?? null;
         this.role = user.role ?? 'USER';
         this.icon = user.icon ?? null;
     }

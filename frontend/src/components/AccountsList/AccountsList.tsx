@@ -10,6 +10,7 @@ import { UserContext } from '../../context/UserContext';
 import { AccountContext } from '../../context/AccountContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { setActiveAccountData } from '../../services/accountService';
+import { FaCheck } from "react-icons/fa6";
 
 interface AccountsListProps {
     accountsList: Account[];
@@ -19,16 +20,24 @@ const AccountsList = ({ accountsList }: AccountsListProps) => {
     const { t } = useTranslation();
     const { user, getUser } = useContext(UserContext);
     const { deleteAccount } = useContext(AccountContext);
+    const { getActiveAccount } = useContext(AccountContext);
     const { handleError } = useApiErrorHandler();
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [accounts, setAccounts] = useState<Account[]>([]);
+    const [activeAccountId, setActiveAccountId] = useState<string | null>(null);
 
     const resetActiveIndex = () => {
         setActiveIndex(null);
     };
 
     useEffect(() => {
+        const fetchActiveAccount = async () => {
+            await getActiveAccount();
+        }
+
+        fetchActiveAccount();
         setAccounts(accountsList);
+        setActiveAccountId(user!.activeAccount);
     }, [accountsList]);
 
     const handleSetActive = (accountNumber: string) => {
@@ -70,6 +79,7 @@ const AccountsList = ({ accountsList }: AccountsListProps) => {
             <div className="hidden md:block">
                 <CollapsibleTable
                     headers={[
+                        '',
                         t('accountList.accountName'),
                         t('accountList.accountNumber'),
                         t('accountList.balance')
@@ -79,6 +89,11 @@ const AccountsList = ({ accountsList }: AccountsListProps) => {
                     setActiveIndex={setActiveIndex}
                     renderRow={(account, activeIndex, hovering, idx) => (
                         <>
+                            <td className={`px-4 py-2 text-center font-bold rounded-tl ${activeIndex !== idx ? 'rounded-bl' : ''} ${hovering === idx && activeIndex !== idx ? 'bg-gray-100 dark:bg-gray-600' : 'bg-gray-50 dark:bg-gray-700'} dark:text-gray-300`}>
+                                { activeAccountId === account.id && 
+                                    <FaCheck />
+                                }
+                            </td>
                             <td className={`px-4 py-2 text-center font-bold rounded-tl ${activeIndex !== idx ? 'rounded-bl' : ''} ${hovering === idx && activeIndex !== idx ? 'bg-gray-100 dark:bg-gray-600' : 'bg-gray-50 dark:bg-gray-700'} dark:text-gray-300`}>
                                 {account.accountName}
                             </td>
@@ -119,9 +134,11 @@ const AccountsList = ({ accountsList }: AccountsListProps) => {
                                 </div>
                             </div>
                             <div className="flex justify-end space-x-4 w-full">
-                                <Button onClick={() => handleSetActive(account.accountNumber)} className="w-2/6 bg-green-600 hover:bg-green-700 dark:bg-emerald-950 dark:hover:bg-emerald-900 mt-1 ml-10">
-                                    {t('accountList.setActive')}
-                                </Button>
+                                { activeAccountId !== account.id ?
+                                    <Button onClick={() => handleSetActive(account.accountNumber)} className="w-2/6 bg-green-600 hover:bg-green-700 dark:bg-emerald-950 dark:hover:bg-emerald-900 mt-1 ml-10">
+                                        {t('accountList.setActive')}
+                                    </Button> : <></>  
+                                }
                                 <Link to={`/edit-account/${account.accountNumber}`} className="w-1/6">
                                     <Button className="w-full mt-1 dark:bg-slate-900 dark:hover:bg-slate-800">
                                         {t('accountList.edit')}
@@ -139,33 +156,65 @@ const AccountsList = ({ accountsList }: AccountsListProps) => {
                 <CollapsibleList
                     items={accounts}
                     renderHeader={(account) => (
-                        <span>{account.accountName}</span>
+                        <>
+                            { activeAccountId === account.id ? 
+                                <FaCheck /> :
+                                <span></span>
+                            }
+                            <span className="pl-2">{account.accountName}</span>
+                        </>
                     )}
                     renderDetails={(account) => (
                         <div className="flex flex-col space-y-4">
                             <div>
+                                <Label label={t('accountList.accountName')} />
+                                <div className="pl-4 dark:text-gray-300">
+                                    <i>{account.accountName}</i>
+                                </div>
+                            </div>
+                            <div>
                                 <Label label={t('accountList.accountNumber')} />
-                                <div>{account.accountNumber}</div>
+                                <div className="pl-4 dark:text-gray-300">
+                                    <i>{account.accountNumber}</i>
+                                </div>
+                            </div>
+                            <div>
+                                <Label label={t('accountList.accountType')} />
+                                <div className="pl-4 dark:text-gray-300">
+                                    <i>{t(`accountTypes.${account.accountType}`)}</i>
+                                </div>
                             </div>
                             <div>
                                 <Label label={t('accountList.blockades')} />
-                                <div>{account.blockades}</div>
+                                <div className="pl-4 dark:text-gray-300">
+                                    <i>{account.blockades}</i>
+                                </div>
                             </div>
                             <div>
                                 <Label label={t('accountList.balance')} />
-                                <div>{new Date(account.balance).toLocaleDateString()}</div>
+                                <div className="pl-4 dark:text-gray-300">
+                                    <i>{account.balance}</i>
+                                </div>
                             </div>
-                            <div className="flex space-x-4">
-                                <Link to={`/edit-cyclic-payment/${account.id}`}>
-                                    <Button className="dark:bg-slate-900 dark:hover:bg-slate-800">{t('accountList.edit')}</Button>
+                            <div>
+                                <Label label={t('accountList.currency')} />
+                                <div className="pl-4 dark:text-gray-300">
+                                    <i>{account.currency}</i>
+                                </div>
+                            </div>
+                            <div className="flex flex-col items-center">
+                                { activeAccountId !== account.id ?
+                                    <Button
+                                        onClick={() => handleSetActive(account.accountNumber)}
+                                        className="w-full bg-green-600 hover:bg-green-700 dark:bg-emerald-950 dark:hover:bg-emerald-900 mt-1"
+                                    >
+                                        {t('accountList.setActive')}
+                                    </Button> : <></>  
+                                }
+                                <Link to={`/edit-cyclic-payment/${account.id}`} className="w-full mt-1">
+                                    <Button className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">{t('accountList.edit')}</Button>
                                 </Link>
-                                <Button
-                                    onClick={() => handleSetActive(account.accountNumber)}
-                                    className="bg-green-600 hover:bg-green-700 dark:bg-emerald-950 dark:hover:bg-emerald-900"
-                                >
-                                    {t('accountList.setActive')}
-                                </Button>
-                                <Button onClick={() => handleDelete(account.accountNumber)} className="w-5/12 bg-red-600 hover:bg-red-700 dark:bg-rose-950 dark:hover:bg-rose-900 mt-1 ml-10">
+                                <Button onClick={() => handleDelete(account.accountNumber)} className="w-full bg-red-600 hover:bg-red-700 dark:bg-rose-950 dark:hover:bg-rose-900 mt-1">
                                     {t('accountList.delete')}
                                 </Button>
                             </div>
