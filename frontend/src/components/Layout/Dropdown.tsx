@@ -37,7 +37,28 @@ export const Dropdown: React.FC<DropdownProps> = ({ menu, isOpen, onClick, close
             </button>
 
             <ul
-                className={`transition-all duration-300 ease-in-out transform overflow-hidden ${isOpen ? 'max-h-[500px] visibility-visible md:border' : 'max-h-0 visibility-hidden'} left-0 w-full block md:-translate-x-1/4 md:absolute md:text-nowrap md:w-fit md:bg-white md:dark:bg-gray-700 md:border-gray-300 md:dark:border-gray-700 md:rounded md:shadow-lg md:mt-2`}
+                className={`transition-all
+                    duration-300
+                    ease-in-out
+                    transform
+                    overflow-hidden
+                    ${isOpen ? 'max-h-[500px] visibility-visible md:border' : 'max-h-0 visibility-hidden'}
+                    left-0
+                    md:left-1/2
+                    md:-translate-x-1/2
+                    w-full
+                    block
+                    md:absolute
+                    md:text-nowrap
+                    md:w-fit
+                    md:min-w-32
+                    md:bg-white
+                    md:dark:bg-gray-700
+                    md:border-gray-300
+                    md:dark:border-gray-700
+                    md:rounded
+                    md:shadow-lg
+                    md:mt-2`}
             >
                 {menu.submenu.map((option) => (
                     <li key={option.key}
