@@ -80,7 +80,7 @@
         "blockades": "Blockades",
         "availableFunds": "Available funds",
         "transfer": "Transfer",
-        "userDontHaveAccount": "User does not have an account"
+        "userDontHaveAccount": "User does not have an active account"
     },
     "transfer": {
         "tile": {
@@ -97,7 +97,9 @@
         "tile": {
             "title": "Transaction history"
         },
-        "emptyList": "List is empty"
+        "emptyList": "List is empty",
+        "noTransactions": "List is empty",
+        "loan": "Cash loan"
     },
     "cyclicPaymentList": {
         "tile": {
@@ -150,7 +152,9 @@
         "submit": "Add account",
         "edit": "Edit",
         "setActive": "Set active",
-        "delete": "Delete"
+        "delete": "Delete",
+        "emptyList":"List is empty",
+        "activeAccountNotSet": "Go to account management and activate your account"
     },
     "accountTypes": {
         "personal": "Personal account",

@@ -80,7 +80,7 @@
         "blockades": "Blokady",
         "availableFunds": "Dostępne środki",
         "transfer": "Przelew",
-        "userDontHaveAccount": "Użytkownik nie ma konta"
+        "userDontHaveAccount": "Użytkownik nie ma aktywnego konta"
     },
     "transfer": {
         "tile": {
@@ -97,7 +97,9 @@
         "tile": {
             "title": "Historia transakcji"
         },
-        "emptyList":"Lista jest pusta"
+        "emptyList": "Lista jest pusta",
+        "noTransactions": "Lista jest pusta",
+        "loan": "Pożyczka gotówkowa"
     },
     "cyclicPaymentList": {
         "tile": {
@@ -150,7 +152,9 @@
         "submit": "Dodaj konto",
         "edit": "Edytuj",
         "setActive": "Ustaw jako aktywne",
-        "delete": "Usuń"
+        "delete": "Usuń",
+        "emptyList": "Lista jest pusta",
+        "activeAccountNotSet": "Przejdź do zarządzania kontami i aktywuj swoje konto"
     },
     "accountTypes": {
         "personal": "Konto osobiste",

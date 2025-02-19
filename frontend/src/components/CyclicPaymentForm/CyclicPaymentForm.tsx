@@ -22,6 +22,8 @@ import { datepickerErrorTheme } from '../utils/themes/datepickerErrorTheme';
 import ErrorMessage from '../utils/ErrorMessage';
 import { useTranslation } from 'react-i18next';
 import Button from '../utils/Button';
+import { AccountContext } from '../../context/AccountContext';
+import ActiveAccountError from '../ActiveAccountError/ActiveAccountError';
 
 const CyclicPaymentsForm = () => {
     const { t } = useTranslation();
@@ -30,6 +32,7 @@ const CyclicPaymentsForm = () => {
     const [ minDate, setMinDate ] = useState<Date | undefined | null>(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext);
+    const { account } = useContext(AccountContext);
     const { cyclicPayment, setCyclicPayment, createCyclicPayment, getCyclicPayment, 
         updateCyclicPayment } = useContext(CyclicPaymentContext);
 
@@ -98,11 +101,11 @@ const CyclicPaymentsForm = () => {
 
     const getCyclicPaymentRequestBody = (data: CyclicPaymentFormData) => {
         return {
-            cyclicPaymentName: data.cyclicPaymentName,
-            recipientAccountNumber: data.recipientAccountNumber,
-            transferTitle: data.transferTitle,
+            cyclic_payment_name: data.cyclicPaymentName,
+            recipient_account_number: data.recipientAccountNumber,
+            transfer_title: data.transferTitle,
             amount: data.amount,
-            startDate: toLocalISOString(data.startDate!),
+            start_date: toLocalISOString(data.startDate!),
             interval: data.interval
         };
     };
@@ -114,7 +117,7 @@ const CyclicPaymentsForm = () => {
             try {
                 await createCyclicPayment(requestBody);
                 await getUser();
-                navigate('/dashboard');
+                navigate('/cyclic-payments');
             } catch (error) {
                 handleError(error);
                 scrollToTop('cyclic-payment-form-wrapper');
@@ -123,7 +126,7 @@ const CyclicPaymentsForm = () => {
             try {
                 await updateCyclicPayment(id!, requestBody);
                 await getUser();
-                navigate('/dashboard');
+                navigate('/cyclic-payments');
             } catch (error) {
                 handleError(error);
                 scrollToTop('cyclic-payment-form-wrapper');
@@ -143,6 +146,13 @@ const CyclicPaymentsForm = () => {
         setDate(date);
     };
 
+    if (account === null) {
+        return (
+            <div id="cyclic-payment-form-wrapper" className="flex items-center justify-center">
+                <ActiveAccountError />
+            </div>);
+    }
+
     return (
         <div id="cyclic-payment-form-wrapper" className="flex items-center justify-center">
             <Tile title={t('cyclicPaymentForm.tile.title')} id="cyclic-payment-form" className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
@@ -153,7 +163,7 @@ const CyclicPaymentsForm = () => {
                                 <ErrorAlert alertMessage={apiError.errorMessage} />
                             </div> 
                         }
-                        <AccountDetails label={t('cyclicPaymentForm.fromAccount')} user={user!} className='w-full p-3 mb-6' />
+                        <AccountDetails label={t('cyclicPaymentForm.fromAccount')} account={account!} className='w-full p-3 mb-6' />
                         <form id="cyclic-payment-form" className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput 
                                 label={t('cyclicPaymentForm.cyclicPaymentName')}
@@ -217,7 +227,7 @@ const CyclicPaymentsForm = () => {
                                 error={errors.amount}
                                 className="w-10/12"
                             >
-                                {user!.currency}
+                                {account!.currency}
                             </FormInput>
                             <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
 						        {isSubmitting ? `${t('cyclicPaymentForm.loading')}` : `${t('cyclicPaymentForm.submit')}`}

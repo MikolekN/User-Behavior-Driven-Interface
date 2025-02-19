@@ -1,22 +1,22 @@
 import Label from './Label';
-import { User } from './User';
+import { Account } from './types/Account';
 
 interface AccountDetailsProps {
     label: string;
-    user: User;
+    account: Account;
     className?: string;
 }
 
-const AccountDetails = ({ label, user, className = '' }: AccountDetailsProps) => {
+const AccountDetails = ({ label, account, className = '' }: AccountDetailsProps) => {
     return (
         <div className="my-4">
             <Label label={label} />
             <div className={`${className} text-gray-700 dark:text-gray-400 bg-gray-300 dark:bg-gray-600 border border-gray-300 dark:border-gray-600 rounded-lg text-sm md:text-base`} >
                 <p>
-                    {user.accountName} {`(${user.availableFunds} ${user.currency})`}
+                    {account.accountName} {`(${account.availableFunds} ${account.currency})`}
                 </p>
                 <p>
-                    {user.accountNumber}
+                    {account.accountNumber}
                 </p>
             </div>
         </div>

@@ -1,21 +1,23 @@
 import { z } from 'zod';
 import { requiredStringField } from '../common/commonValidators';
 
-// createAccount
-
 export const AccountDataSchema = z.object({
     _id: requiredStringField(),
-    account_name: requiredStringField(),
-    account_number: requiredStringField(),
+    name: requiredStringField(),
+    number: requiredStringField(),
     blockades: z.number(),
     balance: z.number(),
     currency: requiredStringField(),
-    account_type: requiredStringField(),
+    type: requiredStringField(),
+    created: requiredStringField(),
+    user: requiredStringField(),
+    is_deleted: z.boolean()
 });
 
+// createAccount
+
 export const CreateAccountResponseSchema = z.object({
-    message: requiredStringField(),
-    account: AccountDataSchema
+    message: requiredStringField()
 });
 
 export type CreateAccountResponse = z.infer<typeof CreateAccountResponseSchema>;
@@ -41,11 +43,10 @@ export type GetActiveAccountResponse = z.infer<typeof GetActiveAccountResponseSc
 // set active Account
 
 export const SetActiveAccountResponseSchema = z.object({
-    message: requiredStringField(),
-    account: AccountDataSchema
+    message: requiredStringField()
 });
 
-export type SetActiveAccountResponse = z.infer<typeof GetActiveAccountResponseSchema>;
+export type SetActiveAccountResponse = z.infer<typeof SetActiveAccountResponseSchema>;
 
 // update Account
 

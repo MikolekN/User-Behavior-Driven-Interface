@@ -74,8 +74,8 @@ const AccountForm = () => {
 
     const getAccountRequestBody = (data: AccountFormData) => {
         return {
-            accountName: data.accountName,
-            accountType: data.accountType,
+            name: data.accountName,
+            type: data.accountType,
             currency: data.currency
         };
     };
@@ -85,8 +85,8 @@ const AccountForm = () => {
         const requestBody = getAccountRequestBody(data);
         if (account === null) {
             try {
-                createAccount(requestBody);
-                navigate('/dashboard');
+                await createAccount(requestBody);
+                navigate('/accounts');
             } catch (error) {
                 handleError(error);
                 scrollToTop('account-form-wrapper');
@@ -95,7 +95,7 @@ const AccountForm = () => {
             try {
                 await updateAccount(accountNumber!, requestBody);
                 await getUser();
-                navigate('/dashboard');
+                navigate('/accounts');
             } catch (error) {
                 handleError(error);
                 scrollToTop('account-form-wrapper');

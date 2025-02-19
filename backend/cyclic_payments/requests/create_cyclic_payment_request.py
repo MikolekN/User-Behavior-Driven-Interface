@@ -11,7 +11,7 @@ class CreateCyclicPaymentRequest(BaseRequestDto):
     recipient_account_number: str
     cyclic_payment_name: str
     transfer_title: str
-    amount: float
+    amount: str
     start_date: str
     interval: str
 
@@ -21,7 +21,7 @@ class CreateCyclicPaymentRequest(BaseRequestDto):
         if error:
             return error
 
-        if data['amount'] <= 0:
+        if float(data['amount']) <= 0:
             return "negativeAmount"
 
         try:

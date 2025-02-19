@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useCallback, useMemo, useState } from 'react';
+import { createContext, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { Account, mapBackendAccountToAccount, mapBackendAccountListToAccounts } from '../components/utils/types/Account';
 import { createAccountData, deleteAccountData, getAccountData, getAccountsData, getActiveAccountData, setActiveAccountData, updateAccountData } from '../services/accountService';
 
@@ -40,14 +40,18 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
     const getAccount = useCallback(async (accountNumber: string): Promise<void> => {
         const {account: accountBackendData} = await getAccountData(accountNumber);
         if (accountBackendData) {
-            setAccount(mapBackendAccountToAccount(accountBackendData));
+            const frontendAccountData = mapBackendAccountToAccount(accountBackendData); 
+            setAccount(() => new Account({...frontendAccountData}));
         }
     }, []);
 
     const getAccounts = useCallback(async (): Promise<void> => {
         const { accounts: accountsBackendData } = await getAccountsData();
         if (accountsBackendData) {
-            setAccounts(mapBackendAccountListToAccounts(accountsBackendData));
+            const frontendAccountsData = mapBackendAccountListToAccounts(accountsBackendData); 
+            setAccounts(frontendAccountsData.map(accountData => new Account(
+                {...accountData}
+            )));
         }
     }, []);
 
@@ -66,13 +70,23 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
     const getActiveAccount = useCallback(async (): Promise<void> => {
         const {account: accountBackendData} = await getActiveAccountData();
         if (accountBackendData) {
-            setAccount(mapBackendAccountToAccount(accountBackendData));
+            const frontendAccountData = mapBackendAccountToAccount(accountBackendData); 
+            setAccount(() => new Account({...frontendAccountData}));
         }
     }, []);
 
     const setActiveAccount = useCallback(async (accountNumber: string): Promise<void> => {
         await setActiveAccountData(accountNumber);
     }, []);
+
+    useEffect(() => {
+        const fetchAccount = async (): Promise<void> => {
+            if (!account) {
+                await getActiveAccount();
+            }
+        };
+        void fetchAccount();
+    }, [getActiveAccount, account]);
 
     const AccountContextValue = useMemo(() => ({
         account, setAccount, accounts, setAccounts, getAccount, getAccounts, createAccount, updateAccount, deleteAccount, getActiveAccount, setActiveAccount

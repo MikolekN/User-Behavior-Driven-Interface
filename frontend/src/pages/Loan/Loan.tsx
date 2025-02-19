@@ -16,6 +16,8 @@ import Label from '../../components/utils/Label';
 import AccountDetails from '../../components/utils/AccountDetails';
 import { useTranslation } from 'react-i18next';
 import Button from '../../components/utils/Button';
+import { AccountContext } from '../../context/AccountContext';
+import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
 
 const rangeSliderTheme: FlowbiteRangeSliderTheme = {
     "root": {
@@ -38,6 +40,7 @@ const Loan = () => {
     const { t } = useTranslation();
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext)
+    const { account } = useContext(AccountContext);
     const { createLoan } = useContext(TransferContext);
     const [ sliderValue, setSliderValue ] = useState<number | null>(null);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -68,8 +71,8 @@ const Loan = () => {
         clearApiError();
         try {
             const requestBody = {
-                transferTitle: 'Pożyczka gotówkowa',
-                amount: amount
+                title: 'loan',
+                amount: parseFloat(amount)
             };
             await createLoan(requestBody);
             await getUser();
@@ -86,6 +89,13 @@ const Loan = () => {
         setValue('amount', newValue.toString());
     };
 
+    if (account === null) {
+        return (
+            <div id="loan-form-wrapper" className="flex items-center justify-center">
+                <ActiveAccountError />
+            </div>);
+    }
+
     return (
         <div id='loan-form-wrapper' className="flex items-center justify-center">
             <Tile title={t('loan.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
@@ -96,7 +106,7 @@ const Loan = () => {
                                 <ErrorAlert alertMessage={apiError.errorMessage} />
                             </div> 
                         }
-                        <AccountDetails label={t('loan.fromAccount')} user={user!} className='w-full p-3 mb-6' />
+                        <AccountDetails label={t('loan.fromAccount')} account={account!} className='w-full p-3 mb-6' />
                         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <FormInput
                                 label={t('loan.howMuchMoney')}
@@ -105,7 +115,7 @@ const Loan = () => {
                                 error={errors.amount}
                                 className="w-10/12"
                             >
-                                {user!.currency}
+                                {account!.currency}
                             </FormInput>
                             <div>
                                 <RangeSlider 
@@ -135,9 +145,6 @@ const Loan = () => {
                             <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
 						        {isSubmitting ? `${t('loan.loading')}` : `${t('loan.submit')}`}
                             </Button>
-                            <div>
-                                {apiError.isError && <p className="text-red-600 mt-1 text-sm">{apiError.errorMessage}</p>}
-                            </div>
                         </form>
                     </div>
                 </div>

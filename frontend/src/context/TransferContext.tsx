@@ -40,7 +40,7 @@ export const TransferProvider: React.FC<{ children: ReactNode }> = ({ children }
     }, []);
 
     const fetchTransfers = useCallback(async (): Promise<void> => {
-        const { transfers: transfersBackendData } = await fetchTransfersData();
+        const { transactions: transfersBackendData } = await fetchTransfersData();
         if (transfersBackendData) {
             setTransfers(mapBackendTransfersListDataToTransfers(transfersBackendData));
         }

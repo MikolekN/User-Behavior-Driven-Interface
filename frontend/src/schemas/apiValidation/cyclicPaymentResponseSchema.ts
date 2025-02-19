@@ -1,22 +1,25 @@
 import { z } from 'zod';
 import { requiredStringField } from '../common/commonValidators';
 
-// createCyclicPayment
-
 export const CyclicPaymentDataSchema = z.object({
     _id: requiredStringField(),
     amount: z.number(),
+    created: requiredStringField(),
     cyclic_payment_name: requiredStringField(),
     interval: requiredStringField(),
+    is_deleted: z.boolean(),
+    issuer_id: requiredStringField(),
     recipient_account_number: requiredStringField(),
+    recipient_id: requiredStringField(),
     recipient_name: requiredStringField(),
     start_date: requiredStringField(),
     transfer_title: requiredStringField()
 });
 
+// createCyclicPayment
+
 export const CreateCyclicPaymentResponseSchema = z.object({
-    message: requiredStringField(),
-    cyclic_payment: CyclicPaymentDataSchema
+    message: requiredStringField()
 });
 
 export type CreateCyclicPaymentResponse = z.infer<typeof CreateCyclicPaymentResponseSchema>;
