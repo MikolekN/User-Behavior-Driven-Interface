@@ -1,21 +1,10 @@
-from datetime import datetime
-
-import bcrypt
 import pytest
 
 import application
-from cyclic_payments import CyclicPayment
-from tests.constants import TEST_PASSWORD, TEST_ID, TEST_EMAIL
-from tests.cyclic_payment.constants import TEST_ISSUER_ACCOUNT_NUMBER, TEST_CYCLIC_PAYMENT_NAME, TEST_AMOUNT, \
-    TEST_CYCLIC_PAYMENT_TRANSFER_TITLE, TEST_CYCLIC_PAYMENT_START_DATE, TEST_CYCLIC_PAYMENT_INTERVAL
-from tests.transfer.constants import TEST_RECIPIENT_ACCOUNT_NUMBER, TEST_TRANSFER_TITLE
-from transfers import Transfer
-from users import User
+from accounts.account_dto import AccountDto
+from tests.constants import TEST_USER_LOGIN, TEST_USER_EMAIL, TEST_USER_ID, TEST_DIFFERENT_USER_ID, TEST_USER_PASSWORD, TEST_ACCOUNT_NAME, TEST_ACCOUNT_CURRENCY, TEST_ACCOUNT_TYPE, TEST_USER_ICON
 from users.user_dto import UserDto
-
-
-def generate_hashed_password(password: str) -> str:
-    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+from utils import _create_user, _create_account, _create_transfer, _create_cyclic_payment
 
 
 @pytest.fixture
@@ -34,63 +23,147 @@ def runner(app):
     with app.test_cli_runner() as runner:
         yield runner
 
+#region # --- User fixtures --- #
 @pytest.fixture
-def create_user():
-    def _create_user(login, email, account_number):
-        return User(
-            _id=TEST_ID,
-            login=login,
-            email=email,
-            password=generate_hashed_password(TEST_PASSWORD),
-            account_name="Test Account",
-            account_number=account_number,
-            blockades=0.0,
-            balance=2000.0,
-            currency="PLN",
-            user_icon=None,
-            role="USER"
-        )
-    return _create_user
+def test_user():
+    yield _create_user(TEST_USER_LOGIN, TEST_USER_EMAIL, TEST_USER_ICON)
 
 @pytest.fixture
-def test_user(create_user):
-    yield create_user("testuser", TEST_EMAIL, "1234567890")
+def test_user_without_icon():
+    yield _create_user(TEST_USER_LOGIN, TEST_USER_EMAIL, None)
 
 @pytest.fixture
 def test_user_dto(test_user):
     yield UserDto.from_user(test_user)
 
 @pytest.fixture
-def test_recipient_user(create_user):
-    yield create_user("test_recipient_user", TEST_EMAIL, TEST_RECIPIENT_ACCOUNT_NUMBER)
+def valid_user_data():
+    return {'email': TEST_USER_EMAIL, 'password': TEST_USER_PASSWORD}
 
 @pytest.fixture
-def test_issuer_user(create_user):
-    yield create_user("test_issuer_user", TEST_EMAIL, TEST_ISSUER_ACCOUNT_NUMBER)
+def wrong_password_user_data():
+    return {'email': TEST_USER_EMAIL, 'password': "WrongPassword123"}
+
+def empty_user_data():
+    return {}
+
+def missing_email_user_data():
+    return {'password': TEST_USER_PASSWORD}
+
+def missing_password_user_data():
+    return {'email': TEST_USER_EMAIL}
+
+def invalid_email_user_data():
+    return {'email': 0, 'password': TEST_USER_PASSWORD}
+
+def invalid_password_user_data():
+    return {'email': TEST_USER_EMAIL, 'password': 0}
+
+def empty_email_user_data():
+    return {'email': "", 'password': TEST_USER_PASSWORD}
+
+def empty_password_user_data():
+    return {'email': TEST_USER_EMAIL, 'password': ""}
+#endregion
+
+#region # --- Account fixtures --- #
+@pytest.fixture
+def test_account():
+    yield _create_account(user=TEST_USER_ID)
 
 @pytest.fixture
-def test_cyclic_payment():
-    yield CyclicPayment(
-        issuer_id=TEST_ID, recipient_id=TEST_ID,
-        recipient_account_number=TEST_RECIPIENT_ACCOUNT_NUMBER, recipient_name="test name",
-        cyclic_payment_name=TEST_CYCLIC_PAYMENT_NAME, transfer_title=TEST_CYCLIC_PAYMENT_TRANSFER_TITLE,
-        amount=float(TEST_AMOUNT), start_date=datetime.fromisoformat(TEST_CYCLIC_PAYMENT_START_DATE),
-        interval=TEST_CYCLIC_PAYMENT_INTERVAL
-    )
+def test_unauthorised_account():
+    yield _create_account(user=TEST_DIFFERENT_USER_ID)
 
-def create_transfer(title, amount):
-    return Transfer(
-        created=datetime.now(),
-        transfer_from_id=TEST_ID,
-        transfer_to_id=TEST_ID,
-        title=title,
-        amount=amount
-    )
+@pytest.fixture
+def test_account_dto(test_account):
+    yield AccountDto.from_account(test_account)
+
+@pytest.fixture
+def valid_account_data():
+    return {'account_name': TEST_ACCOUNT_NAME, 'type': TEST_ACCOUNT_TYPE, 'currency': TEST_ACCOUNT_CURRENCY}
+
+@pytest.fixture
+def test_accounts():
+    yield [_create_account(user=TEST_USER_ID) for _ in range(3)]
+
+def empty_account_data():
+    return {}
+
+def invalid_account_data():
+    return "invalid_account_data"
+
+def missing_fields_user_data():
+    return {'hallo': "hallo"}
+
+def extra_fields_user_data():
+    return {
+        'account_name': TEST_ACCOUNT_NAME,
+        'type': TEST_ACCOUNT_TYPE,
+        'currency': TEST_ACCOUNT_CURRENCY,
+        'hallo': "hallo"
+    }
+
+def invalid_fields_user_data():
+    return {
+        'account_name': 0,
+        'type': 0,
+        'currency': 0
+    }
+
+def empty_fields_user_data():
+    return {
+        'account_name': "",
+        'type': "",
+        'currency': ""
+    }
+
+def invalid_currency_format_user_data():
+    return {
+        'account_name': TEST_ACCOUNT_NAME,
+        'type': TEST_ACCOUNT_TYPE,
+        'currency': 'hallo',
+    }
+
+def invalid_account_type_user_data():
+    return {
+        'account_name': TEST_ACCOUNT_NAME,
+        'type': 'hallo',
+        'currency': TEST_ACCOUNT_CURRENCY,
+    }
+
+def invalid_account_number():
+    return 0
+
+def wrong_length_account_number():
+    return "0"
+
+def non_digit_account_number():
+    return "0000000000000000000000000a"
+
+
+#endregion
+
+#region # --- Transfer fixtures --- #
+@pytest.fixture
+def test_transfer():
+    yield _create_transfer()
+
+@pytest.fixture
+def test_unauthorised_transfer():
+    yield _create_transfer()
 
 @pytest.fixture
 def test_transfers():
-    yield [create_transfer(TEST_TRANSFER_TITLE, TEST_AMOUNT) for _ in range(3)]
+    yield [_create_transfer() for _ in range(3)]
+#endregion
+
+#region # --- Cyclic payment fixtures --- #
+@pytest.fixture
+def test_cyclic_payment():
+    yield _create_cyclic_payment()
 
 @pytest.fixture
-def test_transfers_for_analysis():
-    yield [create_transfer(TEST_TRANSFER_TITLE, float(TEST_AMOUNT)) for _ in range(3)]
+def test_cyclic_payments():
+    yield [_create_cyclic_payment() for _ in range(3)]
+#endregion

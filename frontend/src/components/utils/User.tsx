@@ -1,73 +1,41 @@
 interface IUser {
+    role: string;
     login: string;
     email: string;
-    accountName: string;
-    accountNumber: string;
-    blockades: number;
-    balance: number;
-    currency: string;
-    role: string;
+    activeAccount: string | null;
     icon: File | null;
 }
 
 export interface IBackendUser {
+    role: string;
     login: string;
     email: string;
-    account_name: string;
-    account_number: string;
-    blockades: number;
-    balance: number;
-    currency: string;
-    role: string;
-    icon?: File | null;
+    active_account: string | null;
+    created: string;
+    is_deleted: boolean;
 }
 
 export const mapBackendUserToUser = (backendUser: IBackendUser): Partial<IUser> => {
     return {
         login: backendUser.login,
         email: backendUser.email,
-        accountName: backendUser.account_name,
-        accountNumber: backendUser.account_number,
-        blockades: backendUser.blockades,
-        balance: backendUser.balance,
-        currency: backendUser.currency,
-        role: backendUser.role || 'USER',
-        icon: null
+        activeAccount: backendUser.active_account,
+        role: backendUser.role || 'USER'
     };
 };
 
 export class User implements IUser {
-    login: string;
-
-    email: string;
-
-    accountName: string;
-
-    accountNumber: string;
-
-    blockades: number;
-
-    balance: number;
-
-    currency: string;
-
     role: string;
-
+    login: string;
+    email: string;
+    activeAccount: string | null;
     icon: File | null;
 
     constructor(user: Partial<IUser> & { email: string }) {
         this.login = user.login ?? user.email;
         this.email = user.email;
-        this.accountName = user.accountName ?? 'Przykładowa nazwa konta';
-        this.accountNumber = user.accountNumber ?? '';
-        this.blockades = user.blockades ?? 0;
-        this.balance = user.balance ?? 0;
-        this.currency = user.currency ?? 'PLN';
+        this.activeAccount = user.activeAccount ?? null;
         this.role = user.role ?? 'USER';
         this.icon = user.icon ?? null;
-    }
-
-    get availableFunds(): string {
-        return (this.balance - this.blockades).toFixed(2);
     }
 }

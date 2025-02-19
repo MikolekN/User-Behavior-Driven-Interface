@@ -15,6 +15,8 @@ import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import { scrollToTop } from '../../components/utils/scroll';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
 const ProfilePage = () => {
     const { t } = useTranslation();
@@ -23,7 +25,9 @@ const ProfilePage = () => {
     const { apiError: apiFieldError, handleError: handleFieldError, clearApiError: clearFieldError } = useApiErrorHandler();
     const { apiError: apiPasswordError, handleError: handlePasswordError, clearApiError: clearPasswordError } = useApiErrorHandler();
     const { user, getUser, updateUser, updatePassword } = useContext(UserContext);
+    const { logout } = useContext(AuthContext);
     const { getIcon, sendIcon } = useContext(UserIconContext);
+    const navigate = useNavigate();
 
     const { register: registerIcon, handleSubmit: handleSubmitIconForm, setValue: setIconValueForm, formState: { errors: iconErrors, isSubmitting: isIconFormSubmitting } } = useForm<UserIconFromData>({
         resolver: zodResolver(UserIconFormDataSchema)
@@ -39,19 +43,11 @@ const ProfilePage = () => {
         setSelectedField(e.target.value);
     }
 
-    const mapFieldToBackend = (field: string): string => {
-        return field === 'accountName' ? 'account_name' : field;
-    }
-
     const getUserFieldValue = useCallback((field: string): string | undefined => {
         if (!user) return;
         switch (field) {
             case 'login':
                 return user.login;
-            case 'accountName':
-                return user.accountName;
-            case 'currency':
-                return user.currency;
             default:
                 return '';
         }
@@ -157,8 +153,7 @@ const ProfilePage = () => {
     const onFieldSubmit: SubmitHandler<UserFieldFormData> = async ({ field, value }: UserFieldFormData) => {
         clearFieldError();
         try {
-            const mappedField = mapFieldToBackend(field);
-            await updateUser(mappedField, value);
+            await updateUser(field, value);
             await getUser();
         } catch (error) {
             scrollToTop('field-form-wrapper');
@@ -166,10 +161,20 @@ const ProfilePage = () => {
         }
     };
 
-    const onPasswordSubmit: SubmitHandler<UserPasswordFormData> = async ({ currentPassword, newPassword }: UserPasswordFormData) => {
+    const getUpdatePasswordRequestBody = (data: UserPasswordFormData) => {
+        return {
+            current_password: data.currentPassword,
+            new_password: data.newPassword
+        }
+    }
+
+    const onPasswordSubmit: SubmitHandler<UserPasswordFormData> = async (data: UserPasswordFormData) => {
         clearPasswordError();
         try {
-            await updatePassword(currentPassword, newPassword);
+            const requestBody = getUpdatePasswordRequestBody(data);
+            await updatePassword(requestBody);
+            await logout();
+            navigate('/');
         } catch (error) {
             scrollToTop('password-form-wrapper');
             handlePasswordError(error);
@@ -195,7 +200,7 @@ const ProfilePage = () => {
                                 className="w-full"
                             />
                             <div className="flex justify-center">
-                                <Button isSubmitting={isIconFormSubmitting}>
+                                <Button isSubmitting={isIconFormSubmitting} className="dark:bg-slate-900 dark:hover:bg-slate-800">
                                     {isIconFormSubmitting ? `${t('profile.icon.loading')}` : `${t('profile.icon.submit')}`}
                                 </Button>
                             </div>
@@ -228,7 +233,7 @@ const ProfilePage = () => {
                                 className="w-full"
                             />
                             <div className="flex justify-center">
-                                <Button isSubmitting={isFieldFormSubmitting}>
+                                <Button isSubmitting={isFieldFormSubmitting} className="dark:bg-slate-900 dark:hover:bg-slate-800">
                                     {isFieldFormSubmitting ? `${t('profile.field.loading')}` : `${t('profile.field.submit')}`}
                                 </Button>
                             </div>
@@ -259,7 +264,7 @@ const ProfilePage = () => {
                                 className="w-full"
                             />
                             <div className="flex justify-center">
-                                <Button isSubmitting={isPasswordFormSubmitting}>
+                                <Button isSubmitting={isPasswordFormSubmitting} className="dark:bg-slate-900 dark:hover:bg-slate-800">
                                     {isPasswordFormSubmitting ? `${t('profile.password.loading')}` : `${t('profile.password.submit')}`}
                                 </Button>
                             </div>

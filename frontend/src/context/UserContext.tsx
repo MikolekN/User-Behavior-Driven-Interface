@@ -8,7 +8,7 @@ export interface UserContextProps {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
     getUser: () => Promise<void>;
     updateUser: (field: string, value: string) => Promise<void>;
-    updatePassword: (currentPassword: string, newPassword: string) => Promise<void>;
+    updatePassword: (requestBody: object) => Promise<void>;
 }
 
 const defaultContextValue: UserContextProps = {
@@ -30,7 +30,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const { user: userBackendData } = await getUserData();
         if (userBackendData) {
             const userFrontendData = mapBackendUserToUser(userBackendData);
-            setUser(prevUser => new User({ ...userFrontendData, icon: prevUser?.icon || null, email: userFrontendData.email! }));
+            setUser(() => new User({ ...userFrontendData, email: userFrontendData.email! }));
         }
     }, []);
 
@@ -39,13 +39,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const { user: userBackendData } = await updateUserField(field, value);
         if (userBackendData) {
             const userFrontendData = mapBackendUserToUser(userBackendData);
-            setUser(prevUser => new User({ ...userFrontendData, icon: prevUser?.icon || null, email: userFrontendData.email! }));
+            setUser(() => new User({ ...userFrontendData, email: userFrontendData.email! }));
         }
     }, [user]);
 
-    const updatePassword = useCallback(async (currentPassword: string, newPassword: string): Promise<void> => {
+    const updatePassword = useCallback(async (requestBody: object): Promise<void> => {
         if (!user) return;
-        await updateUserPassword(currentPassword, newPassword);
+        await updateUserPassword(requestBody);
     }, [user]);
 
     useEffect(() => {

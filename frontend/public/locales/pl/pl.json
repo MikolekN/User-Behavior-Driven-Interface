@@ -25,6 +25,13 @@
                 "info": "Kontakt"
             }
         },
+        "myProducts": {
+            "title": "Moje produkty",
+            "submenu": {
+                "accounts": "Konta",
+                "cards": "Karty"
+            }
+        },
         "profile": {
             "profile": "Profil",
             "login": "Logowanie",
@@ -43,6 +50,11 @@
         "login": "Logowanie",
         "register": "Rejstracja",
         "adminPanel": "Panel administratora"
+    },
+    "pageNotFound": {
+        "title": "Czegoś tutaj brakuje...",
+        "message": "Przepraszamy, nie możemy znaleźć tej strony. Znajdziesz wiele wracając na stronę główną.",
+        "backToDashboard": "Wróć na stronę główną"
     },
     "login": {
         "tile": {
@@ -67,7 +79,8 @@
         "balance": "Balans",
         "blockades": "Blokady",
         "availableFunds": "Dostępne środki",
-        "transfer": "Przelew"
+        "transfer": "Przelew",
+        "userDontHaveAccount": "Użytkownik nie ma aktywnego konta"
     },
     "transfer": {
         "tile": {
@@ -82,9 +95,11 @@
     },
     "transactionHistory": {
         "tile": {
-            "title": "Historia Transakcji"
+            "title": "Historia transakcji"
         },
-        "emptyList":"Lista jest pusta"
+        "emptyList": "Lista jest pusta",
+        "noTransactions": "Lista jest pusta",
+        "loan": "Pożyczka gotówkowa"
     },
     "cyclicPaymentList": {
         "tile": {
@@ -97,27 +112,71 @@
         "recipient": "Odbiorca",
         "recipientAccountNumber": "Numer konta odbiorcy",
         "fromAccount": "Z konta",
-        "title": "Tytuł",
+        "title": "Tytuł cyklicznego przelewu",
         "startDate": "Data początkowa",
         "transferInterval": "Interwał przelewu",
         "edit": "Edytuj",
         "delete": "Usuń",
-        "emptyList": "Lista jest pusta"
+        "emptyList": "Lista jest pusta",
+        "week": "Co tydzień",
+        "month": "Co miesiąc",
+        "quarter": "Co kwartał",
+        "halfYear": "Co pół roku"
     },
     "cyclicPaymentForm": {
         "tile": {
             "title": "Płatność cykliczna"
         },
         "fromAccount": "Z konta",
-        "cyclicPaymentName": "Nazwa",
+        "cyclicPaymentName": "Nazwa płatności cyklicznej",
         "recipientAccountNumber": "Numer konta odbiorcy",
         "startDate": "Data początkowa",
         "startDatePlaceholder": "Wybierz datę początkową",
         "transferInterval": "Interwał przelewu",
-        "title": "Tytuł",
+        "title": "Tytuł cyklicznego przelewu",
         "amount": "Kwota",
         "submit": "Utwórz",
-        "loading": "Ładowanie..."
+        "loading": "Ładowanie...",
+        "selectInterval": "-- wybierz interwał --"
+    },
+    "accountList": {
+        "tile": {
+            "title": "Konta"
+        },
+        "accountName": "Nazwa konta",
+        "accountNumber": "Numer konta",
+        "blockades": "Blokady",
+        "balance": "Balans",
+        "currency": "Waluta",
+        "accountType": "Typ konta",
+        "submit": "Dodaj konto",
+        "edit": "Edytuj",
+        "setActive": "Ustaw jako aktywne",
+        "delete": "Usuń",
+        "emptyList": "Lista jest pusta",
+        "activeAccountNotSet": "Przejdź do zarządzania kontami i aktywuj swoje konto"
+    },
+    "accountTypes": {
+        "personal": "Konto osobiste",
+        "savings": "Konto oszczędnościowe",
+        "currency": "Konto walutowe",
+        "business": "Konto biznesowe",
+        "youth": "Konto młodzieżowe",
+        "student": "Konto studenckie",
+        "retirement": "Konto emerytalne",
+        "BANK": "Bank",
+        "other": "Inne"
+    },
+    "accountForm": {
+        "tile": {
+            "title": "Dodaj konto"
+        },
+        "accountName": "Nazwa konta",
+        "accountType": "Rodzaj konta",
+        "selectAccountType": "-- wybierz rodzaj konta --",
+        "currency": "Waluta",
+        "loading": "Ładowanie...",
+        "submit": "Dodaj konto"
     },
     "loan": {
         "tile": {
@@ -250,10 +309,19 @@
         "quarter": "Co kwartał",
         "halfYear": "Co pół roku",
         "en": "English",
-        "pl": "Polski"
+        "pl": "Polski",
+        "personalAccount": "osobiste",
+        "savingsAccount": "oszczędnościowe",
+        "currencyAccount": "walutowe",
+        "businessAccount": "biznesowe",
+        "youthAccount": "młodzieżowe",
+        "studentAccount": "studenckie",
+        "retirementAccount": "emerytalne"
     },
     "errors": {
         "api": {
+            "unexpectedResponse": "Nieoczekiwana odpowiedź.",
+            "sthWentWrong": "Coś poszło nie tak z żądaniem API.",
             "unknownError": "Wystąpił nieznany błąd. Spróbuj pownownie później.",
             "emptyRequestPayload": "Treść żądania jest pusta",
             "authFieldsRequired": "Pola email i/lub hasło są wymagane",
@@ -267,6 +335,7 @@
             "negativeAmount": "Kwota musi być liczbą dodatnią",
             "invalidDateFormat": "Nieprawidłowy format daty. Oczekiwany format ISO 8601",
             "invalidObjectId": "Nieprawidłowy identyfikator obiektu",
+            "cannotTransferToSelf": "Nie można dokonywać przelewów na samego siebie.",
             "userWithAccountNumberNotExist": "Użytkownik o podanym numerze konta nie istnieje",
             "userDontHaveEnoughMoney": "Użytkownik nie ma wystarczających środków",
             "cyclicPaymentCreatedSuccessful": "Cykliczna płatność została pomyślnie utworzona",
@@ -309,7 +378,17 @@
             "errorUpdateUser": "Błąd podczas aktualizacji danych użytkownika: ",
             "errorImageProcess": "Przetwarzanie obrazu nie powiodło się: ",
             "sendIconFailed": "Nie udało się wysłać ikony: ",
-            "Failed to fetch": "Nieoczekiwany błąd serwera"
+            "Failed to fetch": "Nieoczekiwany błąd serwera",
+            "activeAccountNotSet": "Nie wybrano aktywnego konta",
+            "invalidTypeFields": "Niepoprawny typ pola:",
+            "userNotFound": "Nie znaleziono użytkownia",
+            "accountCreatedSucessfully": "Konto utworzone pomyślnie",
+            "accountNotExist": "Konto nie istnieje",
+            "unauthorizedAccountAccess": "Nieautoryzowany dostęp do konta",
+            "accountDeleteSucessful": "Konto usunięte pomyślnie",
+            "accountsNotExist": "Lista kont jest pusta",
+            "accountDontHaveEnoughMoney": "Brak wystarczających środków na aktywnym koncie",
+            "senderAccountNotExist": "Konto odbiorcy nie istnieje"
         },
         "zod": {
             "required": "Pole jest wymagane",

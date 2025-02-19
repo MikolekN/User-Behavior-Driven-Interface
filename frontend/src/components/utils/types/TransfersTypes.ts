@@ -11,11 +11,12 @@ export interface BackendTransaction {
     _id: string;
     amount: number;
     created: string;
-    income: boolean;
+    is_deleted: boolean;
+    is_income: boolean;
     issuer_name: string;
     title: string;
-    transfer_from_id: string;
-    transfer_to_id: string;
+    recipient_account_number: string;
+    sender_account_number: string;
 }
 
 export interface BackendTransactionsHistoryData {
@@ -24,7 +25,6 @@ export interface BackendTransactionsHistoryData {
 }
 
 export interface Transaction {
-    created: string;
     issuerName: string;
     title: string;
     amount: number;
@@ -37,15 +37,12 @@ interface BackendChartData {
     outcome: number;
 }
 
-
-
 export const mapBackendTransfersDataToTransfers = (backendTransfersData: BackendTransaction): Transaction => {
     return {
-        created: backendTransfersData.created,
         issuerName: backendTransfersData.issuer_name,
         title: backendTransfersData.title,
         amount: backendTransfersData.amount,
-        income: backendTransfersData.income
+        income: backendTransfersData.is_income
     };
 };
 
@@ -56,11 +53,11 @@ export const mapBackendTransfersListDataToTransfers = (transfersBackendData: Bac
         transfer.transactions.forEach((transaction) => {
             const transactionFrontendData = mapBackendTransfersDataToTransfers(transaction);
             transactions.push(transactionFrontendData);
-        }); 
+        });
         const formattedTransfer: TransactionsHistoryType = {
             date: transfer.date,
             transactions: transactions
-        } 
+        }
         formattedTransfers.push(formattedTransfer);
     });
     return formattedTransfers;
@@ -72,10 +69,10 @@ export const mapBackendChartDataToChartData = (chartBackendData: BackendChartDat
         const formattedChartData: ChartData = {
             income: chartData.income,
             outcome: chartData.outcome,
-            interval: i18n.exists(`chart.months.${chartData.interval}`) 
-                    ? t(`chart.months.${chartData.interval}`) 
+            interval: i18n.exists(`chart.months.${chartData.interval}`)
+                    ? t(`chart.months.${chartData.interval}`)
                     : chartData.interval
-        } 
+        }
         formattedAnalysisChartData.push(formattedChartData);
     });
     return formattedAnalysisChartData;

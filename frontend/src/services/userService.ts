@@ -25,17 +25,14 @@ export const updateUserField = async (field: string, value: string): Promise<Upd
     return validateSchema({ dto: apiResponse, schema: UpdateUserResponseSchema, schemaName: '/user' });
 };
 
-export const updateUserPassword = async (currentPassword: string, newPassword: string): Promise<void> => {
-    const response = await fetch(`${API_URL}/user/password`, {
+export const updateUserPassword = async (requestBody: object): Promise<void> => {
+    const response = await fetch(`${API_URL}/user/update`, {
         method: 'PATCH',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            current_password: currentPassword,
-            new_password: newPassword,
-        }),
+        body: JSON.stringify(requestBody),
     });
     const apiResponse = await handleApiResponse(response);
 

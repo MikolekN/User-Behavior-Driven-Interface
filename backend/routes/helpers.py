@@ -1,26 +1,17 @@
-from collections.abc import Mapping
-import random
-from typing import Optional, Any
+from functools import wraps
 
 import bcrypt
-from flask import Response, jsonify
+from flask import Response, jsonify, make_response
+from flask_login import current_user
+from http import HTTPStatus
 
 from constants import ALLOWED_EXTENSIONS
 
 
-def create_simple_response(message: str, status_code: int) -> tuple[Response, int]:
-    response = {"message": message}
-    return jsonify(response), status_code
-
-def validate_login_data(data: Optional[Mapping[str, Any]]) -> Optional[str]:
-    if not data:
-        return "emptyRequestPayload"
-    if 'email' not in data or 'password' not in data:
-        return "authFieldsRequired"
-    return None
-
-def generate_account_number() -> str:
-    return ''.join(random.choices('0123456789', k=26))
+def create_simple_response(message: str, status: HTTPStatus) -> Response:
+    response = make_response(jsonify({"message": message}), status)
+    response.headers["Content-Type"] = "application/json"
+    return response
 
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -30,3 +21,11 @@ def verify_password(password: str, current_password: str) -> bool:
 
 def allowed_file_extension(filename: str) -> bool:
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def unauthenticated_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if current_user.is_authenticated:
+            return create_simple_response("alreadyLogged", HTTPStatus.CONFLICT)
+        return func(*args, **kwargs)
+    return wrapper

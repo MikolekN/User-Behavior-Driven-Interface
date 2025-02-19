@@ -1,109 +1,166 @@
-from unittest.mock import MagicMock, patch
+from http import HTTPStatus
+from unittest.mock import patch
 
-from tests.cyclic_payment.constants import TEST_NEGATIVE_AMOUNT, TEST_NOT_ENOUGH_USER_FUNDS, TEST_AVAILABLE_USER_FUNDS
-from tests.transfer.helpers import get_transfer
+from tests.constants import TEST_ACCOUNT_DIFFERENT_NUMBER
+from utils import assert_json_response
 
 
 def test_create_transfer_unauthorized(client):
     response = client.post('/api/transfer')
-    assert response.status_code == 401
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
 
 def test_create_transfer_empty_data(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         response = client.post('/api/transfer', json={})
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'emptyRequestPayload')
 
-        assert response.status_code == 400
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "emptyRequestPayload"
-
-def test_create_transfer_invalid_data(client, test_user):
+def test_create_transfer_missing_data(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
         response = client.post('/api/transfer', json={"hallo": "hallo"})
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'missingFields;sender_account_number,recipient_account_number,title,amount')
 
-        assert response.status_code == 400
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "recipientAccountNumberRequired"
+        response = client.post('/api/transfer', json={"sender_account_number": ""})
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'missingFields;recipient_account_number,title,amount')
 
-        response = client.post('/api/transfer', json={"recipientAccountNumber": ""})
+        response = client.post('/api/transfer', json={
+            "sender_account_number": "",
+            "recipient_account_number": ""
+        })
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'missingFields;title,amount')
 
-        assert response.status_code == 400
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "transferTitleRequired"
+        response = client.post('/api/transfer', json={
+            "sender_account_number": "",
+            "recipient_account_number": "",
+            "title": ""
+        })
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'missingFields;amount')
 
-        response = client.post('/api/transfer', json={"recipientAccountNumber": "", "transferTitle": ""})
+def test_create_transfer_extra_data(client, test_user):
+    with patch('flask_login.utils._get_user', return_value=test_user):
+        response = client.post('/api/transfer', json={
+            "sender_account_number": "",
+            "recipient_account_number": "",
+            "title": "",
+            "amount": 0,
+            "hallo": ""
+        })
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'extraFields;hallo')
 
-        assert response.status_code == 400
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "amountRequired"
+def test_create_transfer_invalid_sender_account_number_data(client, test_user):
+    with patch('flask_login.utils._get_user', return_value=test_user):
+        response = client.post('/api/transfer', json={
+            "sender_account_number": 5,
+            "recipient_account_number": "",
+            "title": "",
+            "amount": 0.0
+        })
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'invalidTypeFields;sender_account_number')
+
+def test_create_transfer_invalid_recipient_account_number_data(client, test_user):
+    with patch('flask_login.utils._get_user', return_value=test_user):
+        response = client.post('/api/transfer', json={
+            "sender_account_number": "",
+            "recipient_account_number": 5,
+            "title": "",
+            "amount": 0.0
+        })
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'invalidTypeFields;recipient_account_number')
+
+def test_create_transfer_invalid_title_data(client, test_user):
+    with patch('flask_login.utils._get_user', return_value=test_user):
+        response = client.post('/api/transfer', json={
+            "sender_account_number": "",
+            "recipient_account_number": "",
+            "title": 5,
+            "amount": 0.0
+        })
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'invalidTypeFields;title')
+
+def test_create_transfer_invalid_amount_data(client, test_user):
+    with patch('flask_login.utils._get_user', return_value=test_user):
+        response = client.post('/api/transfer', json={
+            "sender_account_number": "",
+            "recipient_account_number": "",
+            "title": "",
+            "amount": ""
+        })
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'invalidTypeFields;amount')
+
+def test_create_transfer_empty_field_data(client, test_user):
+    with patch('flask_login.utils._get_user', return_value=test_user):
+        response = client.post('/api/transfer', json={
+            "sender_account_number": "",
+            "recipient_account_number": "",
+            "title": "",
+            "amount": 0.0
+        })
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'emptyFields;sender_account_number,recipient_account_number,title')
 
 def test_create_transfer_negative_amount(client, test_user):
     with patch('flask_login.utils._get_user', return_value=test_user):
-        response = client.post('/api/transfer', json=get_transfer({'amount': TEST_NEGATIVE_AMOUNT}))
+        response = client.post('/api/transfer', json={
+            "sender_account_number": "sender_account_number",
+            "recipient_account_number": "recipient_account_number",
+            "title": "title",
+            'amount': -1.0
+        })
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'negativeAmount')
 
-        assert response.status_code == 400
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "negativeAmount"
-
-@patch('users.user_repository.UserRepository.find_by_id')
-def test_create_transfer_to_self(mock_find_by_id, client, test_user):
+def test_create_transfer_to_self(client, test_user, test_account):
     with patch('flask_login.utils._get_user', return_value=test_user):
-        mock_find_by_id.return_value = test_user
+        response = client.post('/api/transfer', json={
+            "sender_account_number": "sender_account_number",
+            "recipient_account_number": "sender_account_number",
+            "title": "title",
+            'amount': 1.0
+        })
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'cannotTransferToSelf')
 
-        response = client.post('/api/transfer', json=get_transfer({'recipientAccountNumber': test_user.account_number}))
+def test_create_transfer_sender_account_not_exist(client, test_user, test_account):
+    with patch('flask_login.utils._get_user', return_value=test_user), \
+            patch('accounts.account_repository.AccountRepository.find_by_account_number', return_value=None):
+        response = client.post('/api/transfer', json={
+            "sender_account_number": "sender_account_number",
+            "recipient_account_number": "recipient_account_number",
+            "title": "title",
+            'amount': 1.0
+        })
+        assert_json_response(response, HTTPStatus.NOT_FOUND, 'senderAccountNotExist')
 
-        assert response.status_code == 400
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "cannotTransferToSelf"
 
+# TODO: simplify tests - e.g. one function for all
 
-@patch('users.user_repository.UserRepository.find_by_account_number')
-@patch('users.user_repository.UserRepository.find_by_id')
-def test_create_transfer_recipient_user_not_exist(mock_find_by_id, mock_find_by_account_number, client, test_user):
-    with patch('flask_login.utils._get_user', return_value=test_user):
-        mock_find_by_account_number.return_value = None
-        mock_find_by_id.return_value = test_user
+def test_create_transfer_unauthorised(client, test_user, test_unauthorised_account):
+    with patch('flask_login.utils._get_user', return_value=test_user), \
+            patch('accounts.account_repository.AccountRepository.find_by_account_number', return_value=test_unauthorised_account):
+        response = client.post('/api/transfer', json={
+            "sender_account_number": "sender_account_number",
+            "recipient_account_number": "recipient_account_number",
+            "title": "title",
+            'amount': 1.0
+        })
+        assert_json_response(response, HTTPStatus.UNAUTHORIZED, 'unauthorisedAccountAccess')
 
-        response = client.post('/api/transfer', json=get_transfer())
+def test_create_transfer_not_enough_money(client, test_user, test_account):
+    with patch('flask_login.utils._get_user', return_value=test_user), \
+            patch('accounts.account_repository.AccountRepository.find_by_account_number', return_value=test_account):
+        response = client.post('/api/transfer', json={
+            "sender_account_number": "sender_account_number",
+            "recipient_account_number": "recipient_account_number",
+            "title": "title",
+            'amount': 10_001.0
+        })
+        assert_json_response(response, HTTPStatus.BAD_REQUEST, 'accountDontHaveEnoughMoney')
 
-        assert response.status_code == 404
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "userWithAccountNumberNotExist"
-
-@patch('users.user_repository.UserRepository.find_by_id')
-@patch('users.user_repository.UserRepository.find_by_account_number')
-def test_create_transfer_not_enough_money(mock_find_by_account_number, mock_find_by_id, client, test_issuer_user, test_recipient_user):
-    with patch('flask_login.utils._get_user', return_value=test_issuer_user):
-        mock_find_by_id.return_value = test_issuer_user
-        test_issuer_user.get_available_funds = MagicMock(return_value=TEST_NOT_ENOUGH_USER_FUNDS)
-        mock_find_by_account_number.return_value = test_recipient_user
-
-        response = client.post('/api/transfer', json=get_transfer())
-
-        assert response.status_code == 403
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "userDontHaveEnoughMoney"
-
-@patch('users.user_repository.UserRepository.find_by_id')
-@patch('users.user_repository.UserRepository.find_by_account_number')
-@patch('transfers.transfer_repository.TransferRepository.insert')
-def test_create_transfer_success(mock_insert, mock_find_by_account_number, mock_find_by_id, client, test_issuer_user, test_recipient_user):
-    with patch('flask_login.utils._get_user', return_value=test_issuer_user):
-        mock_find_by_id.return_value = test_issuer_user
-        test_issuer_user.get_available_funds = MagicMock(return_value=TEST_AVAILABLE_USER_FUNDS)
-        mock_find_by_account_number.return_value = test_recipient_user
-        mock_insert.return_value = None
-
-        response = client.post('/api/transfer', json=get_transfer())
-
-        assert response.status_code == 200
-        json_data = response.get_json()
-        assert 'message' in json_data
-        assert json_data['message'] == "transferCreatedSuccessful"
+def test_create_transfer_successful(client, test_user, test_account):
+    with patch('flask_login.utils._get_user', return_value=test_user), \
+            patch('accounts.account_repository.AccountRepository.find_by_account_number', return_value=test_account), \
+            patch('transfers.transfer_repository.TransferRepository.insert', return_value=None), \
+            patch('accounts.account_repository.AccountRepository.update', return_value=None):
+        response = client.post('/api/transfer', json={
+            "sender_account_number": "sender_account_number",
+            "recipient_account_number": "recipient_account_number",
+            "title": "title",
+            'amount': 1.0
+        })
+        assert_json_response(response, HTTPStatus.CREATED, 'transferCreatedSuccessful')

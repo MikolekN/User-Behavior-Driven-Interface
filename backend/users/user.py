@@ -13,17 +13,16 @@ class User(BaseEntity, UserMixin):
     login: Optional[str] = ''
     email: Optional[str] = ''
     password: Optional[str] = ''
-    account_name: Optional[str] = ''
-    account_number: Optional[str] = ''
-    blockades: Optional[float] = ''
-    balance: Optional[float] = ''
-    currency: Optional[str] = ''
-    role: Optional[str] = ''
+    active_account: Optional[bson.ObjectId] = None
     user_icon: Optional[str] = None
+    role: Optional[str] = ''
 
-    def to_dict(self) -> Dict[str, Any]:
-        user_dict = super().to_dict()
-        if self.user_icon is None:
+    def to_dict(self, for_db: bool = False) -> Dict[str, Any]:
+        user_dict = super().to_dict(for_db)
+        if self.active_account:
+            user_dict['active_account'] = self.active_account if for_db else str(self.active_account)
+        if not for_db:
+            user_dict.pop('password', None)
             user_dict.pop('user_icon', None)
         return user_dict
 
@@ -31,21 +30,14 @@ class User(BaseEntity, UserMixin):
     def from_dict(data: Dict[str, Any]) -> 'User':
         return User(
             _id=bson.ObjectId(data['_id']) if '_id' in data else None,
-            created=datetime.fromisoformat(data['created']) if 'created' in data else None,
+            created=data.get('created', None),
             login=data.get('login', ''),
             email=data.get('email', ''),
             password=data.get('password', ''),
-            account_name=data.get('account_name', ''),
-            account_number=data.get('account_number', ''),
-            blockades=data.get('blockades', 0),
-            balance=data.get('balance', 0),
-            currency=data.get('currency', ''),
+            active_account=bson.ObjectId(data['active_account']) if data.get('active_account', None) else None,
             user_icon=data.get('user_icon', None),
             role=data.get('role', '')
         )
-    
-    def get_available_funds(self) -> float:
-        return float(self.balance) - float(self.blockades)
 
     def __repr__(self) -> str:
         return (f"User(login={self.login!r}, "
@@ -53,10 +45,6 @@ class User(BaseEntity, UserMixin):
                 f"password={self.password!r}, "
                 f"_id={self._id!r}, "
                 f"created={self.created!r}, "
-                f"account_name={self.account_name!r}, "
-                f"account_number={self.account_number!r}, "
-                f"blockades={self.blockades!r}, "
-                f"balance={self.balance!r}, "
-                f"currency={self.currency!r}, "
+                f"active_account={str(self.active_account)!r}, "
                 f"user_icon={self.user_icon!r}, "
                 f"role={self.role!r})")

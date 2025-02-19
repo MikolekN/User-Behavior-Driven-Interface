@@ -1,63 +1,30 @@
-from collections.abc import Mapping
-from datetime import datetime
-from typing import Any, Optional
-
 from bson import ObjectId
 
+from accounts import AccountRepository, Account
 from cyclic_payments import CyclicPayment
+from users import UserRepository, User
 
-
-def validate_cyclic_payment_data(data: Optional[Mapping[str, Any]]) -> Optional[str]:
-    if not data:
-        return "emptyRequestPayload"
-
-    message = validate_required_cyclic_payment_fields(data)
-    if message:
-        return message
-
-    amount = float(data.get('amount'))
-    if amount <= 0:
-        return "negativeAmount"
-
-    try:
-        start_date = data.get('startDate')
-        datetime.fromisoformat(start_date.replace('Z', '+00:00'))
-    except (TypeError, ValueError):
-        return "invalidDateFormat"
-
-    return None
-
-
-def validate_required_cyclic_payment_fields(data: Mapping[str, Any]) -> str | None:
-    required_fields = ['cyclicPaymentName', 'recipientAccountNumber', 'transferTitle', 'amount', 'startDate',
-                       'interval']
-    field_names = ""
-    for field in required_fields:
-        if field not in data:
-            field_names += field + " "
-
-    if field_names:
-        return f"missingFields;{field_names.strip()}"
-
-    return None
-
+user_repository = UserRepository()
+account_repository = AccountRepository()
 
 def validate_object_id(oid: str) -> str | None:
     if not ObjectId.is_valid(oid):
         return "invalidObjectId"
     return None
 
+def prepare_cyclic_payment(cyclic_payment: CyclicPayment) -> dict:
+    response_cyclic_payment = cyclic_payment.to_dict()
 
-def validate_update_cyclic_payment(data: Mapping[str, Any] | None, id: str) -> str | None:
-    if not data:
-        return "emptyRequestPayload"
+    recipient_account: Account = account_repository.find_by_id_full(str(cyclic_payment.recipient_id))
+    if not recipient_account:
+        return response_cyclic_payment
 
-    message = validate_object_id(id)
-    if message:
-        return message
+    response_cyclic_payment['recipient_account_number'] = str(recipient_account.number)
 
-    message = validate_required_cyclic_payment_fields(data)
-    if message:
-        return message
+    recipient_user: User = user_repository.find_by_id_full(str(recipient_account.user))
+    if not recipient_user:
+        return response_cyclic_payment
 
-    return None
+    response_cyclic_payment['recipient_name'] = recipient_user.login
+
+    return response_cyclic_payment

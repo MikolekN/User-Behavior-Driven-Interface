@@ -1,7 +1,3 @@
-
-// zastanowic się czy warto mieć też swoje interfejsy, albo jeśli nie to gdzie miec funkcje mapujące wersje backend na frontend
-import { IBackendUser } from '../components/utils/User';
-
 import { LoginResponse, LoginResponseSchema, LogoutResponseSchema, RegisterResponse, RegisterResponseSchema } from '../schemas/apiValidation/authResponseSchema';
 import { validateSchema } from '../schemas/apiValidation/validator';
 import { API_URL } from './constants';
@@ -20,10 +16,6 @@ export const loginUser = async (email: string, password: string): Promise<LoginR
 
     return validateSchema({ dto: apiResponse, schema: LoginResponseSchema, schemaName: '/login' });
 };
-
-// interface RegisterResponse {
-//     message: string;
-// }
 
 export const registerUser = async (email: string, password: string): Promise<RegisterResponse> => {
     const response = await fetch(`${API_URL}/register`, {

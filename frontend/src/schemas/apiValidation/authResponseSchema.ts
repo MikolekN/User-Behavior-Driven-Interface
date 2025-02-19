@@ -3,21 +3,8 @@ import { requiredStringField } from '../common/commonValidators';
 
 // Login
 
-export const UserData = z.object({
-    login: requiredStringField(),
-    email: requiredStringField().email(),
-    account_name: requiredStringField(),
-    account_number: requiredStringField(),
-    blockades: z.number(),
-    balance: z.number(),
-    currency: requiredStringField(),
-    role: requiredStringField(),
-    icon: z.custom<File>().nullable().optional()
-});
-
 export const LoginResponseSchema = z.object({
-    message: requiredStringField(),
-    user: UserData
+    message: requiredStringField()
 });
 
 export type LoginResponse = z.infer<typeof LoginResponseSchema>;

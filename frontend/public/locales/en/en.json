@@ -25,6 +25,13 @@
                 "info": "Contact"
             }
         },
+        "myProducts": {
+            "title": "My products",
+            "submenu": {
+                "accounts": "Accounts",
+                "cards": "Cards"
+            }
+        },
         "profile": {
             "profile": "Profile",
             "login": "Login",
@@ -43,6 +50,11 @@
         "login": "Login",
         "register": "Register",
         "adminPanel": "Admin panel"
+    },
+    "pageNotFound": {
+        "title": "Something's missing...",
+        "message": "Sorry, we can't find that page. You'll find lots to explore on the home page.",
+        "backToDashboard": "Back to Dashboard"
     },
     "login": {
         "tile": {
@@ -67,7 +79,8 @@
         "balance": "Balance",
         "blockades": "Blockades",
         "availableFunds": "Available funds",
-        "transfer": "Transfer"
+        "transfer": "Transfer",
+        "userDontHaveAccount": "User does not have an active account"
     },
     "transfer": {
         "tile": {
@@ -82,9 +95,11 @@
     },
     "transactionHistory": {
         "tile": {
-            "title": "Transaction History"
+            "title": "Transaction history"
         },
-        "emptyList": "List is empty"
+        "emptyList": "List is empty",
+        "noTransactions": "List is empty",
+        "loan": "Cash loan"
     },
     "cyclicPaymentList": {
         "tile": {
@@ -97,27 +112,71 @@
         "recipient": "Recipient",
         "recipientAccountNumber": "Recipient account number",
         "fromAccount": "From account",
-        "title": "Title",
+        "title": "Cyclic transfer title",
         "startDate": "Start date",
         "transferInterval": "Transfer interval",
         "edit": "Edit",
         "delete": "Delete",
-        "emptyList": "List is empty"
+        "emptyList": "List is empty",
+        "week": "Every week",
+        "month": "Every month",
+        "quarter": "Every quarter",
+        "halfYear": "Every half a year"
     },
     "cyclicPaymentForm": {
         "tile": {
             "title": "Cyclic payment"
         },
         "fromAccount": "From account",
-        "cyclicPaymentName": "Name",
+        "cyclicPaymentName": "Cyclic Payment name",
         "recipientAccountNumber": "Recipient account number",
         "startDate": "Start date",
         "startDatePlaceholder": "Select start date",
         "transferInterval": "Transfer interval",
-        "title": "Title",
+        "title": "Cyclic transfer title",
         "amount": "Amout",
         "submit": "Submit",
-        "loading": "Loading..."
+        "loading": "Loading...",
+        "selectInterval": "-- select interval --"
+    },
+    "accountList": {
+        "tile": {
+            "title": "Accounts"
+        },
+        "accountName": "Account name",
+        "accountNumber": "Account number",
+        "blockades": "Blockades",
+        "balance": "Balance",
+        "currency": "Currency",
+        "accountType": "Account type",
+        "submit": "Add account",
+        "edit": "Edit",
+        "setActive": "Set active",
+        "delete": "Delete",
+        "emptyList":"List is empty",
+        "activeAccountNotSet": "Go to account management and activate your account"
+    },
+    "accountTypes": {
+        "personal": "Personal account",
+        "savings": "Savings account",
+        "currency": "Currency account",
+        "business": "Business account",
+        "youth": "Youth account",
+        "student": "Student account",
+        "retirement": "Retirement account",
+        "BANK": "Bank",
+        "other": "Other"
+    },
+    "accountForm": {
+        "tile": {
+            "title": "Add account"
+        },
+        "accountName": "Account name",
+        "accountType": "Account type",
+        "selectAccountType": "-- select account type --",
+        "currency": "Currency",
+        "loading": "Loading...",
+        "submit": "Add account"
     },
     "loan": {
         "tile": {
@@ -249,7 +308,14 @@
         "quarter": "Every quarter",
         "halfYear": "Every half a year",
         "en": "English",
-        "pl": "Polski"
+        "pl": "Polski",
+        "personalAccount": "Personal account",
+        "savingsAccount": "Savings account",
+        "currencyAccount": "Currency account",
+        "businessAccount": "Business account",
+        "youthAccount": "Youth account",
+        "studentAccount": "Student account",
+        "retirementAccount": "Retirement account"
     },
     "errors": {
         "api": {
@@ -268,6 +334,7 @@
             "negativeAmount": "Amount must be a positive number",
             "invalidDateFormat": "Invalid date format. Expected ISO 8601 format",
             "invalidObjectId": "Invalid Object ID",
+            "cannotTransferToSelf": "You are not allowed to make a self transfer",
             "userWithAccountNumberNotExist": "User with given account number does not exist",
             "userDontHaveEnoughMoney": "User does not have enough money",
             "cyclicPaymentCreatedSuccessful": "Cyclic Payment created successfully",
@@ -310,7 +377,17 @@
             "errorUpdateUser": "Error updating user data: ",
             "errorImageProcess": "Image processing failed: ",
             "sendIconFailed": "Failed to send the icon: ",
-            "Failed to fetch": "Unexpected server error"
+            "Failed to fetch": "Unexpected server error",
+            "activeAccountNotSet": "Active account not set",
+            "invalidTypeFields": "Invalid field type:",
+            "userNotFound": "User not found",
+            "accountCreatedSucessfully": "Account created successfully",
+            "accountNotExist": "Account not exist",
+            "unauthorizedAccountAccess": "Unauthorized account access",
+            "accountDeleteSucessful": "Account deleted successfully",
+            "acountsNotExist": "Accounts list is empty",
+            "accountDontHaveEnoughMoney": "Not enough money in active account",
+            "senderAccountNotExist": "Sender's account not exist"
         },
         "zod": {
             "required": "The field is required",

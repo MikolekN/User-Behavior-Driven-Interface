@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useMemo, useContext, useCallback } from 'react';
 import { UserContext } from './UserContext';
-import { mapBackendUserToUser, User } from '../components/utils/User';
 import { loginUser, registerUser, logoutUser } from '../services/authService';
+import { AccountContext } from './AccountContext';
 
 interface AuthContextProps {
     login: (email: string, password: string) => Promise<void>;
@@ -20,13 +20,10 @@ export const AuthContext = createContext<AuthContextProps>(defaultContextValue);
 // eslint-disable-next-line react/prop-types
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { setUser, setLoading } = useContext(UserContext);
+    const { setAccount } = useContext(AccountContext);
 
     const login = useCallback(async (email: string, password: string): Promise<void> => {
-        const { user: userBackendData } = await loginUser(email, password);
-        if (userBackendData) {
-            const userFrontendData = mapBackendUserToUser(userBackendData);
-            setUser(prevUser => new User({ ...userFrontendData, icon: prevUser?.icon || null, email: userFrontendData.email! }));
-        }
+        await loginUser(email, password);
     }, [setUser]);
 
     const register = useCallback(async (email: string, password: string): Promise<void> => {
@@ -37,13 +34,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setLoading(true);
 
         await logoutUser()
-            .then(() => {
-                setUser(null);
-            })
             .finally(() => {
+                setAccount(null);
+                setUser(null);
                 setLoading(false);
             });
-    }, [setLoading, setUser]);
+  
+    }, [setLoading, setUser, setAccount]);
 
     const authContextValue = useMemo(() => ({
         login,
