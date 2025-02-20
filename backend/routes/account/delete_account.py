@@ -4,11 +4,13 @@ from flask import Response
 from flask_login import login_required, current_user
 
 from accounts import Account, AccountRepository
+from cards import Card, CardRepository
 from routes.helpers import create_simple_response
 from users import UserRepository, User
 
 user_repository = UserRepository()
 account_repository = AccountRepository()
+card_repository = CardRepository()
 
 @login_required
 def delete_account(account_number) -> Response:
@@ -30,4 +32,10 @@ def delete_account(account_number) -> Response:
         user_repository.update(str(user.id), {'active_account': None})
 
     account_repository.delete(str(account.id))
+
+    cards: list[Card] = card_repository.find_cards(str(account.id))
+    if cards:
+        for card in cards:
+            card_repository.delete(str(card.id))
+
     return create_simple_response("accountDeleteSuccessful", HTTPStatus.OK)

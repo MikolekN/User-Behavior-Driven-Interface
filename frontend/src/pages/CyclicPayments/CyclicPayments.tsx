@@ -9,10 +9,13 @@ import { CyclicPaymentContext } from '../../context/CyclicPaymentContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { useTranslation } from 'react-i18next';
 import DefaultLoadingSkeleton from '../../components/Loading/DefaultLoadingSkeleton';
+import { AccountContext } from '../../context/AccountContext';
+import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
 
 const CyclicPayments = () => {
     const { t } = useTranslation();
     const { user } = useContext(UserContext);
+    const { account } = useContext(AccountContext);
     const { apiError, handleError } = useApiErrorHandler();
     const [ loading, setLoading ] = useState(true);
     const { cyclicPayments, getCyclicPayments } = useContext(CyclicPaymentContext);
@@ -34,6 +37,14 @@ const CyclicPayments = () => {
     }, [user, getCyclicPayments]);
 
     if (loading) return <DefaultLoadingSkeleton />;
+
+    if (account === null) {
+        return (
+            <div id="cyclic-payments-wrapper" className="flex items-center justify-center">
+                <ActiveAccountError />
+            </div>
+        );
+    }
 
     if (apiError.isError) {
         return (
