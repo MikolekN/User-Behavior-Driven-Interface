@@ -54,33 +54,31 @@ const Chat: FC = () => {
     };
 
     return (
-        <div className="chat-wrapper">
-            <Tile title={t('chat.tile.title')} className="chat-tile">
-                <div className="chat-container">
-                    <div className="message-display">
-                        {messages.map((msg, index) => (
-                            <div key={index} className={`message ${msg.type} `}>
-                                {msg.text}
-                            </div>
-                        ))}
-                        <div ref={messageEndRef} />
-                    </div>
-                    <div className="chat-input-container">
-                        <input
-                            type="text"
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            onKeyDown={handleKeyPress}
-                            placeholder={t('chat.writeMessage')}
-                            className="chat-input"
-                        />
-                        <button onClick={handleSend} className="send-button" aria-label="Send message">
-                            <img src={send_arrow} alt="Send" className="send-icon" />
-                        </button>
-                    </div>
+        <Tile id="chat" title={t('chat.tile.title')}>
+            <div className="chat-container max-h-screen md:max-h-full">
+                <div className="message-display">
+                    {messages.map((msg, index) => (
+                        <div key={index} className={`message ${msg.type}`}>
+                            {msg.text}
+                        </div>
+                    ))}
+                    <div ref={messageEndRef} />
                 </div>
-            </Tile>
-        </div>
+                <div className="chat-input-container">
+                    <input
+                        type="text"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        onKeyDown={handleKeyPress}
+                        placeholder={t('chat.writeMessage')}
+                        className="chat-input"
+                    />
+                    <button onClick={handleSend} className="send-button" aria-label="Send message">
+                        <img src={send_arrow} alt="Send" className="send-icon" />
+                    </button>
+                </div>
+            </div>
+        </Tile>
     );
 };
 

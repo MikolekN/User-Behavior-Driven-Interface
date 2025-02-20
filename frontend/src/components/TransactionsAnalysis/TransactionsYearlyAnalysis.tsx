@@ -37,8 +37,8 @@ const TransactionsYearlyAnalysis = () => {
     }, [user, fetchTransfersAnalysis]);
 
     if (loading) return <ChartLoadingSkeleton />;
-    
-    if (apiError.isError) { 
+
+    if (apiError.isError) {
         return (
             <EmptyResponseInfoAlert
                 title={t('transactionsYearlyAnalysis.tile.title')}
@@ -49,11 +49,9 @@ const TransactionsYearlyAnalysis = () => {
     }
 
     return (
-        <div className="flex items-center justify-center">
-            <Tile title={t('transactionsYearlyAnalysis.tile.title')} className="w-4/5">
-                <TransfersAnalysisChart chartData={chartData} />
-            </Tile>
-        </div>
+        <Tile title={t('transactionsYearlyAnalysis.tile.title')}>
+            <TransfersAnalysisChart chartData={chartData} />
+        </Tile>
     );
 };
 

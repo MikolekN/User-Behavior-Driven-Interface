@@ -1,56 +1,15 @@
-/* tailwind css */
+/* Tailwind CSS */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    body {
+        @apply text-black dark:text-gray-400 bg-gray-50 dark:bg-gray-800;
+    }
 
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: #242424;
-  background-color: rgba(255, 255, 255, 0.95);
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    * {
+        @apply bg-transparent;
+    }
 }
-
-:root.dark {
-  background-color: rgba(31, 41, 55, 1.0);
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-.focus\:ring-cyan-500:focus {
-  --tw-ring-color: blue !important; /* Change the focus ring color to blue */
-}
-
-/* button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-} */

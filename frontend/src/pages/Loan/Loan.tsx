@@ -66,7 +66,7 @@ const Loan = () => {
     const toggleAnswer = (index: number) => {
         setActiveIndex(activeIndex === index ? null : index);
     };
-    
+
     const onSubmit: SubmitHandler<LoanFormData> = async ({ amount }: LoanFormData) => {
         clearApiError();
         try {
@@ -97,59 +97,57 @@ const Loan = () => {
     }
 
     return (
-        <div id='loan-form-wrapper' className="flex items-center justify-center">
-            <Tile title={t('loan.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
-                <div className="flex items-center justify-center">
-                    <div className="max-w-md w-full mx-auto px-1">
-                        { apiError.isError && 
-                            <div className="my-4">
-                                <ErrorAlert alertMessage={apiError.errorMessage} />
-                            </div> 
-                        }
-                        <AccountDetails label={t('loan.fromAccount')} account={account!} className='w-full p-3 mb-6' />
-                        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-                            <FormInput
-                                label={t('loan.howMuchMoney')}
-                                fieldType="text"
-                                register={register('amount')}
-                                error={errors.amount}
-                                className="w-10/12"
-                            >
-                                {account!.currency}
-                            </FormInput>
-                            <div>
-                                <RangeSlider 
-                                    value={sliderValue as number}
-                                    onChange={handleSliderChange}
-                                    aria-label="input-slider"
-                                    min={MIN_LOAN_AMOUNT}
-                                    step={LOAN_AMOUNT_STEP}
-                                    max={MAX_LOAN_AMOUNT}
-                                    theme={rangeSliderTheme}
-                                />
-                                <div className="flex justify-between">
-                                    <Label label={MIN_LOAN_AMOUNT_TEXT} />
-                                    <Label label={MAX_LOAN_AMOUNT_TEXT} />
-                                </div>
+        <Tile title={t('loan.tile.title')}>
+            <div className="flex items-center justify-center">
+                <div className="max-w-md w-full mx-auto px-1">
+                    { apiError.isError &&
+                        <div className="my-4">
+                            <ErrorAlert alertMessage={apiError.errorMessage} />
+                        </div>
+                    }
+                    <AccountDetails label={t('loan.fromAccount')} account={account!} className='w-full p-3 mb-6' />
+                    <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+                        <FormInput
+                            label={t('loan.howMuchMoney')}
+                            fieldType="text"
+                            register={register('amount')}
+                            error={errors.amount}
+                            className="w-10/12"
+                        >
+                            {account!.currency}
+                        </FormInput>
+                        <div>
+                            <RangeSlider
+                                value={sliderValue as number}
+                                onChange={handleSliderChange}
+                                aria-label="input-slider"
+                                min={MIN_LOAN_AMOUNT}
+                                step={LOAN_AMOUNT_STEP}
+                                max={MAX_LOAN_AMOUNT}
+                                theme={rangeSliderTheme}
+                            />
+                            <div className="flex justify-between">
+                                <Label label={MIN_LOAN_AMOUNT_TEXT} />
+                                <Label label={MAX_LOAN_AMOUNT_TEXT} />
                             </div>
-                            <div className="mt-8">
-                                <Label label={t('loan.numberOfInstallments')} />
-                                <div className="flex justify-between mt-4">
-                                    {AVAILABLE_LOAN_LENGTH.map((item, idx) => (
-                                        <div onClick={() => { toggleAnswer(idx); }} style={activeIndex === idx ? { 'background': '#60a5fa' } : {}} key={idx} className="border-2 border-blue-600 cursor-pointer hover:bg-blue-200 border-opacity-20 rounded-lg px-4 py-2">
-                                            <Label label={item.loanLength} />
-                                        </div>
-                                    ))}
-                                </div>
+                        </div>
+                        <div className="mt-8">
+                            <Label label={t('loan.numberOfInstallments')} />
+                            <div className="flex justify-between mt-4">
+                                {AVAILABLE_LOAN_LENGTH.map((item, idx) => (
+                                    <div onClick={() => { toggleAnswer(idx); }} style={activeIndex === idx ? { 'background': '#60a5fa' } : {}} key={idx} className="border-2 border-blue-600 cursor-pointer hover:bg-blue-200 border-opacity-20 rounded-lg px-4 py-2">
+                                        <Label label={item.loanLength} />
+                                    </div>
+                                ))}
                             </div>
-                            <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
-						        {isSubmitting ? `${t('loan.loading')}` : `${t('loan.submit')}`}
-                            </Button>
-                        </form>
-                    </div>
+                        </div>
+                        <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
+                            {isSubmitting ? `${t('loan.loading')}` : `${t('loan.submit')}`}
+                        </Button>
+                    </form>
                 </div>
-            </Tile>
-        </div>
+            </div>
+        </Tile>
     );
 };
 

@@ -32,7 +32,7 @@ const Transfer = () => {
         mode: 'onSubmit'
     });
     const navigate = useNavigate();
-    
+
     const getTransferRequestBody = (data: TransferFormData) => {
         return {
             recipient_account_number: data.recipientAccountNumber,
@@ -62,50 +62,48 @@ const Transfer = () => {
     }
 
     return (
-        <div id="transfer-form-wrapper" className="flex items-center justify-center">
-            <Tile title={t('transfer.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
-                <div className="flex items-center justify-center">
-                    <div className="max-w-md w-full mx-auto">
-                        { apiError.isError && 
-                            <div className="my-4">
-                                <ErrorAlert alertMessage={apiError.errorMessage} />
-                            </div> 
-                        }
-                        <AccountDetails label={t('transfer.fromAccount')} account={account!} className='w-full p-3 mb-6' />
-                        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-                            <FormInput 
-                                label={t('transfer.recipientAccountNumber')}
-                                fieldType="text"
-                                register={register('recipientAccountNumber')}
-                                error={errors.recipientAccountNumber}
-                                className="w-full"
-                            />
-                            <FormInput
-                                label={t('transfer.transferTitle')}
-                                fieldType="text"
-                                register={register('transferTitle')}
-                                error={errors.transferTitle}
-                                className="w-full"
-                            />
-                            <FormInput
-                                label={t('transfer.amount')}
-                                fieldType="text"
-                                register={register('amount')}
-                                error={errors.amount}
-                                className="w-10/12"
-                            >
-                                {account!.currency}
-                            </FormInput>
-                            <div>
-                                <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
-                                    {isSubmitting ? `${t('transfer.loading')}` : `${t('transfer.submit')}`}
-                                </Button>
-                            </div>
-                        </form>
-                    </div>
+        <Tile id="transfer" title={t('transfer.tile.title')}>
+            <div className="flex items-center justify-center">
+                <div className="max-w-md w-full mx-auto">
+                    { apiError.isError &&
+                        <div className="my-4">
+                            <ErrorAlert alertMessage={apiError.errorMessage} />
+                        </div>
+                    }
+                    <AccountDetails label={t('transfer.fromAccount')} account={account!} className='w-full p-3 mb-6' />
+                    <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+                        <FormInput
+                            label={t('transfer.recipientAccountNumber')}
+                            fieldType="text"
+                            register={register('recipientAccountNumber')}
+                            error={errors.recipientAccountNumber}
+                            className="w-full"
+                        />
+                        <FormInput
+                            label={t('transfer.transferTitle')}
+                            fieldType="text"
+                            register={register('transferTitle')}
+                            error={errors.transferTitle}
+                            className="w-full"
+                        />
+                        <FormInput
+                            label={t('transfer.amount')}
+                            fieldType="text"
+                            register={register('amount')}
+                            error={errors.amount}
+                            className="w-10/12"
+                        >
+                            {account!.currency}
+                        </FormInput>
+                        <div>
+                            <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
+                                {isSubmitting ? `${t('transfer.loading')}` : `${t('transfer.submit')}`}
+                            </Button>
+                        </div>
+                    </form>
                 </div>
-            </Tile>
-        </div>
+            </div>
+        </Tile>
     );
 };
 

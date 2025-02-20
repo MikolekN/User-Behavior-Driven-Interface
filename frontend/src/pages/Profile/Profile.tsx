@@ -73,19 +73,19 @@ const ProfilePage = () => {
                 reject(error);
                 return;
             }
-    
+
             const reader = new FileReader();
             reader.readAsDataURL(file);
-    
+
             reader.onload = (event) => {
                 const img = new Image();
                 img.src = event.target?.result as string;
-    
+
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
                     let width = img.width;
                     let height = img.height;
-    
+
                     if (width > 120 || height > 120) {
                         const aspectRatio = width / height;
                         if (aspectRatio > 1) {
@@ -96,13 +96,13 @@ const ProfilePage = () => {
                             width = 120 * aspectRatio;
                         }
                     }
-    
+
                     canvas.width = width;
                     canvas.height = height;
-    
+
                     const ctx = canvas.getContext('2d');
                     ctx?.drawImage(img, 0, 0, width, height);
-    
+
                     canvas.toBlob((blob) => {
                         if (blob) {
                             const processedFile = new File([blob], file.name, { type: file.type });
@@ -115,7 +115,7 @@ const ProfilePage = () => {
                         }
                     }, file.type);
                 };
-    
+
                 img.onerror = () => {
                     const error = `${t('profile.icon.imageLoadingError')}`;
                     console.error(error);
@@ -123,7 +123,7 @@ const ProfilePage = () => {
                     return;
                 };
             };
-    
+
             reader.onerror = () => {
                 const error = `${t('profile.icon.imageLoadingFile')}`;
                 console.error(error);
@@ -149,7 +149,7 @@ const ProfilePage = () => {
             handleIconError(error);
         }
     };
-    
+
     const onFieldSubmit: SubmitHandler<UserFieldFormData> = async ({ field, value }: UserFieldFormData) => {
         clearFieldError();
         try {
@@ -182,97 +182,95 @@ const ProfilePage = () => {
     };
 
     return (
-        <div className="flex items-center justify-center">
-            <Tile title={t('profile.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
-                <div className="flex flex-col space-y-6">
-                    <div id="icon-form-wrapper">
-                        <form onSubmit={handleSubmitIconForm(onIconSubmit)} className="space-y-4">
-                            { apiIconError.isError && 
-                                <div className="my-4">
-                                    <ErrorAlert alertMessage={apiIconError.errorMessage} />
-                                </div> 
-                            }
-                            <FormInput
-                                label={t('profile.icon.newIcon')}
-                                fieldType="file"
-                                register={registerIcon('files')}
-                                error={iconErrors.files}
-                                className="w-full"
-                            />
-                            <div className="flex justify-center">
-                                <Button isSubmitting={isIconFormSubmitting} className="dark:bg-slate-900 dark:hover:bg-slate-800">
-                                    {isIconFormSubmitting ? `${t('profile.icon.loading')}` : `${t('profile.icon.submit')}`}
-                                </Button>
+        <Tile title={t('profile.tile.title')}>
+            <div className="flex flex-col space-y-6">
+                <div id="icon-form-wrapper">
+                    <form onSubmit={handleSubmitIconForm(onIconSubmit)} className="space-y-4">
+                        { apiIconError.isError &&
+                            <div className="my-4">
+                                <ErrorAlert alertMessage={apiIconError.errorMessage} />
                             </div>
-                        </form>
-                    </div>
-    
-                    <hr className="border-t border-gray-300 my-4" />
-
-                    <div id="field-form-wrapper">
-                        <form onSubmit={handleSubmitFieldForm(onFieldSubmit)} className="space-y-4">
-                            { apiFieldError.isError && 
-                                <div className="my-4">
-                                    <ErrorAlert alertMessage={apiFieldError.errorMessage} />
-                                </div> 
-                            }
-                            <FormSelect
-                                defaultOption={t('profile.field.defaultOption')}
-                                onChange={handleChange}
-                                label={t('profile.field.selectField')}
-                                options={FIELD_SELECT_OPTIONS}
-                                register={registerField('field')}
-                                error={fieldErrors.field}
-                                className="w-full"
-                            />
-                            <FormInput
-                                label={`${t('profile.field.new')} ` + (selectedField ? `${t(`profile.field.${selectedField}`)}` : `${t('profile.field.value')}`)}
-                                fieldType="text"
-                                register={registerField('value')}
-                                error={fieldErrors.value}
-                                className="w-full"
-                            />
-                            <div className="flex justify-center">
-                                <Button isSubmitting={isFieldFormSubmitting} className="dark:bg-slate-900 dark:hover:bg-slate-800">
-                                    {isFieldFormSubmitting ? `${t('profile.field.loading')}` : `${t('profile.field.submit')}`}
-                                </Button>
-                            </div>
-                        </form>
-                    </div>
-    
-                    <hr className="border-t border-gray-300 my-4" />
-
-                    <div id="password-form-wrapper">
-                        <form onSubmit={handleSubmitPasswordForm(onPasswordSubmit)} className="space-y-4">
-                            { apiPasswordError.isError && 
-                                <div className="my-4">
-                                    <ErrorAlert alertMessage={apiPasswordError.errorMessage} />
-                                </div> 
-                            }
-                            <FormInput
-                                label={t('profile.password.password')}
-                                fieldType="password"
-                                register={registerPassword('currentPassword')}
-                                error={passwordErrors.currentPassword}
-                                className="w-full"
-                            />
-                            <FormInput
-                                label={t('profile.password.newPassword')}
-                                fieldType="password"
-                                register={registerPassword('newPassword')}
-                                error={passwordErrors.newPassword}
-                                className="w-full"
-                            />
-                            <div className="flex justify-center">
-                                <Button isSubmitting={isPasswordFormSubmitting} className="dark:bg-slate-900 dark:hover:bg-slate-800">
-                                    {isPasswordFormSubmitting ? `${t('profile.password.loading')}` : `${t('profile.password.submit')}`}
-                                </Button>
-                            </div>
-                        </form>
-                    </div>
+                        }
+                        <FormInput
+                            label={t('profile.icon.newIcon')}
+                            fieldType="file"
+                            register={registerIcon('files')}
+                            error={iconErrors.files}
+                            className="w-full"
+                        />
+                        <div className="flex justify-center">
+                            <Button isSubmitting={isIconFormSubmitting} className="dark:bg-slate-900 dark:hover:bg-slate-800">
+                                {isIconFormSubmitting ? `${t('profile.icon.loading')}` : `${t('profile.icon.submit')}`}
+                            </Button>
+                        </div>
+                    </form>
                 </div>
-            </Tile>
-        </div>
+
+                <hr className="border-t border-gray-300 my-4" />
+
+                <div id="field-form-wrapper">
+                    <form onSubmit={handleSubmitFieldForm(onFieldSubmit)} className="space-y-4">
+                        { apiFieldError.isError &&
+                            <div className="my-4">
+                                <ErrorAlert alertMessage={apiFieldError.errorMessage} />
+                            </div>
+                        }
+                        <FormSelect
+                            defaultOption={t('profile.field.defaultOption')}
+                            onChange={handleChange}
+                            label={t('profile.field.selectField')}
+                            options={FIELD_SELECT_OPTIONS}
+                            register={registerField('field')}
+                            error={fieldErrors.field}
+                            className="w-full"
+                        />
+                        <FormInput
+                            label={`${t('profile.field.new')} ` + (selectedField ? `${t(`profile.field.${selectedField}`)}` : `${t('profile.field.value')}`)}
+                            fieldType="text"
+                            register={registerField('value')}
+                            error={fieldErrors.value}
+                            className="w-full"
+                        />
+                        <div className="flex justify-center">
+                            <Button isSubmitting={isFieldFormSubmitting} className="dark:bg-slate-900 dark:hover:bg-slate-800">
+                                {isFieldFormSubmitting ? `${t('profile.field.loading')}` : `${t('profile.field.submit')}`}
+                            </Button>
+                        </div>
+                    </form>
+                </div>
+
+                <hr className="border-t border-gray-300 my-4" />
+
+                <div id="password-form-wrapper">
+                    <form onSubmit={handleSubmitPasswordForm(onPasswordSubmit)} className="space-y-4">
+                        { apiPasswordError.isError &&
+                            <div className="my-4">
+                                <ErrorAlert alertMessage={apiPasswordError.errorMessage} />
+                            </div>
+                        }
+                        <FormInput
+                            label={t('profile.password.password')}
+                            fieldType="password"
+                            register={registerPassword('currentPassword')}
+                            error={passwordErrors.currentPassword}
+                            className="w-full"
+                        />
+                        <FormInput
+                            label={t('profile.password.newPassword')}
+                            fieldType="password"
+                            register={registerPassword('newPassword')}
+                            error={passwordErrors.newPassword}
+                            className="w-full"
+                        />
+                        <div className="flex justify-center">
+                            <Button isSubmitting={isPasswordFormSubmitting} className="dark:bg-slate-900 dark:hover:bg-slate-800">
+                                {isPasswordFormSubmitting ? `${t('profile.password.loading')}` : `${t('profile.password.submit')}`}
+                            </Button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </Tile>
     );
 };
 

@@ -9,9 +9,20 @@ interface TileProps {
 
 const Tile: FC<TileProps> = ({ children, title, id, className = '' }) => {
     return (
-        <div id={`${id}-tile`} className={`bg-white dark:bg-gray-700 min-w-fit shadow-lg hover:shadow-2xl transition-shadow duration-[0.3s] ease p-6 m-4 rounded-xl ${className}`}>
-            <h2 id={`${id}-tile-title`} className="text-black dark:text-gray-400 m-0 pb-2 border-b-2 border-solid border-gray-300 dark:border-gray-400 text-3xl text-center font-semibold">{title}</h2>
-            {children}
+        <div
+            id={`${id}-wrapper`}
+            className='flex flex-col flex-grow justify-center items-center min-h-fit h-full w-[90%] max-w-[90%] md:max-w-[70%] md:max-h-full'
+        >
+            <div
+                id={`${id}-tile`}
+                className={`bg-white dark:bg-gray-700 p-4 md:p-6 rounded-xl
+                    shadow-lg hover:shadow-2xl transition-shadow duration-[0.3s] ease
+                    w-full md:w-fit md:max-w-full md:min-w-[50%] md:max-h-full flex flex-col
+                    ${className}`}
+            >
+                <h2 id={`${id}-tile-title`} className="m-0 md:pb-2 md:border-b-2 border-solid text-xl md:text-3xl text-center font-semibold md:min-h-fit flex-none">{title}</h2>
+                <div className="flex flex-col gap-4 p-2.5 md:flex-grow md:overflow-y-scroll">{children}</div>
+            </div>
         </div>
     );
 };
