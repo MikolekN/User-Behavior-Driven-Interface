@@ -178,6 +178,25 @@
         "loading": "Ładowanie...",
         "submit": "Dodaj konto"
     },
+    "cardList": {
+        "tile": {
+            "title": "Karty"
+        },
+        "name": "Nazwa karty",
+        "holderName": "Nazwa właściciela",
+        "cardAccount": "Do konta",
+        "submit": "Dodaj kartę",
+        "edit": "Edytuj",
+        "delete": "Usuń"
+    },
+    "cardForm": {
+        "tile": {
+            "title": "Dodaj kartę"
+        },
+        "name": "Nazwa karty",
+        "holderName": "Nazwa właściciela",
+        "submit": "Dodaj kartę"
+    },
     "loan": {
         "tile": {
             "title": "Pożyczka"

@@ -178,6 +178,25 @@
         "loading": "Loading...",
         "submit": "Add account"
     },
+    "cardList": {
+        "tile": {
+            "title": "Cards"
+        },
+        "name": "Card name",
+        "holderName": "Holder name",
+        "cardAccount": "To account",
+        "submit": "Add card",
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "cardForm": {
+        "tile": {
+            "title": "Add card"
+        },
+        "name": "Card name",
+        "holderName": "Holder name",
+        "submit": "Add card"
+    },
     "loan": {
         "tile": {
             "title": "Loan"

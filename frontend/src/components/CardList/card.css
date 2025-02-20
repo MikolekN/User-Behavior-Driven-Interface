@@ -1,0 +1,18 @@
+.rccs__card__background {
+    background-image: url(./cardBackground.png) !important;
+}
+
+.rccs__card--front > div {
+    color: #000000 !important;
+}
+
+.rccs__card {
+    height: 182.873px;
+    position: relative;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transition: all 0.4s linear;
+    transition: all 0.4s linear;
+    width: 290px;
+}
+
