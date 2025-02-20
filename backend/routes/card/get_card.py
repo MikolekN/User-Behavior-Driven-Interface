@@ -12,7 +12,7 @@ user_repository = UserRepository()
 card_repository = CardRepository()
 
 @login_required
-def get_card(card_number:str ) -> Response:
+def get_card(card_number: str) -> Response:
     if not isinstance(card_number, str) or len(card_number) != 16 or not card_number.isdigit():
         return create_simple_response("invalidCardNumber", HTTPStatus.BAD_REQUEST)
 

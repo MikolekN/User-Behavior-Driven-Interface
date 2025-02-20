@@ -46,7 +46,7 @@ class Card(BaseEntity):
 
     @staticmethod
     def generate_card_number() -> str:
-        return ''.join(random.choices('0123456789', k=16))
+        return random.choice("23456") + ''.join(random.choices('0123456789', k=15))
 
     @staticmethod
     def generate_card_valid_thru() -> str:
