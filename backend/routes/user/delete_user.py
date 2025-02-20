@@ -21,6 +21,7 @@ def delete_user() -> Response:
     accounts: list[Account] = account_repository.find_accounts(str(user.id))
     for account in accounts:
         account_repository.delete(str(account.id))
+
         cards: list[Card] = card_repository.find_cards(str(account.id))
         if cards:
             for card in cards:
