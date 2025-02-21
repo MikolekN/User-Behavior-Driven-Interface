@@ -21,7 +21,7 @@ const Tile: FC<TileProps> = ({ children, title, id, className = '' }) => {
                     ${className}`}
             >
                 <h2 id={`${id}-tile-title`} className="m-0 md:pb-2 md:border-b-2 border-solid text-xl md:text-3xl text-center font-semibold md:min-h-fit flex-none">{title}</h2>
-                <div className="flex flex-col gap-4 p-2.5 md:flex-grow md:overflow-y-scroll">{children}</div>
+                <div className="flex flex-col gap-4 p-2.5 md:flex-grow md:overflow-y-auto">{children}</div>
             </div>
         </div>
     );
