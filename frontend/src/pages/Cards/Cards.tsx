@@ -63,14 +63,12 @@ const Cards = () => {
 
     return (
         <Tile id='card' title={t('cardList.tile.title')}>
-            <div className="flex flex-col gap-4 overflow-y-auto p-2.5">
-                {!cards && (
-                    <div>Cyclic Payments are loading...</div>
-                )}
-                {cards && cards.length > 0 && (
-                    <CardList cardList={cards}/>
-                )}
-            </div>
+            {!cards && (
+                <div>Cyclic Payments are loading...</div>
+            )}
+            {cards && cards.length > 0 && (
+                <CardList cardList={cards}/>
+            )}
         </Tile>
     );
 };

@@ -6,13 +6,30 @@
     color: #000000 !important;
 }
 
+.rccs {
+    height: 216px;
+    width: 344px;
+}
+
 .rccs__card {
-    height: 182.873px;
+    height: 216px;
     position: relative;
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
     -webkit-transition: all 0.4s linear;
     transition: all 0.4s linear;
-    width: 290px;
+    width: 344px;
 }
 
+@media (max-width: 768px) {
+    /* Ratio: 54mm / 86mm */
+    .rccs {
+        height: 162px;
+        width: 258px;
+    }
+
+    .rccs__card {
+        height: 162px;
+        width: 258px;
+    }
+}
