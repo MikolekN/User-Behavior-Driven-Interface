@@ -11,14 +11,14 @@ const Tile: FC<TileProps> = ({ children, title, id, className = '' }) => {
     return (
         <div
             id={`${id}-wrapper`}
-            className='flex flex-col justify-center items-center w-[90%] max-w-[90%] md:max-w-[70%] md:h-auto'
+            className='flex flex-grow md:flex-grow-0 flex-col justify-center items-center w-[90%] max-w-[90%] md:max-w-[70%] md:h-auto'
         >
             <div
                 id={`${id}-tile`}
                 className={`bg-white dark:bg-gray-700 p-2 md:p-6 rounded-xl
                     shadow-md hover:shadow-lg transition-shadow duration-[0.3s] ease
                     w-full md:w-fit md:max-w-full md:min-w-[50%]
-                    flex flex-col my-4 overflow-hidden min-h-0
+                    flex flex-col my-4 md:overflow-hidden md:min-h-0
                     ${className}`}
             >
                 <h2
@@ -28,12 +28,7 @@ const Tile: FC<TileProps> = ({ children, title, id, className = '' }) => {
                     {title}
                 </h2>
                 <div
-                    className="flex flex-col gap-4 p-2.5 flex-grow overflow-y-auto"
-                    style={{
-                        flex: '1 1 auto',
-                        overflowY: 'auto',
-                        maxHeight: 'calc(100vh - 200px)', // Adjust as needed
-                    }}
+                    className="flex flex-col gap-4 p-2.5 md:overflow-y-auto md:flex-grow md:flex-shrink md:basis-auto md:max-h-[calc(100vh-200px)]"
                 >
                     {children}
                 </div>
