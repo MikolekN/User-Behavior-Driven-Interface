@@ -15,7 +15,7 @@ const Tile: FC<TileProps> = ({ children, title, id, className = '' }) => {
         >
             <div
                 id={`${id}-tile`}
-                className={`bg-white dark:bg-gray-700 p-4 md:p-6 rounded-xl
+                className={`bg-white dark:bg-gray-700 p-2 md:p-6 rounded-xl
                     shadow-lg hover:shadow-2xl transition-shadow duration-[0.3s] ease
                     w-full md:w-fit md:max-w-full md:min-w-[50%] md:max-h-full flex flex-col
                     ${className}`}
