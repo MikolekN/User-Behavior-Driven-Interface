@@ -9,6 +9,12 @@ export default {
     ],
     theme: {
         extend: {},
+        screens: {
+            sm: '640px',
+            md: '1024px',
+            lg: '1280px',
+            xl: '1536px',
+        },
     },
     plugins: [
         flowbite.plugin(),
