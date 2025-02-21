@@ -33,7 +33,7 @@ const Accounts = () => {
     }, [user, getAccounts]);
 
     if (loading) return <DefaultLoadingSkeleton />;
-    
+
     if (apiError.isError) {
         return (
             <EmptyResponseInfoAlert
@@ -49,18 +49,16 @@ const Accounts = () => {
     }
 
     return (
-        <div id='cyclic-payments-wrapper' className='flex overflow-hidden flex-col flex-grow justify-center items-center h-full max-h-full'>
-            <Tile title={t('accountList.tile.title')} className='flex flex-col w-1/2 mx-auto mb-2.5 bg-white shadow-md rounded-lg min-h-1/2 max-h-[95%]'>
-                <div className="flex flex-col gap-4 overflow-y-auto p-2.5">
-                    {!accounts && (
-                        <div>Accounts are loading...</div>
-                    )}
-                    {accounts && accounts.length > 0 && (
-                        <AccountsList accountsList={accounts} />
-                    )}
-                </div>
-            </Tile>
-        </div>
+        <Tile title={t('accountList.tile.title')} className='flex flex-col w-1/2 mx-auto mb-2.5 bg-white shadow-md rounded-lg min-h-1/2 max-h-[95%]'>
+            <div className="flex flex-col gap-4 overflow-y-auto p-2.5">
+                {!accounts && (
+                    <div>Accounts are loading...</div>
+                )}
+                {accounts && accounts.length > 0 && (
+                    <AccountsList accountsList={accounts} />
+                )}
+            </div>
+        </Tile>
     );
 };
 
