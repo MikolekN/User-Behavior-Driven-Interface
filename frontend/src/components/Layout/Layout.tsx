@@ -8,7 +8,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     return (
         <div id='layout-wrapper' className='flex flex-col min-h-screen h-fit md:h-screen md:max-h-screen w-full max-w-full'>
             <header id='layout-header' className='h-fit w-full max-w-full'>
-                <MegaMenu>
+                <MegaMenu className='bg-transparent'>
                     <Logo />
                     <UserProfile />
                     <Navbar.Toggle className="order-1 md:order-2" />
