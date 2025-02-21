@@ -79,7 +79,7 @@ const CardList = ({ cardList }: CardListProps) => {
                     )}
                     renderRowDetails={(card) => (
                         <div className="flex flex-col items-center space-y-4 p-4 mt-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600">
-                            <div className="flex w-full justify-evenly">
+                            <div className="flex w-full justify-evenly gap-1">
                                 <div>
                                     <AccountDetails label={t('cardList.cardAccount')} account={account!} className='w-fit pl-4 p-3' />
                                 </div>
@@ -107,7 +107,7 @@ const CardList = ({ cardList }: CardListProps) => {
                 />
             </div>
             <div className="md:hidden">
-                <CollapsibleList 
+                <CollapsibleList
                     items={cards}
                     renderHeader={(card) => (
                         <span>{card.name}</span>
