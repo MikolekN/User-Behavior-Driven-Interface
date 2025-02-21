@@ -7,7 +7,7 @@ export interface CyclicPayment {
     recipientName: string;
     startDate: Date | null;
     transferTitle: string;
-}
+};
 
 export interface BackendCyclicPayment {
     _id: string | null;
@@ -18,7 +18,7 @@ export interface BackendCyclicPayment {
     recipient_name: string;
     start_date: string;
     transfer_title: string;
-}
+};
 
 export const mapBackendCyclicPaymentToCyclicPayment = (backendCyclicPaymentData: BackendCyclicPayment): CyclicPayment => {
     return {
@@ -39,5 +39,6 @@ export const mapBackendCyclicPaymentsListToCyclicPayment = (backendCyclicPayment
         const cyclicPaymentFrontendData = mapBackendCyclicPaymentToCyclicPayment(backendCyclicPaymentData);
         formattedCyclicPayments.push(cyclicPaymentFrontendData);
     });
+    
     return formattedCyclicPayments;
-}
+};

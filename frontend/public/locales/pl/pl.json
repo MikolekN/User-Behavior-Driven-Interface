@@ -178,6 +178,25 @@
         "loading": "Ładowanie...",
         "submit": "Dodaj konto"
     },
+    "cardList": {
+        "tile": {
+            "title": "Karty"
+        },
+        "name": "Nazwa karty",
+        "holderName": "Nazwa właściciela",
+        "cardAccount": "Do konta",
+        "submit": "Dodaj kartę",
+        "edit": "Edytuj",
+        "delete": "Usuń"
+    },
+    "cardForm": {
+        "tile": {
+            "title": "Dodaj kartę"
+        },
+        "name": "Nazwa karty",
+        "holderName": "Nazwa właściciela",
+        "submit": "Dodaj kartę"
+    },
     "loan": {
         "tile": {
             "title": "Pożyczka"
@@ -324,6 +343,9 @@
             "sthWentWrong": "Coś poszło nie tak z żądaniem API.",
             "unknownError": "Wystąpił nieznany błąd. Spróbuj pownownie później.",
             "emptyRequestPayload": "Treść żądania jest pusta",
+            "invalidRequestPayload": "Niepoprawne żądanie",
+            "extraFields": "Nadmiarowe pola",
+            "emptyFields": "Puste pola",
             "authFieldsRequired": "Pola email i/lub hasło są wymagane",
             "alreadyLogged": "Użytkownik jest już zalogowany",
             "userNotExist": "Użytkownik nie istnieje",

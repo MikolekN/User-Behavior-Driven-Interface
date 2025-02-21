@@ -56,9 +56,10 @@ const Transfer = () => {
 
     if (account === null) {
         return (
-            <div id="transfer-form-wrapper" className="flex items-center justify-center">
+            <div id="transfer-wrapper" className="flex items-center justify-center">
                 <ActiveAccountError />
-            </div>);
+            </div>
+        );
     }
 
     return (

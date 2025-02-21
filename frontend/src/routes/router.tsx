@@ -19,6 +19,8 @@ import PageNotFound from '../pages/PageNotFound/PageNotFound';
 import PrivateRoute from './PrivateRoute';
 import Accounts from '../pages/Accounts/Accounts';
 import AccountForm from '../components/AccountForm/AccountForm';
+import Cards from '../pages/Cards/Cards';
+import CardForm from '../components/CardForm/CardForm';
 
 export const router = createBrowserRouter([
     {
@@ -49,7 +51,10 @@ export const router = createBrowserRouter([
                     { path: '/profile', element: <Profile /> },
                     { path: '/accounts', element: <Accounts /> },
                     { path: '/create-account', element: <AccountForm key="create" />},
-                    { path: '/edit-account/:accountNumber', element: <AccountForm key="edit" />}
+                    { path: '/edit-account/:accountNumber', element: <AccountForm key="edit" />},
+                    { path: '/cards', element: <Cards /> },
+                    { path: 'create-card', element: <CardForm key="create" /> },
+                    { path: 'edit-card/:cardNumber', element: <CardForm key="edit" /> }
                 ]
             },
         ],

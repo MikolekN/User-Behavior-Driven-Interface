@@ -178,6 +178,25 @@
         "loading": "Loading...",
         "submit": "Add account"
     },
+    "cardList": {
+        "tile": {
+            "title": "Cards"
+        },
+        "name": "Card name",
+        "holderName": "Holder name",
+        "cardAccount": "To account",
+        "submit": "Add card",
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "cardForm": {
+        "tile": {
+            "title": "Add card"
+        },
+        "name": "Card name",
+        "holderName": "Holder name",
+        "submit": "Add card"
+    },
     "loan": {
         "tile": {
             "title": "Loan"
@@ -323,6 +342,9 @@
             "sthWentWrong": "Something went wrong with the API request.",
             "unknownError": "An unknown error occurred. Please try again later.",
             "emptyRequestPayload": "Request payload is empty",
+            "invalidRequestPayload": "Invliad request payload",
+            "extraFields": "Extra fields",
+            "emptyFields": "Empty fields",
             "authFieldsRequired": "Email and / or password fields are required",
             "alreadyLogged": "User already logged in",
             "userNotExist": "User does not exist",
