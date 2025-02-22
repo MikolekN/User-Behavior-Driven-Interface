@@ -10,7 +10,7 @@ import FAQ from '../pages/FAQ/FAQ';
 import Info from '../pages/Info/Info';
 import TransactionsHistory from '../pages/TransactionsHistory/TransactionsHistory';
 import TransactionsMonthlyAnalysis from '../pages/TransactionsAnalysisMonthly/TransactionsMonthlyAnalysis';
-import TransactionsYearlyAnalysis from '../components/TransactionsAnalysis/TransactionsYearlyAnalysis';
+import TransactionsYearlyAnalysis from '../pages/TransactionsAnalysisYearly/TransactionsYearlyAnalysis';
 import CyclicPaymentsForm from '../components/CyclicPaymentForm/CyclicPaymentForm';
 import CyclicPayments from '../pages/CyclicPayments/CyclicPayments';
 import Profile from '../pages/Profile/Profile';
