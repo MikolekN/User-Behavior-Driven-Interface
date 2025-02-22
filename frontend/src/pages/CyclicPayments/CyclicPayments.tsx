@@ -15,7 +15,7 @@ import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccoun
 const CyclicPayments = () => {
     const { t } = useTranslation();
     const { user } = useContext(UserContext);
-    const { account } = useContext(AccountContext);
+    const { activeAccount } = useContext(AccountContext);
     const { apiError, handleError } = useApiErrorHandler();
     const [ loading, setLoading ] = useState(true);
     const { cyclicPayments, getCyclicPayments } = useContext(CyclicPaymentContext);
@@ -38,7 +38,7 @@ const CyclicPayments = () => {
 
     if (loading) return <DefaultLoadingSkeleton />;
 
-    if (account === null) {
+    if (activeAccount === null) {
         return (
             <div id="cyclic-payments-wrapper" className="flex items-center justify-center">
                 <ActiveAccountError />

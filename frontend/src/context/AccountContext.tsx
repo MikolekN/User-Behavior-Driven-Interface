@@ -4,7 +4,9 @@ import { createAccountData, deleteAccountData, getAccountData, getAccountsData, 
 
 interface AccountContextProps {
     account: Account | null;
-    setAccount:  React.Dispatch<React.SetStateAction<Account | null>>;
+    setAccount: React.Dispatch<React.SetStateAction<Account | null>>;
+    activeAccount: Account | null;
+    setActiveAccount:  React.Dispatch<React.SetStateAction<Account | null>>;
     accounts: Account[] | null;
     setAccounts: React.Dispatch<React.SetStateAction<Account[]>>;
     getAccount: (accountNumber: string) => Promise<void>;
@@ -13,12 +15,14 @@ interface AccountContextProps {
     updateAccount: (accountNumber: string, requestBody: object) => Promise<void>;
     deleteAccount: (accountNumber: string) => Promise<void>;
     getActiveAccount: () => Promise<void>;
-    setActiveAccount: (accountNumber: string) => Promise<void>;
+    fetchActiveAccount: (accountNumber: string) => Promise<void>;
 }
 
 const defaultContextValue: AccountContextProps = {
     account: null,
     setAccount: () => {},
+    activeAccount: null,
+    setActiveAccount: () => {},
     accounts: null,
     setAccounts: () => {},
     getAccount: async () => {},
@@ -27,7 +31,7 @@ const defaultContextValue: AccountContextProps = {
     updateAccount: async () => {},
     deleteAccount: async () => {},
     getActiveAccount: async () => {},
-    setActiveAccount: async () => {}
+    fetchActiveAccount: async () => {}
 }
 
 export const AccountContext = createContext<AccountContextProps>(defaultContextValue);
@@ -35,6 +39,7 @@ export const AccountContext = createContext<AccountContextProps>(defaultContextV
 // eslint-disable-next-line react/prop-types
 export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [account, setAccount] = useState<Account | null>(null);
+    const [activeAccount, setActiveAccount] = useState<Account | null>(null);
     const [accounts, setAccounts] = useState<Account[]>([]);
 
     const getAccount = useCallback(async (accountNumber: string): Promise<void> => {
@@ -71,26 +76,26 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
         const {account: accountBackendData} = await getActiveAccountData();
         if (accountBackendData) {
             const frontendAccountData = mapBackendAccountToAccount(accountBackendData); 
-            setAccount(() => new Account({...frontendAccountData}));
+            setActiveAccount(() => new Account({...frontendAccountData}));
         }
     }, []);
 
-    const setActiveAccount = useCallback(async (accountNumber: string): Promise<void> => {
+    const fetchActiveAccount = useCallback(async (accountNumber: string): Promise<void> => {
         await setActiveAccountData(accountNumber);
     }, []);
 
     useEffect(() => {
         const fetchAccount = async (): Promise<void> => {
-            if (!account) {
+            if (!activeAccount) {
                 await getActiveAccount();
             }
         };
         void fetchAccount();
-    }, [getActiveAccount, account]);
+    }, [getActiveAccount, activeAccount]);
 
     const AccountContextValue = useMemo(() => ({
-        account, setAccount, accounts, setAccounts, getAccount, getAccounts, createAccount, updateAccount, deleteAccount, getActiveAccount, setActiveAccount
-    }), [account, setAccount, accounts, setAccounts, getAccount, getAccounts, createAccount, updateAccount, deleteAccount, getActiveAccount, setActiveAccount]);
+        account, setAccount, activeAccount, setActiveAccount, accounts, setAccounts, getAccount, getAccounts, createAccount, updateAccount, deleteAccount, getActiveAccount, fetchActiveAccount
+    }), [account, setAccount, activeAccount, setActiveAccount, accounts, setAccounts, getAccount, getAccounts, createAccount, updateAccount, deleteAccount, getActiveAccount, fetchActiveAccount]);
     
     return (
         <AccountContext.Provider value={AccountContextValue}>

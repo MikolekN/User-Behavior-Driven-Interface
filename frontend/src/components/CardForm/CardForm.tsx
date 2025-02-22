@@ -20,7 +20,7 @@ const CardForm = () => {
     const { t } = useTranslation();
     const { cardNumber } = useParams();
     const { user, getUser } = useContext(UserContext);
-    const { account } = useContext(AccountContext);
+    const { activeAccount } = useContext(AccountContext);
     const { card, setCard, getCard, createCard, updateCard } = useContext(CardContext);
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = useForm<CardFormData>({
@@ -101,7 +101,7 @@ const CardForm = () => {
         }
     };
 
-    if (account === null) {
+    if (activeAccount === null) {
         return (
             <div id="card-form-wrapper" className="flex items-center justify-center">
                 <ActiveAccountError />

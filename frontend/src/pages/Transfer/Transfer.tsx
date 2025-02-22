@@ -21,7 +21,7 @@ const Transfer = () => {
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { getUser } = useContext(UserContext);
     const { createTransfer } = useContext(TransferContext);
-    const { account } = useContext(AccountContext);
+    const { activeAccount } = useContext(AccountContext);
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<TransferFormData>({
         resolver: zodResolver(TransferFormDataSchema),
         defaultValues: {
@@ -52,7 +52,7 @@ const Transfer = () => {
         }
     };
 
-    if (account === null) {
+    if (activeAccount === null) {
         return (
             <div id="transfer-wrapper" className="flex items-center justify-center">
                 <ActiveAccountError />
@@ -69,7 +69,7 @@ const Transfer = () => {
                             <ErrorAlert alertMessage={apiError.errorMessage} />
                         </div>
                     }
-                    <AccountDetails label={t('transfer.fromAccount')} account={account!} className='w-full p-3 mb-6' />
+                    <AccountDetails label={t('transfer.fromAccount')} account={activeAccount!} className='w-full p-3 mb-6' />
                     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <FormInput
                             label={t('transfer.recipientAccountNumber')}
@@ -92,7 +92,7 @@ const Transfer = () => {
                             error={errors.amount}
                             className="w-10/12"
                         >
-                            {account!.currency}
+                            {activeAccount!.currency}
                         </FormInput>
                         <div>
                             <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">

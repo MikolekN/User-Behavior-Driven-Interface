@@ -13,7 +13,7 @@ const TransactionsHistory = () => {
     const { t } = useTranslation();
     const [ loading, setLoading ] = useState(true);
     const { user } = useContext(UserContext);
-    const { account } = useContext(AccountContext);
+    const { activeAccount } = useContext(AccountContext);
     const { transfers, fetchTransfers } = useContext(TransferContext);
     const { apiError, handleError } = useApiErrorHandler();
 
@@ -75,7 +75,7 @@ const TransactionsHistory = () => {
                                             }`}
                                         >
                                             {!item.income && <span>-</span>}
-                                            {item.amount} {account?.currency}
+                                            {item.amount} {activeAccount?.currency}
                                         </div>
                                     </div>
                                 ))}
