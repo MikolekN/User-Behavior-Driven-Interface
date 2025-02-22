@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import Tile from '../../components/Tile/Tile';
@@ -33,13 +33,11 @@ const Transfer = () => {
     });
     const navigate = useNavigate();
 
-    const getTransferRequestBody = (data: TransferFormData) => {
-        return {
-            recipient_account_number: data.recipientAccountNumber,
-            title: data.transferTitle,
-            amount: data.amount
-        }
-    }
+    const getTransferRequestBody = useCallback((data: TransferFormData) => ({
+        recipient_account_number: data.recipientAccountNumber,
+        title: data.transferTitle,
+        amount: data.amount,
+    }), []);
 
     const onSubmit: SubmitHandler<TransferFormData> = async (data: TransferFormData) => {
         clearApiError();

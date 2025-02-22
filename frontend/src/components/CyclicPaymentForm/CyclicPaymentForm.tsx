@@ -55,7 +55,7 @@ const CyclicPaymentsForm = () => {
         setMinDate(new Date(Date.now() + DAY_LENGTH_IN_MILISECONDS));
         setDate(null);
         setValue('interval', '');
-    }, [setValue]);
+    }, []);
 
     const setCyclicPaymentFormEditValues = useCallback((cyclicPayment: CyclicPayment) => {
         setValue('cyclicPaymentName', cyclicPayment.cyclicPaymentName);
@@ -65,7 +65,7 @@ const CyclicPaymentsForm = () => {
         setMinDate(cyclicPayment.startDate)
         setDate(cyclicPayment.startDate);
         setValue('interval', cyclicPayment.interval);
-    }, [setValue]);
+    }, []);
 
     useEffect(() => {
         if (!user) return;
