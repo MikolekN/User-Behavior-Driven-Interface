@@ -70,7 +70,7 @@ const CardForm = () => {
             setCardFormDefaultValues();
         }
     }, [card, setCardFormDefaultValues, setCardFormEditValues]);
-    
+
     const getCardRequestBody = (data: CardFormData) => {
         return {
             name: data.name,
@@ -110,38 +110,36 @@ const CardForm = () => {
     }
 
     return (
-        <div id="card-form-wrapper" className="flex items-center justify-center">
-            <Tile title={t('cardForm.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
-                <div className="flex items-center justify-center">
-                    <div className="max-w-md w-full mx-auto">
-                        { apiError.isError && 
-                            <div className="my-4">
-                                <ErrorAlert alertMessage={apiError.errorMessage} />
-                            </div> 
-                        }
-                        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-                            <FormInput 
-                                label={t('cardForm.name')} 
-                                fieldType="text"
-                                register={register('name')}
-                                error={errors.name}
-                                className="w-full"
-                            />
-                            <FormInput 
-                                label={t('cardForm.holderName')}
-                                fieldType="text"
-                                register={register('holderName')}
-                                error={errors.holderName}
-                                className="w-full"
-                            />
-                            <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
-						        {isSubmitting ? `${t('cardForm.loading')}` : `${t('cardForm.submit')}`}
-                            </Button>
-                        </form>
-                    </div>
+        <Tile title={t('cardForm.tile.title')}>
+            <div className="flex items-center justify-center">
+                <div className="max-w-md w-full mx-auto">
+                    { apiError.isError &&
+                        <div className="my-4">
+                            <ErrorAlert alertMessage={apiError.errorMessage} />
+                        </div>
+                    }
+                    <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+                        <FormInput
+                            label={t('cardForm.name')}
+                            fieldType="text"
+                            register={register('name')}
+                            error={errors.name}
+                            className="w-full"
+                        />
+                        <FormInput
+                            label={t('cardForm.holderName')}
+                            fieldType="text"
+                            register={register('holderName')}
+                            error={errors.holderName}
+                            className="w-full"
+                        />
+                        <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
+                            {isSubmitting ? `${t('cardForm.loading')}` : `${t('cardForm.submit')}`}
+                        </Button>
+                    </form>
                 </div>
-            </Tile>
-        </div>
+            </div>
+        </Tile>
     );
 };
 

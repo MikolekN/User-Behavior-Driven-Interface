@@ -14,7 +14,7 @@ const TransactionsMonthlyAnalysis = () => {
     const { chartData, fetchTransfersAnalysis } = useContext(TransferContext);
     const [ loading, setLoading ] = useState(true);
     const { apiError, handleError } = useApiErrorHandler();
-    
+
     useEffect(() => {
         if (!user) return;
 
@@ -34,10 +34,10 @@ const TransactionsMonthlyAnalysis = () => {
 
         void fetchChartData();
     }, [user, fetchTransfersAnalysis]);
-    
+
     if (loading) return <ChartLoadingSkeleton />;
 
-    if (apiError.isError) { 
+    if (apiError.isError) {
         return (
             <EmptyResponseInfoAlert
                 title={t('transactionsMonthlyAnalysis.tile.title')}
@@ -48,11 +48,9 @@ const TransactionsMonthlyAnalysis = () => {
     }
 
     return (
-        <div className="flex items-center justify-center">
-            <Tile title={t('transactionsMonthlyAnalysis.tile.title')} className="w-4/5">
-                <TransfersAnalysisChart chartData={chartData} truncateText={true}/>
-            </Tile>
-        </div>
+        <Tile title={t('transactionsMonthlyAnalysis.tile.title')}>
+            <TransfersAnalysisChart chartData={chartData} truncateText={true}/>
+        </Tile>
     );
 };
 

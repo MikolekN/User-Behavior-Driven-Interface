@@ -38,7 +38,7 @@ const AccountForm = () => {
         setValue('accountType', '');
         setValue('currency', '');
     }, [setValue]);
-    
+
     const setAccountFormEditValues = useCallback((account: Account) => {
         setValue('accountName', account.accountName);
         setValue('accountType', account.accountType);
@@ -104,46 +104,44 @@ const AccountForm = () => {
     };
 
     return (
-        <div id="account-form-wrapper" className="flex items-center justify-center">
-            <Tile title={t('accountForm.tile.title')} className="w-2/5 max-w-[60%] h-fit max-h-full bg-white p-8 rounded-lg shadow-lg">
-                <div className="flex items-center justify-center">
-                    <div className="max-w-md w-full mx-auto">
-                        { apiError.isError && 
-                            <div className="my-4">
-                                <ErrorAlert alertMessage={apiError.errorMessage} />
-                            </div> 
-                        }
-                        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-                            <FormInput 
-                                label={t('accountForm.accountName')} 
-                                fieldType="text"
-                                register={register('accountName')}
-                                error={errors.accountName}
-                                className="w-full"
-                            />
-                            <FormSelect
-                                label={t('accountForm.accountType')}
-                                options={ACCOUNT_TYPE_SELECT_OPTIONS}
-                                defaultOption={t('accountForm.selectAccountType')}
-                                register={register('accountType')}
-                                error={errors.accountType}
-                                className="w-full"
-                            />
-                            <FormInput 
-                                label={t('accountForm.currency')}
-                                fieldType="text"
-                                register={register('currency')}
-                                error={errors.currency}
-                                className="w-full"
-                            />
-                            <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
-						        {isSubmitting ? `${t('accountForm.loading')}` : `${t('accountForm.submit')}`}
-                            </Button>
-                        </form>
-                    </div>
+        <Tile title={t('accountForm.tile.title')}>
+            <div className="flex items-center justify-center">
+                <div className="max-w-md w-full mx-auto">
+                    { apiError.isError &&
+                        <div className="my-4">
+                            <ErrorAlert alertMessage={apiError.errorMessage} />
+                        </div>
+                    }
+                    <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+                        <FormInput
+                            label={t('accountForm.accountName')}
+                            fieldType="text"
+                            register={register('accountName')}
+                            error={errors.accountName}
+                            className="w-full"
+                        />
+                        <FormSelect
+                            label={t('accountForm.accountType')}
+                            options={ACCOUNT_TYPE_SELECT_OPTIONS}
+                            defaultOption={t('accountForm.selectAccountType')}
+                            register={register('accountType')}
+                            error={errors.accountType}
+                            className="w-full"
+                        />
+                        <FormInput
+                            label={t('accountForm.currency')}
+                            fieldType="text"
+                            register={register('currency')}
+                            error={errors.currency}
+                            className="w-full"
+                        />
+                        <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
+                            {isSubmitting ? `${t('accountForm.loading')}` : `${t('accountForm.submit')}`}
+                        </Button>
+                    </form>
                 </div>
-            </Tile>
-        </div>
+            </div>
+        </Tile>
     );
 };
 

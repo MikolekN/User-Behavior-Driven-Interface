@@ -19,7 +19,6 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
-    padding-top: 16px;
 }
 
 .info-section {

@@ -62,18 +62,14 @@ const Cards = () => {
     };
 
     return (
-        <div id='card-wrapper' className='flex overflow-hidden flex-col flex-grow justify-center items-center h-full max-h-full'>
-            <Tile title={t('cardList.tile.title')} className='flex flex-col w-10/12 shadow-md h-[95%] max-h-[95%] mb-2.5 mx-auto rounded-lg md:w-1/2'>
-                <div className="flex flex-col gap-4 overflow-y-auto p-2.5">
-                    {!cards && (
-                        <div>Cyclic Payments are loading...</div>
-                    )}
-                    {cards && cards.length > 0 && (
-                        <CardList cardList={cards}/>
-                    )}
-                </div>
-            </Tile>
-        </div>
+        <Tile id='card' title={t('cardList.tile.title')}>
+            {!cards && (
+                <div>Cyclic Payments are loading...</div>
+            )}
+            {cards && cards.length > 0 && (
+                <CardList cardList={cards}/>
+            )}
+        </Tile>
     );
 };
 

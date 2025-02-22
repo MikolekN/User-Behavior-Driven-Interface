@@ -90,7 +90,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                     renderRowDetails={(cyclicPayment) => (
                         <div className="flex flex-col items-center space-y-4 p-4 mt-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600">
                             <div className="flex w-full justify-evenly">
-                                <div className="w-2/4 pr-4">
+                                <div>
                                     <div className="mb-4">
                                         <Label label={t('cyclicPaymentList.recipient')}/>
                                         <div className="pl-4 dark:text-gray-300">
@@ -111,7 +111,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-1/4 pl-4">
+                                <div>
                                     <div className="mb-4">
                                         <Label label={t('cyclicPaymentList.amount')}/>
                                         <div className="pl-4 dark:text-gray-300">
@@ -147,51 +147,49 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                 />
             </div>
             <div className="md:hidden">
-                <CollapsibleList 
+                <CollapsibleList
                     items={cyclicPayments}
                     renderHeader={(cyclicPayment) => (
                         <span>{cyclicPayment.cyclicPaymentName}</span>
                     )}
                     renderDetails={(cyclicPayment) => (
-                        <div className="flex flex-col items-center space-y-4 p-2 mt-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600">
-                            <div className="flex w-full justify-center">
-                                <div className="pr-4">
-                                    <div className="mb-4">
-                                        <Label label={t('cyclicPaymentList.recipient')}/>
-                                        <div className="pl-4 dark:text-gray-300">
-                                            <i>{cyclicPayment.recipientName}</i>
-                                        </div>
+                        <div className="flex flex-col space-y-4">
+                            <div className="pr-4">
+                                <div>
+                                    <Label label={t('cyclicPaymentList.recipient')}/>
+                                    <div className="pl-4 dark:text-gray-300">
+                                        <i>{cyclicPayment.recipientName}</i>
                                     </div>
-                                    <div className="mb-4">
-                                        <Label label={t('cyclicPaymentList.recipientAccountNumber')}/>
-                                        <div className="pl-4 dark:text-gray-300">
-                                            <i>{cyclicPayment.recipientAccountNumber}</i>
-                                        </div>
+                                </div>
+                                <div className="mb-4">
+                                    <Label label={t('cyclicPaymentList.recipientAccountNumber')}/>
+                                    <div className="pl-4 dark:text-gray-300">
+                                        <i>{cyclicPayment.recipientAccountNumber}</i>
                                     </div>
-                                    <AccountDetails label={t('cyclicPaymentList.fromAccount')} account={account!} className='w-fit pl-4 p-3' />
-                                    <div className="mb-4">
-                                        <Label label={t('cyclicPaymentList.title')}/>
-                                        <div className="pl-4 dark:text-gray-300">
-                                            <i>{cyclicPayment.transferTitle}</i>
-                                        </div>
+                                </div>
+                                <AccountDetails label={t('cyclicPaymentList.fromAccount')} account={account!} className='w-fit pl-4 p-3' />
+                                <div className="mb-4">
+                                    <Label label={t('cyclicPaymentList.title')}/>
+                                    <div className="pl-4 dark:text-gray-300">
+                                        <i>{cyclicPayment.transferTitle}</i>
                                     </div>
-                                    <div className="mb-4">
-                                        <Label label={t('cyclicPaymentList.amount')}/>
-                                        <div className="pl-4 dark:text-gray-300">
-                                            <i>{cyclicPayment.amount} {account?.currency}</i>
-                                        </div>
+                                </div>
+                                <div className="mb-4">
+                                    <Label label={t('cyclicPaymentList.amount')}/>
+                                    <div className="pl-4 dark:text-gray-300">
+                                        <i>{cyclicPayment.amount} {account?.currency}</i>
                                     </div>
-                                    <div className="mb-4">
-                                        <Label label={t('cyclicPaymentList.startDate')}/>
-                                        <div className="pl-4 dark:text-gray-300">
-                                            <i>{formatDate(cyclicPayment.startDate)}</i>
-                                        </div>
+                                </div>
+                                <div className="mb-4">
+                                    <Label label={t('cyclicPaymentList.startDate')}/>
+                                    <div className="pl-4 dark:text-gray-300">
+                                        <i>{formatDate(cyclicPayment.startDate)}</i>
                                     </div>
-                                    <div className="mb-4">
-                                        <Label label={t('cyclicPaymentList.transferInterval')}/>
-                                        <div className="pl-4 dark:text-gray-300">
-                                            <i>{cyclicPayment.interval}</i>
-                                        </div>
+                                </div>
+                                <div className="mb-4">
+                                    <Label label={t('cyclicPaymentList.transferInterval')}/>
+                                    <div className="pl-4 dark:text-gray-300">
+                                        <i>{cyclicPayment.interval}</i>
                                     </div>
                                 </div>
                             </div>

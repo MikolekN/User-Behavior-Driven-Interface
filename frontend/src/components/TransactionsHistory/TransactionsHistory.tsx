@@ -16,7 +16,7 @@ const TransactionsHistory = () => {
     const { account } = useContext(AccountContext);
     const { transfers, fetchTransfers } = useContext(TransferContext);
     const { apiError, handleError } = useApiErrorHandler();
-    
+
     useEffect(() => {
         if (!user) return;
 
@@ -35,7 +35,7 @@ const TransactionsHistory = () => {
 
     if (loading) return <DefaultLoadingSkeleton />;
 
-    if (apiError.isError) { 
+    if (apiError.isError) {
         return (
             <EmptyResponseInfoAlert
                 title={t('transactionHistory.tile.title')}
@@ -46,18 +46,16 @@ const TransactionsHistory = () => {
     }
 
     return (
-        <div id="transactions-history-wrapper" className="flex overflow-hidden flex-col flex-grow justify-center items-center h-full max-h-full">
             <Tile
                 title={t('transactionHistory.tile.title')}
-                id="transactions-history-tile"
-                className="flex flex-col w-1/3 shadow-md h-[95%] max-h-[95%] mb-2.5 mx-auto rounded-lg"
+                id="transactions-history"
             >
                 {!transfers || transfers.length === 0 ? (
                     <div>{t('transactionHistory.noTransactions')}</div>
                 ) : (
                     <CollapsibleList
                         items={transfers}
-                        renderHeader={(transfer) => (   
+                        renderHeader={(transfer) => (
                             <span>{transfer.date}</span>
                         )}
                         renderDetails={(transfer) => (
@@ -86,7 +84,6 @@ const TransactionsHistory = () => {
                     />
                 )}
             </Tile>
-        </div>
     );
 };
 

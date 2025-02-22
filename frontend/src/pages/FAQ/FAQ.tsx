@@ -32,20 +32,18 @@ const FAQ: FC = () => {
     };
 
     return (
-        <div className="faq-wrapper">
-            <Tile title={t('faq.tile.title')} className="faq-tile">
-                <div className="faq-container">
-                    {FAQData.map((item, index) => (
-                        <FAQItem
-                            key={index}
-                            itemKey={item.key}
-                            isActive={activeIndex === index}
-                            onClick={() => toggleAnswer(index)}
-                        />
-                    ))}
-                </div>
-            </Tile>
-        </div>
+        <Tile title={t('faq.tile.title')} className="faq-tile">
+            <div className="md:p-6">
+                {FAQData.map((item, index) => (
+                    <FAQItem
+                        key={index}
+                        itemKey={item.key}
+                        isActive={activeIndex === index}
+                        onClick={() => toggleAnswer(index)}
+                    />
+                ))}
+            </div>
+        </Tile>
     );
 };
 

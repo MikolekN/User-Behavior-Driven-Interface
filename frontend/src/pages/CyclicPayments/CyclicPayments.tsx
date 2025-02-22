@@ -22,7 +22,7 @@ const CyclicPayments = () => {
 
     useEffect(() => {
         if (!user) return;
-        
+
         const fetchCyclicPayments = async () => {
             try {
                 await getCyclicPayments();
@@ -45,7 +45,7 @@ const CyclicPayments = () => {
             </div>
         );
     }
-    
+
     if (apiError.isError) {
         return (
             <EmptyResponseInfoAlert
@@ -61,18 +61,16 @@ const CyclicPayments = () => {
     }
 
     return (
-        <div id='cyclic-payments-wrapper' className='flex overflow-hidden flex-col flex-grow justify-center items-center h-full max-h-full'>
-            <Tile title={t('cyclicPaymentList.tile.title')} className='flex flex-col w-10/12 shadow-md h-[95%] max-h-[95%] mb-2.5 mx-auto rounded-lg md:w-1/2'>
-                <div className="flex flex-col gap-4 overflow-y-auto p-2.5">
-                    {!cyclicPayments && (
-                        <div>Cyclic Payments are loading...</div>
-                    )}
-                    {cyclicPayments && cyclicPayments.length > 0 && (
-                        <CyclicPaymentList cyclicPaymentsList={cyclicPayments}/>
-                    )}
-                </div>
-            </Tile>
-        </div>
+        <Tile id='cyclic-payment' title={t('cyclicPaymentList.tile.title')}>
+            <div className="flex flex-col gap-4 p-2.5">
+                {!cyclicPayments && (
+                    <div>Cyclic Payments are loading...</div>
+                )}
+                {cyclicPayments && cyclicPayments.length > 0 && (
+                    <CyclicPaymentList cyclicPaymentsList={cyclicPayments}/>
+                )}
+            </div>
+        </Tile>
     );
 };
 

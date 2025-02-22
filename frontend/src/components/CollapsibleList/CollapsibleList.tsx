@@ -28,7 +28,7 @@ const CollapsibleList = <T,>({ items, renderHeader, renderDetails }: Collapsible
     }, [items]);
 
     return (
-        <div className="flex flex-col gap-4 overflow-y-auto p-2.5">
+        <div>
             {items.map((item, index) => {
                 const isExpanded = expandedIndexes[index];
                 return (
