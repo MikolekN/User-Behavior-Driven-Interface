@@ -11,7 +11,7 @@ import Info from '../pages/Info/Info';
 import TransactionsHistory from '../pages/TransactionsHistory/TransactionsHistory';
 import TransactionsMonthlyAnalysis from '../pages/TransactionsAnalysisMonthly/TransactionsMonthlyAnalysis';
 import TransactionsYearlyAnalysis from '../pages/TransactionsAnalysisYearly/TransactionsYearlyAnalysis';
-import CyclicPaymentsForm from '../components/CyclicPaymentForm/CyclicPaymentForm';
+import CyclicPaymentsForm from '../pages/CyclicPayment/CyclicPaymentForm';
 import CyclicPayments from '../pages/CyclicPayments/CyclicPayments';
 import Profile from '../pages/Profile/Profile';
 import Loan from '../pages/Loan/Loan';
