@@ -8,7 +8,7 @@ import Transfer from '../pages/Transfer/Transfer';
 import Chat from '../pages/Chat/Chat';
 import FAQ from '../pages/FAQ/FAQ';
 import Info from '../pages/Info/Info';
-import TransactionsHistory from '../components/TransactionsHistory/TransactionsHistory';
+import TransactionsHistory from '../pages/TransactionsHistory/TransactionsHistory';
 import TransactionsMonthlyAnalysis from '../components/TransactionsAnalysis/TransactionsMonthlyAnalysis';
 import TransactionsYearlyAnalysis from '../components/TransactionsAnalysis/TransactionsYearlyAnalysis';
 import CyclicPaymentsForm from '../components/CyclicPaymentForm/CyclicPaymentForm';
@@ -22,9 +22,10 @@ import AccountForm from '../components/AccountForm/AccountForm';
 import Cards from '../pages/Cards/Cards';
 import CardForm from '../components/CardForm/CardForm';
 
+
 export const router = createBrowserRouter([
     {
-        path: '/', 
+        path: '/',
         element: <App />,
         children: [
             // public routes
