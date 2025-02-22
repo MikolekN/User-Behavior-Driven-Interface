@@ -20,7 +20,7 @@ import PrivateRoute from './PrivateRoute';
 import Accounts from '../pages/Accounts/Accounts';
 import AccountForm from '../pages/Account/AccountForm';
 import Cards from '../pages/Cards/Cards';
-import CardForm from '../components/CardForm/CardForm';
+import CardForm from '../pages/Card/CardForm';
 
 
 export const router = createBrowserRouter([

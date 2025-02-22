@@ -5,16 +5,17 @@ import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { CardFormData, CardFormDataSchema } from '../../schemas/formValidation/cardSchema';
-import { Card } from '../utils/types/Card';
 import { UserContext } from '../../context/UserContext';
-import { CardContext } from '../../context/CardContext';
-import { scrollToTop } from '../utils/scroll';
-import ActiveAccountError from '../ActiveAccountError/ActiveAccountError';
 import { AccountContext } from '../../context/AccountContext';
-import Tile from '../Tile/Tile';
-import ErrorAlert from '../Alerts/ErrorAlert';
-import FormInput from '../FormInput/FormInput';
-import Button from '../utils/Button';
+import { CardContext } from '../../context/CardContext';
+import { Card } from '../../components/utils/types/Card';
+import { scrollToTop } from '../../components/utils/scroll';
+import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
+import Tile from '../../components/Tile/Tile';
+import ErrorAlert from '../../components/Alerts/ErrorAlert';
+import FormInput from '../../components/FormInput/FormInput';
+import Button from '../../components/utils/Button';
+
 
 const CardForm = () => {
     const { t } = useTranslation();
