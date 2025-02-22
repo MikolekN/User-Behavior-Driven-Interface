@@ -18,7 +18,7 @@ import Loan from '../pages/Loan/Loan';
 import PageNotFound from '../pages/PageNotFound/PageNotFound';
 import PrivateRoute from './PrivateRoute';
 import Accounts from '../pages/Accounts/Accounts';
-import AccountForm from '../components/AccountForm/AccountForm';
+import AccountForm from '../pages/Account/AccountForm';
 import Cards from '../pages/Cards/Cards';
 import CardForm from '../components/CardForm/CardForm';
 
