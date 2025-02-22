@@ -136,7 +136,12 @@ const AccountForm = () => {
                             className="w-full"
                         />
                         <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
-                            {isSubmitting ? `${t('accountForm.loading')}` : `${t('accountForm.submit')}`}
+                        {isSubmitting
+                            ? t('accountForm.loading')
+                            : accountNumber
+                                ? t('accountForm.edit')
+                                : t('accountForm.submit')
+                        }
                         </Button>
                     </form>
                 </div>

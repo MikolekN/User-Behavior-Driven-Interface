@@ -135,7 +135,8 @@
         "transferInterval": "Transfer interval",
         "title": "Cyclic transfer title",
         "amount": "Amout",
-        "submit": "Submit",
+        "submit": "Add cyclic payment",
+        "edit": "Edit cyclic payment",
         "loading": "Loading...",
         "selectInterval": "-- select interval --"
     },
@@ -169,14 +170,15 @@
     },
     "accountForm": {
         "tile": {
-            "title": "Add account"
+            "title": "Account"
         },
         "accountName": "Account name",
         "accountType": "Account type",
         "selectAccountType": "-- select account type --",
         "currency": "Currency",
         "loading": "Loading...",
-        "submit": "Add account"
+        "submit": "Add account",
+        "edit": "Edit account"
     },
     "cardList": {
         "tile": {
@@ -191,11 +193,12 @@
     },
     "cardForm": {
         "tile": {
-            "title": "Add card"
+            "title": "Card"
         },
         "name": "Card name",
         "holderName": "Holder name",
-        "submit": "Add card"
+        "submit": "Add card",
+        "edit": "Edit card"
     },
     "loan": {
         "tile": {

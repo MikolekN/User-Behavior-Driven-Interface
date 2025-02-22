@@ -227,7 +227,12 @@ const CyclicPaymentsForm = () => {
                     {account!.currency}
                 </FormInput>
                 <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
-                    {isSubmitting ? `${t('cyclicPaymentForm.loading')}` : `${t('cyclicPaymentForm.submit')}`}
+                    {isSubmitting
+                        ? t('cyclicPaymentForm.loading')
+                        : id
+                            ? t('cyclicPaymentForm.edit')
+                            : t('cyclicPaymentForm.submit')
+                    }
                 </Button>
             </form>
         </Tile>

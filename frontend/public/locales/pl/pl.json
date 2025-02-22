@@ -135,7 +135,8 @@
         "transferInterval": "Interwał przelewu",
         "title": "Tytuł cyklicznego przelewu",
         "amount": "Kwota",
-        "submit": "Utwórz",
+        "submit": "Utwórz płatnośc cykliczną",
+        "edit": "Edytuj płatność cykliczną",
         "loading": "Ładowanie...",
         "selectInterval": "-- wybierz interwał --"
     },
@@ -169,14 +170,15 @@
     },
     "accountForm": {
         "tile": {
-            "title": "Dodaj konto"
+            "title": "Konto"
         },
         "accountName": "Nazwa konta",
         "accountType": "Rodzaj konta",
         "selectAccountType": "-- wybierz rodzaj konta --",
         "currency": "Waluta",
         "loading": "Ładowanie...",
-        "submit": "Dodaj konto"
+        "submit": "Dodaj konto",
+        "edit": "Edytuj konto"
     },
     "cardList": {
         "tile": {
@@ -191,11 +193,12 @@
     },
     "cardForm": {
         "tile": {
-            "title": "Dodaj kartę"
+            "title": "Karta"
         },
         "name": "Nazwa karty",
         "holderName": "Nazwa właściciela",
-        "submit": "Dodaj kartę"
+        "submit": "Dodaj kartę",
+        "edit":"Edytuj kartę"
     },
     "loan": {
         "tile": {

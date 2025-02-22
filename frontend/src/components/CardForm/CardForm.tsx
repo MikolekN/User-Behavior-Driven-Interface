@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
@@ -14,7 +14,6 @@ import { AccountContext } from '../../context/AccountContext';
 import Tile from '../Tile/Tile';
 import ErrorAlert from '../Alerts/ErrorAlert';
 import FormInput from '../FormInput/FormInput';
-import FormSelect from '../FormSelect/FormSelect';
 import Button from '../utils/Button';
 
 const CardForm = () => {
@@ -24,7 +23,7 @@ const CardForm = () => {
     const { account } = useContext(AccountContext);
     const { card, setCard, getCard, createCard, updateCard } = useContext(CardContext);
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
-    const { register, handleSubmit, formState: { errors, isSubmitting }, clearErrors, control, setValue } = useForm<CardFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = useForm<CardFormData>({
         resolver: zodResolver(CardFormDataSchema),
         defaultValues: {
             name: '',
@@ -134,7 +133,12 @@ const CardForm = () => {
                             className="w-full"
                         />
                         <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
-                            {isSubmitting ? `${t('cardForm.loading')}` : `${t('cardForm.submit')}`}
+                            {isSubmitting
+                                ? t('cardForm.loading')
+                                : cardNumber
+                                    ? t('cardForm.edit')
+                                    : t('cardForm.submit')
+                            }
                         </Button>
                     </form>
                 </div>
