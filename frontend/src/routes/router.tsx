@@ -9,7 +9,7 @@ import Chat from '../pages/Chat/Chat';
 import FAQ from '../pages/FAQ/FAQ';
 import Info from '../pages/Info/Info';
 import TransactionsHistory from '../pages/TransactionsHistory/TransactionsHistory';
-import TransactionsMonthlyAnalysis from '../components/TransactionsAnalysis/TransactionsMonthlyAnalysis';
+import TransactionsMonthlyAnalysis from '../pages/TransactionsAnalysisMonthly/TransactionsMonthlyAnalysis';
 import TransactionsYearlyAnalysis from '../components/TransactionsAnalysis/TransactionsYearlyAnalysis';
 import CyclicPaymentsForm from '../components/CyclicPaymentForm/CyclicPaymentForm';
 import CyclicPayments from '../pages/CyclicPayments/CyclicPayments';

@@ -1,12 +1,12 @@
 import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
-import Tile from '../Tile/Tile';
-import TransfersAnalysisChart from '../TransfersAnalysisChart/TransfersAnalysisChart';
-import EmptyResponseInfoAlert from '../EmptyResponseInfoAlert/EmptyResponseInfoAlert';
+import Tile from '../../components/Tile/Tile';
+import TransfersAnalysisChart from '../../components/TransfersAnalysisChart/TransfersAnalysisChart';
+import EmptyResponseInfoAlert from '../../components/EmptyResponseInfoAlert/EmptyResponseInfoAlert';
 import { TransferContext } from '../../context/TransferContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { useTranslation } from 'react-i18next';
-import ChartLoadingSkeleton from '../Loading/ChartLoadingSkeleton';
+import ChartLoadingSkeleton from '../../components/Loading/ChartLoadingSkeleton';
 
 const TransactionsMonthlyAnalysis = () => {
     const { t } = useTranslation();
