@@ -7,7 +7,7 @@
                 "transfer": "Make transfer",
                 "transferHistory": "Transfer history",
                 "cyclicPayments": "Cyclic payments",
-                "loan": "Loan" 
+                "loan": "Loan"
             }
         },
         "analysis": {
@@ -43,6 +43,7 @@
                 "dark": "Dark theme"
             }
         },
+        "language": "Languages",
         "languages": {
             "polish": "Polish",
             "english": "English"
