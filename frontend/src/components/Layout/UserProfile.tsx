@@ -4,18 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 
 import defaultIcon from '../../assets/images/user.png';
 import defaultIconDark from '../../assets/images/user-dark.png';
-import setingsIcon from '../../assets/images/setting.png';
-import setingsIconDark from '../../assets/images/setting-dark.png';
-import logoutIcon from '../../assets/images/logout.png';
-import logoutIconDark from '../../assets/images/logout-dark.png';
-import registerIcon from '../../assets/images/register.png';
-import registerIconDark from '../../assets/images/register-dark.png';
 import { UserContext } from '../../context/UserContext';
 import { UserIconContext } from '../../context/UserIconContext';
 import { AuthContext } from "../../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { LANGUAGES } from "../../pages/constants";
-import { content } from "flowbite-react/tailwind";
 
 export const UserProfile = () => {
     const navigate = useNavigate();
@@ -26,10 +19,6 @@ export const UserProfile = () => {
     const { computedMode, toggleMode } = useThemeMode();
 
     const [iconSrc, setIconSrc] = useState<string>(computedMode == 'dark' ? defaultIconDark : defaultIcon);
-    const [defaultIconSrc, setDefaultIconSrc] = useState<string>(computedMode == 'dark' ? defaultIconDark : defaultIcon);
-    const [settingIconSrc, setSettingIconSrc] = useState<string>(computedMode == 'dark' ? setingsIconDark : setingsIcon);
-    const [logoutIconSrc, setLogoutIconSrc] = useState<string>(computedMode == 'dark' ? logoutIconDark : logoutIcon);
-    const [registerIconSrc, setRegisterIconSrc] = useState<string>(computedMode == 'dark' ? registerIconDark : registerIcon);
 
     const handleChangeLanguage = (lang_code: string) => {
         i18n.changeLanguage(lang_code);
@@ -43,13 +32,6 @@ export const UserProfile = () => {
             navigate('/');
         }
     };
-
-    useEffect(() => {
-        setDefaultIconSrc(computedMode == 'dark' ? defaultIconDark : defaultIcon);
-        setSettingIconSrc(computedMode == 'dark' ? setingsIconDark : setingsIcon);
-        setLogoutIconSrc(computedMode == 'dark' ? logoutIconDark : logoutIcon);
-        setRegisterIconSrc(computedMode == 'dark' ? registerIconDark : registerIcon);
-    }, [computedMode]);
 
     useEffect(() => {
         const fetchIcon = async () => {
@@ -73,10 +55,14 @@ export const UserProfile = () => {
         void fetchIcon();
     }, [user, getIcon, user?.icon, computedMode]);
 
-    const DropdownItem:React.FC<{label: string, path: string, icon: string, onClick?: () => Promise<void>}> = ({label, path, icon, onClick}) => {
+    const DropdownItem:React.FC<{label: string, path: string, icon: string | React.ReactNode, className?: string, onClick?: () => Promise<void>}> = ({label, path, icon, className, onClick}) => {
         return (
-            <Dropdown.Item as={Link} to={path} onClick={onClick} className=' flex bg-transparent text-black font-normal hover:font-semibold hover:text-black'>
-                <img src={icon} className="w-5 h-5 mr-1" />
+            <Dropdown.Item as={Link} to={path} onClick={onClick} className="flex bg-transparent text-black font-normal hover:font-semibold hover:text-black">
+                {typeof icon === 'string' ? (
+                    <img src={icon} className={` ${className} w-5 h-5 mr-1`} />
+                ) : (
+                    <span className={` ${className} w-5 h-5 mr-1 flex items-center justify-center`}>{icon}</span>
+                )}
                 {label}
             </Dropdown.Item>
         )
@@ -157,11 +143,15 @@ export const UserProfile = () => {
                         </Dropdown>
 
                         <Link to="/login" className="mx-1">
-                            <img src={defaultIconSrc} className="w-5 h-5" />
+                            <svg className="w-5 h-5 text-gray-800 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="2 2 20 20">
+                                <path fillRule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clipRule="evenodd"/>
+                            </svg>
                         </Link>
 
                         <Link to="/register" className="mx-1">
-                            <img src={registerIconSrc} className="w-5 h-5" />
+                            <svg className="w-5 h-5 text-gray-800 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="2 2 20 20">
+                                <path fillRule="evenodd" d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z" clipRule="evenodd"/>
+                            </svg>
                         </Link>
                     </div>
                     <Dropdown arrowIcon={false} inline placement="bottom"
@@ -174,8 +164,20 @@ export const UserProfile = () => {
                             <p>{t('menu.profile.mode.' + computedMode)}</p>
                         </Dropdown.Item>
                         <NestedDropdownItem />
-                        <DropdownItem label={t('menu.profile.login')} path="/login" icon={defaultIconSrc} />
-                        <DropdownItem label={t('menu.profile.register')} path="/register" icon={registerIconSrc} />
+                        <DropdownItem label={t('menu.profile.login')} path="/login"
+                            icon={
+                                <svg className="w-5 h-5 text-gray-800 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="2 2 20 20">
+                                    <path fillRule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clipRule="evenodd"/>
+                                </svg>
+                            }
+                        />
+                        <DropdownItem label={t('menu.profile.register')} path="/register" className="ml-1"
+                            icon={
+                                <svg className="w-5 h-5 text-gray-800 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="2 2 20 20">
+                                    <path fillRule="evenodd" d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z" clipRule="evenodd"/>
+                                </svg>
+                            }
+                        />
                     </Dropdown>
                 </>
             )}
@@ -184,11 +186,15 @@ export const UserProfile = () => {
                 <>
                     <div className="flex justify-center items-center">
                         <Link to="/profile" className="mx-1">
-                            <img src={defaultIconSrc} className="w-5 h-5" />
+                            <svg className="w-5 h-5 text-gray-800 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="2 2 20 20">
+                                <path fillRule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clipRule="evenodd"/>
+                            </svg>
                         </Link>
 
                         <Link to="/settings" className="mx-1">
-                            <img src={settingIconSrc} className="w-5 h-5" />
+                            <svg className="w-5 h-5 text-gray-800 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M9.586 2.586A2 2 0 0 1 11 2h2a2 2 0 0 1 2 2v.089l.473.196.063-.063a2.002 2.002 0 0 1 2.828 0l1.414 1.414a2 2 0 0 1 0 2.827l-.063.064.196.473H20a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-.089l-.196.473.063.063a2.002 2.002 0 0 1 0 2.828l-1.414 1.414a2 2 0 0 1-2.828 0l-.063-.063-.473.196V20a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-.089l-.473-.196-.063.063a2.002 2.002 0 0 1-2.828 0l-1.414-1.414a2 2 0 0 1 0-2.827l.063-.064L4.089 15H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h.09l.195-.473-.063-.063a2 2 0 0 1 0-2.828l1.414-1.414a2 2 0 0 1 2.827 0l.064.063L9 4.089V4a2 2 0 0 1 .586-1.414ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" clip-rule="evenodd"/>
+                            </svg>
                         </Link>
 
                         <DarkThemeToggle theme={darkThemeToggle}/>
@@ -206,7 +212,9 @@ export const UserProfile = () => {
                         </Dropdown>
 
                         <Link to="/" onClick={handleLogout} className="mx-1">
-                            <img src={logoutIconSrc} className="w-5 h-5" />
+                            <svg className="w-5 h-5 text-gray-800 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm5.757-1a1 1 0 1 0 0 2h8.486a1 1 0 1 0 0-2H7.757Z" clip-rule="evenodd"/>
+                            </svg>
                         </Link>
                     </div>
 
@@ -219,15 +227,33 @@ export const UserProfile = () => {
                             <span className="block text-sm">{user?.login}</span>
                             <span className="block truncate text-sm font-medium">{user?.email}</span>
                         </Dropdown.Header>
-                        <DropdownItem label={t('menu.profile.profile')} path="/profile" icon={defaultIconSrc}/>
-                        <DropdownItem label={t('menu.profile.settings')} path="/settings" icon={settingIconSrc} />
+                        <DropdownItem label={t('menu.profile.profile')} path="/profile"
+                            icon={
+                                <svg className="w-5 h-5 text-gray-800 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="2 2 20 20">
+                                    <path fillRule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clipRule="evenodd"/>
+                                </svg>
+                            }
+                        />
+                        <DropdownItem label={t('menu.profile.settings')} path="/settings"
+                            icon={
+                                <svg className="w-5 h-5 text-gray-800 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M9.586 2.586A2 2 0 0 1 11 2h2a2 2 0 0 1 2 2v.089l.473.196.063-.063a2.002 2.002 0 0 1 2.828 0l1.414 1.414a2 2 0 0 1 0 2.827l-.063.064.196.473H20a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-.089l-.196.473.063.063a2.002 2.002 0 0 1 0 2.828l-1.414 1.414a2 2 0 0 1-2.828 0l-.063-.063-.473.196V20a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-.089l-.473-.196-.063.063a2.002 2.002 0 0 1-2.828 0l-1.414-1.414a2 2 0 0 1 0-2.827l.063-.064L4.089 15H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h.09l.195-.473-.063-.063a2 2 0 0 1 0-2.828l1.414-1.414a2 2 0 0 1 2.827 0l.064.063L9 4.089V4a2 2 0 0 1 .586-1.414ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" clip-rule="evenodd"/>
+                                </svg>
+                            }
+                        />
                         <Dropdown.Item onClick={toggleMode} className='bg-transparent text-black font-normal hover:font-semibold hover:text-black px-3'>
                             <DarkThemeToggle theme={darkThemeToggle}/>
                             <p>{t('menu.profile.mode.' + computedMode)}</p>
                         </Dropdown.Item>
                         <NestedDropdownItem />
                         <Dropdown.Divider />
-                        <DropdownItem label={t('menu.profile.logout')} path="/" onClick={handleLogout} icon={logoutIconSrc} />
+                        <DropdownItem label={t('menu.profile.logout')} path="/" onClick={handleLogout}
+                            icon={
+                                <svg className="w-5 h-5 text-gray-800 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm5.757-1a1 1 0 1 0 0 2h8.486a1 1 0 1 0 0-2H7.757Z" clip-rule="evenodd"/>
+                                </svg>
+                            }
+                        />
                     </Dropdown>
                 </>
             )}
