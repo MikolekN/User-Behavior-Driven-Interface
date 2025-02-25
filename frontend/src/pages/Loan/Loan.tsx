@@ -79,7 +79,7 @@ const Loan = () => {
             navigate('/dashboard');
         } catch (error) {
             handleError(error);
-            scrollToTop('loan-form-wrapper');
+            scrollToTop();
         }
     };
 
@@ -100,11 +100,11 @@ const Loan = () => {
         <Tile title={t('loan.tile.title')}>
             <div className="flex items-center justify-center">
                 <div className="max-w-md w-full mx-auto px-1">
-                    { apiError.isError &&
-                        <div className="my-4">
+                    <div id="form-error-alert">
+                        { apiError.isError &&
                             <ErrorAlert alertMessage={apiError.errorMessage} />
-                        </div>
-                    }
+                        }
+                    </div>
                     <AccountDetails label={t('loan.fromAccount')} account={activeAccount!} className='w-full p-3 mb-6' />
                     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <FormInput

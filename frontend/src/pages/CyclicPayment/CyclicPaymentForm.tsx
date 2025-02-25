@@ -120,7 +120,7 @@ const CyclicPaymentsForm = () => {
                 navigate('/cyclic-payments');
             } catch (error) {
                 handleError(error);
-                scrollToTop('cyclic-payment-form-wrapper');
+                scrollToTop();
             }
         } else {
             try {
@@ -129,7 +129,7 @@ const CyclicPaymentsForm = () => {
                 navigate('/cyclic-payments');
             } catch (error) {
                 handleError(error);
-                scrollToTop('cyclic-payment-form-wrapper');
+                scrollToTop();
             }
         }
     };
@@ -155,11 +155,11 @@ const CyclicPaymentsForm = () => {
 
     return (
         <Tile id="cyclic-payment-form" title={t('cyclicPaymentForm.tile.title')}>
-            { apiError.isError &&
-                <div className="my-4">
+            <div id="form-error-alert">
+                { apiError.isError &&
                     <ErrorAlert alertMessage={apiError.errorMessage} />
-                </div>
-            }
+                }
+            </div>
             <AccountDetails label={t('cyclicPaymentForm.fromAccount')} account={activeAccount!} className='w-full p-3 mb-6' />
             <form id="cyclic-payment-form" className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                 <FormInput

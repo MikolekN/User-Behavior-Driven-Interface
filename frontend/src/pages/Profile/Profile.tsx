@@ -145,7 +145,7 @@ const ProfilePage = () => {
             }
             setIconValueForm('files', undefined);
         } catch (error) {
-            scrollToTop('icon-form-wrapper');
+            scrollToTop();
             handleIconError(error);
         }
     };
@@ -156,7 +156,7 @@ const ProfilePage = () => {
             await updateUser(field, value);
             await getUser();
         } catch (error) {
-            scrollToTop('field-form-wrapper');
+            scrollToTop();
             handleFieldError(error);
         }
     };
@@ -176,7 +176,7 @@ const ProfilePage = () => {
             await logout();
             navigate('/');
         } catch (error) {
-            scrollToTop('password-form-wrapper');
+            scrollToTop();
             handlePasswordError(error);
         }
     };
@@ -186,11 +186,11 @@ const ProfilePage = () => {
             <div className="flex flex-col space-y-6">
                 <div id="icon-form-wrapper">
                     <form onSubmit={handleSubmitIconForm(onIconSubmit)} className="space-y-4">
-                        { apiIconError.isError &&
-                            <div className="my-4">
+                        <div id="form-error-alert">
+                            { apiIconError.isError &&
                                 <ErrorAlert alertMessage={apiIconError.errorMessage} />
-                            </div>
-                        }
+                            }
+                        </div>
                         <FormInput
                             label={t('profile.icon.newIcon')}
                             fieldType="file"
@@ -210,11 +210,11 @@ const ProfilePage = () => {
 
                 <div id="field-form-wrapper">
                     <form onSubmit={handleSubmitFieldForm(onFieldSubmit)} className="space-y-4">
-                        { apiFieldError.isError &&
-                            <div className="my-4">
+                        <div id="form-error-alert">
+                            { apiFieldError.isError &&
                                 <ErrorAlert alertMessage={apiFieldError.errorMessage} />
-                            </div>
-                        }
+                            }
+                        </div>
                         <FormSelect
                             defaultOption={t('profile.field.defaultOption')}
                             onChange={handleChange}
@@ -243,11 +243,11 @@ const ProfilePage = () => {
 
                 <div id="password-form-wrapper">
                     <form onSubmit={handleSubmitPasswordForm(onPasswordSubmit)} className="space-y-4">
-                        { apiPasswordError.isError &&
-                            <div className="my-4">
+                        <div id="form-error-alert">
+                            { apiPasswordError.isError &&
                                 <ErrorAlert alertMessage={apiPasswordError.errorMessage} />
-                            </div>
-                        }
+                            }
+                        </div>
                         <FormInput
                             label={t('profile.password.password')}
                             fieldType="password"

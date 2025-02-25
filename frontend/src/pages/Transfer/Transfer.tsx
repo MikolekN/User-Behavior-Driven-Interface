@@ -48,7 +48,7 @@ const Transfer = () => {
             navigate('/dashboard');
         } catch (error) {
             handleError(error);
-            scrollToTop('transfer-form-wrapper');
+            scrollToTop();
         }
     };
 
@@ -64,11 +64,11 @@ const Transfer = () => {
         <Tile id="transfer" title={t('transfer.tile.title')}>
             <div className="flex items-center justify-center">
                 <div className="max-w-md w-full mx-auto">
-                    { apiError.isError &&
-                        <div className="my-4">
+                    <div id="form-error-alert">
+                        { apiError.isError &&
                             <ErrorAlert alertMessage={apiError.errorMessage} />
-                        </div>
-                    }
+                        }
+                    </div>
                     <AccountDetails label={t('transfer.fromAccount')} account={activeAccount!} className='w-full p-3 mb-6' />
                     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <FormInput

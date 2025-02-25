@@ -88,7 +88,7 @@ const CardForm = () => {
                 navigate('/cards');
             } catch (error) {
                 handleError(error);
-                scrollToTop('card-form-wrapper');
+                scrollToTop();
             }
         } else {
             try {
@@ -97,7 +97,7 @@ const CardForm = () => {
                 navigate('/cards');
             } catch (error) {
                 handleError(error);
-                scrollToTop('card-form-wrapper');
+                scrollToTop();
             }
         }
     };
@@ -113,11 +113,11 @@ const CardForm = () => {
         <Tile title={t('cardForm.tile.title')}>
             <div className="flex items-center justify-center">
                 <div className="max-w-md w-full mx-auto">
-                    { apiError.isError &&
-                        <div className="my-4">
+                    <div id="form-error-alert">
+                        { apiError.isError &&
                             <ErrorAlert alertMessage={apiError.errorMessage} />
-                        </div>
-                    }
+                        }
+                    </div>
                     <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <FormInput
                             label={t('cardForm.name')}

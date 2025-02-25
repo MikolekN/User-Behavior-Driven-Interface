@@ -89,7 +89,7 @@ const AccountForm = () => {
                 navigate('/accounts');
             } catch (error) {
                 handleError(error);
-                scrollToTop('account-form-wrapper');
+                scrollToTop();
             }
         } else {
             try {
@@ -98,7 +98,7 @@ const AccountForm = () => {
                 navigate('/accounts');
             } catch (error) {
                 handleError(error);
-                scrollToTop('account-form-wrapper');
+                scrollToTop();
             }
         }
     };
@@ -107,11 +107,11 @@ const AccountForm = () => {
         <Tile title={t('accountForm.tile.title')}>
             <div className="flex items-center justify-center">
                 <div className="max-w-md w-full mx-auto">
-                    { apiError.isError &&
-                        <div className="my-4">
+                    <div id="form-error-alert">
+                        { apiError.isError &&
                             <ErrorAlert alertMessage={apiError.errorMessage} />
-                        </div>
-                    }
+                        }
+                    </div>
                     <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <FormInput
                             label={t('accountForm.accountName')}
