@@ -9,13 +9,14 @@ import { useTranslation } from 'react-i18next';
 import DefaultLoadingSkeleton from '../../components/Loading/DefaultLoadingSkeleton';
 import { AccountContext } from '../../context/AccountContext';
 import AccountsList from '../../components/AccountsList/AccountsList';
+import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
 
 const Accounts = () => {
     const { t } = useTranslation();
     const { user } = useContext(UserContext);
     const { apiError, handleError } = useApiErrorHandler();
     const [ loading, setLoading ] = useState(true);
-    const { accounts, getAccounts } = useContext(AccountContext);
+    const { activeAccount, accounts, getAccounts } = useContext(AccountContext);
 
     useEffect(() => {
         if (!user) return;
@@ -33,6 +34,17 @@ const Accounts = () => {
     }, [user, getAccounts]);
 
     if (loading) return <DefaultLoadingSkeleton />;
+
+    if (activeAccount === null) {
+        return (
+            <div id="accounts-wrapper" className="flex items-center justify-center">
+                <ActiveAccountError>
+                    <Link to={'/create-account/'} className="justify-self-end p-2">
+                        <Button className="dark:bg-slate-900 dark:hover:bg-slate-800">+ {t('accountList.submit')}</Button>
+                    </Link>
+                </ActiveAccountError>
+            </div>);
+    }
 
     if (apiError.isError) {
         return (
