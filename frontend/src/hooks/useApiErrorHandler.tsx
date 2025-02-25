@@ -17,6 +17,8 @@ function useApiErrorHandler() {
     const handleError = (error: unknown) => {
         if (isZodError(error)) {
             setErrorMessage(`${t('errors.zod.zodApiError')}`);
+        } else if (error instanceof Error && error.message.includes("NetworkError")) {
+            setErrorMessage(`${t('errors.api.networkError')}`);
         } else {
             const errorSplit: string[] = (error as Error).message.split(";");
             const errorKey: string = errorSplit[0];

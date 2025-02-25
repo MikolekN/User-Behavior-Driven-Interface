@@ -7,7 +7,7 @@
                 "transfer": "Wykonaj przelew",
                 "transferHistory": "Historia transakcji",
                 "cyclicPayments": "Płatności cykliczne" ,
-                "loan": "Pożyczki" 
+                "loan": "Pożyczki"
             }
         },
         "analysis": {
@@ -413,7 +413,8 @@
             "accountDeleteSucessful": "Konto usunięte pomyślnie",
             "accountsNotExist": "Lista kont jest pusta",
             "accountDontHaveEnoughMoney": "Brak wystarczających środków na aktywnym koncie",
-            "senderAccountNotExist": "Konto odbiorcy nie istnieje"
+            "senderAccountNotExist": "Konto odbiorcy nie istnieje",
+            "networkError": "Serwis jest aktualnie niedostępny. Spróbuj ponownie później."
         },
         "zod": {
             "required": "Pole jest wymagane",

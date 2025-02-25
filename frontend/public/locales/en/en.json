@@ -7,7 +7,7 @@
                 "transfer": "Make transfer",
                 "transferHistory": "Transfer history",
                 "cyclicPayments": "Cyclic payments",
-                "loan": "Loan" 
+                "loan": "Loan"
             }
         },
         "analysis": {
@@ -412,7 +412,8 @@
             "accountDeleteSucessful": "Account deleted successfully",
             "acountsNotExist": "Accounts list is empty",
             "accountDontHaveEnoughMoney": "Not enough money in active account",
-            "senderAccountNotExist": "Sender's account not exist"
+            "senderAccountNotExist": "Sender's account not exist",
+            "networkError": "The service is currently unavailable. Please try again later."
         },
         "zod": {
             "required": "The field is required",
