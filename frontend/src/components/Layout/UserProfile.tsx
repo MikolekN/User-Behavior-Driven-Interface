@@ -2,8 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { Dropdown, Avatar, Checkbox, DarkThemeToggle, useThemeMode, FlowbiteDarkThemeToggleTheme } from "flowbite-react"
 import { Link, useNavigate } from "react-router-dom";
 
-import defaultIcon from '../../assets/images/user.png';
-import defaultIconDark from '../../assets/images/user-dark.png';
 import { UserContext } from '../../context/UserContext';
 import { UserIconContext } from '../../context/UserIconContext';
 import { AuthContext } from "../../context/AuthContext";
@@ -18,7 +16,7 @@ export const UserProfile = () => {
     const { getIcon } = useContext(UserIconContext);
     const { computedMode, toggleMode } = useThemeMode();
 
-    const [iconSrc, setIconSrc] = useState<string>(computedMode == 'dark' ? defaultIconDark : defaultIcon);
+    const [iconSrc, setIconSrc] = useState<string | null>(null);
 
     const handleChangeLanguage = (lang_code: string) => {
         i18n.changeLanguage(lang_code);
@@ -48,7 +46,7 @@ export const UserProfile = () => {
                     URL.revokeObjectURL(iconURL);
                 };
             } else {
-                setIconSrc(computedMode == 'dark' ? defaultIconDark : defaultIcon);
+                setIconSrc(null);
             }
         };
 
@@ -123,8 +121,6 @@ export const UserProfile = () => {
 
     return (
         <div className="flex order-3 md:order-3 space-x-2">
-
-
             {!user && (
                 <>
                     <div className="flex justify-center items-center">
@@ -156,7 +152,9 @@ export const UserProfile = () => {
                     </div>
                     <Dropdown arrowIcon={false} inline placement="bottom"
                         label={
-                            <Avatar alt="User profile icon" img={iconSrc} rounded className='rounded-full hover:bg-gray-200 hover:dark:bg-gray-700 transition ease-in-out duration-300'/>
+                            <svg className="w-10 h-10 text-gray-800 dark:text-gray-400 rounded-full hover:bg-gray-200 hover:dark:bg-gray-700 transition ease-in-out duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="2 2 20 20">
+                                <path fillRule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clipRule="evenodd"/>
+                            </svg>
                         }
                     >
                         <Dropdown.Item onClick={toggleMode} className='bg-transparent text-black font-normal hover:font-semibold hover:text-black px-3'>
@@ -220,7 +218,16 @@ export const UserProfile = () => {
 
                     <Dropdown arrowIcon={false} inline placement="bottom"
                         label={
-                            <Avatar alt="User profile icon" img={iconSrc} rounded className='rounded-full hover:bg-gray-200 hover:dark:bg-gray-700 transition ease-in-out duration-300'/>
+                            <>
+                                {!iconSrc ? (
+                                    <svg className="w-10 h-10 text-gray-800 dark:text-gray-400 rounded-full hover:bg-gray-200 hover:dark:bg-gray-700 transition ease-in-out duration-300"
+                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="2 2 20 20">
+                                        <path fillRule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clipRule="evenodd"/>
+                                    </svg>
+                                ) : (
+                                    <Avatar alt="User profile icon" img={iconSrc || undefined} rounded className="rounded-full hover:bg-gray-200 hover:dark:bg-gray-700 transition ease-in-out duration-300"/>
+                                )}
+                            </>
                         }
                     >
                         <Dropdown.Header className="flex flex-col justify-center items-center">
