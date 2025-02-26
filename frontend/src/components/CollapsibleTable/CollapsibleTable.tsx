@@ -1,8 +1,4 @@
 import React, { useState } from 'react';
-import arrowUp from '../../assets/images/chevron-up.svg';
-import arrowDown from '../../assets/images/chevron-down.svg';
-import arrowUpDark from '../../assets/images/chevron-up-dark.svg';
-import arrowDownDark from '../../assets/images/chevron-down-dark.svg';
 
 interface CollapsibleTableProps<T> {
     headers: string[];
@@ -45,16 +41,14 @@ const CollapsibleTable = <T,>({ headers, rows, renderRow, renderRowDetails, acti
                             >
                                 {renderRow(row, activeIndex, hovering, idx)}
                                 <td className={`px-4 py-2 text-center rounded-tr ${activeIndex !== idx ? 'rounded-br' : ''}  ${hovering === idx && activeIndex !== idx ? 'bg-gray-100 dark:bg-gray-600' : 'bg-gray-50 dark:bg-gray-700'}`}>
-                                    {activeIndex === idx ? 
-                                        <>
-                                            <img src={arrowUp} alt="▼" className='dark:hidden'/>
-                                            <img src={arrowUpDark} alt="▼" className='hidden dark:block'/>
-                                        </>
+                                    {activeIndex === idx ?
+                                        <svg className="w-4 h-4 ms-1 transition-transform duration-300 rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+                                        </svg>
                                         :
-                                        <>
-                                            <img src={arrowDown} alt="▶" className='dark:hidden'/>
-                                            <img src={arrowDownDark} alt="▶" className='hidden dark:block'/>
-                                        </>
+                                        <svg className="w-4 h-4 ms-1 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+                                        </svg>
                                     }
                                 </td>
                             </tr>

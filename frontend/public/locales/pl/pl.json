@@ -7,7 +7,7 @@
                 "transfer": "Wykonaj przelew",
                 "transferHistory": "Historia transakcji",
                 "cyclicPayments": "Płatności cykliczne" ,
-                "loan": "Pożyczki" 
+                "loan": "Pożyczki"
             }
         },
         "analysis": {
@@ -43,6 +43,7 @@
                 "dark": "Ciemny motyw"
             }
         },
+        "language": "Języki",
         "languages": {
             "polish": "Polski",
             "english": "Angielski"
