@@ -6,6 +6,7 @@ from bson import ObjectId
 from flask_login import current_user
 
 from accounts import Account, AccountRepository
+from backend.constants import MONTHS_IN_YEAR
 from transfers import Transfer, TransferRepository
 from users import UserRepository
 
@@ -70,24 +71,25 @@ def accumulate_transactions_income_and_outcome(transfers: list[dict]) -> dict[st
     return accumulated_groups
 
 
-def get_response_monthly(transfers: dict) -> list[dict[str, str | Any] | dict[str, int | str | Any]]:
+def get_response_monthly(transfers: dict, start_month: int, end_month: int) -> list[dict[str, str | Any] | dict[str, int | str | Any]]:
     response = []
 
-    for idx, m in enumerate(months):
-        if str(idx) in transfers:
+    limited_months = months[start_month:end_month+1]
+
+    for idx, m in enumerate(limited_months):
+        if str(idx+start_month) in transfers:
             response.append({
-                'interval': months[idx],
-                'income': transfers[str(idx)]['income'],
-                'outcome': transfers[str(idx)]['outcome']
+                'interval': months[idx+start_month],
+                'income': transfers[str(idx+start_month)]['income'],
+                'outcome': transfers[str(idx+start_month)]['outcome']
             })
         else:
             response.append({
-                'interval': months[idx],
+                'interval': months[idx+start_month],
                 'income': 0,
                 'outcome': 0
             })
 
-    response = response[1:]
     return response
 
 
@@ -135,3 +137,57 @@ def set_missing_years(response: list[dict], start_year: int, end_year: int) -> l
     response.sort(key=lambda x: int(x['interval']))
 
     return response
+
+
+def get_start_month(data: dict) -> int:
+    return int(data['start_month'])
+
+
+def get_end_month(start_month: int, limit: int) -> int:
+    return min(start_month + limit - 1, MONTHS_IN_YEAR)
+
+
+def get_months_range(data: dict) -> tuple[datetime, datetime]:
+    year = data['year']
+    limit = data['limit']
+
+    start_month = get_start_month(data)
+    end_month = get_end_month(start_month, limit)
+
+    start_date = datetime(year=year, month=start_month, day=1)
+    if end_month == MONTHS_IN_YEAR:
+        end_date = datetime(year=year + 1, month=1, day=1)
+    else:
+        end_date = datetime(year=year, month=end_month + 1, day=1)
+
+    return (start_date, end_date)
+
+
+def prepare_monthly_analysis_query(start_date: datetime, end_date: datetime, account: Account) -> dict:
+    query = {
+        '$or': [
+            {'sender_account_number': account.number},
+            {'recipient_account_number': account.number}
+        ],
+        'created': {
+            '$gte': start_date,
+            '$lt': end_date
+        }
+    }
+
+    return query
+
+
+def prepare_yearly_analysis_query(data: dict, account: Account) -> dict:
+    query = {
+        '$or': [
+            {'sender_account_number': account.number},
+            {'recipient_account_number': account.number}
+        ],
+        'created': {
+            '$gte': datetime.fromisoformat(f"{data['start_year']}-12-31T23:59:59"),
+            '$lt': datetime.fromisoformat(f"{data['end_year']}-12-31T23:59:59")
+        }
+    }
+
+    return query
