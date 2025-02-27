@@ -35,7 +35,7 @@ export const ACCOUNT_TYPE_SELECT_OPTIONS = [
     { value: 'youth', key: 'youthAccount' },
     { value: 'student', key: 'studentAccount' },
     { value: 'retirement', key: 'retirementAccount' }
-]
+];
 
 export const LANGUAGES = [
     {
@@ -49,3 +49,17 @@ export const LANGUAGES = [
         image: poland
     }
 ];
+
+export const LIMIT_MONTHS_SELECT_OPTIONS = [
+    { value: '1', key: 'monthly' },
+    { value: '3', key: 'quarterly' },
+    { value: '6', key: 'halfYearly' },
+    { value: '12', key: 'yearly' }
+];
+
+export const YEAR_DISPLAYED_LIMIT: number = 3;
+export const MINIUM_YEAR_IN_YEARLY_ANALYSIS: number = 2020;
+export const YEARLY_ANALYSIS_INTERVAL_REQUEST_PARAMETER: string = 'yearly';
+export const MONTHLY_ANALYSIS_INTERVAL_REQUEST_PARAMETER: string = 'monthly';
+export const MONTHLY_ANALYSIS_DISPLAYED_MONTHS_DEFAULT_LIMIT: number = 3;
+export const DEFAULT_MONTH: number = 1;
