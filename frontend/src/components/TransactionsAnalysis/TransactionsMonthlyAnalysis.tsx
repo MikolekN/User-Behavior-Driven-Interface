@@ -37,6 +37,7 @@ const TransactionsMonthlyAnalysis = () => {
   
     const handleLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setLimit(parseInt(e.target.value));
+        setStartMonth(DEFAULT_MONTH);
     };
 
     const getMonthlyAnalysisRequestBody = (year: number, startMonth: number, limit: number) => {
@@ -81,18 +82,16 @@ const TransactionsMonthlyAnalysis = () => {
 
             <div className="hidden md:block">
                 <div className="w-full flex items-center justify-between">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-x-6">
                         <FormSelect
                             label={t('transactionsMonthlyAnalysis.yearSelectLabel')}
                             options={YEAR_SELECT_OPTIONS}
-                            className="mx-1"
                             onChange={handleYearChange}
                             defaultValue={year.toString()}
                         />
                         <FormSelect 
                             label={t('transactionsMonthlyAnalysis.limitSelectLabel')}
                             options={LIMIT_MONTHS_SELECT_OPTIONS}
-                            className="mx-1"
                             onChange={handleLimitChange}
                             defaultValue={limit.toString()}
                         />
