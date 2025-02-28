@@ -63,3 +63,4 @@ export const YEARLY_ANALYSIS_INTERVAL_REQUEST_PARAMETER: string = 'yearly';
 export const MONTHLY_ANALYSIS_INTERVAL_REQUEST_PARAMETER: string = 'monthly';
 export const MONTHLY_ANALYSIS_DISPLAYED_MONTHS_DEFAULT_LIMIT: number = 3;
 export const DEFAULT_MONTH: number = 1;
+export const MONTHS_IN_YEAR: number = 12;

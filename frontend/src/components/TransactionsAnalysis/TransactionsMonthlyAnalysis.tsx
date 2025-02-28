@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import ChartLoadingSkeleton from '../Loading/ChartLoadingSkeleton';
 import Button from '../utils/Button';
 import FormSelect from '../FormSelect/FormSelect';
-import { DEFAULT_MONTH, LIMIT_MONTHS_SELECT_OPTIONS, MINIUM_YEAR_IN_YEARLY_ANALYSIS, MONTHLY_ANALYSIS_DISPLAYED_MONTHS_DEFAULT_LIMIT, MONTHLY_ANALYSIS_INTERVAL_REQUEST_PARAMETER } from '../../pages/constants';
+import { DEFAULT_MONTH, LIMIT_MONTHS_SELECT_OPTIONS, MINIUM_YEAR_IN_YEARLY_ANALYSIS, MONTHLY_ANALYSIS_DISPLAYED_MONTHS_DEFAULT_LIMIT, MONTHLY_ANALYSIS_INTERVAL_REQUEST_PARAMETER, MONTHS_IN_YEAR } from '../../pages/constants';
 
 const ANALYSIS_INTERVAL: string = MONTHLY_ANALYSIS_INTERVAL_REQUEST_PARAMETER;
 const CURRENT_YEAR = new Date().getFullYear();
@@ -96,18 +96,20 @@ const TransactionsMonthlyAnalysis = () => {
                             defaultValue={limit.toString()}
                         />
                     </div>
-                    <div>
-                        <Button onClick={() => setStartMonth(startMonth - 1)} disabled={startMonth === 1} className="bg-transparent hover:bg-transparent cursor-pointer focus:ring-transparent mr-2">
-                            <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7"/>
-                            </svg>
-                        </Button>
-                        <Button onClick={() => setStartMonth(startMonth + 1)} disabled={startMonth + limit > 12} className="bg-transparent hover:bg-transparent cursor-pointer focus:ring-transparent">
-                            <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7"/>
-                            </svg>
-                        </Button>
-                    </div>
+                    {limit !== MONTHS_IN_YEAR && 
+                        <div>
+                            <Button onClick={() => setStartMonth(startMonth - 1)} disabled={startMonth === 1} className="bg-transparent hover:bg-transparent cursor-pointer focus:ring-transparent mr-2">
+                                <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7"/>
+                                </svg>
+                            </Button>
+                            <Button onClick={() => setStartMonth(startMonth + 1)} disabled={startMonth + limit > 12} className="bg-transparent hover:bg-transparent cursor-pointer focus:ring-transparent">
+                                <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7"/>
+                                </svg>
+                            </Button>
+                        </div>
+                    }
                 </div>
             </div>
             <div className="md:hidden">
