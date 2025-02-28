@@ -2,6 +2,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any, Optional
 
+from backend.constants import AVAILABLE_MONTH_LIMITS, MONTHS_IN_YEAR
 from request_dto import BaseRequestDto
 
 
@@ -17,7 +18,13 @@ class MonthlyAnalysisRequestDto(BaseRequestDto):
         if error:
             return error
         
-        if int(data['limit']) not in [1, 3, 6, 12]:
+        if data['limit'] not in AVAILABLE_MONTH_LIMITS:
             return 'invalidMonthlyAnalysisLimit'
+        
+        if data['start_month'] > MONTHS_IN_YEAR:
+            return 'tooBigStartMonthValue'
+        
+        if data['start_month'] + data['limit'] - 1 > MONTHS_IN_YEAR:
+            return 'startMonthAndLimitExceedsYear'
 
         return None
