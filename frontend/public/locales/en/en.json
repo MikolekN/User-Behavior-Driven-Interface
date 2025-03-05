@@ -212,7 +212,9 @@
         "tile": {
             "title": "Transactions monthly analysis"
         },
-        "emptyAlertInfo": "No transactions history to generate analysis yet"
+        "emptyAlertInfo": "No transactions history to generate analysis yet",
+        "yearSelectLabel": "Select year",
+        "limitSelectLabel": "Select months range"
     },
     "transactionsYearlyAnalysis": {
         "tile": {
@@ -335,7 +337,11 @@
         "businessAccount": "Business account",
         "youthAccount": "Youth account",
         "studentAccount": "Student account",
-        "retirementAccount": "Retirement account"
+        "retirementAccount": "Retirement account",
+        "monthly": "Monthly",
+        "quarterly": "Quarterly",
+        "halfYearly": "Half-yearly",
+        "yearly": "Yearly"
     },
     "errors": {
         "api": {
@@ -410,7 +416,8 @@
             "accountDeleteSucessful": "Account deleted successfully",
             "acountsNotExist": "Accounts list is empty",
             "accountDontHaveEnoughMoney": "Not enough money in active account",
-            "senderAccountNotExist": "Sender's account not exist"
+            "senderAccountNotExist": "Sender's account not exist",
+            "invalidMonthlyAnalysisLimit": "Incorrect month range passed for monthly analysis"
         },
         "zod": {
             "required": "The field is required",

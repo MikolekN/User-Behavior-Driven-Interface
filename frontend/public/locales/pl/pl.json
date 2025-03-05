@@ -212,7 +212,9 @@
         "tile": {
             "title": "Miesięczna analiza transakcji"
         },
-        "emptyAlertInfo": "Brak historii transakcji aby wygenerować analizę"
+        "emptyAlertInfo": "Brak historii transakcji aby wygenerować analizę",
+        "yearSelectLabel": "Wybierz rok",
+        "limitSelectLabel": "Wybierz zakres miesięcy"
     },
     "transactionsYearlyAnalysis": {
         "tile": {
@@ -336,7 +338,11 @@
         "businessAccount": "biznesowe",
         "youthAccount": "młodzieżowe",
         "studentAccount": "studenckie",
-        "retirementAccount": "emerytalne"
+        "retirementAccount": "emerytalne",
+        "monthly": "Miesięcznie",
+        "quarterly": "Kwartalnie",
+        "halfYearly": "Półrocznie",
+        "yearly": "Rocznie"
     },
     "errors": {
         "api": {
@@ -411,7 +417,8 @@
             "accountDeleteSucessful": "Konto usunięte pomyślnie",
             "accountsNotExist": "Lista kont jest pusta",
             "accountDontHaveEnoughMoney": "Brak wystarczających środków na aktywnym koncie",
-            "senderAccountNotExist": "Konto odbiorcy nie istnieje"
+            "senderAccountNotExist": "Konto odbiorcy nie istnieje",
+            "invalidMonthlyAnalysisLimit": "Przekazano niepoprawny zakres miesięcy do analizy miesięcznej"
         },
         "zod": {
             "required": "Pole jest wymagane",

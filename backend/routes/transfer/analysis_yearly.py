@@ -8,7 +8,7 @@ from flask_login import login_required, current_user
 
 from accounts import Account, AccountRepository
 from routes.helpers import create_simple_response
-from routes.transfer.helpers import serialize_transfers, \
+from routes.transfer.helpers import prepare_yearly_analysis_query, serialize_transfers, \
     set_missing_years, format_transfers_date, get_year_from_datetime, format_grouped_transfers, \
     accumulate_transactions_income_and_outcome, get_response_yearly
 from transfers import TransferRepository
@@ -40,22 +40,13 @@ def get_all_user_transfers_yearly() -> Response:
     if not account:
         return create_simple_response("accountNotExist", HTTPStatus.NOT_FOUND)
 
-    start_date = f"{data['start_year']}-01-01T00:00:00"
-    end_date = f"{data['end_year']}-12-31T23:59:59"
-    query = {
-        '$or': [
-            {'sender_account_number': account.number},
-            {'recipient_account_number': account.number}
-        ],
-        'created': {
-            '$gte': datetime.fromisoformat(start_date),
-            '$lt': datetime.fromisoformat(end_date)
-        }
-    }
+    query = prepare_yearly_analysis_query(data, account)
 
     transfers = transfer_repository.find_transfers(query)
     if not transfers:
-        return create_simple_response("yearlyAnalysisEmpty", HTTPStatus.NOT_FOUND)
+        response = set_missing_years([], int(data['start_year']),
+                                 int(data['end_year']))
+        return AnalysisResponse.create_response("monthlyAnalysisSuccessful", response, HTTPStatus.OK)
 
     serialized_transfers = serialize_transfers(transfers, account)
     response = set_missing_years(get_transfers_analysis_yearly(serialized_transfers), int(data['start_year']),
