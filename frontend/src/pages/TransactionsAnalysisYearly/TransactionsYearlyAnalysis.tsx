@@ -7,6 +7,13 @@ import { TransferContext } from '../../context/TransferContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { useTranslation } from 'react-i18next';
 import ChartLoadingSkeleton from '../../components/Loading/ChartLoadingSkeleton';
+import Button from '../../components/utils/Button';
+import { MINIUM_YEAR_IN_YEARLY_ANALYSIS, YEAR_DISPLAYED_LIMIT, YEARLY_ANALYSIS_INTERVAL_REQUEST_PARAMETER } from '../../pages/constants';
+
+const LIMIT: number = YEAR_DISPLAYED_LIMIT;
+const MIN_YEAR: number = MINIUM_YEAR_IN_YEARLY_ANALYSIS;
+const ANALYSIS_INTERVAL: string = YEARLY_ANALYSIS_INTERVAL_REQUEST_PARAMETER;
+const CURRENT_YEAR: number = new Date().getFullYear();
 
 const TransactionsYearlyAnalysis = () => {
     const { t } = useTranslation();
