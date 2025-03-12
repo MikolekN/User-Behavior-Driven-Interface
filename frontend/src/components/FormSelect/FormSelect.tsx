@@ -3,6 +3,7 @@ import { ChangeEvent, ReactNode } from 'react';
 import Label from '../utils/Label';
 import ErrorMessage from '../utils/ErrorMessage';
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 interface Option {
     value: string;
@@ -38,7 +39,9 @@ const FormSelect = ({ label, options, register, error, defaultValue, defaultOpti
                 }
                 {options.map((option) => (
                     <option key={option.value} value={option.value}>
-                        {t(`formSelect.${option.key}`)}
+                        {i18n.exists(`formSelect.${option.key}`)
+                        ? t(`formSelect.${option.key}`)
+                        : option.key}
                     </option>
                 ))}
             </select>
