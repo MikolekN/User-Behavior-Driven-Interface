@@ -7,8 +7,8 @@ from request_dto import BaseRequestDto
 
 @dataclass
 class YearlyAnalysisRequestDto(BaseRequestDto):
-    start_year: int
-    end_year: int
+    start_year: str
+    end_year: str
 
     @staticmethod
     def validate_request(data: Mapping[str, Any]) -> Optional[str]:

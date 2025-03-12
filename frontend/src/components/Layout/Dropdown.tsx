@@ -23,7 +23,13 @@ export const Dropdown: React.FC<DropdownProps> = ({ menu, isOpen, onClick, close
             >
                 <span className="flex items-center font-normal hover:font-semibold md:hover:dark:text-white">
                     {t('menu.' + menu.key + '.title')}
-                    <svg className="w-2.5 h-2.5 ms-1 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6" style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(360deg)' }}>
+                    <svg
+                        className="w-2.5 h-2.5 ms-1 transition-transform duration-300"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 10 6"
+                        style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(360deg)' }}
+                    >
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
                     </svg>
                 </span>
@@ -36,7 +42,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ menu, isOpen, onClick, close
                     ease-in-out
                     transform
                     overflow-hidden
-                    ${isOpen ? 'max-h-[500px]' : 'max-h-0'}
+                    ${isOpen ? 'max-h-[500px] visibility-visible md:border' : 'max-h-0 visibility-hidden'}
                     left-0
                     md:left-1/2
                     md:-translate-x-1/2

@@ -43,7 +43,6 @@
                 "dark": "Dark theme"
             }
         },
-        "language": "Languages",
         "languages": {
             "polish": "Polish",
             "english": "English"
@@ -215,9 +214,7 @@
         "tile": {
             "title": "Transactions monthly analysis"
         },
-        "emptyAlertInfo": "No transactions history to generate analysis yet",
-        "yearSelectLabel": "Select year",
-        "limitSelectLabel": "Select months range"
+        "emptyAlertInfo": "No transactions history to generate analysis yet"
     },
     "transactionsYearlyAnalysis": {
         "tile": {
@@ -340,11 +337,7 @@
         "businessAccount": "Business account",
         "youthAccount": "Youth account",
         "studentAccount": "Student account",
-        "retirementAccount": "Retirement account",
-        "monthly": "Monthly",
-        "quarterly": "Quarterly",
-        "halfYearly": "Half-yearly",
-        "yearly": "Yearly"
+        "retirementAccount": "Retirement account"
     },
     "errors": {
         "api": {
@@ -420,8 +413,7 @@
             "acountsNotExist": "Accounts list is empty",
             "accountDontHaveEnoughMoney": "Not enough money in active account",
             "senderAccountNotExist": "Sender's account not exist",
-            "networkError": "The service is currently unavailable. Please try again later.",
-            "invalidMonthlyAnalysisLimit": "Incorrect month range passed for monthly analysis"
+            "networkError": "The service is currently unavailable. Please try again later."
         },
         "zod": {
             "required": "The field is required",

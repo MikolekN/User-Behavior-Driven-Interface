@@ -111,7 +111,7 @@ const AccountForm = () => {
                         { apiError.isError &&
                             <ErrorAlert alertMessage={apiError.errorMessage} />
                         }
-                    </div>components/AccountForm/AccountForm.tsx
+                    </div>
                     <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <FormInput
                             label={t('accountForm.accountName')}
