@@ -2,13 +2,27 @@ import { Link } from 'react-router-dom';
 import Tile from '../../components/Tile/Tile';
 import Button from '../../components/utils/Button';
 import { useTranslation } from 'react-i18next';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AccountContext } from '../../context/AccountContext';
 import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
+import { UserContext } from '../../context/UserContext';
 
 const Dashboard = () => {
     const { t } = useTranslation();
-    const { activeAccount } = useContext(AccountContext);
+    const { activeAccount, setAccount, getActiveAccount } = useContext(AccountContext);
+    const { getUser } = useContext(UserContext);
+
+    useEffect(() => {
+        const getUserActiveAccount = async () => {
+            try {
+                await getActiveAccount();
+            } catch {
+                setAccount(null);
+            }
+        }
+
+        getUserActiveAccount();
+    }, [getUser, getActiveAccount]);
 
     return (
         activeAccount === null ? (
