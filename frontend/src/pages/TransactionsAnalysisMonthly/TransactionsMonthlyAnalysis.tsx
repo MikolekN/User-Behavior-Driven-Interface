@@ -6,9 +6,9 @@ import EmptyResponseInfoAlert from '../../components/EmptyResponseInfoAlert/Empt
 import { TransferContext } from '../../context/TransferContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { useTranslation } from 'react-i18next';
-import ChartLoadingSkeleton from '../../components/Loading/ChartLoadingSkeleton';
-import FormSelect from '../../components/FormSelect/FormSelect';
-import Button from '../../components/utils/Button';
+import ChartLoadingSkeleton from '../Loading/ChartLoadingSkeleton';
+import Button from '../utils/Button';
+import FormSelect from '../FormSelect/FormSelect';
 import { DEFAULT_MONTH, LIMIT_MONTHS_SELECT_OPTIONS, MINIUM_YEAR_IN_YEARLY_ANALYSIS, MONTHLY_ANALYSIS_DISPLAYED_MONTHS_DEFAULT_LIMIT, MONTHLY_ANALYSIS_INTERVAL_REQUEST_PARAMETER, MONTHS_IN_YEAR } from '../../pages/constants';
 
 const ANALYSIS_INTERVAL: string = MONTHLY_ANALYSIS_INTERVAL_REQUEST_PARAMETER;
