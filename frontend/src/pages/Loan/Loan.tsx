@@ -40,7 +40,7 @@ const Loan = () => {
     const { t } = useTranslation();
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { user, getUser } = useContext(UserContext)
-    const { account } = useContext(AccountContext);
+    const { activeAccount } = useContext(AccountContext);
     const { createLoan } = useContext(TransferContext);
     const [ sliderValue, setSliderValue ] = useState<number | null>(null);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -79,7 +79,7 @@ const Loan = () => {
             navigate('/dashboard');
         } catch (error) {
             handleError(error);
-            scrollToTop('loan-form-wrapper');
+            scrollToTop();
         }
     };
 
@@ -89,7 +89,7 @@ const Loan = () => {
         setValue('amount', newValue.toString());
     };
 
-    if (account === null) {
+    if (activeAccount === null) {
         return (
             <div id="loan-form-wrapper" className="flex items-center justify-center">
                 <ActiveAccountError />
@@ -100,12 +100,12 @@ const Loan = () => {
         <Tile title={t('loan.tile.title')}>
             <div className="flex items-center justify-center">
                 <div className="max-w-md w-full mx-auto px-1">
-                    { apiError.isError &&
-                        <div className="my-4">
+                    <div id="form-error-alert">
+                        { apiError.isError &&
                             <ErrorAlert alertMessage={apiError.errorMessage} />
-                        </div>
-                    }
-                    <AccountDetails label={t('loan.fromAccount')} account={account!} className='w-full p-3 mb-6' />
+                        }
+                    </div>
+                    <AccountDetails label={t('loan.fromAccount')} account={activeAccount!} className='w-full p-3 mb-6' />
                     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <FormInput
                             label={t('loan.howMuchMoney')}
@@ -114,7 +114,7 @@ const Loan = () => {
                             error={errors.amount}
                             className="w-10/12"
                         >
-                            {account!.currency}
+                            {activeAccount!.currency}
                         </FormInput>
                         <div>
                             <RangeSlider

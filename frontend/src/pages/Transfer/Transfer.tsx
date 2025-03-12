@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import Tile from '../../components/Tile/Tile';
@@ -21,7 +21,7 @@ const Transfer = () => {
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { getUser } = useContext(UserContext);
     const { createTransfer } = useContext(TransferContext);
-    const { account } = useContext(AccountContext);
+    const { activeAccount } = useContext(AccountContext);
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<TransferFormData>({
         resolver: zodResolver(TransferFormDataSchema),
         defaultValues: {
@@ -33,13 +33,11 @@ const Transfer = () => {
     });
     const navigate = useNavigate();
 
-    const getTransferRequestBody = (data: TransferFormData) => {
-        return {
-            recipient_account_number: data.recipientAccountNumber,
-            title: data.transferTitle,
-            amount: data.amount
-        }
-    }
+    const getTransferRequestBody = useCallback((data: TransferFormData) => ({
+        recipient_account_number: data.recipientAccountNumber,
+        title: data.transferTitle,
+        amount: data.amount,
+    }), []);
 
     const onSubmit: SubmitHandler<TransferFormData> = async (data: TransferFormData) => {
         clearApiError();
@@ -50,11 +48,11 @@ const Transfer = () => {
             navigate('/dashboard');
         } catch (error) {
             handleError(error);
-            scrollToTop('transfer-form-wrapper');
+            scrollToTop();
         }
     };
 
-    if (account === null) {
+    if (activeAccount === null) {
         return (
             <div id="transfer-wrapper" className="flex items-center justify-center">
                 <ActiveAccountError />
@@ -66,12 +64,12 @@ const Transfer = () => {
         <Tile id="transfer" title={t('transfer.tile.title')}>
             <div className="flex items-center justify-center">
                 <div className="max-w-md w-full mx-auto">
-                    { apiError.isError &&
-                        <div className="my-4">
+                    <div id="form-error-alert">
+                        { apiError.isError &&
                             <ErrorAlert alertMessage={apiError.errorMessage} />
-                        </div>
-                    }
-                    <AccountDetails label={t('transfer.fromAccount')} account={account!} className='w-full p-3 mb-6' />
+                        }
+                    </div>
+                    <AccountDetails label={t('transfer.fromAccount')} account={activeAccount!} className='w-full p-3 mb-6' />
                     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <FormInput
                             label={t('transfer.recipientAccountNumber')}
@@ -94,7 +92,7 @@ const Transfer = () => {
                             error={errors.amount}
                             className="w-10/12"
                         >
-                            {account!.currency}
+                            {activeAccount!.currency}
                         </FormInput>
                         <div>
                             <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">

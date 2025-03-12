@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import CardList from '../../components/CardList/CardList';
 import { useTranslation } from 'react-i18next';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
@@ -17,7 +17,7 @@ const Cards = () => {
     const { apiError, handleError } = useApiErrorHandler();
     const [loading, setLoading] = useState(true);
     const { user } = useContext(UserContext);
-    const { account } = useContext(AccountContext);
+    const { activeAccount } = useContext(AccountContext);
     const { cards, getCards } = useContext(CardContext);
 
 
@@ -39,7 +39,7 @@ const Cards = () => {
 
     if (loading) return <DefaultLoadingSkeleton />;
 
-    if (account === null) {
+    if (activeAccount === null) {
         return (
             <div id="cards-wrapper" className="flex items-center justify-center">
                 <ActiveAccountError />

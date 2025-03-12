@@ -17,14 +17,19 @@ const defaultContextValue: AuthContextProps = {
 
 export const AuthContext = createContext<AuthContextProps>(defaultContextValue);
 
-// eslint-disable-next-line react/prop-types
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const { setUser, setLoading } = useContext(UserContext);
-    const { setAccount } = useContext(AccountContext);
+    const { setUser, setLoading, getUser } = useContext(UserContext);
+    const { setAccount, getActiveAccount } = useContext(AccountContext);
 
     const login = useCallback(async (email: string, password: string): Promise<void> => {
+        setLoading(true);
+
         await loginUser(email, password);
-    }, [setUser]);
+        await getUser();
+        await getActiveAccount();
+
+        setLoading(false);
+    }, [setLoading, setUser]);
 
     const register = useCallback(async (email: string, password: string): Promise<void> => {
         await registerUser(email, password);
@@ -33,13 +38,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const logout = useCallback(async (): Promise<void> => {
         setLoading(true);
 
-        await logoutUser()
-            .finally(() => {
-                setAccount(null);
-                setUser(null);
-                setLoading(false);
-            });
-  
+        await logoutUser();
+        setAccount(null);
+        setUser(null);
+
+        setLoading(false);
     }, [setLoading, setUser, setAccount]);
 
     const authContextValue = useMemo(() => ({

@@ -38,7 +38,7 @@ const Register = () => {
             navigate('/login');
         } catch (error) {
             handleError(error);
-            scrollToTop('register-form-wrapper');
+            scrollToTop();
         }
     };
 
@@ -46,11 +46,11 @@ const Register = () => {
         <Tile id='register' title={t('register.tile.title')}>
             <div className="flex items-center justify-center">
                 <div className="max-w-md w-full mx-auto">
-                    { apiError.isError &&
-                        <div className="my-4">
+                    <div id="form-error-alert">
+                        { apiError.isError &&
                             <ErrorAlert alertMessage={apiError.errorMessage} />
-                        </div>
-                    }
+                        }
+                    </div>
                     <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <FormInput
                             label={t('register.email')}

@@ -8,23 +8,24 @@ import Transfer from '../pages/Transfer/Transfer';
 import Chat from '../pages/Chat/Chat';
 import FAQ from '../pages/FAQ/FAQ';
 import Info from '../pages/Info/Info';
-import TransactionsHistory from '../components/TransactionsHistory/TransactionsHistory';
-import TransactionsMonthlyAnalysis from '../components/TransactionsAnalysis/TransactionsMonthlyAnalysis';
-import TransactionsYearlyAnalysis from '../components/TransactionsAnalysis/TransactionsYearlyAnalysis';
-import CyclicPaymentsForm from '../components/CyclicPaymentForm/CyclicPaymentForm';
+import TransactionsHistory from '../pages/TransactionsHistory/TransactionsHistory';
+import TransactionsMonthlyAnalysis from '../pages/TransactionsAnalysisMonthly/TransactionsMonthlyAnalysis';
+import TransactionsYearlyAnalysis from '../pages/TransactionsAnalysisYearly/TransactionsYearlyAnalysis';
+import CyclicPaymentsForm from '../pages/CyclicPayment/CyclicPaymentForm';
 import CyclicPayments from '../pages/CyclicPayments/CyclicPayments';
 import Profile from '../pages/Profile/Profile';
 import Loan from '../pages/Loan/Loan';
 import PageNotFound from '../pages/PageNotFound/PageNotFound';
 import PrivateRoute from './PrivateRoute';
 import Accounts from '../pages/Accounts/Accounts';
-import AccountForm from '../components/AccountForm/AccountForm';
+import AccountForm from '../pages/Account/AccountForm';
 import Cards from '../pages/Cards/Cards';
-import CardForm from '../components/CardForm/CardForm';
+import CardForm from '../pages/Card/CardForm';
+
 
 export const router = createBrowserRouter([
     {
-        path: '/', 
+        path: '/',
         element: <App />,
         children: [
             // public routes

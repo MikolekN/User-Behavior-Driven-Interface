@@ -9,7 +9,6 @@ import CollapsibleList from '../CollapsibleList/CollapsibleList';
 import { UserContext } from '../../context/UserContext';
 import { AccountContext } from '../../context/AccountContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
-import { setActiveAccountData } from '../../services/accountService';
 import { FaCheck } from "react-icons/fa6";
 
 interface AccountsListProps {
@@ -20,7 +19,7 @@ const AccountsList = ({ accountsList }: AccountsListProps) => {
     const { t } = useTranslation();
     const { user, getUser } = useContext(UserContext);
     const { deleteAccount } = useContext(AccountContext);
-    const { getActiveAccount } = useContext(AccountContext);
+    const { getActiveAccount, fetchActiveAccount } = useContext(AccountContext);
     const { handleError } = useApiErrorHandler();
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [accounts, setAccounts] = useState<Account[]>([]);
@@ -43,7 +42,7 @@ const AccountsList = ({ accountsList }: AccountsListProps) => {
     const handleSetActive = (accountNumber: string) => {
         const setActiveAccount = async () => {
             try {
-                await setActiveAccountData(accountNumber);
+                await fetchActiveAccount(accountNumber);
                 await getUser();
             } catch (error) {
                 handleError(error);

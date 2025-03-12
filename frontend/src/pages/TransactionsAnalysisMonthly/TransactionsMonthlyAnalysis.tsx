@@ -1,14 +1,14 @@
 import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
-import Tile from '../Tile/Tile';
-import TransfersAnalysisChart from '../TransfersAnalysisChart/TransfersAnalysisChart';
-import EmptyResponseInfoAlert from '../EmptyResponseInfoAlert/EmptyResponseInfoAlert';
+import Tile from '../../components/Tile/Tile';
+import TransfersAnalysisChart from '../../components/TransfersAnalysisChart/TransfersAnalysisChart';
+import EmptyResponseInfoAlert from '../../components/EmptyResponseInfoAlert/EmptyResponseInfoAlert';
 import { TransferContext } from '../../context/TransferContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { useTranslation } from 'react-i18next';
-import ChartLoadingSkeleton from '../Loading/ChartLoadingSkeleton';
-import Button from '../utils/Button';
-import FormSelect from '../FormSelect/FormSelect';
+import ChartLoadingSkeleton from '../../components/Loading/ChartLoadingSkeleton';
+import FormSelect from '../../components/FormSelect/FormSelect';
+import Button from '../../components/utils/Button';
 import { DEFAULT_MONTH, LIMIT_MONTHS_SELECT_OPTIONS, MINIUM_YEAR_IN_YEARLY_ANALYSIS, MONTHLY_ANALYSIS_DISPLAYED_MONTHS_DEFAULT_LIMIT, MONTHLY_ANALYSIS_INTERVAL_REQUEST_PARAMETER, MONTHS_IN_YEAR } from '../../pages/constants';
 
 const ANALYSIS_INTERVAL: string = MONTHLY_ANALYSIS_INTERVAL_REQUEST_PARAMETER;
@@ -34,7 +34,7 @@ const TransactionsMonthlyAnalysis = () => {
     const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setYear(parseInt(e.target.value));
     };
-  
+
     const handleLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setLimit(parseInt(e.target.value));
         setStartMonth(DEFAULT_MONTH);
@@ -89,14 +89,14 @@ const TransactionsMonthlyAnalysis = () => {
                             onChange={handleYearChange}
                             defaultValue={year.toString()}
                         />
-                        <FormSelect 
+                        <FormSelect
                             label={t('transactionsMonthlyAnalysis.limitSelectLabel')}
                             options={LIMIT_MONTHS_SELECT_OPTIONS}
                             onChange={handleLimitChange}
                             defaultValue={limit.toString()}
                         />
                     </div>
-                    {limit !== MONTHS_IN_YEAR && 
+                    {limit !== MONTHS_IN_YEAR &&
                         <div>
                             <Button onClick={() => setStartMonth(startMonth - 1)} disabled={startMonth === 1} className="bg-transparent hover:bg-transparent cursor-pointer focus:ring-transparent mr-2">
                                 <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -121,7 +121,7 @@ const TransactionsMonthlyAnalysis = () => {
                             onChange={handleYearChange}
                             defaultValue={year.toString()}
                         />
-                        <FormSelect 
+                        <FormSelect
                             label={t('transactionsMonthlyAnalysis.limitSelectLabel')}
                             options={LIMIT_MONTHS_SELECT_OPTIONS}
                             className="w-full"
@@ -142,7 +142,7 @@ const TransactionsMonthlyAnalysis = () => {
                         </Button>
                     </div>
             </div>
-            
+
             <TransfersAnalysisChart chartData={chartData} truncateText={true}/>
         </Tile>
     );

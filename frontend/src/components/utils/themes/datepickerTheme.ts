@@ -18,28 +18,28 @@ export const datepickerTheme: CustomFlowbiteTheme = {
             days: {
                 items: {
                     item: {
-                        selected: "bg-blue-700 text-white hover:bg-blue-600",
+                        selected: "bg-blue-700 text-white hover:bg-blue-600 dark:bg-slate-900 dark:hover:bg-slate-800",
                     },
                 },
             },
             months: {
                 items: {
                     item: {
-                        selected: "bg-blue-700 text-white hover:bg-blue-600",
+                        selected: "bg-blue-700 text-white hover:bg-blue-600 dark:bg-slate-900 dark:hover:bg-slate-800",
                     },
                 },
             },
             years: {
                 items: {
                     item: {
-                        selected: "bg-blue-700 text-white hover:bg-blue-600",
+                        selected: "bg-blue-700 text-white hover:bg-blue-600 dark:bg-slate-900 dark:hover:bg-slate-800",
                     },
                 },
             },
             decades: {
                 items: {
                     item: {
-                        selected: "bg-blue-700 text-white hover:bg-blue-600",
+                        selected: "bg-blue-700 text-white hover:bg-blue-600 dark:bg-slate-900 dark:hover:bg-slate-800",
                     },
                 },
             },

@@ -12,15 +12,16 @@ function useApiErrorHandler() {
             isError: false,
             errorMessage: ''
         });
+        setErrorMessage('');
     };
 
     const handleError = (error: unknown) => {
         if (isZodError(error)) {
             setErrorMessage(`${t('errors.zod.zodApiError')}`);
+        } else if (error instanceof Error && error.message.includes("NetworkError")) {
+            setErrorMessage(`${t('errors.api.networkError')}`);
         } else {
-            const errorSplit: string[] = (error as Error).message.split(";");
-            const errorKey: string = errorSplit[0];
-            const params: string = errorSplit[1] || "";
+            const [errorKey, params = ""] = (error as Error).message.split(";");
             setErrorMessage(`${t(`errors.api.${errorKey}`)} ${params}` || `${t('errors.api.unknownError')}`);
         }
     };

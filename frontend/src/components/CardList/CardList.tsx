@@ -22,7 +22,7 @@ const CardList = ({ cardList }: CardListProps) => {
     const { t } = useTranslation();
     const { getUser } = useContext(UserContext);
     const { deleteCard } = useContext(CardContext);
-    const { account } = useContext(AccountContext);
+    const { activeAccount } = useContext(AccountContext);
     const { handleError } = useApiErrorHandler();
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [cards, setCards] = useState<Card[]>([]);
@@ -81,7 +81,7 @@ const CardList = ({ cardList }: CardListProps) => {
                         <div className="flex flex-col items-center space-y-4 p-4 mt-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600">
                             <div className="flex w-full justify-evenly gap-1">
                                 <div>
-                                    <AccountDetails label={t('cardList.cardAccount')} account={account!} className='w-fit pl-4 p-3' />
+                                    <AccountDetails label={t('cardList.cardAccount')} account={activeAccount!} className='w-fit pl-4 p-3' />
                                 </div>
                                 <div>
                                     <Cards
@@ -116,7 +116,7 @@ const CardList = ({ cardList }: CardListProps) => {
                         <div className="flex flex-col items-center space-y-4 p-2 mt-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600">
                             <div className="flex w-full justify-center">
                                 <div>
-                                    <AccountDetails label={t('cardList.cardAccount')} account={account!} className='w-fit pl-4 p-3' />
+                                    <AccountDetails label={t('cardList.cardAccount')} account={activeAccount!} className='w-fit pl-4 p-3' />
                                     <Cards
                                         number={card.number}
                                         expiry={card.validThru}

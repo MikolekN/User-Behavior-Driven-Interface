@@ -1,6 +1,5 @@
 import { useState, FC } from 'react';
 import Tile from '../../components/Tile/Tile';
-import './FAQ.css';
 import { FAQData } from './FAQData';
 import { useTranslation } from 'react-i18next';
 
@@ -14,11 +13,11 @@ const FAQItem: FC<FAQItemProps> = ({ itemKey, isActive, onClick }) => {
     const { t } = useTranslation();
 
     return (
-        <div className='faq-item'>
-            <div className="faq-question" onClick={onClick}>
+        <div className='rounded-lg mb-2 border border-solid border-gray-300 dark:border-gray-800 transition-all duration-300 ease-in-out'>
+            <div className={`rounded-t-md ${isActive ? '' : 'rounded-b-md'} p-2 bg-gray-50 dark:bg-gray-800 cursor-pointer font-bold transition-colors duration-200 ease-in hover:bg-gray-100 dark:hover:bg-gray-700`} onClick={onClick}>
                 {t(`faq.${itemKey}.question`)}
             </div>
-            {isActive && <div className="faq-answer">{t(`faq.${itemKey}.answer`)}</div>}
+            {isActive && <div className="rounded-b-md p-3 bg-white dark:bg-gray-800">{t(`faq.${itemKey}.answer`)}</div>}
         </div>
     );
 };
@@ -32,7 +31,7 @@ const FAQ: FC = () => {
     };
 
     return (
-        <Tile title={t('faq.tile.title')} className="faq-tile">
+        <Tile id="faq" title={t('faq.tile.title')}>
             <div className="md:p-6">
                 {FAQData.map((item, index) => (
                     <FAQItem

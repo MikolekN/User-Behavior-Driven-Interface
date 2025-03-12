@@ -20,7 +20,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
     const { t } = useTranslation();
     const { getUser } = useContext(UserContext);
     const { deleteCyclicPayment } = useContext(CyclicPaymentContext);
-    const { account } = useContext(AccountContext);
+    const { activeAccount } = useContext(AccountContext);
     const { handleError } = useApiErrorHandler();
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [cyclicPayments, setCyclicPayments] = useState<CyclicPayment[]>([]);
@@ -103,7 +103,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                             <i>{cyclicPayment.recipientAccountNumber}</i>
                                         </div>
                                     </div>
-                                    <AccountDetails label={t('cyclicPaymentList.fromAccount')} account={account!} className='w-max pl-4 p-3' />
+                                    <AccountDetails label={t('cyclicPaymentList.fromAccount')} account={activeAccount!} className='w-max pl-4 p-3' />
                                     <div className="mb-4">
                                         <Label label={t('cyclicPaymentList.title')}/>
                                         <div className="pl-4 dark:text-gray-300">
@@ -115,7 +115,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                     <div className="mb-4">
                                         <Label label={t('cyclicPaymentList.amount')}/>
                                         <div className="pl-4 dark:text-gray-300">
-                                            <i>{cyclicPayment.amount} {account?.currency}</i>
+                                            <i>{cyclicPayment.amount} {activeAccount?.currency}</i>
                                         </div>
                                     </div>
                                     <div className="mb-4">
@@ -167,7 +167,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                         <i>{cyclicPayment.recipientAccountNumber}</i>
                                     </div>
                                 </div>
-                                <AccountDetails label={t('cyclicPaymentList.fromAccount')} account={account!} className='w-fit pl-4 p-3' />
+                                <AccountDetails label={t('cyclicPaymentList.fromAccount')} account={activeAccount!} className='w-fit pl-4 p-3' />
                                 <div className="mb-4">
                                     <Label label={t('cyclicPaymentList.title')}/>
                                     <div className="pl-4 dark:text-gray-300">
@@ -177,7 +177,7 @@ const CyclicPaymentList = ({ cyclicPaymentsList }: CyclicPaymentListProps) => {
                                 <div className="mb-4">
                                     <Label label={t('cyclicPaymentList.amount')}/>
                                     <div className="pl-4 dark:text-gray-300">
-                                        <i>{cyclicPayment.amount} {account?.currency}</i>
+                                        <i>{cyclicPayment.amount} {activeAccount?.currency}</i>
                                     </div>
                                 </div>
                                 <div className="mb-4">

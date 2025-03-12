@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 
 const Login = () => {
     const { t } = useTranslation();
-    const { user, getUser } = useContext(UserContext);
+    const { user } = useContext(UserContext);
     const { login, logout } = useContext(AuthContext);
     const navigate = useNavigate();
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
@@ -34,12 +34,11 @@ const Login = () => {
         clearApiError();
         try {
             await login(email, password);
-            await getUser();
             navigate('/dashboard');
         } catch (error) {
             handleError(error);
-            logout();
-            scrollToTop('login-form-wrapper');
+            await logout();
+            scrollToTop();
         }
     };
 
@@ -47,11 +46,11 @@ const Login = () => {
         <Tile id='login' title={t('login.tile.title')}>
             <div className="flex items-center justify-center">
                 <div className="max-w-md w-full mx-auto">
-                    { apiError.isError &&
-                        <div className="my-4">
+                    <div id="form-error-alert">
+                        { apiError.isError &&
                             <ErrorAlert alertMessage={apiError.errorMessage} />
-                        </div>
-                    }
+                        }
+                    </div>
                     <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <FormInput
                             label={t('login.email')}

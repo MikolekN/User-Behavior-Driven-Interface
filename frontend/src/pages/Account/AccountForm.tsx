@@ -3,18 +3,18 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
 import { AccountContext } from '../../context/AccountContext';
-import Tile from '../Tile/Tile';
-import FormInput from '../FormInput/FormInput';
-import Button from '../utils/Button';
+import Tile from '../../components/Tile/Tile';
+import FormInput from '../../components/FormInput/FormInput';
+import Button from '../../components/utils/Button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AccountFormData, AccountFormDataSchema } from '../../schemas/formValidation/accountSchema';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
-import { scrollToTop } from '../utils/scroll';
-import ErrorAlert from '../Alerts/ErrorAlert';
+import { scrollToTop } from '../../components/utils/scroll';
+import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import { useTranslation } from 'react-i18next';
-import FormSelect from '../FormSelect/FormSelect';
-import { ACCOUNT_TYPE_SELECT_OPTIONS } from '../../pages/constants';
-import { Account } from '../utils/types/Account';
+import FormSelect from '../../components/FormSelect/FormSelect';
+import { ACCOUNT_TYPE_SELECT_OPTIONS } from '../constants';
+import { Account } from '../../components/utils/types/Account';
 
 const AccountForm = () => {
     const { t } = useTranslation();
@@ -89,7 +89,7 @@ const AccountForm = () => {
                 navigate('/accounts');
             } catch (error) {
                 handleError(error);
-                scrollToTop('account-form-wrapper');
+                scrollToTop();
             }
         } else {
             try {
@@ -98,7 +98,7 @@ const AccountForm = () => {
                 navigate('/accounts');
             } catch (error) {
                 handleError(error);
-                scrollToTop('account-form-wrapper');
+                scrollToTop();
             }
         }
     };
@@ -107,11 +107,11 @@ const AccountForm = () => {
         <Tile title={t('accountForm.tile.title')}>
             <div className="flex items-center justify-center">
                 <div className="max-w-md w-full mx-auto">
-                    { apiError.isError &&
-                        <div className="my-4">
+                    <div id="form-error-alert">
+                        { apiError.isError &&
                             <ErrorAlert alertMessage={apiError.errorMessage} />
-                        </div>
-                    }
+                        }
+                    </div>components/AccountForm/AccountForm.tsx
                     <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <FormInput
                             label={t('accountForm.accountName')}
@@ -136,7 +136,12 @@ const AccountForm = () => {
                             className="w-full"
                         />
                         <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
-                            {isSubmitting ? `${t('accountForm.loading')}` : `${t('accountForm.submit')}`}
+                        {isSubmitting
+                            ? t('accountForm.loading')
+                            : accountNumber
+                                ? t('accountForm.edit')
+                                : t('accountForm.submit')
+                        }
                         </Button>
                     </form>
                 </div>

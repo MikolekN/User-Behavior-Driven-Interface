@@ -1,19 +1,19 @@
 import { useEffect, useState, useContext } from 'react';
-import Tile from '../Tile/Tile';
-import { UserContext } from '../../context/UserContext';
-import EmptyResponseInfoAlert from '../EmptyResponseInfoAlert/EmptyResponseInfoAlert';
 import { TransferContext } from '../../context/TransferContext';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { useTranslation } from 'react-i18next';
-import DefaultLoadingSkeleton from '../Loading/DefaultLoadingSkeleton';
-import CollapsibleList from '../CollapsibleList/CollapsibleList';
 import { AccountContext } from '../../context/AccountContext';
+import { UserContext } from '../../context/UserContext';
+import DefaultLoadingSkeleton from '../../components/Loading/DefaultLoadingSkeleton';
+import EmptyResponseInfoAlert from '../../components/EmptyResponseInfoAlert/EmptyResponseInfoAlert';
+import Tile from '../../components/Tile/Tile';
+import CollapsibleList from '../../components/CollapsibleList/CollapsibleList';
 
 const TransactionsHistory = () => {
     const { t } = useTranslation();
     const [ loading, setLoading ] = useState(true);
     const { user } = useContext(UserContext);
-    const { account } = useContext(AccountContext);
+    const { activeAccount } = useContext(AccountContext);
     const { transfers, fetchTransfers } = useContext(TransferContext);
     const { apiError, handleError } = useApiErrorHandler();
 
@@ -75,7 +75,7 @@ const TransactionsHistory = () => {
                                             }`}
                                         >
                                             {!item.income && <span>-</span>}
-                                            {item.amount} {account?.currency}
+                                            {item.amount} {activeAccount?.currency}
                                         </div>
                                     </div>
                                 ))}

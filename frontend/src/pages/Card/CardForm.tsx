@@ -1,30 +1,30 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { CardFormData, CardFormDataSchema } from '../../schemas/formValidation/cardSchema';
-import { Card } from '../utils/types/Card';
 import { UserContext } from '../../context/UserContext';
-import { CardContext } from '../../context/CardContext';
-import { scrollToTop } from '../utils/scroll';
-import ActiveAccountError from '../ActiveAccountError/ActiveAccountError';
 import { AccountContext } from '../../context/AccountContext';
-import Tile from '../Tile/Tile';
-import ErrorAlert from '../Alerts/ErrorAlert';
-import FormInput from '../FormInput/FormInput';
-import FormSelect from '../FormSelect/FormSelect';
-import Button from '../utils/Button';
+import { CardContext } from '../../context/CardContext';
+import { Card } from '../../components/utils/types/Card';
+import { scrollToTop } from '../../components/utils/scroll';
+import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
+import Tile from '../../components/Tile/Tile';
+import ErrorAlert from '../../components/Alerts/ErrorAlert';
+import FormInput from '../../components/FormInput/FormInput';
+import Button from '../../components/utils/Button';
+
 
 const CardForm = () => {
     const { t } = useTranslation();
     const { cardNumber } = useParams();
     const { user, getUser } = useContext(UserContext);
-    const { account } = useContext(AccountContext);
+    const { activeAccount } = useContext(AccountContext);
     const { card, setCard, getCard, createCard, updateCard } = useContext(CardContext);
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
-    const { register, handleSubmit, formState: { errors, isSubmitting }, clearErrors, control, setValue } = useForm<CardFormData>({
+    const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = useForm<CardFormData>({
         resolver: zodResolver(CardFormDataSchema),
         defaultValues: {
             name: '',
@@ -88,7 +88,7 @@ const CardForm = () => {
                 navigate('/cards');
             } catch (error) {
                 handleError(error);
-                scrollToTop('card-form-wrapper');
+                scrollToTop();
             }
         } else {
             try {
@@ -97,12 +97,12 @@ const CardForm = () => {
                 navigate('/cards');
             } catch (error) {
                 handleError(error);
-                scrollToTop('card-form-wrapper');
+                scrollToTop();
             }
         }
     };
 
-    if (account === null) {
+    if (activeAccount === null) {
         return (
             <div id="card-form-wrapper" className="flex items-center justify-center">
                 <ActiveAccountError />
@@ -113,11 +113,11 @@ const CardForm = () => {
         <Tile title={t('cardForm.tile.title')}>
             <div className="flex items-center justify-center">
                 <div className="max-w-md w-full mx-auto">
-                    { apiError.isError &&
-                        <div className="my-4">
+                    <div id="form-error-alert">
+                        { apiError.isError &&
                             <ErrorAlert alertMessage={apiError.errorMessage} />
-                        </div>
-                    }
+                        }
+                    </div>
                     <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <FormInput
                             label={t('cardForm.name')}
@@ -134,7 +134,12 @@ const CardForm = () => {
                             className="w-full"
                         />
                         <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
-                            {isSubmitting ? `${t('cardForm.loading')}` : `${t('cardForm.submit')}`}
+                            {isSubmitting
+                                ? t('cardForm.loading')
+                                : cardNumber
+                                    ? t('cardForm.edit')
+                                    : t('cardForm.submit')
+                            }
                         </Button>
                     </form>
                 </div>
