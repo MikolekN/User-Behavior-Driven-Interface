@@ -7,8 +7,8 @@ from shared import create_simple_response
 from preferences.preferences_repository import PreferencesRepository
 from preferences.requests.get_preferenes_request import GetPreferencesRequest
 from preferences.responses.get_preferences_response import GetPreferencesResponse
-from tokens.token import Token
-from tokens.token_repository import TokenRepository
+from shared import Token
+from shared import TokenRepository
 
 preferences_repository = PreferencesRepository()
 token_repository = TokenRepository()

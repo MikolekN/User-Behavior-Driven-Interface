@@ -8,8 +8,8 @@ from preferences.preferences import Preferences
 from preferences.preferences_repository import PreferencesRepository
 from preferences.requests.generate_preferences_request import GeneratePreferencesRequest
 from preferences.responses.generate_preferences_response import GeneratePreferencesResponse
-from tokens.token import Token
-from tokens.token_repository import TokenRepository
+from shared import Token
+from shared import TokenRepository
 
 preferences_repository = PreferencesRepository()
 token_repository = TokenRepository()
@@ -33,12 +33,12 @@ def generate_preferences() -> Response:
         preferences: Preferences = Preferences(
             user_id=data.get("user_id"),
             preferences={
-                "quickIconsPreference": "settings"
+                "quickIconsPreference": "quick-icons-settings"
             }
         )
         preferences_repository.insert(preferences)
     else:
-        preferences.preferences['quickIconsPreference'] = "settings"
+        preferences.preferences['quickIconsPreference'] = "quick-icons-settings"
         d = preferences.to_dict(for_db=True)
         d.pop('_id')
         preferences_repository.update(str(preferences.id), d)

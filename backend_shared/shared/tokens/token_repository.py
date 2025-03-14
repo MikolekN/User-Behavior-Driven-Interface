@@ -1,9 +1,7 @@
 from typing import Type, Optional
-
 import bson
 from shared import BaseRepository
-
-from tokens.token import Token
+from shared.tokens.token import Token
 
 
 class TokenRepository(BaseRepository):

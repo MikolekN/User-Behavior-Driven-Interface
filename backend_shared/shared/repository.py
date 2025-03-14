@@ -24,7 +24,7 @@ class BaseRepository:
             return self._entity_class().from_dict(entity_dict)
         return None
 
-    def find_many(self, query: dict, sort_criteria: Optional[List[tuple[str, int]]] = None) -> Optional[List[T]]:
+    def find_many(self, query: Optional[dict], sort_criteria: Optional[List[tuple[str, int]]] = None) -> Optional[List[T]]:
         query["is_deleted"] = False
         return self.find_many_full(query, sort_criteria)
 

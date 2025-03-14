@@ -6,8 +6,8 @@ from click_events.click_event import ClickEvent
 from click_events.click_event_repository import ClickEventRepository
 from click_events.requests.create_click_event_request import CreateClickEventRequest
 from shared import create_simple_response
-from tokens.token import Token
-from tokens.token_repository import TokenRepository
+from shared import Token
+from shared import TokenRepository
 
 token_repository = TokenRepository()
 click_event_repository = ClickEventRepository()

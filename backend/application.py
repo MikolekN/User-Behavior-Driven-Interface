@@ -5,6 +5,7 @@ from flask_cors import CORS
 from shared import Database
 
 from helpers import init_bank_account
+from helpers.remove_tokens import remove_tokens
 from routes import authentication_blueprint, transfer_blueprint, user_blueprint, \
     cyclic_payment_blueprint
 from routes.account.account_blueprint import account_blueprint
@@ -28,6 +29,8 @@ def create_app():
 
     with app.app_context():
         init_bank_account()
+
+    remove_tokens()
 
     app.register_blueprint(authentication_blueprint)
     app.register_blueprint(transfer_blueprint)
