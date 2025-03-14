@@ -1,7 +1,7 @@
 from bson import ObjectId
 from typing import TypeVar, Type, Any, Optional, List
-from abc import ABC, abstractmethod
-from database import Database
+from abc import  abstractmethod
+from shared.database import Database
 
 T = TypeVar('T')
 

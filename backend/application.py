@@ -2,8 +2,8 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_cors import CORS
+from shared import Database
 
-from database import Database
 from helpers import init_bank_account
 from routes import authentication_blueprint, transfer_blueprint, user_blueprint, \
     cyclic_payment_blueprint
