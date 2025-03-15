@@ -9,11 +9,9 @@ from shared import BaseRequest
 
 @dataclass
 class CreateClickEventRequest(BaseRequest):
-    user_id: str
     start_timestamp: str
     event_type: str
     page: str
-    token: str
     element_id: str
     from_dropdown: bool
 
@@ -22,10 +20,6 @@ class CreateClickEventRequest(BaseRequest):
         error = BaseRequest._validate_request(CreateClickEventRequest, data)
         if error:
             return error
-
-        if not isinstance(data['user_id'], str) or not bson.ObjectId.is_valid(data['user_id']):
-            return "invalidUser"
-        data['user_id'] = bson.ObjectId(data['user_id'])
 
         try:
             data['start_timestamp'] = datetime.fromisoformat(data['start_timestamp'])

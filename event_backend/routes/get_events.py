@@ -6,11 +6,9 @@ from shared import create_simple_response
 
 from click_events.click_event_repository import ClickEventRepository
 from click_events.responses.get_click_events_response import GetClickEventsResponse
-from shared import Token
-from shared import TokenRepository
+from routes.helpers import validate_token
 
 click_event_repository = ClickEventRepository()
-token_repository = TokenRepository()
 
 def get_events(user_id) -> Response:
     if not isinstance(user_id, str) or not bson.ObjectId.is_valid(user_id):
@@ -18,15 +16,9 @@ def get_events(user_id) -> Response:
     user_obj_id = bson.ObjectId(user_id)
 
     token_value = request.headers.get("Authorization")
-    if not token_value:
-        return create_simple_response("missingToken", HTTPStatus.UNAUTHORIZED)
-
-    token: Token = token_repository.find_by_user(user_obj_id)
-    if not token:
-        return create_simple_response("token not exist", HTTPStatus.NOT_FOUND)
-
-    if token.token != token_value:
-        return create_simple_response("wrong token", HTTPStatus.BAD_REQUEST)
+    invalid = validate_token(token_value, user_obj_id)
+    if invalid:
+        return invalid
 
     query = {
         "user_id": user_obj_id,
