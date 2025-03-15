@@ -3,7 +3,7 @@ from typing import Type, Optional
 import bson
 
 from accounts import Account
-from repository import BaseRepository
+from shared import BaseRepository
 
 
 class AccountRepository(BaseRepository):

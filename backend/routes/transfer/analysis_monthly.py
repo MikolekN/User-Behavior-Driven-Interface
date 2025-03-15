@@ -12,7 +12,7 @@ from routes.transfer.helpers import get_end_month, get_months_range, get_start_m
     format_transfers_date, format_grouped_transfers, get_month_from_datetime, \
     accumulate_transactions_income_and_outcome, get_response_monthly
 from transfers import TransferRepository
-from transfers.requests.monthly_analysis_request_dto import MonthlyAnalysisRequestDto
+from transfers.requests.monthly_analysis_request_dto import MonthlyAnalysisRequest
 from transfers.responses.analysis_response import AnalysisResponse
 from users import User, UserRepository
 
@@ -25,7 +25,7 @@ transfer_repository = TransferRepository()
 def get_all_user_transfers_monthly() -> Response:
     data = request.get_json()
 
-    error = MonthlyAnalysisRequestDto.validate_request(data)
+    error = MonthlyAnalysisRequest.validate_request(data)
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 

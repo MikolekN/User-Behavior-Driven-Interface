@@ -2,19 +2,19 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any, Optional
 
-from backend.constants import AVAILABLE_MONTH_LIMITS, MONTHS_IN_YEAR
-from request_dto import BaseRequestDto
+from constants import AVAILABLE_MONTH_LIMITS, MONTHS_IN_YEAR
+from shared import BaseRequest
 
 
 @dataclass
-class MonthlyAnalysisRequestDto(BaseRequestDto):
+class MonthlyAnalysisRequest(BaseRequest):
     year: int
     start_month: int
     limit: int # number of months per request
 
     @staticmethod
     def validate_request(data: Mapping[str, Any]) -> Optional[str]:
-        error = BaseRequestDto._validate_request(MonthlyAnalysisRequestDto, data)
+        error = BaseRequest._validate_request(MonthlyAnalysisRequest, data)
         if error:
             return error
         

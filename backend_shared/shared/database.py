@@ -8,6 +8,8 @@ import os
 from typing import Any
 
 class Database:
+    # For the purposes of this application these values are constant
+    # But for real world application they'd be passed as arguments
     URI: str = "mongodb://localhost:27017/"
     DATABASE_NAME: str = "User-Behavior-Driven-Interface"
     DATABASE: PyMongoDatabase | None = None

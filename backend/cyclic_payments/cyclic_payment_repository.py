@@ -1,7 +1,7 @@
 from typing import Optional, Type, List
 
 from cyclic_payments import CyclicPayment
-from repository import BaseRepository
+from shared import BaseRepository
 
 
 class CyclicPaymentRepository(BaseRepository):

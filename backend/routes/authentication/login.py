@@ -1,7 +1,9 @@
 from http import HTTPStatus
 
+import bson
 from flask import Response, request
 from flask_login import login_user
+from shared import create_token
 
 from routes.authentication.helpers import authenticate_user
 from routes.helpers import create_simple_response, unauthenticated_required
@@ -21,5 +23,7 @@ def login() -> Response:
         return create_simple_response(error, status_code)
 
     login_user(user)
+
+    create_token(bson.ObjectId(user.id))
 
     return create_simple_response("loginSuccessful", HTTPStatus.OK)

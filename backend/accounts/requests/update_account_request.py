@@ -2,19 +2,20 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any, Optional
 
+from shared import BaseRequest
+
 from accounts.account import account_types
-from request_dto import BaseRequestDto
 
 
 @dataclass
-class UpdateAccountRequest(BaseRequestDto):
+class UpdateAccountRequest(BaseRequest):
     name: str
     type: str
     currency: str
 
     @staticmethod
     def validate_request(data: Mapping[str, Any]) -> Optional[str]:
-        error = BaseRequestDto._validate_request(UpdateAccountRequest, data)
+        error = BaseRequest._validate_request(UpdateAccountRequest, data)
         if error:
             return error
 

@@ -12,7 +12,7 @@ from routes.transfer.helpers import prepare_yearly_analysis_query, serialize_tra
     set_missing_years, format_transfers_date, get_year_from_datetime, format_grouped_transfers, \
     accumulate_transactions_income_and_outcome, get_response_yearly
 from transfers import TransferRepository
-from transfers.requests.yearly_analysis_request_dto import YearlyAnalysisRequestDto
+from transfers.requests.yearly_analysis_request_dto import YearlyAnalysisRequest
 from transfers.responses.analysis_response import AnalysisResponse
 from users import User, UserRepository
 
@@ -25,7 +25,7 @@ transfer_repository = TransferRepository()
 def get_all_user_transfers_yearly() -> Response:
     data = request.get_json()
 
-    error = YearlyAnalysisRequestDto.validate_request(data)
+    error = YearlyAnalysisRequest.validate_request(data)
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 

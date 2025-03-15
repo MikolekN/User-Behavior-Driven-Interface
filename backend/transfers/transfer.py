@@ -1,9 +1,8 @@
-import bson
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass
 from typing import Optional, Dict, Any
-from datetime import datetime
 
-from entity import BaseEntity
+import bson
+from shared import BaseEntity
 
 
 @dataclass
