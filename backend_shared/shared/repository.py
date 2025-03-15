@@ -73,3 +73,6 @@ class BaseRepository:
         query = {'_id': ObjectId(entity_id), "is_deleted": True}
         result = Database.update_one(self.COLLECTION, query, {"is_deleted": False})
         return result.matched_count > 0
+
+    def drop_collection(self):
+        Database.DATABASE.drop_collection(self.COLLECTION)

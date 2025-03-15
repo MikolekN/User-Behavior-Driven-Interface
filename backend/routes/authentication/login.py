@@ -1,14 +1,14 @@
 from http import HTTPStatus
 
+import bson
 from flask import Response, request
 from flask_login import login_user
-from shared import Token, TokenRepository, generate_token
+from shared import create_token
 
 from routes.authentication.helpers import authenticate_user
 from routes.helpers import create_simple_response, unauthenticated_required
 from users.requests.login_request import LoginRequest
 
-token_repository = TokenRepository()
 
 @unauthenticated_required
 def login() -> Response:
@@ -24,10 +24,6 @@ def login() -> Response:
 
     login_user(user)
 
-    token: Token = Token(
-        user_id=user.id,
-        token=generate_token()
-    )
-    token_repository.insert(token)
+    create_token(bson.ObjectId(user.id))
 
     return create_simple_response("loginSuccessful", HTTPStatus.OK)
