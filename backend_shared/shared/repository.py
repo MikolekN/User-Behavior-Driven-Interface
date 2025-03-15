@@ -1,7 +1,7 @@
 from bson import ObjectId
 from typing import TypeVar, Type, Any, Optional, List
-from abc import ABC, abstractmethod
-from database import Database
+from abc import  abstractmethod
+from shared.database import Database
 
 T = TypeVar('T')
 
@@ -24,7 +24,7 @@ class BaseRepository:
             return self._entity_class().from_dict(entity_dict)
         return None
 
-    def find_many(self, query: dict, sort_criteria: Optional[List[tuple[str, int]]] = None) -> Optional[List[T]]:
+    def find_many(self, query: Optional[dict], sort_criteria: Optional[List[tuple[str, int]]] = None) -> Optional[List[T]]:
         query["is_deleted"] = False
         return self.find_many_full(query, sort_criteria)
 
@@ -73,3 +73,6 @@ class BaseRepository:
         query = {'_id': ObjectId(entity_id), "is_deleted": True}
         result = Database.update_one(self.COLLECTION, query, {"is_deleted": False})
         return result.matched_count > 0
+
+    def drop_collection(self):
+        Database.DATABASE.drop_collection(self.COLLECTION)

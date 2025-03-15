@@ -2,18 +2,19 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any, Optional
 
+from shared import BaseRequest
+
 from constants import MAX_LOAN_VALUE, MIN_LOAN_VALUE
-from request_dto import BaseRequestDto
 
 
 @dataclass
-class CreateLoanRequestDto(BaseRequestDto):
+class CreateLoanRequest(BaseRequest):
     title: str
     amount: int
 
     @staticmethod
     def validate_request(data: Mapping[str, Any]) -> Optional[str]:
-        error = BaseRequestDto._validate_request(CreateLoanRequestDto, data)
+        error = BaseRequest._validate_request(CreateLoanRequest, data)
         if error:
             return error
 

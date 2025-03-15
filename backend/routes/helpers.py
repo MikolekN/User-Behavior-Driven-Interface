@@ -1,17 +1,12 @@
 from functools import wraps
+from http import HTTPStatus
 
 import bcrypt
-from flask import Response, jsonify, make_response
 from flask_login import current_user
-from http import HTTPStatus
+from shared import create_simple_response
 
 from constants import ALLOWED_EXTENSIONS
 
-
-def create_simple_response(message: str, status: HTTPStatus) -> Response:
-    response = make_response(jsonify({"message": message}), status)
-    response.headers["Content-Type"] = "application/json"
-    return response
 
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')

@@ -2,18 +2,18 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any, Optional
 
-from request_dto import BaseRequestDto
+from shared import BaseRequest
 
 
 @dataclass
-class CreateTransferRequestDto(BaseRequestDto):
+class CreateTransferRequest(BaseRequest):
     recipient_account_number: str
     title: str
     amount: str
 
     @staticmethod
     def validate_request(data: Mapping[str, Any]) -> Optional[str]:
-        error = BaseRequestDto._validate_request(CreateTransferRequestDto, data)
+        error = BaseRequest._validate_request(CreateTransferRequest, data)
         if error:
             return error
 

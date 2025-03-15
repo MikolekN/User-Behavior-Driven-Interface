@@ -11,9 +11,9 @@ class BaseEntity(ABC):
     is_deleted: bool = field(default=False)
 
     def to_dict(self, for_db: bool = False) -> Dict[str, Any]:
-        entity_dict = asdict(self) # this works because the class is abstract and the classes that implement this class are of typ 'DataclassInstance'
+        entity_dict = asdict(self)
         if self._id:
-            entity_dict['_id'] = self._id if for_db else str(self._id)  # Keep as ObjectId if for_db=True
+            entity_dict['_id'] = self._id if for_db else str(self._id)
         if self.created:
             entity_dict['created'] = self.created if for_db else self.created.isoformat()
         return entity_dict
@@ -22,9 +22,6 @@ class BaseEntity(ABC):
     @abstractmethod
     def from_dict(data: Dict[str, Any]) -> 'BaseEntity':
         pass
-
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(_id={self._id}, created={self.created}, is_deleted={self.is_deleted})"
 
     @property
     def id(self) -> bson.ObjectId:

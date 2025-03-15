@@ -3,11 +3,11 @@ from dataclasses import dataclass
 from typing import Any, Optional
 
 from datetime import datetime
-from request_dto import BaseRequestDto
+from shared import BaseRequest
 
 
 @dataclass
-class CreateCyclicPaymentRequest(BaseRequestDto):
+class CreateCyclicPaymentRequest(BaseRequest):
     recipient_account_number: str
     cyclic_payment_name: str
     transfer_title: str
@@ -17,7 +17,7 @@ class CreateCyclicPaymentRequest(BaseRequestDto):
 
     @staticmethod
     def validate_request(data: Mapping[str, Any]) -> Optional[str]:
-        error = BaseRequestDto._validate_request(CreateCyclicPaymentRequest, data)
+        error = BaseRequest._validate_request(CreateCyclicPaymentRequest, data)
         if error:
             return error
 

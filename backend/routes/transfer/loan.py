@@ -9,7 +9,7 @@ from helpers import add
 from routes.helpers import create_simple_response
 from routes.transfer.helpers import prevent_unauthorised_account_access
 from transfers import Transfer, TransferRepository
-from transfers.requests.create_loan_request_dto import CreateLoanRequestDto
+from transfers.requests.create_loan_request_dto import CreateLoanRequest
 from users import UserRepository, User
 
 user_repository = UserRepository()
@@ -21,7 +21,7 @@ transfer_repository = TransferRepository()
 def create_loan_transfer() -> Response:
     data = request.get_json()
 
-    error = CreateLoanRequestDto.validate_request(data)
+    error = CreateLoanRequest.validate_request(data)
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 

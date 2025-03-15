@@ -3,7 +3,7 @@ from typing import Type, Optional
 import bson
 
 from cards import Card
-from repository import BaseRepository
+from shared import BaseRepository
 
 
 class CardRepository(BaseRepository):

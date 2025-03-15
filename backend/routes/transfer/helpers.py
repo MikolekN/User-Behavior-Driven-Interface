@@ -6,7 +6,7 @@ from bson import ObjectId
 from flask_login import current_user
 
 from accounts import Account, AccountRepository
-from backend.constants import MONTHS_IN_YEAR
+from constants import MONTHS_IN_YEAR
 from transfers import Transfer, TransferRepository
 from users import UserRepository
 

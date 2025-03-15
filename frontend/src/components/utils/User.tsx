@@ -1,4 +1,5 @@
 interface IUser {
+    id: string;
     role: string;
     login: string;
     email: string;
@@ -7,6 +8,7 @@ interface IUser {
 }
 
 export interface IBackendUser {
+    _id: string;
     role: string;
     login: string;
     email: string;
@@ -17,6 +19,7 @@ export interface IBackendUser {
 
 export const mapBackendUserToUser = (backendUser: IBackendUser): Partial<IUser> => {
     return {
+        id: backendUser._id,
         login: backendUser.login,
         email: backendUser.email,
         activeAccount: backendUser.active_account,
@@ -25,6 +28,7 @@ export const mapBackendUserToUser = (backendUser: IBackendUser): Partial<IUser> 
 };
 
 export class User implements IUser {
+    id: string;
     role: string;
     login: string;
     email: string;
@@ -32,6 +36,7 @@ export class User implements IUser {
     icon: File | null;
 
     constructor(user: Partial<IUser> & { email: string }) {
+        this.id = user.id ?? "";
         this.login = user.login ?? user.email;
         this.email = user.email;
         this.activeAccount = user.activeAccount ?? null;

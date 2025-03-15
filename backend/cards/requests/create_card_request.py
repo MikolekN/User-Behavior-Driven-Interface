@@ -3,17 +3,17 @@ from dataclasses import dataclass
 from typing import Any, Optional
 
 from accounts.account import account_types
-from request_dto import BaseRequestDto
+from shared import BaseRequest
 
 
 @dataclass
-class CreateCardRequest(BaseRequestDto):
+class CreateCardRequest(BaseRequest):
     name: str
     holder_name: str
 
     @staticmethod
     def validate_request(data: Mapping[str, Any]) -> Optional[str]:
-        error = BaseRequestDto._validate_request(CreateCardRequest, data)
+        error = BaseRequest._validate_request(CreateCardRequest, data)
         if error:
             return error
 

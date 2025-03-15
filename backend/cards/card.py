@@ -5,7 +5,7 @@ from typing import Optional, Dict, Any
 
 import bson
 
-from entity import BaseEntity
+from shared import BaseEntity
 
 
 @dataclass

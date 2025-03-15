@@ -3,7 +3,7 @@ from dataclasses import dataclass, field, asdict
 from typing import Optional, Dict, Any
 from datetime import datetime
 
-from entity import BaseEntity
+from shared import BaseEntity
 
 
 @dataclass

@@ -1,6 +1,6 @@
 from typing import Type, Optional, List
 
-from repository import BaseRepository
+from shared import BaseRepository
 from transfers import Transfer
 
 
