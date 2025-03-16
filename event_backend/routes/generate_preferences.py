@@ -4,12 +4,14 @@ import bson
 from flask import Response, request
 from shared import create_simple_response
 
+from click_events.click_event_repository import ClickEventRepository
 from preferences.preferences import Preferences
 from preferences.preferences_repository import PreferencesRepository
 from preferences.responses.generate_preferences_response import GeneratePreferencesResponse
 from routes.helpers import validate_token
 
 preferences_repository = PreferencesRepository()
+click_events_repository = ClickEventRepository()
 
 def generate_preferences(user_id) -> Response:
     if not isinstance(user_id, str) or not bson.ObjectId.is_valid(user_id):
@@ -31,7 +33,7 @@ def generate_preferences(user_id) -> Response:
         )
         preferences_repository.insert(preferences)
     else:
-        preferences.preferences['quickIconsPreference'] = "quick-icons-settings"
+        preferences.preferences['quickIconsPreference'] = click_events_repository.get_user_quick_icons_preference(user_id)
         d = preferences.to_dict(for_db=True)
         d.pop('_id')
         preferences_repository.update(str(preferences.id), d)

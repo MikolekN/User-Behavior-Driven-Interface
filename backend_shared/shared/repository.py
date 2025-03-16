@@ -27,6 +27,10 @@ class BaseRepository:
     def find_many(self, query: Optional[dict], sort_criteria: Optional[List[tuple[str, int]]] = None) -> Optional[List[T]]:
         query["is_deleted"] = False
         return self.find_many_full(query, sort_criteria)
+    
+    def aggregate(self, pipeline: List[dict[str, Any]]) -> Optional[List[dict[str, Any]]]:
+        result = list(Database.aggregate(self.COLLECTION, pipeline))
+        return result if result else None
 
     # ---------- FULL FIND METHODS (INCLUDES SOFT DELETED RECORDS) ---------- #
     def find_by_id_full(self, entity_id: str) -> Optional[T]:

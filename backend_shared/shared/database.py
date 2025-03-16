@@ -29,6 +29,10 @@ class Database:
             print("Database connection failed:", e)
 
     @staticmethod
+    def aggregate(collection: str, pipeline: list[dict[str, Any]]):
+        return Database._get_collection(collection).aggregate(pipeline)
+
+    @staticmethod
     def insert_many(collection: str, data: list[dict[str, Any]]) -> InsertManyResult:
         return Database._get_collection(collection).insert_many(data)
 
