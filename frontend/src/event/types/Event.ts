@@ -1,9 +1,7 @@
 export interface BaseEvent {
-    userId: string;
-    startTimestamp: number;
+    startTimestamp: Date;
     eventType: string;
-    pageUrl: string;
-    token: string;
+    page: string;
 };
 
 export interface ClickEvent extends BaseEvent {
@@ -13,21 +11,19 @@ export interface ClickEvent extends BaseEvent {
 
 export interface HoverEvent extends BaseEvent {
     elementId: string;
-    endTimestamp: number;
+    endTimestamp: Date;
     duration: number;
 };
 
 export interface PageTransitionEvent extends BaseEvent {
-    nextPageUrl: string;
+    nextPage: string;
     timeSpent: number;
 };
 
 export interface BackendBaseEvent {
-    user_id: string;
-    start_timestamp: number;
+    start_timestamp: Date;
     event_type: string;
-    page_url: string;
-    token: string;
+    page: string;
 };
 
 export interface BackendClickEvent extends BackendBaseEvent {
@@ -37,12 +33,12 @@ export interface BackendClickEvent extends BackendBaseEvent {
 
 export interface BackendHoverEvent extends BackendBaseEvent {
     element_id: string;
-    end_timestamp: number;
+    end_timestamp: Date;
     duration: number;
 };
 
 export interface BackendPageTransitionEvent extends BackendBaseEvent {
-    next_page_url: string;
+    next_page: string;
     time_spent: number;
 };
 

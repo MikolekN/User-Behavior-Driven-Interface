@@ -4,30 +4,26 @@ import { BackendClickEvent, ClickEvent } from "../types/Event";
 import { ALL_QUICK_ICONS_ELEMENTS, CLICK_EVENT_TYPE, DROPDOWN } from "./constants";
 
 
-const getClickEventData = (user: User, elementId: string): ClickEvent => {
+const getClickEventData = (elementId: string): ClickEvent => {
 	return {
-		userId: user.id,
-		startTimestamp: Date.now(),
+		startTimestamp: new Date(),
 		eventType: CLICK_EVENT_TYPE,
-		pageUrl: window.location.href,
-		token: "add me",
+		page: window.location.href,
 		elementId: elementId,
 		fromDropdown: elementId.includes(DROPDOWN) ? true : false
 	}
 };
 
-const getClickEventRequestBody = (event: ClickEvent): BackendClickEvent => {
+const mapClickEventToBackendRequestBody = (event: ClickEvent): BackendClickEvent => {
 	return {
-		user_id: event.userId,
 		start_timestamp: event.startTimestamp,
 		event_type: event.eventType,
-		page_url: event.pageUrl,
-		token: event.token,
+		page: event.page,
 		element_id: event.elementId,
 		from_dropdown: event.fromDropdown
 	}
 };
-  
+
 export const setupUserDropdownClickEvents = (user: User | null) => {
     // Event handler with dynamic action lookup
 	const handleMenuClick = (event: Event) => {
@@ -40,9 +36,9 @@ export const setupUserDropdownClickEvents = (user: User | null) => {
 		if (!parentId) return;
 		
 		if (ALL_QUICK_ICONS_ELEMENTS.some(element => element.id === parentId)) {
-			const clickEvent: ClickEvent = getClickEventData(user, parentId)
-			const requestBody: BackendClickEvent = getClickEventRequestBody(clickEvent);
-			sendClickEventData(requestBody);
+			const clickEvent: ClickEvent = getClickEventData(parentId)
+			const requestBody: BackendClickEvent = mapClickEventToBackendRequestBody(clickEvent);
+			sendClickEventData(user, requestBody);
 		} else {
 			console.log('Unknown element clicked');
 		}

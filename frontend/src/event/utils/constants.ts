@@ -26,7 +26,7 @@ export const QUICK_ICONS_ELEMENTS: ElementInfo[] = Object.values(QUICK_ICONS);
 export const USER_DROPDOWN_ELEMENTS: ElementInfo[] = Object.values(USER_DROPDOWN);
 export const ALL_QUICK_ICONS_ELEMENTS: ElementInfo[] = QUICK_ICONS_ELEMENTS.concat(USER_DROPDOWN_ELEMENTS);
 
-export const CLICK_EVENT_TYPE: string = "click";
+export const CLICK_EVENT_TYPE: string = "click_event";
 export const HOVER_EVENT_TYPE: string = "hover";
 export const PAGE_TRANSITION_EVENT_TYPE: string = "pageTransition";
 
