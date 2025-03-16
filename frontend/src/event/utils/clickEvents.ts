@@ -1,5 +1,5 @@
 import { User } from "../../components/utils/User";
-import { sendClickEventData } from "../service/sendClickEventService";
+import { sendClickEventData } from "../service/eventService";
 import { BackendClickEvent, ClickEvent } from "../types/Event";
 import { ALL_QUICK_ICONS_ELEMENTS, CLICK_EVENT_TYPE, DROPDOWN } from "./constants";
 

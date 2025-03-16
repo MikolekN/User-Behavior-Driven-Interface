@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { QUICK_ICONS } from "../../../event/utils/constants";
 import { Link } from "react-router-dom";
 import { DarkThemeToggle, Dropdown } from "flowbite-react";
@@ -9,21 +9,29 @@ import { t } from "i18next";
 import { flowbiteDropdownTheme } from "../../utils/themes/dropdownTheme";
 import { darkThemeToggleTheme } from "../../utils/themes/darkThemeToggleTheme";
 import i18n from "../../../i18n";
+import { PreferencesContext } from "../../../event/context/PreferencesContext";
+import { UserContext } from "../../../context/UserContext";
+import useApiErrorHandler from "../../../hooks/useApiErrorHandler";
 
 
 const QuickIcons = () => {
     const { handleLogout } = useHandleLogout();
-    const [quickIconsPreference, setQuickIconsPreference] = useState<string>("");
-
-    const getMockQuickIconsPreference = () => {
-        const ids = [QUICK_ICONS.PROFILE.id, QUICK_ICONS.SETTINGS.id, QUICK_ICONS.THEME_TOGGLE.id, QUICK_ICONS.LANGUAGE_SELECTOR.id, QUICK_ICONS.LOGOUT.id]
-        const randomElemId = Math.floor(Math.random()*ids.length);
-        return ids.at(randomElemId);
-    };
+    const { handleError } = useApiErrorHandler();
+    const { user } = useContext(UserContext);
+    const { quickIconsPreference, getQuickIconsPreference } = useContext(PreferencesContext);
 
     useEffect(() => {
-        setQuickIconsPreference(getMockQuickIconsPreference());
-    }, []);
+        if (!user) return;
+        const fetchQuickIconsPreferences = async () => {
+            try {
+                await getQuickIconsPreference(user);
+            } catch (error) {
+                handleError(error);
+            }
+        };
+
+        void fetchQuickIconsPreferences();
+    }, [user, getQuickIconsPreference]);
 
     const quickIconsElements = {
         [QUICK_ICONS.PROFILE.id]: 
@@ -62,7 +70,7 @@ const QuickIcons = () => {
 
     return (
         <div className="flex justify-center items-center">
-            {quickIconsPreference && quickIconsElements[quickIconsPreference]}
+            {quickIconsPreference && quickIconsElements[quickIconsPreference.elementId]}
         </div>
     );
 };

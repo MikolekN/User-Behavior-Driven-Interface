@@ -6,23 +6,26 @@ import { useContext, useEffect } from 'react';
 import { AccountContext } from '../../context/AccountContext';
 import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
 import { UserContext } from '../../context/UserContext';
+import { PreferencesContext } from '../../event/context/PreferencesContext';
 
 const Dashboard = () => {
     const { t } = useTranslation();
     const { activeAccount, setAccount, getActiveAccount } = useContext(AccountContext);
-    const { getUser } = useContext(UserContext);
+    const { user, getUser } = useContext(UserContext);
+    const { generateQuickIconsPreference } = useContext(PreferencesContext);
 
     useEffect(() => {
         const getUserActiveAccount = async () => {
             try {
                 await getActiveAccount();
+                await generateQuickIconsPreference(user!);
             } catch {
                 setAccount(null);
             }
         }
 
         getUserActiveAccount();
-    }, [getUser, getActiveAccount]);
+    }, [user, getUser, getActiveAccount]);
 
     return (
         activeAccount === null ? (
