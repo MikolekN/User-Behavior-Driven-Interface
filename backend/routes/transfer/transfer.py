@@ -8,7 +8,7 @@ from helpers import add, subtract
 from routes.helpers import create_simple_response
 from routes.transfer.helpers import prevent_unauthorised_account_access
 from transfers import Transfer, TransferRepository
-from transfers.requests.create_transfer_request_dto import CreateTransferRequestDto
+from transfers.requests.create_transfer_request_dto import CreateTransferRequest
 from users import UserRepository, User
 
 user_repository = UserRepository()
@@ -20,7 +20,7 @@ transfer_repository = TransferRepository()
 def create_transfer() -> Response:
     data = request.get_json()
 
-    error = CreateTransferRequestDto.validate_request(data)
+    error = CreateTransferRequest.validate_request(data)
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 

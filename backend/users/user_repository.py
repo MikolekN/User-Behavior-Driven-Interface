@@ -1,6 +1,7 @@
 from typing import Type, Optional
 
-from repository import BaseRepository
+from shared import BaseRepository
+
 from users import User
 
 

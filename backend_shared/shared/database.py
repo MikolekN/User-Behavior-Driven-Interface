@@ -8,6 +8,8 @@ import os
 from typing import Any
 
 class Database:
+    # For the purposes of this application these values are constant
+    # But for real world application they'd be passed as arguments
     URI: str = "mongodb://localhost:27017/"
     DATABASE_NAME: str = "User-Behavior-Driven-Interface"
     DATABASE: PyMongoDatabase | None = None
@@ -25,6 +27,10 @@ class Database:
             print("Database connection ok")
         except ConnectionFailure as e:
             print("Database connection failed:", e)
+
+    @staticmethod
+    def aggregate(collection: str, pipeline: list[dict[str, Any]]):
+        return Database._get_collection(collection).aggregate(pipeline)
 
     @staticmethod
     def insert_many(collection: str, data: list[dict[str, Any]]) -> InsertManyResult:

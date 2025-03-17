@@ -4,10 +4,10 @@ from typing import Any, Optional, Type
 
 
 @dataclass
-class BaseRequestDto:
+class BaseRequest:
 
     @staticmethod
-    def _validate_request(dto_class: Type["BaseRequestDto"], data: Mapping[str, Any]) -> Optional[str]:
+    def _validate_request(dto_class: Type["BaseRequest"], data: Mapping[str, Any]) -> Optional[str]:
         if not data:
             return "emptyRequestPayload"
 

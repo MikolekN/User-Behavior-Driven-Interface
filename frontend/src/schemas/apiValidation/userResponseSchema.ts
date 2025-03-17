@@ -10,7 +10,8 @@ export const UserData = z.object({
     active_account: z.string().nullable(),
     created: requiredStringField(),
     is_deleted: z.boolean(),
-    role: requiredStringField()
+    role: requiredStringField(),
+    token: z.string().nullable()
 });
 
 export const GetUserResponseSchema = z.object({
