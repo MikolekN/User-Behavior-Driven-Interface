@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from routes.create_event import create_event
+from routes.create_event.create_event import create_event
 from routes.generate_preferences import generate_preferences
 from routes.get_events import get_events
 from routes.get_preferences import get_preferences
