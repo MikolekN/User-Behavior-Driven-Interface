@@ -63,7 +63,7 @@ const CyclicPaymentsForm = () => {
         setValue('recipientAccountNumber', cyclicPayment.recipientAccountNumber);
         setValue('transferTitle', cyclicPayment.transferTitle);
         setValue('amount', cyclicPayment.amount.toString());
-        setMinDate(cyclicPayment.startDate)
+        setMinDate(cyclicPayment.startDate);
         setDate(cyclicPayment.startDate);
         setValue('interval', cyclicPayment.interval);
     }, []);
@@ -161,7 +161,7 @@ const CyclicPaymentsForm = () => {
                     <ErrorAlert alertMessage={apiError.errorMessage} />
                 }
             </div>
-            <AccountDetails label={t('cyclicPaymentForm.fromAccount')} account={activeAccount!} className='w-full p-3 mb-6' />
+            <AccountDetails label={t('cyclicPaymentForm.fromAccount')} account={activeAccount!} className='w-full p-3 mb-3' />
             <form id="cyclic-payment-form" className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                 <FormInput
                     label={t('cyclicPaymentForm.cyclicPaymentName')}
@@ -180,7 +180,6 @@ const CyclicPaymentsForm = () => {
                 <Controller
                     name="startDate"
                     control={control}
-                    defaultValue={undefined}
                     render={() => (
                         <div className="mb-4">
                             <Label label={t('cyclicPaymentForm.startDate')} />
@@ -193,7 +192,8 @@ const CyclicPaymentsForm = () => {
                                     onChange={handleDateChange}
                                     showClearButton={false}
                                     showTodayButton={false}
-                                    value={date}
+                                    defaultValue={date!}
+                                    value={date!}
                                     label={t('cyclicPaymentForm.startDatePlaceholder')}
                                 />
                             </Flowbite>

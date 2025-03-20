@@ -43,7 +43,7 @@ const Loan = () => {
     const { user, getUser } = useContext(UserContext)
     const { activeAccount } = useContext(AccountContext);
     const { createLoan } = useContext(TransferContext);
-    const [ sliderValue, setSliderValue ] = useState<number | null>(null);
+    const [ , setSliderValue ] = useState<number | null>(null);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, watch } = useForm<LoanFormData>({
         resolver: zodResolver(LoanFormDataSchema),
@@ -119,7 +119,6 @@ const Loan = () => {
                         </FormInput>
                         <div>
                             <RangeSlider
-                                value={sliderValue as number}
                                 onChange={handleSliderChange}
                                 aria-label="input-slider"
                                 min={MIN_LOAN_AMOUNT}

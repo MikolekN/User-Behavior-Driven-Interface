@@ -59,6 +59,7 @@ const Login = () => {
                             register={register('email')}
                             error={errors.email}
                             className="w-full"
+                            autocomplete={'username'}
                         />
                         <FormInput
                             label={t('login.password')}
@@ -66,6 +67,7 @@ const Login = () => {
                             register={register('password')}
                             error={errors.password}
                             className="w-full"
+                            autocomplete={"new-password"}
                         />
                         <Button id={SUBMIT_BUTTONS.LOGIN.id} isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
                             {isSubmitting ? `${t('login.loading')}` : `${t('login.submit')}`}
