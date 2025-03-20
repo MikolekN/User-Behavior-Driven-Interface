@@ -36,7 +36,6 @@ export const getUserPreferencesData = async (user: User): Promise<GetUserPrefere
 };
 
 export const generateUserPreferencesData = async (user: User): Promise<GenerateUserPreferencesResponse> => {
-    console.log("generateUserPreferencesData")
     const response = await fetch(`${EVENT_API_URL}/preferences/${user.id}`, {
         method: 'POST',
         headers: {

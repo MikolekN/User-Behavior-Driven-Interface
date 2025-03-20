@@ -34,9 +34,7 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
     const generateQuickIconsPreference = useCallback(async (user: User): Promise<void> => {
         const {preferences: generatedPreferencesBackendData} = await generateUserPreferencesData(user);
         if (generatedPreferencesBackendData) {
-            console.log("GEN ", generatedPreferencesBackendData)
             const frontendQuickIconsPreferencesData = mapBackendPreferencesToQuickIconsPreferences(generatedPreferencesBackendData);
-            console.log("QI", frontendQuickIconsPreferencesData)
             setQuickIconsPreference(frontendQuickIconsPreferencesData);
         }
     }, []);
