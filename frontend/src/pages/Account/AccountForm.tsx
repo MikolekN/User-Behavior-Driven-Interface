@@ -87,7 +87,7 @@ const AccountForm = () => {
         if (account === null) {
             try {
                 await createAccount(requestBody);
-                navigate('/accounts');
+                navigate('/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();
@@ -96,7 +96,7 @@ const AccountForm = () => {
             try {
                 await updateAccount(accountNumber!, requestBody);
                 await getUser();
-                navigate('/accounts');
+                navigate('/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();

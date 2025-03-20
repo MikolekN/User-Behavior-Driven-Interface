@@ -86,7 +86,7 @@ const CardForm = () => {
             try {
                 await createCard(requestBody);
                 await getUser();
-                navigate('/cards');
+                navigate('/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();
@@ -95,7 +95,7 @@ const CardForm = () => {
             try {
                 await updateCard(cardNumber!, requestBody);
                 await getUser();
-                navigate('/cards');
+                navigate('/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();

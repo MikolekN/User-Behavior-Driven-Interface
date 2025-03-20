@@ -118,7 +118,7 @@ const CyclicPaymentsForm = () => {
             try {
                 await createCyclicPayment(requestBody);
                 await getUser();
-                navigate('/cyclic-payments');
+                navigate('/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();
@@ -127,7 +127,7 @@ const CyclicPaymentsForm = () => {
             try {
                 await updateCyclicPayment(id!, requestBody);
                 await getUser();
-                navigate('/cyclic-payments');
+                navigate('/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();
