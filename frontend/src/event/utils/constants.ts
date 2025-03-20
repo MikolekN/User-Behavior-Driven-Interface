@@ -1,4 +1,4 @@
-interface ElementInfo {
+export interface ElementInfo {
     id: string;
 };
 
