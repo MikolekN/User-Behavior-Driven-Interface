@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import FormSelect from '../../components/FormSelect/FormSelect';
 import { ACCOUNT_TYPE_SELECT_OPTIONS } from '../constants';
 import { Account } from '../../components/utils/types/Account';
+import { SUBMIT_BUTTONS } from '../../event/utils/constants';
 
 const AccountForm = () => {
     const { t } = useTranslation();
@@ -111,7 +112,7 @@ const AccountForm = () => {
                         { apiError.isError &&
                             <ErrorAlert alertMessage={apiError.errorMessage} />
                         }
-                    </div>components/AccountForm/AccountForm.tsx
+                    </div>
                     <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <FormInput
                             label={t('accountForm.accountName')}
@@ -135,7 +136,7 @@ const AccountForm = () => {
                             error={errors.currency}
                             className="w-full"
                         />
-                        <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
+                        <Button id={SUBMIT_BUTTONS.ACCOUNT.id} isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
                         {isSubmitting
                             ? t('accountForm.loading')
                             : accountNumber

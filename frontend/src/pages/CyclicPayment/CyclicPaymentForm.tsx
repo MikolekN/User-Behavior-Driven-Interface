@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import Button from '../../components/utils/Button';
 import { AccountContext } from '../../context/AccountContext';
 import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
+import { SUBMIT_BUTTONS } from '../../event/utils/constants';
 
 const CyclicPaymentsForm = () => {
     const { t } = useTranslation();
@@ -226,7 +227,7 @@ const CyclicPaymentsForm = () => {
                 >
                     {activeAccount!.currency}
                 </FormInput>
-                <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
+                <Button id={SUBMIT_BUTTONS.CYCLIC_PAYMENT.id} isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
                     {isSubmitting
                         ? t('cyclicPaymentForm.loading')
                         : id

@@ -1,7 +1,7 @@
 import { User } from "../../components/utils/User";
 import { sendClickEventData } from "../service/eventService";
 import { BackendClickEvent, ClickEvent } from "../types/Event";
-import { ALL_QUICK_ICONS_ELEMENTS, CLICK_EVENT_TYPE, DROPDOWN, ElementInfo } from "./constants";
+import { ALL_QUICK_ICONS_ELEMENTS, CLICK_EVENT_TYPE, DROPDOWN, ElementInfo, SUBMIT_BUTTONS_ELEMENTS } from "./constants";
 
 
 const getClickEventData = (elementId: string): ClickEvent => {
@@ -44,18 +44,33 @@ const handleMenuClick = (event: Event, user: User | null, elements: ElementInfo[
 
 export const setupUserDropdownClickEvents = (user: User | null) => {
     // Event handler with dynamic action lookup
-
-	const elemnets: ElementInfo[] = ALL_QUICK_ICONS_ELEMENTS;
+	const elements: ElementInfo[] = ALL_QUICK_ICONS_ELEMENTS;
 	// Add event listener to document.body
 	const header = document.getElementById("layout-header");
 	header?.addEventListener('click', function (event: Event) {
-		handleMenuClick(event, user, elemnets);
+		handleMenuClick(event, user, elements);
 	});
 
 	// Cleanup function to remove event listener
 	return () => {
 		header?.removeEventListener('click', function (event: Event) {
-			handleMenuClick(event, user, elemnets);
+			handleMenuClick(event, user, elements);
 		});
 	};
 };
+
+export const setupSubmitButtonsClickEvents = (user: User | null) => {
+	const elements: ElementInfo[] = SUBMIT_BUTTONS_ELEMENTS;
+	// Add event listener to document.body
+	const layout = document.getElementById("layout-content-area");
+	layout?.addEventListener('click', function (event: Event) {
+		handleMenuClick(event, user, elements);
+	});
+
+	// Cleanup function to remove event listener
+	return () => {
+		layout?.removeEventListener('click', function (event: Event) {
+			handleMenuClick(event, user, elements);
+		});
+	};
+}

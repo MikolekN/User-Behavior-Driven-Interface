@@ -15,6 +15,7 @@ import Tile from '../../components/Tile/Tile';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import FormInput from '../../components/FormInput/FormInput';
 import Button from '../../components/utils/Button';
+import { SUBMIT_BUTTONS } from '../../event/utils/constants';
 
 
 const CardForm = () => {
@@ -133,7 +134,7 @@ const CardForm = () => {
                             error={errors.holderName}
                             className="w-full"
                         />
-                        <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
+                        <Button id={SUBMIT_BUTTONS.CARD.id} isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
                             {isSubmitting
                                 ? t('cardForm.loading')
                                 : cardNumber
