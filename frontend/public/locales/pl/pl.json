@@ -459,5 +459,6 @@
             "nov": "Listopad",
             "dec": "Grudzień"
         }
-    }
+    },
+    "blockedTabInfo": "Przepraszamy, ale aplikacja pozwala na otawrcie jednej karty. Proszę zamknij tą kartę"
 }
