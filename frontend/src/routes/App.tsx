@@ -6,6 +6,7 @@ import { setupSubmitButtonsClickEvents, setupUserDropdownClickEvents } from '../
 import { UserContext } from '../context/UserContext';
 import { startTracking, stopTracking } from '../event/utils/pageTransition';
 import { t } from 'i18next';
+import Shortcut from '../components/Event/Shortcut/Shortcut';
 
 const App = () => {
     const { user } = useContext(UserContext);
@@ -53,10 +54,33 @@ const App = () => {
 		);
 	};
 
+    if (!user) {
+        return (
+            <Suspense fallback={<DefaultLoadingSkeleton />}>
+                <Layout>
+                    <Outlet />
+                </Layout>
+            </Suspense>
+        );
+    };
+
     return (
         <Suspense fallback={<DefaultLoadingSkeleton />}>
             <Layout>
-                <Outlet />
+                <div className="hidden md:flex w-full">
+                    <div className="grid grid-cols-12 grid-rows-1 gap-1 w-full">
+                        <div className="col-start-2 col-span-2">
+                            <Shortcut />
+                        </div>
+                        <div className="col-start-4 col-span-6">
+                            <Outlet />
+                        </div>
+                    </div>
+                </div>
+                <div className="md:hidden flex flex-col">
+                    <Shortcut />
+                    <Outlet />
+                </div>
             </Layout>
         </Suspense>
     );
