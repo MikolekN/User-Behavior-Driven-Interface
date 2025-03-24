@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom';
 import { Layout } from '../components/Layout/Layout';
-import { Suspense, useContext, useEffect } from 'react';
 import { Suspense, useContext, useEffect, useState } from 'react';
 import DefaultLoadingSkeleton from '../components/Loading/DefaultLoadingSkeleton';
 import { setupSubmitButtonsClickEvents, setupUserDropdownClickEvents } from '../event/utils/clickEvents';
 import { UserContext } from '../context/UserContext';
+import { startTracking, stopTracking } from '../event/utils/pageTransition';
 import { t } from 'i18next';
 
 const App = () => {
@@ -40,6 +40,12 @@ const App = () => {
 			setIsTabOpen(false);
         };
     }, []);
+
+    useEffect(() => {
+        startTracking(user!);
+
+        return () => stopTracking();
+    }, [user]);
 
 	if (isTabOpen) {
 		return (
