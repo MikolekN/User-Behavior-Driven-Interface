@@ -17,7 +17,7 @@ class ClickEventRepository(BaseRepository):
     
     def get_user_quick_icons_preference(self, user_id: str) -> str:
         pipeline = [
-            {"$match": {"user_id": bson.ObjectId(user_id)}},
+            {"$match": {"user_id": bson.ObjectId(user_id), "event_type": "click_event"}},
             {"$group": {"_id": "$element_id", "count": {"$sum": 1}}},
             {"$sort": {"count": -1}},
             {"$limit": 1}
