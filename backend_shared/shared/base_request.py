@@ -7,6 +7,14 @@ from typing import Any, Optional, Type
 class BaseRequest:
 
     @staticmethod
+    def _get_all_annotations(dto_class: Type["BaseRequest"]) -> dict[str, Any]:
+        annotations = {}
+        for cls in reversed(dto_class.__mro__):
+            if hasattr(cls, "__annotations__"):
+                annotations.update(cls.__annotations__)
+        return annotations
+
+    @staticmethod
     def _validate_request(dto_class: Type["BaseRequest"], data: Mapping[str, Any]) -> Optional[str]:
         if not data:
             return "emptyRequestPayload"
@@ -14,13 +22,15 @@ class BaseRequest:
         if not isinstance(data, dict):
             return "invalidRequestPayload"
 
+        all_annotations = BaseRequest._get_all_annotations(dto_class)
+        
         required_fields: list[dict[str, Any]] = [
             {
                 "field_name": field_name,
                 "field_type": field_type,
                 "field_value": data.get(field_name)
             }
-            for field_name, field_type in dto_class.__annotations__.items()
+            for field_name, field_type in all_annotations.items()
         ]
 
         missing_fields = [field["field_name"] for field in required_fields if field["field_value"] is None]

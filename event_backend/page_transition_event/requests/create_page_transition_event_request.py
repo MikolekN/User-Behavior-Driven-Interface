@@ -1,10 +1,6 @@
 from collections.abc import Mapping
 from dataclasses import dataclass
-from datetime import datetime
 from typing import Any, Optional
-
-import bson
-from shared import BaseRequest
 
 from base_create_event_request import BaseCreateEventRequest
 

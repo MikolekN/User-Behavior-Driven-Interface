@@ -7,6 +7,8 @@ import bson
 from shared import BaseRequest
 
 
+event_types = ['click_event', 'page_transition_event']
+
 @dataclass
 class BaseCreateEventRequest(BaseRequest):
     start_timestamp: str
@@ -24,7 +26,7 @@ class BaseCreateEventRequest(BaseRequest):
         except Exception:
             return "Wrong start timestamp data"
 
-        if data['event_type'] != "click_event":
+        if data['event_type'] not in event_types:
             return "Wrong event type"
 
         return None
