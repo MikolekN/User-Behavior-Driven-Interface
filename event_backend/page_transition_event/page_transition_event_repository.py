@@ -23,7 +23,12 @@ class PageTransitionEventRepository(BaseRepository):
             {"$limit": 4}
         ]
         most_frequent_pages = super().aggregate(pipeline)
+
+        if (not most_frequent_pages):
+            return []
+        
         pages = []
         for elem in most_frequent_pages:
             pages.append(elem["_id"])
+
         return pages
