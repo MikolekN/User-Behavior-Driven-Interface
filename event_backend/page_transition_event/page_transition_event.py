@@ -9,6 +9,7 @@ from base_event import BaseEvent
 @dataclass
 class PageTransitionEvent(BaseEvent):
     next_page: Optional[str] = None
+    time_spent: Optional[int] = 0
 
     def to_dict(self, for_db: bool = False) -> Dict[str, Any]:
         page_transition_event_dict = super().to_dict(for_db)

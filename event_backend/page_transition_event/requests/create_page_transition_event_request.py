@@ -8,6 +8,7 @@ from base_create_event_request import BaseCreateEventRequest
 @dataclass
 class CreatePageTransitionEventRequest(BaseCreateEventRequest):
     next_page: str
+    time_spent: int
 
     @staticmethod
     def validate_request(data: Mapping[str, Any]) -> Optional[str]:
