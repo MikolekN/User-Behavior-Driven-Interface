@@ -458,5 +458,6 @@
             "nov": "November",
             "dec": "December"
         }
-    }
+    },
+    "blockedTabInfo": "Sorry, but this application allows only one tab to be open. Please close this tab"
 }

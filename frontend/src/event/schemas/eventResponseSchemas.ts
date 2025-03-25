@@ -17,6 +17,12 @@ export const SendClickEventResponseSchema = z.object({
 
 export type SendClickEventResponse = z.infer<typeof SendClickEventResponseSchema>;
 
+export const SendPageTransitionEventResponseSchema = z.object({
+    message: requiredStringField()
+});
+
+export type SendPageTransitionEventResponse = z.infer<typeof SendPageTransitionEventResponseSchema>;
+
 export const UserPreferencesResponseSchema = z.object({
     message: requiredStringField(),
     preferences: PreferenceSchema

@@ -11,6 +11,7 @@ interface FormInputProps {
     error?: FieldError;
     children?: ReactNode;
     className?: string;
+    autocomplete?: string;
 }
 
 const getZodValidationErrorFormField = (error?: FieldError): string => {
@@ -23,7 +24,7 @@ const getZodValidationErrorFormField = (error?: FieldError): string => {
         `${t(`errors.zod.${fieldName}`)} ${fieldRestriction}`;
 }
 
-const FormInput = ({ label, fieldType, register, error, children, className }: FormInputProps) => {
+const FormInput = ({ label, fieldType, register, error, children, className, autocomplete }: FormInputProps) => {
     const roundedClass = children ? 'rounded-l-lg' : 'rounded-lg';
 
     return (
@@ -33,6 +34,7 @@ const FormInput = ({ label, fieldType, register, error, children, className }: F
                 <input
                     {...register}
                     type={fieldType}
+                    autoComplete={autocomplete}
                     className={`flex-grow p-3 ${roundedClass} ${className} border-0 focus:ring-0 bg-white dark:bg-gray-800 text-black dark:text-gray-400 ${error ? 'text-red-500 dark:text-red-500' : ''}`}
                 />
                 {children && (

@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import Button from '../../components/utils/Button';
 import { AccountContext } from '../../context/AccountContext';
 import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
+import { SUBMIT_BUTTONS } from '../../event/utils/constants';
 
 const rangeSliderTheme: FlowbiteRangeSliderTheme = {
     "root": {
@@ -42,7 +43,7 @@ const Loan = () => {
     const { user, getUser } = useContext(UserContext)
     const { activeAccount } = useContext(AccountContext);
     const { createLoan } = useContext(TransferContext);
-    const [ sliderValue, setSliderValue ] = useState<number | null>(null);
+    const [ , setSliderValue ] = useState<number | null>(null);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, watch } = useForm<LoanFormData>({
         resolver: zodResolver(LoanFormDataSchema),
@@ -118,7 +119,6 @@ const Loan = () => {
                         </FormInput>
                         <div>
                             <RangeSlider
-                                value={sliderValue as number}
                                 onChange={handleSliderChange}
                                 aria-label="input-slider"
                                 min={MIN_LOAN_AMOUNT}
@@ -141,7 +141,7 @@ const Loan = () => {
                                 ))}
                             </div>
                         </div>
-                        <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
+                        <Button id={SUBMIT_BUTTONS.LOAN.id} isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
                             {isSubmitting ? `${t('loan.loading')}` : `${t('loan.submit')}`}
                         </Button>
                     </form>
