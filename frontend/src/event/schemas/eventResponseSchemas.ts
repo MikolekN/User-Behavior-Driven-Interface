@@ -7,7 +7,8 @@ const PreferenceSchema = z.object({
     is_deleted: z.boolean(),
     user_id: requiredStringField(),
     preferences: z.object({
-        quickIconsPreference: requiredStringField()
+        quickIconsPreference: requiredStringField(),
+        pageTransitionPreference: z.array(requiredStringField())
     })
 });
 

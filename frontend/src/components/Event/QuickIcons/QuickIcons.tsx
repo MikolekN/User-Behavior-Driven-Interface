@@ -24,7 +24,7 @@ const QuickIcons = () => {
         if (!user) return;
         const fetchQuickIconsPreferences = async () => {
             try {
-                await getQuickIconsPreference(user);
+                getQuickIconsPreference();
             } catch (error) {
                 handleError(error);
             }

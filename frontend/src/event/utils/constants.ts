@@ -28,7 +28,7 @@ export const ALL_QUICK_ICONS_ELEMENTS: ElementInfo[] = QUICK_ICONS_ELEMENTS.conc
 
 export const CLICK_EVENT_TYPE: string = "click_event";
 export const HOVER_EVENT_TYPE: string = "hover";
-export const PAGE_TRANSITION_EVENT_TYPE: string = "page_transition";
+export const PAGE_TRANSITION_EVENT_TYPE: string = "page_transition_event";
 
 export const DROPDOWN: string = "dropdown";
 

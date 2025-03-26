@@ -21,7 +21,7 @@ export const sendClickEventData = async (user: User, requestBody: object): Promi
 };
 
 export const sendPageTransitionEventData = async (user: User, requestBody: object): Promise<SendPageTransitionEventResponse> => {
-    const response = await fetch(`${EVENT_API_URL}/pageTransitionEvents/${user.id}`, { // url to change
+    const response = await fetch(`${EVENT_API_URL}/events/${user.id}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

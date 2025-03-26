@@ -10,17 +10,18 @@ import { PreferencesContext } from '../../event/context/PreferencesContext';
 
 const Dashboard = () => {
     const { t } = useTranslation();
-    const { activeAccount, setAccount, getActiveAccount } = useContext(AccountContext);
+    const { activeAccount, setActiveAccount, getActiveAccount } = useContext(AccountContext);
     const { user, getUser } = useContext(UserContext);
-    const { generateQuickIconsPreference } = useContext(PreferencesContext);
+    const { getUserPreference, generateUserPreference } = useContext(PreferencesContext);
 
     useEffect(() => {
         const getUserActiveAccount = async () => {
             try {
                 await getActiveAccount();
-                await generateQuickIconsPreference(user!);
+                await generateUserPreference(user!); // for now ok, later generate wont return preferences, so get will be necessary
+                await getUserPreference(user!);
             } catch {
-                setAccount(null);
+                setActiveAccount(null);
             }
         }
 
