@@ -325,6 +325,23 @@
             "loading": "Ładowanie..."
         }
     },
+    "shortcut": {
+        "tile": {
+            "title": "Na skróty"
+        },
+        "/dashboard": "Strona głowna",
+        "/transfer": "Przelew",
+        "/transactions/history": "Historia transferów",
+        "/cyclic-payments": "Płatności cykliczne",
+        "/loan": "Pożyczka",
+        "/transactions/analysis/monthly": "Analiza miesięczna",
+        "/transactions/analysis/yearly": "Analiza roczna",
+        "/accounts": "Konta",
+        "/cards": "Karty",
+        "/chat": "Chat",
+        "/faq": "FAQ",
+        "/info": "Kontakt"
+    },
     "formSelect": {
         "userName": "Nazwa użytkownika",
         "accountName": "Nazwa konta",

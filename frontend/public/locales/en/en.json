@@ -324,6 +324,23 @@
             "loading": "Loading..."
         }
     },
+    "shortcut": {
+        "tile": {
+            "title": "Shortcut"
+        },
+        "/dashboard": "Dashboard",
+        "/transfer": "Transfer",
+        "/transactions/history": "Transfer history",
+        "/cyclic-payments": "Cyclic payments",
+        "/loan": "Loan",
+        "/transactions/analysis/monthly": "Monthly analysis",
+        "/transactions/analysis/yearly": "Yearly analysis",
+        "/accounts": "Accounts",
+        "/cards": "Cards",
+        "/chat": "Chat",
+        "/faq": "FAQ",
+        "/info": "Contact"
+    },
     "formSelect": {
         "userName": "User name",
         "accountName": "Account name",
