@@ -25,6 +25,12 @@ const Shortcut = () => {
         void fetchQuickIconsPreferences();
     }, [user, getShortcutPreference]);
 
+    if (shortcutPreference === null || shortcutPreference?.links.length === 0) {
+        return (
+            <></>
+        );
+    };
+
     return (
         <>
             <div className="hidden md:flex">
