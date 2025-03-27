@@ -5,6 +5,7 @@ from flask import Response, request
 from shared import create_simple_response
 
 from click_events.click_event_repository import ClickEventRepository
+from page_transition_event.constants import BASE_QUICK_ICONS_PREFERENCE
 from page_transition_event.page_transition_event_repository import PageTransitionEventRepository
 from preferences.preferences import Preferences
 from preferences.preferences_repository import PreferencesRepository
@@ -30,7 +31,7 @@ def generate_preferences(user_id) -> Response:
         preferences: Preferences = Preferences(
             user_id=user_obj_id,
             preferences={
-                "quickIconsPreference": "quick-icons-settings",
+                "quickIconsPreference": BASE_QUICK_ICONS_PREFERENCE,
                 "pageTransitionPreference": []
             }
         )

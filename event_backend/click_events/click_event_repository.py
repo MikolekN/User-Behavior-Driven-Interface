@@ -4,6 +4,7 @@ import bson
 from shared import BaseRepository
 
 from click_events.click_event import ClickEvent
+from page_transition_event.constants import BASE_QUICK_ICONS_PREFERENCE
 
 
 class ClickEventRepository(BaseRepository):
@@ -23,6 +24,9 @@ class ClickEventRepository(BaseRepository):
             {"$limit": 1}
         ]
         most_frequent_element = super().aggregate(pipeline)
+        if not most_frequent_element:
+            return BASE_QUICK_ICONS_PREFERENCE
+
         element_id = most_frequent_element[0]["_id"]
         if element_id.split('-')[0] == 'dropdown':
             element_id = 'quick-icons-' + '-'.join(element_id.split('-')[1:])
