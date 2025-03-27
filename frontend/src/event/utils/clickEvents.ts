@@ -38,7 +38,7 @@ const handleMenuClick = (event: Event, user: User | null, elements: ElementInfo[
 		const requestBody: BackendClickEvent = mapClickEventToBackendRequestBody(clickEvent);
 		sendClickEventData(user, requestBody);
 	} else {
-		console.log('Unknown element clicked');
+		// console.log('Unknown element clicked');
 	}
 };
 
