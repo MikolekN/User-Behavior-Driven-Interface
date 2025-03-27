@@ -339,7 +339,10 @@
         "/cards": "Cards",
         "/chat": "Chat",
         "/faq": "FAQ",
-        "/info": "Contact"
+        "/info": "Contact",
+        "/create-cyclic-payment": "Add cyclic payment",
+        "/create-account": "Add account",
+        "/create-card": "Add card"
     },
     "formSelect": {
         "userName": "User name",
@@ -434,7 +437,7 @@
             "accountNotExist": "Account not exist",
             "unauthorizedAccountAccess": "Unauthorized account access",
             "accountDeleteSucessful": "Account deleted successfully",
-            "acountsNotExist": "Accounts list is empty",
+            "accountsNotExist": "Accounts list is empty",
             "accountDontHaveEnoughMoney": "Not enough money in active account",
             "senderAccountNotExist": "Sender's account not exist",
             "networkError": "The service is currently unavailable. Please try again later.",

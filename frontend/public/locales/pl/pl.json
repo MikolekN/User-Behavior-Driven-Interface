@@ -340,7 +340,10 @@
         "/cards": "Karty",
         "/chat": "Chat",
         "/faq": "FAQ",
-        "/info": "Kontakt"
+        "/info": "Kontakt",
+        "/create-cyclic-payment": "Dodaj płatność cykliczną",
+        "/create-account": "Dodaj konto",
+        "/create-card": "Dodaj kartę"
     },
     "formSelect": {
         "userName": "Nazwa użytkownika",
