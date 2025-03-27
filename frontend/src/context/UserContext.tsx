@@ -6,7 +6,7 @@ export interface UserContextProps {
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-    getUser: () => Promise<void>;
+    getUser: () => Promise<User | null>;
     updateUser: (field: string, value: string) => Promise<void>;
     updatePassword: (requestBody: object) => Promise<void>;
 }
@@ -15,7 +15,7 @@ const defaultContextValue: UserContextProps = {
     user: null,
     setUser: () => {},
     setLoading: () => {},
-    getUser: async () => {},
+    getUser: async () => null,
     updateUser: async () => {},
     updatePassword: async () => {},
 };
@@ -26,12 +26,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const getUser = useCallback(async (): Promise<void> => {
+    const getUser = useCallback(async (): Promise<User | null> => {
         const { user: userBackendData } = await getUserData();
         if (userBackendData) {
             const userFrontendData = mapBackendUserToUser(userBackendData);
-            setUser(() => new User({ ...userFrontendData, email: userFrontendData.email! }));
+            const newUser = new User({ ...userFrontendData, email: userFrontendData.email! });
+            setUser(newUser);
+            return newUser;
         }
+        return null;
     }, []);
 
     const updateUser = useCallback(async (field: string, value: string): Promise<void> => {

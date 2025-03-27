@@ -6,20 +6,16 @@ import { useContext, useEffect } from 'react';
 import { AccountContext } from '../../context/AccountContext';
 import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
 import { UserContext } from '../../context/UserContext';
-import { PreferencesContext } from '../../event/context/PreferencesContext';
 
 const Dashboard = () => {
     const { t } = useTranslation();
     const { activeAccount, setActiveAccount, getActiveAccount } = useContext(AccountContext);
     const { user, getUser } = useContext(UserContext);
-    const { getUserPreference, generateUserPreference } = useContext(PreferencesContext);
 
     useEffect(() => {
         const getUserActiveAccount = async () => {
             try {
                 await getActiveAccount();
-                await generateUserPreference(user!); // for now ok, later generate wont return preferences, so get will be necessary
-                await getUserPreference(user!);
             } catch {
                 setActiveAccount(null);
             }

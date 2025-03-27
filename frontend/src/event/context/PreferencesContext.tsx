@@ -1,9 +1,10 @@
-import React, { createContext, ReactNode, useCallback, useMemo, useState } from "react";
+import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { getQuickIconsPreferencesFromUserPreferences, QuickIconsPreference } from "../types/QuickIconsPreference";
 import { generateUserPreferencesData, getUserPreferencesData } from "../service/eventService";
 import { User } from "../../components/utils/User";
 import { getShortcutPreferencesFromUserPreferences, ShortcutPreference } from "../types/ShortcutPreference";
 import { mapBackendPreferencesToUserPreferences, Preferences } from "../types/Preferences";
+import { UserContext } from "../../context/UserContext";
 
 
 interface PreferencesContextProps {
@@ -35,6 +36,7 @@ const defaultContextValue: PreferencesContextProps = {
 export const PreferencesContext = createContext<PreferencesContextProps>(defaultContextValue);
 
 export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const { user } = useContext(UserContext);
     const [userPreferences, setUserPreferences] = useState<Preferences | null>(null);
     const [quickIconsPreference, setQuickIconsPreference] = useState<QuickIconsPreference | null>(null);
     const [shortcutPreference, setShortcutPreference] = useState<ShortcutPreference | null>(null);
@@ -62,12 +64,21 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
     }, []);
 
     const generateUserPreference = useCallback(async (user: User): Promise<void> => {
-        const {preferences: generatedPreferencesBackendData} = await generateUserPreferencesData(user);
-        if (generatedPreferencesBackendData) {
-            const frontendQuickIconsPreferencesData: Preferences = mapBackendPreferencesToUserPreferences(generatedPreferencesBackendData);
+        const response = await generateUserPreferencesData(user);
+        if (response?.preferences) {
+            const frontendQuickIconsPreferencesData: Preferences = mapBackendPreferencesToUserPreferences(response.preferences);
             setUserPreferences(frontendQuickIconsPreferencesData);
         }
-    }, []);
+    }, [setUserPreferences]);
+
+    useEffect(() => {
+        const fetchAccount = async (): Promise<void> => {
+            if (!userPreferences) {
+                await getUserPreference(user!);
+            }
+        };
+        void fetchAccount();
+    }, [getUserPreference, userPreferences]);
 
     const PreferencesContextValue = useMemo(() => ({
         userPreferences, setUserPreferences, quickIconsPreference, setQuickIconsPreference, shortcutPreference, setShortcutPreference, 

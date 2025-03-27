@@ -2,6 +2,7 @@ import { createContext, ReactNode, useMemo, useContext, useCallback } from 'reac
 import { UserContext } from './UserContext';
 import { loginUser, registerUser, logoutUser } from '../services/authService';
 import { AccountContext } from './AccountContext';
+import { PreferencesContext } from '../event/context/PreferencesContext';
 
 interface AuthContextProps {
     login: (email: string, password: string) => Promise<void>;
@@ -19,15 +20,22 @@ export const AuthContext = createContext<AuthContextProps>(defaultContextValue);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { setUser, setLoading, getUser } = useContext(UserContext);
-    const { setAccount, getActiveAccount } = useContext(AccountContext);
+    const { setAccount } = useContext(AccountContext);
+    const { setUserPreferences, generateUserPreference, getUserPreference, setShortcutPreference } = useContext(PreferencesContext);
 
     const login = useCallback(async (email: string, password: string): Promise<void> => {
         setLoading(true);
-
         await loginUser(email, password);
-        await getUser();
-        await getActiveAccount();
-
+        const userData = await getUser();
+        if (!userData) return;
+        try {
+            await generateUserPreference(userData);
+            await getUserPreference(userData);
+        } catch (error) {
+            setUserPreferences(null);
+            setShortcutPreference(null);
+        }
+        
         setLoading(false);
     }, [setLoading, setUser]);
 
@@ -43,7 +51,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setUser(null);
 
         setLoading(false);
-    }, [setLoading, setUser, setAccount]);
+        setUserPreferences(null);
+        
+    }, [setLoading, setUser, setAccount, setUserPreferences]);
 
     const authContextValue = useMemo(() => ({
         login,

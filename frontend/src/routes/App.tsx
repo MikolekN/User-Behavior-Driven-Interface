@@ -7,13 +7,11 @@ import { UserContext } from '../context/UserContext';
 import { startTracking, stopTracking } from '../event/utils/pageTransition';
 import { t } from 'i18next';
 import Shortcut from '../components/Event/Shortcut/Shortcut';
-import { PreferencesContext } from '../event/context/PreferencesContext';
 
 const App = () => {
     const { user } = useContext(UserContext);
     const [isTabOpen, setIsTabOpen] = useState<boolean>(false);
-    const { userPreferences, getUserPreference } = useContext(PreferencesContext);
-
+    
     useEffect(() => {
         const userDropdownClickEvents = setupUserDropdownClickEvents(user);
         const submitButtonsClickEvents = setupSubmitButtonsClickEvents(user);
@@ -48,16 +46,6 @@ const App = () => {
         startTracking(user!);
 
         return () => stopTracking();
-    }, [user]);
-
-    useEffect(() => {
-        const getUserActiveAccount = async () => {
-            try {
-                await getUserPreference(user!);
-            } catch {  }
-        }
-
-        getUserActiveAccount();
     }, [user]);
 
 	if (isTabOpen) {
