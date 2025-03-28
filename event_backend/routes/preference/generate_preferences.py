@@ -1,20 +1,21 @@
+import json
 from http import HTTPStatus
+from typing import Optional
 
 import bson
+import requests
 from flask import Response, request
 from shared import create_simple_response
 
+from click_events.click_event import ClickEvent
 from click_events.click_event_repository import ClickEventRepository
 from page_transition_event.constants import BASE_QUICK_ICONS_PREFERENCE
-from page_transition_event.page_transition_event_repository import PageTransitionEventRepository
 from preferences.preferences import Preferences
 from preferences.preferences_repository import PreferencesRepository
-from preferences.responses.generate_preferences_response import GeneratePreferencesResponse
 from routes.helpers import validate_token
 
 preferences_repository = PreferencesRepository()
 click_events_repository = ClickEventRepository()
-page_transition_event_repository = PageTransitionEventRepository()
 
 def generate_preferences(user_id) -> Response:
     if not isinstance(user_id, str) or not bson.ObjectId.is_valid(user_id):
@@ -36,11 +37,17 @@ def generate_preferences(user_id) -> Response:
             }
         )
         preferences_repository.insert(preferences)
-    else:
-        preferences.preferences['quickIconsPreference'] = click_events_repository.get_user_quick_icons_preference(user_id)
-        preferences.preferences['pageTransitionPreference'] = page_transition_event_repository.get_user_page_transition_preference(user_id)
-        d = preferences.to_dict(for_db=True)
-        d.pop('_id')
-        preferences_repository.update(str(preferences.id), d)
 
-    return GeneratePreferencesResponse.create_response("preferencesGenerateSuccessful", preferences.to_dict(), HTTPStatus.OK)
+    click_events: Optional[list[ClickEvent]] = click_events_repository.get_user_quick_icons_events(user_id)
+    if click_events:
+        requests.post(
+            "https://bru-2.connectors.camunda.io/a21c5657-a334-441e-85f8-4d680f16d26f/inbound/d36532c8-7c2f-4b35-9a0d-0e55adaf0b3a",
+            data=json.dumps({
+                "user_id": user_id,
+                "token": token_value,
+                "events": [click_event.to_dict() for click_event in click_events]
+            })
+        )
+        return create_simple_response("ok", HTTPStatus.OK)
+
+    return create_simple_response("noClickEventsFound", HTTPStatus.NOT_FOUND)
