@@ -459,7 +459,8 @@
             "invalidCurrencyFormat": "Kod waluty musi składać się z trzech wielkich liter",
             "fileRequired": "Plik jest wymagany",
             "invalidFileType": "Typ pliku jest niedozwolony",
-            "maximumFileSize": "Maksymalny rozmiar pliku to 8 MB"
+            "maximumFileSize": "Maksymalny rozmiar pliku to 8 MB",
+            "Invalid email": "Niepoprawny email"
         }
     },
     "chart": {

@@ -458,7 +458,8 @@
             "invalidCurrencyFormat": "Currency code must consist of three capital letters",
             "fileRequired": "File is required",
             "invalidFileType": "Unsupported file type",
-            "maximumFileSize": "Maximum size of a file is 8 MB"
+            "maximumFileSize": "Maximum size of a file is 8 MB",
+            "Invalid email": "Invalid email" 
         }
     },
     "chart": {
