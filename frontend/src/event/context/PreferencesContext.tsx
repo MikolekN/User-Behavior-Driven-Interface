@@ -64,11 +64,7 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
     }, []);
 
     const generateUserPreference = useCallback(async (user: User): Promise<void> => {
-        const response = await generateUserPreferencesData(user);
-        if (response?.preferences) {
-            const frontendQuickIconsPreferencesData: Preferences = mapBackendPreferencesToUserPreferences(response.preferences);
-            setUserPreferences(frontendQuickIconsPreferencesData);
-        }
+        await generateUserPreferencesData(user);
     }, [setUserPreferences]);
 
     useEffect(() => {

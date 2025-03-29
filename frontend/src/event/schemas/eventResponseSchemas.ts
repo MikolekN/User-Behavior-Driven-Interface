@@ -24,10 +24,13 @@ export const SendPageTransitionEventResponseSchema = z.object({
 
 export type SendPageTransitionEventResponse = z.infer<typeof SendPageTransitionEventResponseSchema>;
 
-export const UserPreferencesResponseSchema = z.object({
+export const GetUserPreferencesResponseSchema = z.object({
     message: requiredStringField(),
     preferences: PreferenceSchema
 });
+export type GetUserPreferencesResponse = z.infer<typeof GetUserPreferencesResponseSchema>;
 
-export type GetUserPreferencesResponse = z.infer<typeof UserPreferencesResponseSchema>;
-export type GenerateUserPreferencesResponse = z.infer<typeof UserPreferencesResponseSchema>;
+export const GenerateUserPreferencesResponseSchema = z.object({
+    message: requiredStringField()
+});
+export type GenerateUserPreferencesResponse = z.infer<typeof GenerateUserPreferencesResponseSchema>;

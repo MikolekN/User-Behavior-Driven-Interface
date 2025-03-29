@@ -10,20 +10,31 @@ import externalLink  from "../../../assets/images/external-link.svg";
 const Shortcut = () => {
     const { handleError } = useApiErrorHandler();
     const { user } = useContext(UserContext);
-    const { shortcutPreference, getShortcutPreference } = useContext(PreferencesContext);
+    const { userPreferences, shortcutPreference, getShortcutPreference, getUserPreference } = useContext(PreferencesContext);
 
     useEffect(() => {
         if (!user) return;
-        const fetchQuickIconsPreferences = async () => {
+        const fetchShortcutPreferences = async () => {
             try {
-                getShortcutPreference();
+                await getUserPreference(user);
             } catch (error) {
                 handleError(error);
             }
         };
 
-        void fetchQuickIconsPreferences();
-    }, [user, getShortcutPreference]);
+        void fetchShortcutPreferences();
+    }, [user]);
+
+    useEffect(() => {
+        if (!user) return;
+        const getShortcutPreferenceData = () => {
+            if (userPreferences) {
+                getShortcutPreference();
+            }
+        };
+
+        getShortcutPreferenceData();
+    }, [userPreferences]);
 
     if (shortcutPreference === null || shortcutPreference?.links.length === 0) {
         return (
