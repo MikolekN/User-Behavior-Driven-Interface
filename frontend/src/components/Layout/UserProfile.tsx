@@ -5,7 +5,6 @@ import { UserContext } from '../../context/UserContext';
 import { UserIconContext } from '../../context/UserIconContext';
 import { useTranslation } from "react-i18next";
 import { LANGUAGES } from "../../pages/constants";
-import { setupUserDropdownClickEvents } from "../../event/utils/clickEvents";
 import { QUICK_ICONS, USER_DROPDOWN } from "../../event/utils/constants";
 import { flowbiteDropdownTheme } from "../utils/themes/dropdownTheme";
 import { darkThemeToggleTheme } from "../utils/themes/darkThemeToggleTheme";
@@ -47,11 +46,6 @@ export const UserProfile = () => {
         void fetchIcon();
     }, [user, getIcon, user?.icon, computedMode]);
 
-    useEffect(() => {
-        const clickEvents = setupUserDropdownClickEvents(user);
-        return clickEvents;
-    }, [user]);
-
     return (
         <div className="flex order-3 md:order-3 space-x-2">
             {!user && (
@@ -65,7 +59,7 @@ export const UserProfile = () => {
                         >
                             {
                                 LANGUAGES.map((language) => {
-                                    return(<LanguageDropdownItem image={language.image} name={t('menu.languages.' + language.key)} code={language.value} isChosen={i18n.language == language.value} />);
+                                    return(<LanguageDropdownItem key={language.key} image={language.image} name={t('menu.languages.' + language.key)} code={language.value} isChosen={i18n.language == language.value} />);
                                 })
                             }
                         </Dropdown>

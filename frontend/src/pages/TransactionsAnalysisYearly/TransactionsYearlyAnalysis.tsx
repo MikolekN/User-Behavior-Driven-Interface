@@ -81,12 +81,12 @@ const TransactionsYearlyAnalysis = () => {
                     <div className="flex justify-between mt-4">
                         <Button onClick={() => setStartYear(startYear - 1)} disabled={startYear === MIN_YEAR} className="bg-transparent hover:bg-transparent cursor-pointer focus:ring-transparent mr-2">
                             <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
+                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7"/>
                             </svg>
                         </Button>
                         <Button onClick={() => setStartYear(startYear + 1)} disabled={startYear + LIMIT > CURRENT_YEAR} className="bg-transparent hover:bg-transparent cursor-pointer focus:ring-transparent">
                             <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7"/>
                             </svg>
                         </Button>
                     </div>

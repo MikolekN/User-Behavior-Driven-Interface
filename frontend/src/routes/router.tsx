@@ -54,8 +54,8 @@ export const router = createBrowserRouter([
                     { path: '/create-account', element: <AccountForm key="create" />},
                     { path: '/edit-account/:accountNumber', element: <AccountForm key="edit" />},
                     { path: '/cards', element: <Cards /> },
-                    { path: 'create-card', element: <CardForm key="create" /> },
-                    { path: 'edit-card/:cardNumber', element: <CardForm key="edit" /> }
+                    { path: '/create-card', element: <CardForm key="create" /> },
+                    { path: '/edit-card/:cardNumber', element: <CardForm key="edit" /> }
                 ]
             },
         ],

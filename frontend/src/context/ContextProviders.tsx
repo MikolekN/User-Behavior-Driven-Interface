@@ -11,21 +11,21 @@ import { PreferencesProvider } from '../event/context/PreferencesContext';
 // eslint-disable-next-line react/prop-types
 const ContextProviders: React.FC<{ children: ReactNode }> = ({ children }) => (
     <UserProvider>
-        <AuthProvider>
-            <UserIconProvider>
-                <TransferProvider>
-                    <CyclicPaymentProvider>
-                        <AccountProvider>
-                            <CardProvider>
-                                <PreferencesProvider>
+        <PreferencesProvider>
+            <AuthProvider>
+                <UserIconProvider>
+                    <TransferProvider>
+                        <CyclicPaymentProvider>
+                            <AccountProvider>
+                                <CardProvider>
                                     {children}
-                                </PreferencesProvider>
-                            </CardProvider>
-                        </AccountProvider>
-                    </CyclicPaymentProvider>
-                </TransferProvider>
-            </UserIconProvider>
-        </AuthProvider>
+                                </CardProvider>
+                            </AccountProvider>
+                        </CyclicPaymentProvider>
+                    </TransferProvider>
+                </UserIconProvider>
+            </AuthProvider>
+        </PreferencesProvider>
     </UserProvider>
 );
 

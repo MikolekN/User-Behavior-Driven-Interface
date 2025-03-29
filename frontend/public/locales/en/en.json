@@ -324,6 +324,26 @@
             "loading": "Loading..."
         }
     },
+    "shortcut": {
+        "tile": {
+            "title": "Shortcut"
+        },
+        "/dashboard": "Dashboard",
+        "/transfer": "Transfer",
+        "/transactions/history": "Transfer history",
+        "/cyclic-payments": "Cyclic payments",
+        "/loan": "Loan",
+        "/transactions/analysis/monthly": "Monthly analysis",
+        "/transactions/analysis/yearly": "Yearly analysis",
+        "/accounts": "Accounts",
+        "/cards": "Cards",
+        "/chat": "Chat",
+        "/faq": "FAQ",
+        "/info": "Contact",
+        "/create-cyclic-payment": "Add cyclic payment",
+        "/create-account": "Add account",
+        "/create-card": "Add card"
+    },
     "formSelect": {
         "userName": "User name",
         "accountName": "Account name",
@@ -417,7 +437,7 @@
             "accountNotExist": "Account not exist",
             "unauthorizedAccountAccess": "Unauthorized account access",
             "accountDeleteSucessful": "Account deleted successfully",
-            "acountsNotExist": "Accounts list is empty",
+            "accountsNotExist": "Accounts list is empty",
             "accountDontHaveEnoughMoney": "Not enough money in active account",
             "senderAccountNotExist": "Sender's account not exist",
             "networkError": "The service is currently unavailable. Please try again later.",
@@ -438,7 +458,8 @@
             "invalidCurrencyFormat": "Currency code must consist of three capital letters",
             "fileRequired": "File is required",
             "invalidFileType": "Unsupported file type",
-            "maximumFileSize": "Maximum size of a file is 8 MB"
+            "maximumFileSize": "Maximum size of a file is 8 MB",
+            "Invalid email": "Invalid email" 
         }
     },
     "chart": {
@@ -458,5 +479,6 @@
             "nov": "November",
             "dec": "December"
         }
-    }
+    },
+    "blockedTabInfo": "Sorry, but this application allows only one tab to be open. Please close this tab"
 }

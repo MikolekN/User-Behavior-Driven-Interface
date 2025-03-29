@@ -15,6 +15,7 @@ import AccountDetails from '../../components/utils/AccountDetails';
 import { useTranslation } from 'react-i18next';
 import { AccountContext } from '../../context/AccountContext';
 import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
+import { SUBMIT_BUTTONS } from '../../event/utils/constants';
 
 const Transfer = () => {
     const { t } = useTranslation();
@@ -95,7 +96,7 @@ const Transfer = () => {
                             {activeAccount!.currency}
                         </FormInput>
                         <div>
-                            <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
+                            <Button id={SUBMIT_BUTTONS.TRANSFER.id} isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
                                 {isSubmitting ? `${t('transfer.loading')}` : `${t('transfer.submit')}`}
                             </Button>
                         </div>

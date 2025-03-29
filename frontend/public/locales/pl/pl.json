@@ -325,6 +325,26 @@
             "loading": "Ładowanie..."
         }
     },
+    "shortcut": {
+        "tile": {
+            "title": "Na skróty"
+        },
+        "/dashboard": "Strona głowna",
+        "/transfer": "Przelew",
+        "/transactions/history": "Historia transferów",
+        "/cyclic-payments": "Płatności cykliczne",
+        "/loan": "Pożyczka",
+        "/transactions/analysis/monthly": "Analiza miesięczna",
+        "/transactions/analysis/yearly": "Analiza roczna",
+        "/accounts": "Konta",
+        "/cards": "Karty",
+        "/chat": "Chat",
+        "/faq": "FAQ",
+        "/info": "Kontakt",
+        "/create-cyclic-payment": "Dodaj płatność cykliczną",
+        "/create-account": "Dodaj konto",
+        "/create-card": "Dodaj kartę"
+    },
     "formSelect": {
         "userName": "Nazwa użytkownika",
         "accountName": "Nazwa konta",
@@ -439,7 +459,8 @@
             "invalidCurrencyFormat": "Kod waluty musi składać się z trzech wielkich liter",
             "fileRequired": "Plik jest wymagany",
             "invalidFileType": "Typ pliku jest niedozwolony",
-            "maximumFileSize": "Maksymalny rozmiar pliku to 8 MB"
+            "maximumFileSize": "Maksymalny rozmiar pliku to 8 MB",
+            "Invalid email": "Niepoprawny email"
         }
     },
     "chart": {
@@ -459,5 +480,6 @@
             "nov": "Listopad",
             "dec": "Grudzień"
         }
-    }
+    },
+    "blockedTabInfo": "Przepraszamy, ale aplikacja pozwala na otawrcie jednej karty. Proszę zamknij tą kartę"
 }

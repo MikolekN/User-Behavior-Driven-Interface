@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import Button from '../../components/utils/Button';
 import { AccountContext } from '../../context/AccountContext';
 import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
+import { SUBMIT_BUTTONS } from '../../event/utils/constants';
 
 const CyclicPaymentsForm = () => {
     const { t } = useTranslation();
@@ -62,7 +63,7 @@ const CyclicPaymentsForm = () => {
         setValue('recipientAccountNumber', cyclicPayment.recipientAccountNumber);
         setValue('transferTitle', cyclicPayment.transferTitle);
         setValue('amount', cyclicPayment.amount.toString());
-        setMinDate(cyclicPayment.startDate)
+        setMinDate(cyclicPayment.startDate);
         setDate(cyclicPayment.startDate);
         setValue('interval', cyclicPayment.interval);
     }, []);
@@ -117,7 +118,7 @@ const CyclicPaymentsForm = () => {
             try {
                 await createCyclicPayment(requestBody);
                 await getUser();
-                navigate('/cyclic-payments');
+                navigate('/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();
@@ -126,7 +127,7 @@ const CyclicPaymentsForm = () => {
             try {
                 await updateCyclicPayment(id!, requestBody);
                 await getUser();
-                navigate('/cyclic-payments');
+                navigate('/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();
@@ -160,7 +161,7 @@ const CyclicPaymentsForm = () => {
                     <ErrorAlert alertMessage={apiError.errorMessage} />
                 }
             </div>
-            <AccountDetails label={t('cyclicPaymentForm.fromAccount')} account={activeAccount!} className='w-full p-3 mb-6' />
+            <AccountDetails label={t('cyclicPaymentForm.fromAccount')} account={activeAccount!} className='w-full p-3 mb-3' />
             <form id="cyclic-payment-form" className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                 <FormInput
                     label={t('cyclicPaymentForm.cyclicPaymentName')}
@@ -179,7 +180,6 @@ const CyclicPaymentsForm = () => {
                 <Controller
                     name="startDate"
                     control={control}
-                    defaultValue={undefined}
                     render={() => (
                         <div className="mb-4">
                             <Label label={t('cyclicPaymentForm.startDate')} />
@@ -192,7 +192,8 @@ const CyclicPaymentsForm = () => {
                                     onChange={handleDateChange}
                                     showClearButton={false}
                                     showTodayButton={false}
-                                    value={date}
+                                    defaultValue={date!}
+                                    value={date!}
                                     label={t('cyclicPaymentForm.startDatePlaceholder')}
                                 />
                             </Flowbite>
@@ -226,7 +227,7 @@ const CyclicPaymentsForm = () => {
                 >
                     {activeAccount!.currency}
                 </FormInput>
-                <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
+                <Button id={SUBMIT_BUTTONS.CYCLIC_PAYMENT.id} isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
                     {isSubmitting
                         ? t('cyclicPaymentForm.loading')
                         : id

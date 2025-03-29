@@ -11,7 +11,7 @@ const Tile: FC<TileProps> = ({ children, title, id, className = '' }) => {
     return (
         <div
             id={`${id}-wrapper`}
-            className='flex flex-grow md:flex-grow-0 flex-col justify-center items-center w-[90%] max-w-[90%] md:max-w-[70%] md:h-auto'
+            className='flex flex-grow md:flex-grow-0 flex-col justify-center items-center w-[90%] max-w-[90%] md:h-auto md:max-w-full md:w-full'
         >
             <div
                 id={`${id}-tile`}

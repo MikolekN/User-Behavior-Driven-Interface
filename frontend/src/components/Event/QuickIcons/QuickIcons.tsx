@@ -24,7 +24,7 @@ const QuickIcons = () => {
         if (!user) return;
         const fetchQuickIconsPreferences = async () => {
             try {
-                await getQuickIconsPreference(user);
+                getQuickIconsPreference();
             } catch (error) {
                 handleError(error);
             }
@@ -56,7 +56,7 @@ const QuickIcons = () => {
                 >
                 {
                     LANGUAGES.map((language) => {
-                        return(<LanguageDropdownItem image={language.image} name={t('menu.languages.' + language.key)} code={language.value} isChosen={i18n.language == language.value} />);
+                        return(<LanguageDropdownItem key={language.key} image={language.image} name={t('menu.languages.' + language.key)} code={language.value} isChosen={i18n.language == language.value} />);
                     })
                 }
             </Dropdown>),

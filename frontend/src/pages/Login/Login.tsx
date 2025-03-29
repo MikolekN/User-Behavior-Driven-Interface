@@ -12,6 +12,7 @@ import useApiErrorHandler from '../../hooks/useApiErrorHandler';
 import { scrollToTop } from '../../components/utils/scroll';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import { useTranslation } from 'react-i18next';
+import { SUBMIT_BUTTONS } from '../../event/utils/constants';
 
 const Login = () => {
     const { t } = useTranslation();
@@ -58,6 +59,7 @@ const Login = () => {
                             register={register('email')}
                             error={errors.email}
                             className="w-full"
+                            autocomplete={'username'}
                         />
                         <FormInput
                             label={t('login.password')}
@@ -65,8 +67,9 @@ const Login = () => {
                             register={register('password')}
                             error={errors.password}
                             className="w-full"
+                            autocomplete={"new-password"}
                         />
-                        <Button isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
+                        <Button id={SUBMIT_BUTTONS.LOGIN.id} isSubmitting={isSubmitting} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
                             {isSubmitting ? `${t('login.loading')}` : `${t('login.submit')}`}
                         </Button>
                     </form>

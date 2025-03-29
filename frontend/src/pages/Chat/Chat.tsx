@@ -2,6 +2,7 @@ import { useState, useEffect, useContext, useRef, FC } from 'react';
 import Tile from '../../components/Tile/Tile';
 import { UserContext } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
+import Button from '../../components/utils/Button';
 
 type MessageType = 'user' | 'system';
 
@@ -69,17 +70,17 @@ const Chat: FC = () => {
                         onChange={(e) => setMessage(e.target.value)}
                         onKeyDown={handleKeyPress}
                         placeholder={t('chat.writeMessage')}
-                        className="flex-grow p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 focus:outline-none"
+                        className="flex-grow py-3 px-4 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 focus:outline-none"
                     />
-                    <button
+                    <Button
                         onClick={handleSend}
-                        className="ml-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 dark:bg-gray-800 dark:hover:bg-gray-700 transition duration-200"
+                        className="ml-2 dark:bg-gray-800 dark:hover:bg-gray-700 transition duration-200"
                         aria-label="Send message"
                     >
                         <svg className="w-6 h-6 text-white dark:text-[#9ca3af]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" transform="rotate(90)">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m12 18-7 3 7-18 7 18-7-3Zm0 0v-5"/>
                         </svg>
-                    </button>
+                    </Button>
                 </div>
             </div>
         </Tile>

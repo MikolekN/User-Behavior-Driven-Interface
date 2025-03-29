@@ -55,12 +55,9 @@ export const Dropdown: React.FC<DropdownProps> = ({ menu, isOpen, onClick, close
                     md:mt-2`}
             >
                 {menu.submenu.map((option) => (
-                    <li key={option.key}
-                        className="block list-none text-center md:hover:font-semibold text-sm hover:bg-gray-200 hover:dark:bg-gray-600 ">
-                        <Navbar.Link as={Link} to={option.path} theme={blackTextTheme} onClick={closeDropdown} className="font-normal hover:font-semibold md:p-2">
-                            {t('menu.' + menu.key + '.submenu.' + option.key)}
-                        </Navbar.Link>
-                    </li>
+                    <Navbar.Link key={option.key} as={Link} to={option.path} theme={blackTextTheme} onClick={closeDropdown} className="block list-none text-center md:hover:font-semibold text-sm hover:bg-gray-200 hover:dark:bg-gray-600 font-normal hover:font-semibold md:p-2">
+                        {t('menu.' + menu.key + '.submenu.' + option.key)}
+                    </Navbar.Link>
                 ))}
             </ul>
         </li>
