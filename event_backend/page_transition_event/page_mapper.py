@@ -3,10 +3,9 @@ def remove_id_from_edit_path(page: str) -> str:
         return page
     
     parts = page.split('/')
-    print(parts)
     if len(parts) > 2:
         parts = parts[:-1]
-    print(parts)
+
     return '/'.join(parts)
 
 def remove_backslash_from_page(page: str) -> str:
@@ -17,7 +16,7 @@ def remove_backslash_from_page(page: str) -> str:
 
 def get_mapped_page(page_without_id: str, page_mappings: dict) -> str:
     mapped_page = ""
-    print(page_without_id)
+
     if page_without_id in page_mappings:
         mapped_page = page_mappings[page_without_id]
     else: 
