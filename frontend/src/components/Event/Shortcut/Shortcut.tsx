@@ -56,7 +56,7 @@ const Shortcut = () => {
                     ))}
                 </Tile>
             </div>
-            <div className="md:hidden">
+            <div className="flex justify-center items-center md:hidden">
                 <Tile title={t('shortcut.tile.title')}>
                     <div className="w-full flex justify-center flex-wrap">
                         {shortcutPreference?.links.map((link, index) => (

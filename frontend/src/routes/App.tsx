@@ -77,7 +77,7 @@ const App = () => {
                         </div>
                     </div>
                 </div>
-                <div className="md:hidden flex flex-col">
+                <div className="md:hidden flex flex-col justify-center items-center">
                     <Shortcut />
                     <Outlet />
                 </div>
