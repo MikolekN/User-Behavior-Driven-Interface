@@ -67,14 +67,12 @@ const App = () => {
     return (
         <Suspense fallback={<DefaultLoadingSkeleton />}>
             <Layout>
-                <div className="hidden md:flex w-full">
-                    <div className="grid grid-cols-12 grid-rows-1 gap-1 w-full">
-                        <div className="col-start-2 col-span-2">
-                            <Shortcut />
-                        </div>
-                        <div className="col-start-4 col-span-6">
-                            <Outlet />
-                        </div>
+                <div className="hidden md:flex w-full h-screen">
+                    <div className="flex items-start justify-center w-1/4 h-fit mt-32">
+                        <Shortcut />
+                    </div>
+                    <div className="flex items-center justify-center w-2/4">
+                        <Outlet />
                     </div>
                 </div>
                 <div className="md:hidden flex flex-col justify-center items-center">
