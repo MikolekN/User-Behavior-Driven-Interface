@@ -2,7 +2,7 @@ import { User } from "../../components/utils/User";
 import { validateSchema } from "../../schemas/apiValidation/validator";
 import { EVENT_API_URL } from "../../services/constants";
 import { handleApiResponse } from "../../services/handleApiResponse";
-import { SendClickEventResponse, SendClickEventResponseSchema, GetUserPreferencesResponse, GetUserPreferencesResponseSchema, GenerateUserPreferencesResponseSchema, GenerateUserPreferencesResponse, SendPageTransitionEventResponse } from "../schemas/eventResponseSchemas";
+import { SendClickEventResponse, SendClickEventResponseSchema, GetUserPreferencesResponse, GetUserPreferencesResponseSchema, GenerateUserPreferencesResponseSchema, GenerateUserPreferencesResponse, SendPageTransitionEventResponse, SendPageTransitionEventResponseSchema } from "../schemas/eventResponseSchemas";
 
 export const sendClickEventData = async (user: User, requestBody: object): Promise<SendClickEventResponse> => {
     const response = await fetch(`${EVENT_API_URL}/events/${user.id}`, {
@@ -31,9 +31,9 @@ export const sendPageTransitionEventData = async (user: User, requestBody: objec
         credentials: 'include'
     });
 
-    const apiResponse = await handleApiResponse<SendClickEventResponse>(response);
+    const apiResponse = await handleApiResponse<SendPageTransitionEventResponse>(response);
     
-    return validateSchema({ dto: apiResponse, schema: SendClickEventResponseSchema, schemaName: 'create/click_event' });
+    return validateSchema({ dto: apiResponse, schema: SendPageTransitionEventResponseSchema, schemaName: 'create/page_transition_event' });
 };
 
 export const getUserPreferencesData = async (user: User): Promise<GetUserPreferencesResponse> => {
