@@ -4,7 +4,7 @@ import { Suspense, useContext, useEffect, useState } from 'react';
 import DefaultLoadingSkeleton from '../components/Loading/DefaultLoadingSkeleton';
 import { setupSubmitButtonsClickEvents, setupUserDropdownClickEvents } from '../event/utils/clickEvents';
 import { UserContext } from '../context/UserContext';
-import { startTracking, stopTracking } from '../event/utils/pageTransition';
+import { startTracking } from '../event/utils/pageTransition';
 import { t } from 'i18next';
 import Shortcut from '../components/Event/Shortcut/Shortcut';
 
@@ -43,9 +43,11 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        startTracking(user!);
+        const startTrackingRef = startTracking(user);
 
-        return () => stopTracking();
+        return () => {
+            startTrackingRef();
+        };
     }, [user]);
 
 	if (isTabOpen) {

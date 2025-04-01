@@ -27,7 +27,11 @@ let startTimestamp: number | null = null;
 let currentPagePath: string = window.location.pathname;
 
 // Track page transitions
-const handlePageChange = (user: User, nextPagePath: string) => {
+const handlePageChange = (user: User | null, nextPagePath: string) => {
+
+    if (!user) return;
+    if (nextPagePath === currentPagePath) return;
+
     const endTimestamp: number = Date.now();
     const timeSpent: number | undefined = startTimestamp ? (endTimestamp - startTimestamp) : undefined;
 
@@ -42,43 +46,37 @@ const handlePageChange = (user: User, nextPagePath: string) => {
     currentPagePath = nextPagePath;
 };
 
-// Override browser navigation functions
-const overrideHistoryMethods = (user: User) => {
+const handleNavigation = (user: User | null, url: string) => {
+    handlePageChange(user, url);
+};
+
+// Start tracking
+export const startTracking = (user: User | null) => {
+    startTimestamp = Date.now();
+    currentPagePath = window.location.pathname;
+
     const originalPushState = history.pushState;
     const originalReplaceState = history.replaceState;
 
-    const handleNavigation = (url: string) => {
-        if (url !== currentPagePath) {
-            setTimeout(() => handlePageChange(user, url), 0);
-        }
-    };
-
     history.pushState = function (...args) {
         originalPushState.apply(this, args);
-        handleNavigation(args[2] as string);
+        handleNavigation(user, args[2] as string);
     };
 
     history.replaceState = function (...args) {
         originalReplaceState.apply(this, args);
-        handleNavigation(args[2] as string);
+        handleNavigation(user, args[2] as string);
     };
 
-    window.addEventListener("popstate", (event) => {
-        handleNavigation(document.location.pathname);
+    window.addEventListener("popstate", function (event) {
+        handleNavigation(user, document.location.pathname);
     });
-};
 
-// Start tracking
-export const startTracking = (user: User) => {
-    if (!user) {
-        console.warn("User not found, tracking not started.");
-        return;
-    }
-
-    startTimestamp = Date.now();
-    currentPagePath = window.location.pathname;
-
-    overrideHistoryMethods(user);
+    return () => {
+        window.removeEventListener("popstate", function (event) {
+            handleNavigation(user, document.location.pathname);
+        });
+    };
 };
 
 // Stop tracking

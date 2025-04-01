@@ -52,6 +52,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
         setLoading(false);
         setUserPreferences(null);
+        window.location.reload();
         
     }, [setLoading, setUser, setAccount, setUserPreferences]);
 
