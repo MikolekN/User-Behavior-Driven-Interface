@@ -9,11 +9,10 @@ from click_events.click_event_repository import ClickEventRepository
 from click_events.requests.create_click_event_request import CreateClickEventRequest
 from routes.helpers import validate_token
 
+
 click_event_repository = ClickEventRepository()
 
-def create_event(user_id) -> Response:
-    data = request.get_json()
-
+def create_click_event(user_id: str, data: dict) -> Response:
     error = CreateClickEventRequest.validate_request(data)
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)

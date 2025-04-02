@@ -1,4 +1,4 @@
-interface ElementInfo {
+export interface ElementInfo {
     id: string;
 };
 
@@ -28,6 +28,17 @@ export const ALL_QUICK_ICONS_ELEMENTS: ElementInfo[] = QUICK_ICONS_ELEMENTS.conc
 
 export const CLICK_EVENT_TYPE: string = "click_event";
 export const HOVER_EVENT_TYPE: string = "hover";
-export const PAGE_TRANSITION_EVENT_TYPE: string = "pageTransition";
+export const PAGE_TRANSITION_EVENT_TYPE: string = "page_transition_event";
 
 export const DROPDOWN: string = "dropdown";
+
+export const SUBMIT_BUTTONS: Record<string, ElementInfo> = {
+    ACCOUNT: { id: "submit-button-account" },
+    CARD: { id: "submit-button-card" },
+    CYCLIC_PAYMENT: { id: "submit-button-cyclic-payment" },
+    LOAN: { id: "submit-button-loan" },
+    LOGIN: { id: "submit-button-login" },
+    TRANSFER: { id: "submit-button-transfer" }
+} as const;
+
+export const SUBMIT_BUTTONS_ELEMENTS: ElementInfo[] = Object.values(SUBMIT_BUTTONS);

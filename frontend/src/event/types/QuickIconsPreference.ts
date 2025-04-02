@@ -1,7 +1,4 @@
-export interface BackendPreferences {
-    user_id: string;
-    preferences: Record<string, string>;
-};
+import { BackendPreferences, Preferences } from "./Preferences";
 
 export interface QuickIconsPreference {
     elementId: string;
@@ -9,6 +6,12 @@ export interface QuickIconsPreference {
 
 export const mapBackendPreferencesToQuickIconsPreferences = (preferencesBackendData: BackendPreferences): QuickIconsPreference => {
     return {
-        elementId: preferencesBackendData.preferences['quickIconsPreference']
+        elementId: preferencesBackendData.preferences.quickIconsPreference
+    };
+};
+
+export const getQuickIconsPreferencesFromUserPreferences = (userPreferences: Preferences): QuickIconsPreference => {
+    return {
+        elementId: userPreferences.quickIconsPreference
     };
 };
