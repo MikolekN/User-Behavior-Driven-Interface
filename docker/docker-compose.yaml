@@ -1,7 +1,7 @@
 version: "3.9"
 
+name: "auto-gui"
 services:
-
     frontend:
         build:
             context: ../frontend
@@ -9,31 +9,57 @@ services:
         container_name: frontend
         restart: always
         ports:
-            - 5173:5173
+            - "5173:5173"
         environment:
             - CHOKIDAR_USEPOLLING=true
         volumes:
             - ../frontend/:/app:delegated
             - /app/node_modules
-
     backend:
         build:
-            context: ../backend
-            dockerfile: Dockerfile
+            context: ..
+            dockerfile: /backend/Dockerfile
         container_name: backend
         ports:
             - "5000:5000"
         environment:
-            MONGO_URI: 'mongodb://localhost:27017/User-Behavior-Driven-Interface'
-            DATABASE_NAME: 'User-Behavior-Driven-Interface'
+            MONGO_URI: "mongodb://mongo-db:27017/User-Behavior-Driven-Interface"
+            DATABASE_NAME: "User-Behavior-Driven-Interface"
             PORT: 5000
             FLASK_DEBUG: 1
-            HOST: 'mongodb'
+            HOST: "mongodb"
         depends_on:
             - mongo-db
         volumes:
-            - '../backend/:/app/'
-
+            - ../backend:/app
+    reverse-proxy:
+        build: 
+            context: ..
+            dockerfile: /nginx/Dockerfile
+        container_name: nginx
+        ports:
+            - "80:80"
+        depends_on:
+            - frontend
+            - backend
+            - event_backend
+    event_backend:
+        build:
+            context: ..
+            dockerfile: /event_backend/Dockerfile
+        container_name: event_backend
+        ports:
+            - "5005:5005"
+        environment:
+            MONGO_URI: "mongodb://mongo-db:27017/User-Behavior-Driven-Interface"
+            DATABASE_NAME: "User-Behavior-Driven-Interface"
+            PORT: 5005
+            FLASK_DEBUG: 1
+            HOST: "mongodb"
+        depends_on:
+            - mongo-db
+        volumes:
+            - ../event_backend:/app
     mongo-db:
         image: mongo:latest
         hostname: mongo
@@ -45,12 +71,11 @@ services:
             MONGO_INITDB_ROOT_PASSWORD: password
         volumes:
             - mongo-data:/data/db
-    
     mongo-express:
         container_name: mongo-express
         image: mongo-express
         ports:
-            - 8081:8081
+            - "8081:8081"
         environment:
             ME_CONFIG_BASICAUTH_USERNAME: admin
             ME_CONFIG_BASICAUTH_PASSWORD: password
