@@ -27,7 +27,7 @@ def create_click_event(user_id: str, data: dict) -> Response:
         return invalid
 
     click_event = ClickEvent(
-        session_id=None,
+        session_id=token_value,
         case_id=None,
         event_id=None,
         user_id=user_obj_id,

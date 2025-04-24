@@ -26,7 +26,7 @@ def create_hover_event(user_id: str, data: dict) -> Response:
         return invalid
 
     hover_event = HoverEvent(
-        session_id=None,
+        session_id=token_value,
         case_id=None,
         event_id=None,
         user_id=user_obj_id,

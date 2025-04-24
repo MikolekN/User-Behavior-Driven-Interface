@@ -26,7 +26,7 @@ def create_page_transition_event(user_id: str, data: dict) -> Response:
         return invalid
 
     page_transition_event = PageTransitionEvent(
-        session_id=None,
+        session_id=token_value,
         case_id=None,
         event_id=None,
         user_id=user_obj_id,
