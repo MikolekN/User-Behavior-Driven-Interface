@@ -9,6 +9,7 @@ from shared import create_simple_response
 
 from click_events.click_event import ClickEvent
 from click_events.click_event_repository import ClickEventRepository
+from config import CAMUNDA_URL
 from page_transition_event.constants import BASE_QUICK_ICONS_PREFERENCE
 from preferences.preferences import Preferences
 from preferences.preferences_repository import PreferencesRepository
@@ -41,7 +42,7 @@ def generate_preferences(user_id) -> Response:
     click_events: Optional[list[ClickEvent]] = click_events_repository.get_user_quick_icons_events(user_id)
     if click_events:
         requests.post(
-            "https://bru-2.connectors.camunda.io/a21c5657-a334-441e-85f8-4d680f16d26f/inbound/d36532c8-7c2f-4b35-9a0d-0e55adaf0b3a",
+            CAMUNDA_URL,
             data=json.dumps({
                 "user_id": user_id,
                 "token": token_value,
