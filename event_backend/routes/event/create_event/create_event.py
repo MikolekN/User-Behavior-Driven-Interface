@@ -4,6 +4,7 @@ from flask import Response, request
 from shared import create_simple_response
 
 from routes.event.create_event.create_click_event import create_click_event
+from routes.event.create_event.create_hover_event import create_hover_event
 from routes.event.create_event.create_page_transition_event import create_page_transition_event
 
 
@@ -19,5 +20,7 @@ def create_event(user_id) -> Response:
             return create_click_event(user_id, data)
         case 'page_transition_event':
             return create_page_transition_event(user_id, data)
+        case 'hover_event':
+            return create_hover_event(user_id, data)
         case _:
             return create_simple_response('wrong event type', HTTPStatus.BAD_REQUEST)

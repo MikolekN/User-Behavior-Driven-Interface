@@ -4,15 +4,15 @@ import bson
 from flask import Response, request
 from shared import create_simple_response
 
-from page_transition_event.page_transition_event import PageTransitionEvent
-from page_transition_event.page_transition_event_repository import PageTransitionEventRepository
-from page_transition_event.requests.create_page_transition_event_request import CreatePageTransitionEventRequest
+from hover_events.hover_event import HoverEvent
+from hover_events.hover_event_repository import HoverEventRepository
+from hover_events.requests.create_hover_event_request import CreateHoverEventRequest
 from routes.helpers import validate_token
 
-page_transition_event_repository = PageTransitionEventRepository()
+hover_event_repository = HoverEventRepository()
 
-def create_page_transition_event(user_id: str, data: dict) -> Response:
-    error = CreatePageTransitionEventRequest.validate_request(data)
+def create_hover_event(user_id: str, data: dict) -> Response:
+    error = CreateHoverEventRequest.validate_request(data)
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
 
@@ -25,7 +25,7 @@ def create_page_transition_event(user_id: str, data: dict) -> Response:
     if invalid:
         return invalid
 
-    page_transition_event = PageTransitionEvent(
+    hover_event = HoverEvent(
         session_id=token_value,
         case_id=None,
         event_id=None,
@@ -33,9 +33,10 @@ def create_page_transition_event(user_id: str, data: dict) -> Response:
         start_timestamp=data.get('start_timestamp'),
         event_type=data.get('event_type'),
         page=data.get('page'),
-        next_page=data.get('next_page'),
-        time_spent=data.get('time_spent')
+        element_id=data.get('element_id'),
+        end_timestamp=data.get('end_timestamp'),
+        duration=data.get('duration'),
     )
-    page_transition_event_repository.insert(page_transition_event)
+    hover_event_repository.insert(hover_event)
 
-    return create_simple_response("pageTransitionEventCreatedSuccessfully", HTTPStatus.CREATED)
+    return create_simple_response("hoverEventCreatedSuccessfully", HTTPStatus.CREATED)
