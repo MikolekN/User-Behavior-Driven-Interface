@@ -58,7 +58,7 @@ export const menuOptions: MenuOption[] = [
         ]
     },
     {
-        id: MAIN_MENU.MENU_MY_PRODUCTS.id,
+        id: MAIN_MENU.MENU_CUSTOMER_SERVICE.id,
         key: 'customerService',
         accessLevel: AccessLevels.Authorised,
         submenu: [
