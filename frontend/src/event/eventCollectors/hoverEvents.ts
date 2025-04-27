@@ -43,34 +43,13 @@ const handleMainMenuLeaveHover = (event: Event, user: User | null, elements: Ele
     if (elements.some(element => element.id === parentId)) {
         const hoverEvent: HoverEvent = getHoverEventData(parentId, timeSpent)
         const requestBody: BackendHoverEvent = mapHoverEventToBackendHoverEvent(hoverEvent);
-        console.log(requestBody)
         sendHoverEventData(user, requestBody);
     } else {
         // console.log('Unknown element hovered');
     }
 };
 
-const handleMainMenuEnterHover = (event: Event, user: User | null, elements: ElementInfo[]) => {
-    // const target = event.target as HTMLElement;
-    // // Find the closest parent element that has an id and matches the specified elements
-    // const parentId = target.closest('[id]')?.id;
-    
-    // if (!user) return;
-    // if (!target) return;
-    // if (!parentId) return;
-
-    // const endTimestamp: number = Date.now();
-    // const timeSpent: number | undefined = startTimestamp ? (endTimestamp - startTimestamp) : undefined;
-    
-    // if (elements.some(element => element.id === parentId)) {
-    //     const hoverEvent: HoverEvent = getHoverEventData(parentId, timeSpent)
-    //     const requestBody: BackendHoverEvent = mapHoverEventToBackendHoverEvent(hoverEvent);
-    //     sendHoverEventData(user, requestBody);
-    // } else {
-    //     // console.log('Unknown element hovered');
-    // }
-
-    
+const handleMainMenuEnterHover = () => {
     startTimestamp = Date.now();
 };
 
@@ -85,9 +64,7 @@ export const setupMainMenuHoverEvents = (user: User | null) => {
         if (!element) return;
 
         const mouseEnterHandler = (event: Event) => {
-            console.log("Hover on:", id);
-            element.style.border = "5px dotted orange";
-            handleMainMenuEnterHover(event, user, elements);
+            handleMainMenuEnterHover();
         };
         const mouseLeaveHandler = (event: Event) => {
             handleMainMenuLeaveHover(event, user, elements);
