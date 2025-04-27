@@ -60,6 +60,7 @@ export const MainMenu = () => {
                         <Navbar.Link
                             key={option.key}
                             as={Link}
+                            id={option.id}
                             to={option.path}
                             theme={blackTextTheme}
                             className='text-base font-normal hover:text-black hover:font-semibold'

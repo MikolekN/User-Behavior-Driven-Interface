@@ -42,3 +42,32 @@ export const SUBMIT_BUTTONS: Record<string, ElementInfo> = {
 } as const;
 
 export const SUBMIT_BUTTONS_ELEMENTS: ElementInfo[] = Object.values(SUBMIT_BUTTONS);
+
+export const MAIN_MENU: Record<string, ElementInfo> = {
+    MENU_HOME: { id: "menu-home" },
+    MENU_LOGIN: { id: "menu-login" },
+    MENU_REGISTER: { id: "menu-register" },
+
+    MENU_TRANSFERS: {id: "menu-transfers"},
+    SUBMENU_TRANSFER: { id: "submenu-transfer" },
+    SUBMENU_TRANSFER_HISTORY: { id: "submenu-transfer-history" },
+    SUBMENU_CYCLIC_PAYMENTS: { id: "submenu-cyclic-payments" },
+    SUBMENU_LOAN: { id: "submenu-loan" },
+
+    MENU_ANALYSIS: {id: "menu-analysis"},
+    SUBMENU_MONTHLY_ANALYSIS: { id: "submenu-monthly-analysis" },
+    SUBMENU_YEARLY_ANALYSIS: { id: "submenu-yearly-analysis" },
+
+    MENU_MY_PRODUCTS: {id: "menu-my-products"},
+    SUBMENU_ACCOUNTS: { id: "submenu-accounts" },
+    SUBMENU_CARDS: { id: "submenu-cards" },
+
+    MENU_CUSTOMER_SERVICE: {id: "menu-customer-service"},
+    SUBMENU_CHAT: { id: "submenu-chat" },
+    SUBMENU_FAQ: { id: "submenu-faq" },
+    SUBMENU_INFO: { id: "submenu-info" },
+
+    MENU_ADMIN_PANEL: { id: "menu-admin-panel" }
+} as const;
+
+export const MAIN_MENU_ELEMENTS: ElementInfo[] = Object.values(MAIN_MENU);
