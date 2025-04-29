@@ -2,11 +2,12 @@ import { Outlet } from 'react-router-dom';
 import { Layout } from '../components/Layout/Layout';
 import { Suspense, useContext, useEffect, useState } from 'react';
 import DefaultLoadingSkeleton from '../components/Loading/DefaultLoadingSkeleton';
-import { setupSubmitButtonsClickEvents, setupUserDropdownClickEvents } from '../event/utils/clickEvents';
+import { setupSubmitButtonsClickEvents, setupUserDropdownClickEvents } from '../event/eventCollectors/clickEvents';
 import { UserContext } from '../context/UserContext';
-import { startTracking } from '../event/utils/pageTransition';
+import { startTracking } from '../event/eventCollectors/pageTransition';
 import { t } from 'i18next';
 import Shortcut from '../components/Event/Shortcut/Shortcut';
+import { setupMainMenuHoverEvents } from '../event/eventCollectors/hoverEvents';
 
 const App = () => {
     const { user } = useContext(UserContext);
@@ -15,10 +16,12 @@ const App = () => {
     useEffect(() => {
         const userDropdownClickEvents = setupUserDropdownClickEvents(user);
         const submitButtonsClickEvents = setupSubmitButtonsClickEvents(user);
+        const mainMenuHoverEvents = setupMainMenuHoverEvents(user);
         
         return () => {
             userDropdownClickEvents();
             submitButtonsClickEvents();
+            mainMenuHoverEvents();
         };
     }, [user]);
 

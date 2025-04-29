@@ -18,6 +18,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ menu, isOpen, onClick, close
     return (
         <li className={`${className} relative`}>
             <button
+                id={menu.id}
                 onClick={onClick}
                 className="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded bg-transparent md:p-0 md:w-auto dark:text-gray-400 dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
             >
@@ -55,7 +56,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ menu, isOpen, onClick, close
                     md:mt-2`}
             >
                 {menu.submenu.map((option) => (
-                    <Navbar.Link key={option.key} as={Link} to={option.path} theme={blackTextTheme} onClick={closeDropdown} className="block list-none text-center md:hover:font-semibold text-sm hover:bg-gray-200 hover:dark:bg-gray-600 font-normal hover:font-semibold md:p-2">
+                    <Navbar.Link id={option.id} key={option.key} as={Link} to={option.path} theme={blackTextTheme} onClick={closeDropdown} className="block list-none text-center md:hover:font-semibold text-sm hover:bg-gray-200 hover:dark:bg-gray-600 font-normal hover:font-semibold md:p-2">
                         {t('menu.' + menu.key + '.submenu.' + option.key)}
                     </Navbar.Link>
                 ))}

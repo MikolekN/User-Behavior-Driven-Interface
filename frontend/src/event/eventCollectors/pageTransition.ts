@@ -1,7 +1,7 @@
 import { User } from "../../components/utils/User";
 import { sendPageTransitionEventData } from "../service/eventService";
 import { PageTransitionEvent, BackendPageTransitionEvent } from "../types/Event";
-import { PAGE_TRANSITION_EVENT_TYPE } from "./constants";
+import { PAGE_TRANSITION_EVENT_TYPE } from "../utils/constants";
 
 const getPageTransitionEventData = (timeSpent: number | undefined, currentPagePath: string, nextPagePath: string): PageTransitionEvent => {
     return {

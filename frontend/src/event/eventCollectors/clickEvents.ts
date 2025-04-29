@@ -1,7 +1,7 @@
 import { User } from "../../components/utils/User";
 import { sendClickEventData } from "../service/eventService";
 import { BackendClickEvent, ClickEvent } from "../types/Event";
-import { ALL_QUICK_ICONS_ELEMENTS, CLICK_EVENT_TYPE, DROPDOWN, ElementInfo, SUBMIT_BUTTONS_ELEMENTS } from "./constants";
+import { ALL_QUICK_ICONS_ELEMENTS, CLICK_EVENT_TYPE, DROPDOWN, ElementInfo, SUBMIT_BUTTONS_ELEMENTS } from "../utils/constants";
 
 
 const getClickEventData = (elementId: string): ClickEvent => {

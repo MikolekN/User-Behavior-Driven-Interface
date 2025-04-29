@@ -18,6 +18,12 @@ export const SendClickEventResponseSchema = z.object({
 
 export type SendClickEventResponse = z.infer<typeof SendClickEventResponseSchema>;
 
+export const SendHoverEventResponseSchema = z.object({
+    message: requiredStringField()
+});
+
+export type SendHoverEventResponse = z.infer<typeof SendHoverEventResponseSchema>;
+
 export const SendPageTransitionEventResponseSchema = z.object({
     message: requiredStringField()
 });
