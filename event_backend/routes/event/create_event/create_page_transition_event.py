@@ -27,7 +27,7 @@ def create_page_transition_event(user_id: str, data: dict) -> Response:
 
     page_transition_event = PageTransitionEvent(
         session_id=token_value,
-        case_id=None,
+        case_id=token_value,
         event_id=None,
         user_id=user_obj_id,
         start_timestamp=data.get('start_timestamp'),
