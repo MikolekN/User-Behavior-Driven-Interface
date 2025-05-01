@@ -1,4 +1,7 @@
 from typing import Union, List
+import pandas as pd
+from pm4py.objects.conversion.log import converter as log_converter
+from pm4py.objects.log.exporter.xes import exporter as xes_exporter
 
 from click_events.click_event import ClickEvent
 from click_events.click_event_repository import ClickEventRepository
@@ -22,3 +25,13 @@ def generate_next_step_preferences(user_id: str):
 
     all_events.sort(key=lambda event: event.start_timestamp)
 
+    df = pd.DataFrame(all_events)
+    df["case:concept:name"] = df["case_id"]
+    df["concept:name"] = df["page"] # activity?
+    df["time:timestamp"] = df["start_timestamp"]
+    df = df.sort_values(by=["case:concept:name", "time:timestamp"]),
+
+    log = log_converter.apply(df, variant=log_converter.Variants.TO_EVENT_LOG)
+    log = log[0]
+
+    xes_exporter.apply(log, "events.xes")
