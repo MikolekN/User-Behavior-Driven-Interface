@@ -24,7 +24,7 @@ const mapClickEventToBackendRequestBody = (event: ClickEvent): BackendClickEvent
 	}
 };
 
-const handleMenuClick = (event: Event, user: User | null, elements: ElementInfo[]) => {
+const handleElementClick = (event: Event, user: User | null, elements: ElementInfo[]) => {
 	const target = event.target as HTMLElement;
 	// Find the closest parent element that has an id and matches the specified elements
 	const parentId = target.closest('[id]')?.id;
@@ -48,13 +48,13 @@ export const setupUserDropdownClickEvents = (user: User | null) => {
 	// Add event listener to document.body
 	const header = document.getElementById("layout-header");
 	header?.addEventListener('click', function (event: Event) {
-		handleMenuClick(event, user, elements);
+		handleElementClick(event, user, elements);
 	});
 
 	// Cleanup function to remove event listener
 	return () => {
 		header?.removeEventListener('click', function (event: Event) {
-			handleMenuClick(event, user, elements);
+			handleElementClick(event, user, elements);
 		});
 	};
 };
@@ -64,13 +64,13 @@ export const setupSubmitButtonsClickEvents = (user: User | null) => {
 	// Add event listener to document.body
 	const layout = document.getElementById("layout-content-area");
 	layout?.addEventListener('click', function (event: Event) {
-		handleMenuClick(event, user, elements);
+		handleElementClick(event, user, elements);
 	});
 
 	// Cleanup function to remove event listener
 	return () => {
 		layout?.removeEventListener('click', function (event: Event) {
-			handleMenuClick(event, user, elements);
+			handleElementClick(event, user, elements);
 		});
 	};
 }
