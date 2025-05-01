@@ -2,6 +2,10 @@ from typing import Union, List
 import pandas as pd
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log.exporter.xes import exporter as xes_exporter
+from pm4py.discovery import discover_bpmn_inductive
+from pm4py.convert import convert_to_bpmn as heuristics_to_bpmn
+from pm4py.vis import view_bpmn as bpmn_view
+from pm4py.vis import save_vis_bpmn as bpmn_save_vis
 
 from click_events.click_event import ClickEvent
 from click_events.click_event_repository import ClickEventRepository
@@ -35,3 +39,8 @@ def generate_next_step_preferences(user_id: str):
     log = log[0]
 
     xes_exporter.apply(log, "events.xes")
+
+    bpmn_model = discover_bpmn_inductive(log)
+
+    bpmn_view(bpmn_model)
+    bpmn_save_vis(bpmn_model, "model.png")
