@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from routes.preference.generate_preferences import generate_preferences
+from routes.preference.generate_preferences.generate_preferences import generate_preferences
 from routes.preference.get_preferences import get_preferences
 from routes.preference.receive_preferences import receive_preferences
 

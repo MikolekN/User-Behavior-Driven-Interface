@@ -1,4 +1,4 @@
-from typing import Type
+from typing import Type, Optional
 
 import bson
 from shared import BaseRepository
@@ -38,3 +38,17 @@ class PageTransitionEventRepository(BaseRepository):
             sorted_pages.pop()
 
         return sorted_pages
+
+    def get_next_step_events(self, user_id: str) -> Optional[list[PageTransitionEvent]]:
+        pipeline = [
+            {
+                "$match": {
+                    "user_id": bson.ObjectId(user_id),
+                    "event_type": "page_transition_event"
+                }
+            }
+        ]
+        page_transition_events = super().aggregate(pipeline)
+        if page_transition_events:
+            return [PageTransitionEvent.from_dict(page_transition_event) for page_transition_event in page_transition_events]
+        return None

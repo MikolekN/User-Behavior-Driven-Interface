@@ -16,6 +16,23 @@ class ClickEventRepository(BaseRepository):
     def _entity_class(self) -> Type[ClickEvent]:
         return ClickEvent
 
+    def get_next_step_events(self, user_id: str) -> Optional[list[ClickEvent]]:
+        pipeline = [
+            {
+                "$match": {
+                    "user_id": bson.ObjectId(user_id),
+                    "event_type": "click_event",
+                    "element_id": {"$in": [
+                        #TODO: wpisać listę id
+                    ]}
+                }
+            }
+        ]
+        click_events = super().aggregate(pipeline)
+        if click_events:
+            return [ClickEvent.from_dict(click_event) for click_event in click_events]
+        return None
+
     def get_user_quick_icons_events(self, user_id: str) -> Optional[list[ClickEvent]]:
         pipeline = [
             {"$match":
