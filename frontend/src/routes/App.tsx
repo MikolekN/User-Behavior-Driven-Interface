@@ -12,18 +12,6 @@ import { setupMainMenuHoverEvents } from '../event/eventCollectors/hoverEvents';
 const App = () => {
     const { user } = useContext(UserContext);
     const [isTabOpen, setIsTabOpen] = useState<boolean>(false);
-    
-    useEffect(() => {
-        const userDropdownClickEvents = setupUserDropdownClickEvents(user);
-        const submitButtonsClickEvents = setupSubmitButtonsClickEvents(user);
-        const mainMenuHoverEvents = setupMainMenuHoverEvents(user);
-        
-        return () => {
-            userDropdownClickEvents();
-            submitButtonsClickEvents();
-            mainMenuHoverEvents();
-        };
-    }, [user]);
 
     useEffect(() => {
         const uniqueTabId = Date.now().toString();
@@ -44,6 +32,18 @@ const App = () => {
 			setIsTabOpen(false);
         };
     }, []);
+
+    useEffect(() => {
+        const userDropdownClickEvents = setupUserDropdownClickEvents(user);
+        const submitButtonsClickEvents = setupSubmitButtonsClickEvents(user);
+        const mainMenuHoverEvents = setupMainMenuHoverEvents(user);
+        
+        return () => {
+            userDropdownClickEvents();
+            submitButtonsClickEvents();
+            mainMenuHoverEvents();
+        };
+    }, [user]);
 
     useEffect(() => {
         const startTrackingRef = startTracking(user);
