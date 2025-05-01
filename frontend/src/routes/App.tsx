@@ -8,9 +8,11 @@ import { startTracking } from '../event/eventCollectors/pageTransition';
 import { t } from 'i18next';
 import Shortcut from '../components/Event/Shortcut/Shortcut';
 import { setupMainMenuHoverEvents } from '../event/eventCollectors/hoverEvents';
+import { AuthContext } from '../context/AuthContext';
 
 const App = () => {
     const { user } = useContext(UserContext);
+    const { logout } = useContext(AuthContext);
     const [isTabOpen, setIsTabOpen] = useState<boolean>(false);
 
     useEffect(() => {
@@ -21,6 +23,7 @@ const App = () => {
           if (event.key === "tabId") {
 				alert(t('blockedTabInfo'));
 				setIsTabOpen(true);
+                logout();
           }
         };
     
@@ -32,6 +35,13 @@ const App = () => {
 			setIsTabOpen(false);
         };
     }, []);
+
+    useEffect(() => {
+        window.addEventListener('unload', logout);
+        return () => {
+            window.removeEventListener('unload', logout);
+        };
+    });
 
     useEffect(() => {
         const userDropdownClickEvents = setupUserDropdownClickEvents(user);

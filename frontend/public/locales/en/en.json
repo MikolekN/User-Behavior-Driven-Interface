@@ -480,5 +480,5 @@
             "dec": "December"
         }
     },
-    "blockedTabInfo": "Sorry, but this application allows only one tab to be open. Please close this tab"
+    "blockedTabInfo": "Sorry, but this application not allow to have more than one active tab. Please close this tab and login again"
 }

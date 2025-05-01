@@ -481,5 +481,5 @@
             "dec": "Grudzień"
         }
     },
-    "blockedTabInfo": "Przepraszamy, ale aplikacja pozwala na otawrcie jednej karty. Proszę zamknij tą kartę"
+    "blockedTabInfo": "Przepraszamy, ale aplikacja nie pozwala na posiadanie więcej niż jednej aktywnej karty. Proszę zamknij tą kartę i zaloguj się ponownie"
 }
