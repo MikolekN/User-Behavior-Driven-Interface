@@ -342,7 +342,9 @@
         "/info": "Contact",
         "/create-cyclic-payment": "Add cyclic payment",
         "/create-account": "Add account",
-        "/create-card": "Add card"
+        "/create-card": "Add card",
+        "/settings": "Settings",
+        "/profile": "Profile"
     },
     "formSelect": {
         "userName": "User name",

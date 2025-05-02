@@ -343,7 +343,9 @@
         "/info": "Kontakt",
         "/create-cyclic-payment": "Dodaj płatność cykliczną",
         "/create-account": "Dodaj konto",
-        "/create-card": "Dodaj kartę"
+        "/create-card": "Dodaj kartę",
+        "/settings": "Ustawienia",
+        "/profile": "Profil"
     },
     "formSelect": {
         "userName": "Nazwa użytkownika",
