@@ -15,7 +15,8 @@ import { useTranslation } from 'react-i18next';
 import FormSelect from '../../components/FormSelect/FormSelect';
 import { ACCOUNT_TYPE_SELECT_OPTIONS } from '../constants';
 import { Account } from '../../components/utils/types/Account';
-import { SUBMIT_BUTTONS } from '../../event/utils/constants';
+import { FORMS, SUBMIT_BUTTONS } from '../../event/utils/constants';
+import { triggerCustomFormSubmitEvent } from '../../event/eventCollectors/clickEvents';
 
 const AccountForm = () => {
     const { t } = useTranslation();
@@ -87,6 +88,7 @@ const AccountForm = () => {
         if (account === null) {
             try {
                 await createAccount(requestBody);
+                triggerCustomFormSubmitEvent(FORMS.ACCOUNT.id);
                 navigate('/dashboard');
             } catch (error) {
                 handleError(error);

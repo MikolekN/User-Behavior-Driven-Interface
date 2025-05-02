@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { Layout } from '../components/Layout/Layout';
 import { Suspense, useContext, useEffect, useState } from 'react';
 import DefaultLoadingSkeleton from '../components/Loading/DefaultLoadingSkeleton';
-import { setupSubmitButtonsClickEvents, setupUserDropdownClickEvents } from '../event/eventCollectors/clickEvents';
+import { setupFormSucessfulSubmitButtonsClickEvents, setupUserDropdownClickEvents } from '../event/eventCollectors/clickEvents';
 import { UserContext } from '../context/UserContext';
 import { startTracking } from '../event/eventCollectors/pageTransition';
 import { t } from 'i18next';
@@ -45,7 +45,7 @@ const App = () => {
 
     useEffect(() => {
         const userDropdownClickEvents = setupUserDropdownClickEvents(user);
-        const submitButtonsClickEvents = setupSubmitButtonsClickEvents(user);
+        const submitButtonsClickEvents = setupFormSucessfulSubmitButtonsClickEvents(user);
         const mainMenuHoverEvents = setupMainMenuHoverEvents(user);
         
         return () => {
