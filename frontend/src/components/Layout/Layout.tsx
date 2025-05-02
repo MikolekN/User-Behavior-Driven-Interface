@@ -28,7 +28,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 id="layout-footer"
                 className="bg-transparent text-center py-1 text-xs md:text-sm h-fit w-full max-w-full"
             >
-                <div>© 2024 Bank. All rights reserved.</div>
+                <div>© 2025 Bank. All rights reserved.</div>
             </footer>
         </div>
     );
