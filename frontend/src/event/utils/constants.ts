@@ -37,7 +37,6 @@ export const SUBMIT_BUTTONS: Record<string, ElementInfo> = {
     CARD: { id: "submit-button-card" },
     CYCLIC_PAYMENT: { id: "submit-button-cyclic-payment" },
     LOAN: { id: "submit-button-loan" },
-    LOGIN: { id: "submit-button-login" },
     TRANSFER: { id: "submit-button-transfer" }
 } as const;
 
