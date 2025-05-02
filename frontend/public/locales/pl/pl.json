@@ -190,7 +190,8 @@
         "cardAccount": "Do konta",
         "submit": "Dodaj kartę",
         "edit": "Edytuj",
-        "delete": "Usuń"
+        "delete": "Usuń",
+        "emptyList":"Lista jest pusta"
     },
     "cardForm": {
         "tile": {
@@ -444,7 +445,8 @@
             "accountDontHaveEnoughMoney": "Brak wystarczających środków na aktywnym koncie",
             "senderAccountNotExist": "Konto odbiorcy nie istnieje",
             "networkError": "Serwis jest aktualnie niedostępny. Spróbuj ponownie później.",
-            "invalidMonthlyAnalysisLimit": "Przekazano niepoprawny zakres miesięcy do analizy miesięcznej"
+            "invalidMonthlyAnalysisLimit": "Przekazano niepoprawny zakres miesięcy do analizy miesięcznej",
+            "cardsNotExist": "Użytkownik nie posiada żadnej karty"
         },
         "zod": {
             "required": "Pole jest wymagane",

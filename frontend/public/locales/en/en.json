@@ -190,7 +190,8 @@
         "cardAccount": "To account",
         "submit": "Add card",
         "edit": "Edit",
-        "delete": "Delete"
+        "delete": "Delete",
+        "emptyList":"List is empty"
     },
     "cardForm": {
         "tile": {
@@ -443,7 +444,8 @@
             "accountDontHaveEnoughMoney": "Not enough money in active account",
             "senderAccountNotExist": "Sender's account not exist",
             "networkError": "The service is currently unavailable. Please try again later.",
-            "invalidMonthlyAnalysisLimit": "Incorrect month range passed for monthly analysis"
+            "invalidMonthlyAnalysisLimit": "Incorrect month range passed for monthly analysis",
+            "cardsNotExist": "User doesn't have any card"
         },
         "zod": {
             "required": "The field is required",
