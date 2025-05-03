@@ -1,13 +1,13 @@
 import { User } from "../../components/utils/User";
 import { sendClickEventData } from "../service/eventService";
 import { BackendClickEvent, ClickEvent } from "../types/Event";
-import { ALL_QUICK_ICONS_ELEMENTS, CLICK_EVENT_TYPE, DROPDOWN, ElementInfo, SUBMIT_BUTTONS_ELEMENTS } from "../utils/constants";
+import { ALL_QUICK_ICONS_ELEMENTS, CLICK_EVENT_TYPE, DROPDOWN, ElementInfo, FORM_SUBMIT_EVENT_TYPE } from "../utils/constants";
 
 
-const getClickEventData = (elementId: string): ClickEvent => {
+const getClickEventData = (elementId: string, eventType: string): ClickEvent => {
 	return {
 		startTimestamp: new Date(),
-		eventType: CLICK_EVENT_TYPE,
+		eventType: eventType,
 		page: window.location.href,
 		elementId: elementId,
 		fromDropdown: elementId.includes(DROPDOWN) ? true : false
@@ -24,17 +24,39 @@ const mapClickEventToBackendRequestBody = (event: ClickEvent): BackendClickEvent
 	}
 };
 
-const handleMenuClick = (event: Event, user: User | null, elements: ElementInfo[]) => {
+export const triggerCustomFormSubmitEvent = (elementId: string) => {
+	const layout = document.getElementById("layout-content-area");
+	const successEvent = new CustomEvent('form-submit-success', {
+		detail: {
+			elementId: elementId
+		}
+		});
+	layout?.dispatchEvent(successEvent);
+};
+
+const handleFormSubmitEvent = (event: Event, user: User | null) => {
+	const target = event.target as HTMLElement;
+	
+	if (!user) return;
+	if (!target) return;
+
+	const customEvent = event as CustomEvent;
+	const clickEvent: ClickEvent = getClickEventData(customEvent.detail?.elementId, FORM_SUBMIT_EVENT_TYPE);
+	const requestBody: BackendClickEvent = mapClickEventToBackendRequestBody(clickEvent);
+	sendClickEventData(user, requestBody);
+};
+
+const handleElementClickEvent = (event: Event, user: User | null, elements: ElementInfo[]) => {
 	const target = event.target as HTMLElement;
 	// Find the closest parent element that has an id and matches the specified elements
 	const parentId = target.closest('[id]')?.id;
-	
+
 	if (!user) return;
 	if (!target) return;
 	if (!parentId) return;
 	
 	if (elements.some(element => element.id === parentId)) {
-		const clickEvent: ClickEvent = getClickEventData(parentId)
+		const clickEvent: ClickEvent = getClickEventData(parentId, CLICK_EVENT_TYPE);
 		const requestBody: BackendClickEvent = mapClickEventToBackendRequestBody(clickEvent);
 		sendClickEventData(user, requestBody);
 	} else {
@@ -48,29 +70,25 @@ export const setupUserDropdownClickEvents = (user: User | null) => {
 	// Add event listener to document.body
 	const header = document.getElementById("layout-header");
 	header?.addEventListener('click', function (event: Event) {
-		handleMenuClick(event, user, elements);
+		handleElementClickEvent(event, user, elements);
 	});
-
 	// Cleanup function to remove event listener
 	return () => {
 		header?.removeEventListener('click', function (event: Event) {
-			handleMenuClick(event, user, elements);
+			handleElementClickEvent(event, user, elements);
 		});
 	};
 };
 
-export const setupSubmitButtonsClickEvents = (user: User | null) => {
-	const elements: ElementInfo[] = SUBMIT_BUTTONS_ELEMENTS;
-	// Add event listener to document.body
+export const setupFormSucessfulSubmitButtonsClickEvents = (user: User | null) => {
 	const layout = document.getElementById("layout-content-area");
-	layout?.addEventListener('click', function (event: Event) {
-		handleMenuClick(event, user, elements);
+	layout?.addEventListener('form-submit-success', function (event: Event) {
+		handleFormSubmitEvent(event, user);
 	});
-
 	// Cleanup function to remove event listener
 	return () => {
-		layout?.removeEventListener('click', function (event: Event) {
-			handleMenuClick(event, user, elements);
+		layout?.removeEventListener('form-submit-success', function (event: Event) {
+			handleFormSubmitEvent(event, user);
 		});
 	};
 }

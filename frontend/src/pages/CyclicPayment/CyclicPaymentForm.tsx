@@ -24,7 +24,8 @@ import { useTranslation } from 'react-i18next';
 import Button from '../../components/utils/Button';
 import { AccountContext } from '../../context/AccountContext';
 import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
-import { SUBMIT_BUTTONS } from '../../event/utils/constants';
+import { FORMS, SUBMIT_BUTTONS } from '../../event/utils/constants';
+import { triggerCustomFormSubmitEvent } from '../../event/eventCollectors/clickEvents';
 
 const CyclicPaymentsForm = () => {
     const { t } = useTranslation();
@@ -118,6 +119,7 @@ const CyclicPaymentsForm = () => {
             try {
                 await createCyclicPayment(requestBody);
                 await getUser();
+                triggerCustomFormSubmitEvent(FORMS.CYCLIC_PAYMENT.id);
                 navigate('/dashboard');
             } catch (error) {
                 handleError(error);

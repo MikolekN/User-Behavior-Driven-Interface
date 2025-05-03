@@ -15,7 +15,8 @@ import Tile from '../../components/Tile/Tile';
 import ErrorAlert from '../../components/Alerts/ErrorAlert';
 import FormInput from '../../components/FormInput/FormInput';
 import Button from '../../components/utils/Button';
-import { SUBMIT_BUTTONS } from '../../event/utils/constants';
+import { FORMS, SUBMIT_BUTTONS } from '../../event/utils/constants';
+import { triggerCustomFormSubmitEvent } from '../../event/eventCollectors/clickEvents';
 
 
 const CardForm = () => {
@@ -86,6 +87,7 @@ const CardForm = () => {
             try {
                 await createCard(requestBody);
                 await getUser();
+                triggerCustomFormSubmitEvent(FORMS.CARD.id);
                 navigate('/dashboard');
             } catch (error) {
                 handleError(error);

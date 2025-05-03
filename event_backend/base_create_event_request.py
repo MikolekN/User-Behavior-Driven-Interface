@@ -7,7 +7,7 @@ import bson
 from shared import BaseRequest
 
 
-event_types = ['click_event', 'hover_event', 'page_transition_event']
+event_types = ['click_event', 'hover_event', 'page_transition_event', 'form_submit_event']
 
 @dataclass
 class BaseCreateEventRequest(BaseRequest):
