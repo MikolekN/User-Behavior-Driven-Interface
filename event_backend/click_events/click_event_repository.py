@@ -23,12 +23,11 @@ class ClickEventRepository(BaseRepository):
                     "user_id": bson.ObjectId(user_id),
                     "event_type": "click_event",
                     "element_id": {"$in": [
-                        "submit-button-account",
-                        "submit-button-card",
-                        "submit-button-cyclic-payment",
-                        "submit-button-loan",
-                        "submit-button-login",
-                        "submit-button-transfer"
+                        "account-form",
+                        "card-form",
+                        "cyclic-payment-form",
+                        "loan-form",
+                        "transfer-form"
                     ]}
                 }
             }
