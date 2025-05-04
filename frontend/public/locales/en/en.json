@@ -190,7 +190,8 @@
         "cardAccount": "To account",
         "submit": "Add card",
         "edit": "Edit",
-        "delete": "Delete"
+        "delete": "Delete",
+        "emptyList":"List is empty"
     },
     "cardForm": {
         "tile": {
@@ -342,7 +343,9 @@
         "/info": "Contact",
         "/create-cyclic-payment": "Add cyclic payment",
         "/create-account": "Add account",
-        "/create-card": "Add card"
+        "/create-card": "Add card",
+        "/settings": "Settings",
+        "/profile": "Profile"
     },
     "formSelect": {
         "userName": "User name",
@@ -441,7 +444,8 @@
             "accountDontHaveEnoughMoney": "Not enough money in active account",
             "senderAccountNotExist": "Sender's account not exist",
             "networkError": "The service is currently unavailable. Please try again later.",
-            "invalidMonthlyAnalysisLimit": "Incorrect month range passed for monthly analysis"
+            "invalidMonthlyAnalysisLimit": "Incorrect month range passed for monthly analysis",
+            "cardsNotExist": "User doesn't have any card"
         },
         "zod": {
             "required": "The field is required",
@@ -480,5 +484,5 @@
             "dec": "December"
         }
     },
-    "blockedTabInfo": "Sorry, but this application allows only one tab to be open. Please close this tab"
+    "blockedTabInfo": "Sorry, but this application not allow to have more than one active tab. Please close this tab and login again"
 }
