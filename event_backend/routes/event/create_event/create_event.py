@@ -22,7 +22,5 @@ def create_event(user_id) -> Response:
             return create_page_transition_event(user_id, data)
         case 'hover_event':
             return create_hover_event(user_id, data)
-        case 'form_submit_event':
-            return create_click_event(user_id, data)
         case _:
             return create_simple_response('wrong event type', HTTPStatus.BAD_REQUEST)
