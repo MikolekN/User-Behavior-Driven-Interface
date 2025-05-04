@@ -15,7 +15,8 @@ import AccountDetails from '../../components/utils/AccountDetails';
 import { useTranslation } from 'react-i18next';
 import { AccountContext } from '../../context/AccountContext';
 import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
-import { SUBMIT_BUTTONS } from '../../event/utils/constants';
+import { FORMS, SUBMIT_BUTTONS } from '../../event/utils/constants';
+import { triggerCustomFormSubmitEvent } from '../../event/eventCollectors/clickEvents';
 
 const Transfer = () => {
     const { t } = useTranslation();
@@ -46,6 +47,7 @@ const Transfer = () => {
             const requestBody = getTransferRequestBody(data);
             await createTransfer(requestBody);
             await getUser();
+            triggerCustomFormSubmitEvent(FORMS.TRANSFER.id);
             navigate('/dashboard');
         } catch (error) {
             handleError(error);

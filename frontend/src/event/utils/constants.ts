@@ -37,8 +37,15 @@ export const SUBMIT_BUTTONS: Record<string, ElementInfo> = {
     CARD: { id: "submit-button-card" },
     CYCLIC_PAYMENT: { id: "submit-button-cyclic-payment" },
     LOAN: { id: "submit-button-loan" },
-    LOGIN: { id: "submit-button-login" },
     TRANSFER: { id: "submit-button-transfer" }
+} as const;
+
+export const FORMS: Record<string, ElementInfo> = {
+    ACCOUNT: { id: "account-form" },
+    CARD: { id: "card-form" },
+    CYCLIC_PAYMENT: { id: "cyclic-payment-form" },
+    LOAN: { id: "loan-form" },
+    TRANSFER: { id: "transfer-form" }
 } as const;
 
 export const SUBMIT_BUTTONS_ELEMENTS: ElementInfo[] = Object.values(SUBMIT_BUTTONS);

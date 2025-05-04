@@ -2,28 +2,18 @@ import { Outlet } from 'react-router-dom';
 import { Layout } from '../components/Layout/Layout';
 import { Suspense, useContext, useEffect, useState } from 'react';
 import DefaultLoadingSkeleton from '../components/Loading/DefaultLoadingSkeleton';
-import { setupSubmitButtonsClickEvents, setupUserDropdownClickEvents } from '../event/eventCollectors/clickEvents';
+import { setupFormSucessfulSubmitButtonsClickEvents, setupUserDropdownClickEvents } from '../event/eventCollectors/clickEvents';
 import { UserContext } from '../context/UserContext';
 import { startTracking } from '../event/eventCollectors/pageTransition';
 import { t } from 'i18next';
 import Shortcut from '../components/Event/Shortcut/Shortcut';
 import { setupMainMenuHoverEvents } from '../event/eventCollectors/hoverEvents';
+import { AuthContext } from '../context/AuthContext';
 
 const App = () => {
     const { user } = useContext(UserContext);
+    const { logout } = useContext(AuthContext);
     const [isTabOpen, setIsTabOpen] = useState<boolean>(false);
-    
-    useEffect(() => {
-        const userDropdownClickEvents = setupUserDropdownClickEvents(user);
-        const submitButtonsClickEvents = setupSubmitButtonsClickEvents(user);
-        const mainMenuHoverEvents = setupMainMenuHoverEvents(user);
-        
-        return () => {
-            userDropdownClickEvents();
-            submitButtonsClickEvents();
-            mainMenuHoverEvents();
-        };
-    }, [user]);
 
     useEffect(() => {
         const uniqueTabId = Date.now().toString();
@@ -33,6 +23,7 @@ const App = () => {
           if (event.key === "tabId") {
 				alert(t('blockedTabInfo'));
 				setIsTabOpen(true);
+                logout();
           }
         };
     
@@ -44,6 +35,25 @@ const App = () => {
 			setIsTabOpen(false);
         };
     }, []);
+
+    useEffect(() => {
+        window.addEventListener('unload', logout);
+        return () => {
+            window.removeEventListener('unload', logout);
+        };
+    });
+
+    useEffect(() => {
+        const userDropdownClickEvents = setupUserDropdownClickEvents(user);
+        const submitButtonsClickEvents = setupFormSucessfulSubmitButtonsClickEvents(user);
+        const mainMenuHoverEvents = setupMainMenuHoverEvents(user);
+        
+        return () => {
+            userDropdownClickEvents();
+            submitButtonsClickEvents();
+            mainMenuHoverEvents();
+        };
+    }, [user]);
 
     useEffect(() => {
         const startTrackingRef = startTracking(user);
