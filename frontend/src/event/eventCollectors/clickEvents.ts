@@ -1,7 +1,7 @@
 import { User } from "../../components/utils/User";
 import { sendClickEventData } from "../service/eventService";
 import { BackendClickEvent, ClickEvent } from "../types/Event";
-import { ALL_QUICK_ICONS_ELEMENTS, CLICK_EVENT_TYPE, DROPDOWN, ElementInfo, FORM_SUBMIT_EVENT_TYPE } from "../utils/constants";
+import { ALL_QUICK_ICONS_ELEMENTS, CLICK_EVENT_TYPE, DROPDOWN, ElementInfo } from "../utils/constants";
 
 
 const getClickEventData = (elementId: string, eventType: string): ClickEvent => {
@@ -41,7 +41,7 @@ const handleFormSubmitEvent = (event: Event, user: User | null) => {
 	if (!target) return;
 
 	const customEvent = event as CustomEvent;
-	const clickEvent: ClickEvent = getClickEventData(customEvent.detail?.elementId, FORM_SUBMIT_EVENT_TYPE);
+	const clickEvent: ClickEvent = getClickEventData(customEvent.detail?.elementId, CLICK_EVENT_TYPE);
 	const requestBody: BackendClickEvent = mapClickEventToBackendRequestBody(clickEvent);
 	sendClickEventData(user, requestBody);
 };

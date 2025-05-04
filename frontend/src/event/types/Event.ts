@@ -20,11 +20,6 @@ export interface PageTransitionEvent extends BaseEvent {
     timeSpent: number;
 };
 
-export interface FormSubmitEvent extends BaseEvent {
-    elementId: string;
-    fromDropdown: boolean;
-};
-
 export interface BackendBaseEvent {
     start_timestamp: Date;
     event_type: string;
@@ -32,11 +27,6 @@ export interface BackendBaseEvent {
 };
 
 export interface BackendClickEvent extends BackendBaseEvent {
-    element_id: string;
-    from_dropdown: boolean;
-};
-
-export interface BackendFormSubmitEvent extends BackendBaseEvent {
     element_id: string;
     from_dropdown: boolean;
 };
