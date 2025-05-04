@@ -3,6 +3,7 @@ from typing import Type, Optional
 import bson
 from shared import BaseRepository
 
+from constants import MIN_DURATION
 from hover_events.hover_event import HoverEvent
 
 
@@ -20,7 +21,8 @@ class HoverEventRepository(BaseRepository):
             {
                 "$match": {
                     "user_id": bson.ObjectId(user_id),
-                    "event_type": "hover_event"
+                    "event_type": "hover_event",
+                    "duration": {"$gt": MIN_DURATION}
                 }
             }
         ]

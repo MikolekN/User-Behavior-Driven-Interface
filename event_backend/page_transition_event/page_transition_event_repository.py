@@ -3,6 +3,7 @@ from typing import Type, Optional
 import bson
 from shared import BaseRepository
 
+from constants import MIN_TIME_SPENT
 from page_transition_event.page_mapper import map_page
 from page_transition_event.constants import MAX_PAGE_TRANSITION_PREFERENCES_LINKS, PAGE_TRANSITION_PREFERENCES_EDIT_MAPPINGS
 from page_transition_event.page_transition_event import PageTransitionEvent
@@ -44,7 +45,8 @@ class PageTransitionEventRepository(BaseRepository):
             {
                 "$match": {
                     "user_id": bson.ObjectId(user_id),
-                    "event_type": "page_transition_event"
+                    "event_type": "page_transition_event",
+                    "time_spent": {"$gt": MIN_TIME_SPENT}
                 }
             }
         ]
