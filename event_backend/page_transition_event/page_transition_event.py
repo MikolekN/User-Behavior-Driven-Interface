@@ -28,5 +28,6 @@ class PageTransitionEvent(BaseEvent):
             start_timestamp=data.get('start_timestamp', None),
             event_type=data.get('event_type', None),
             page=data.get('page', None),
-            next_page=data.get('next_page', None)
+            next_page=data.get('next_page', None),
+            time_spent=data.get('time_spent', None)
         )

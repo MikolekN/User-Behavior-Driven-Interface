@@ -1,4 +1,5 @@
-from typing import Type
+from datetime import datetime
+from typing import Optional, Type
 
 import bson
 from shared import BaseRepository
@@ -38,3 +39,17 @@ class PageTransitionEventRepository(BaseRepository):
             sorted_pages.pop()
 
         return sorted_pages
+    
+    def get_second_page_transition_event_after_form_submit(self, user_id: str, form_submit_timestamp: datetime) -> Optional[list[PageTransitionEvent]]:
+        pipeline = [
+            {"$match": {"user_id": bson.ObjectId(user_id), "event_type": "page_transition_event", "start_timestamp": {"$gt": form_submit_timestamp}}},
+            {"$sort": {"start_timestamp": 1}},
+            {"$limit": 2},
+            {"$skip": 1}
+        ]
+        page_transition_events_after_form_submit = super().aggregate(pipeline)
+
+        if page_transition_events_after_form_submit:
+            return PageTransitionEvent.from_dict(page_transition_events_after_form_submit[0])
+        else:
+            return None
