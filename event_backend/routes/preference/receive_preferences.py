@@ -20,8 +20,7 @@ def receive_preferences(user_id) -> Response:
     data = request.get_json()
     preferences = preferences_repository.find_by_user(user_obj_id)
     preferences.preferences['quickIconsPreference'] = data['result']
-    preferences.preferences[
-        'pageTransitionPreference'] = page_transition_event_repository.get_user_page_transition_preference(user_id)
+    preferences.preferences['pageTransitionPreference'] = page_transition_event_repository.get_user_page_transition_preference(user_id)
     d = preferences.to_dict(for_db=True)
     d.pop('_id')
     preferences_repository.update(str(preferences.id), d)

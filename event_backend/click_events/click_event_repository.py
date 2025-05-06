@@ -24,8 +24,11 @@ class ClickEventRepository(BaseRepository):
                     "event_type": "click_event",
                     "element_id": {"$in": [
                         "account-form",
+                        "account-form-edit",
                         "card-form",
+                        "card-form-edit",
                         "cyclic-payment-form",
+                        "cyclic-payment-form-edit",
                         "loan-form",
                         "transfer-form"
                     ]}
