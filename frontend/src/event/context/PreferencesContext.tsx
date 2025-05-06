@@ -5,6 +5,7 @@ import { User } from "../../components/utils/User";
 import { getShortcutPreferencesFromUserPreferences, ShortcutPreference } from "../types/ShortcutPreference";
 import { mapBackendPreferencesToUserPreferences, Preferences } from "../types/Preferences";
 import { UserContext } from "../../context/UserContext";
+import { AutoRedirectPreference, getAutoRedirectPreferencesFromUserPreferences } from "../types/AutoRedirectPreference";
 
 
 interface PreferencesContextProps {
@@ -14,8 +15,11 @@ interface PreferencesContextProps {
     setQuickIconsPreference: React.Dispatch<React.SetStateAction<QuickIconsPreference | null>>;
     shortcutPreference: ShortcutPreference | null;
     setShortcutPreference: React.Dispatch<React.SetStateAction<ShortcutPreference | null>>;
+    autoRedirectPreference: AutoRedirectPreference | null;
+    setAutoRedirectPreference: React.Dispatch<React.SetStateAction<AutoRedirectPreference | null>>;
     getQuickIconsPreference: () => void;
     getShortcutPreference: () => void;
+    getAutoRedirectPreference: () => void;
     getUserPreference: (user: User) => Promise<void>;
     generateUserPreference: (user: User) => Promise<void>;
 }
@@ -27,8 +31,11 @@ const defaultContextValue: PreferencesContextProps = {
     setQuickIconsPreference: () => {},
     shortcutPreference: null,
     setShortcutPreference: () => {},
+    autoRedirectPreference: null,
+    setAutoRedirectPreference: () => {},
     getQuickIconsPreference: () => {},
     getShortcutPreference: () => {},
+    getAutoRedirectPreference: () => {},
     getUserPreference: async () => {},
     generateUserPreference: async () => {},
 }
@@ -40,6 +47,7 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
     const [userPreferences, setUserPreferences] = useState<Preferences | null>(null);
     const [quickIconsPreference, setQuickIconsPreference] = useState<QuickIconsPreference | null>(null);
     const [shortcutPreference, setShortcutPreference] = useState<ShortcutPreference | null>(null);
+    const [autoRedirectPreference, setAutoRedirectPreference] = useState<AutoRedirectPreference | null>(null);
 
     const getQuickIconsPreference = useCallback((): void => {
         if (userPreferences) {
@@ -55,11 +63,18 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
         }
     }, [userPreferences]);
 
+    const getAutoRedirectPreference = useCallback((): void => {
+        if (userPreferences) {
+            const autoRedirectPreferencesData: AutoRedirectPreference = getAutoRedirectPreferencesFromUserPreferences(userPreferences);
+            setAutoRedirectPreference(autoRedirectPreferencesData);
+        }
+    }, [userPreferences]);
+
     const getUserPreference = useCallback(async (user: User): Promise<void> => {
         const {preferences: generatedPreferencesBackendData} = await getUserPreferencesData(user);
         if (generatedPreferencesBackendData) {
-            const frontendQuickIconsPreferencesData: Preferences = mapBackendPreferencesToUserPreferences(generatedPreferencesBackendData);
-            setUserPreferences(frontendQuickIconsPreferencesData);
+            const frontendPreferencesData: Preferences = mapBackendPreferencesToUserPreferences(generatedPreferencesBackendData);
+            setUserPreferences(frontendPreferencesData);
         }
     }, []);
 
@@ -77,10 +92,10 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
     }, [getUserPreference, userPreferences]);
 
     const PreferencesContextValue = useMemo(() => ({
-        userPreferences, setUserPreferences, quickIconsPreference, setQuickIconsPreference, shortcutPreference, setShortcutPreference, 
-        getQuickIconsPreference, getShortcutPreference, getUserPreference, generateUserPreference
-    }), [userPreferences, setUserPreferences, quickIconsPreference, setQuickIconsPreference, shortcutPreference, setShortcutPreference, 
-        getQuickIconsPreference, getShortcutPreference, getUserPreference, generateUserPreference]);
+        userPreferences, setUserPreferences, quickIconsPreference, setQuickIconsPreference, getQuickIconsPreference, shortcutPreference, setShortcutPreference, 
+        getShortcutPreference, autoRedirectPreference, setAutoRedirectPreference,  getAutoRedirectPreference, getUserPreference, generateUserPreference
+    }), [userPreferences, setUserPreferences, quickIconsPreference, setQuickIconsPreference, getQuickIconsPreference, shortcutPreference, setShortcutPreference, 
+        getShortcutPreference, autoRedirectPreference, setAutoRedirectPreference, getAutoRedirectPreference, getUserPreference, generateUserPreference]);
 
     return (
         <PreferencesContext.Provider value={PreferencesContextValue}>

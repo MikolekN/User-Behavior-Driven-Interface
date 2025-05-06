@@ -17,6 +17,8 @@ import FormInput from '../../components/FormInput/FormInput';
 import Button from '../../components/utils/Button';
 import { FORMS, SUBMIT_BUTTONS } from '../../event/utils/constants';
 import { triggerCustomFormSubmitEvent } from '../../event/eventCollectors/clickEvents';
+import useAutoRedirectPreference from '../../hooks/useAutoRedirectPreference';
+import { PreferencesContext } from '../../event/context/PreferencesContext';
 
 
 const CardForm = () => {
@@ -25,6 +27,7 @@ const CardForm = () => {
     const { user, getUser } = useContext(UserContext);
     const { activeAccount } = useContext(AccountContext);
     const { card, setCard, getCard, createCard, updateCard } = useContext(CardContext);
+    const { autoRedirectPreference } = useContext(PreferencesContext);
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = useForm<CardFormData>({
         resolver: zodResolver(CardFormDataSchema),
@@ -73,6 +76,9 @@ const CardForm = () => {
         }
     }, [card, setCardFormDefaultValues, setCardFormEditValues]);
 
+    // calling custom hook to get AutoRedirect object
+    useAutoRedirectPreference();
+
     const getCardRequestBody = (data: CardFormData) => {
         return {
             name: data.name,
@@ -88,7 +94,7 @@ const CardForm = () => {
                 await createCard(requestBody);
                 await getUser();
                 triggerCustomFormSubmitEvent(FORMS.CARD.id);
-                navigate('/dashboard');
+                navigate(autoRedirectPreference?.cardForm ?? '/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();
@@ -97,7 +103,8 @@ const CardForm = () => {
             try {
                 await updateCard(cardNumber!, requestBody);
                 await getUser();
-                navigate('/dashboard');
+                triggerCustomFormSubmitEvent(FORMS.CARD_EDIT.id);
+                navigate(autoRedirectPreference?.cardFormEdit ?? '/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();

@@ -10,13 +10,16 @@ from shared import create_simple_response
 from click_events.click_event import ClickEvent
 from click_events.click_event_repository import ClickEventRepository
 from config import CAMUNDA_URL
-from page_transition_event.constants import BASE_QUICK_ICONS_PREFERENCE
+from page_transition_event.page_transition_event_repository import PageTransitionEventRepository
+from page_transition_event.constants import BASE_QUICK_ICONS_PREFERENCE, DEFAULT_AUTO_REDIRECT_PREFERENCE
 from preferences.preferences import Preferences
 from preferences.preferences_repository import PreferencesRepository
 from routes.helpers import validate_token
+from routes.preference.generate_preferences.generate_auto_redirect_preferences import generate_auto_redirect_preferences
 
 preferences_repository = PreferencesRepository()
-click_events_repository = ClickEventRepository()
+click_event_repository = ClickEventRepository()
+page_transition_event_repository = PageTransitionEventRepository()
 
 def generate_preferences(user_id) -> Response:
     if not isinstance(user_id, str) or not bson.ObjectId.is_valid(user_id):
@@ -34,12 +37,20 @@ def generate_preferences(user_id) -> Response:
             user_id=user_obj_id,
             preferences={
                 "quickIconsPreference": BASE_QUICK_ICONS_PREFERENCE,
-                "pageTransitionPreference": []
+                "pageTransitionPreference": [],
+                "autoRedirectPreferences": DEFAULT_AUTO_REDIRECT_PREFERENCE
             }
         )
         preferences_repository.insert(preferences)
+    else: # sprawdzić czy ten else jest tutaj potrzebny
+        preferences.preferences['pageTransitionPreference'] = page_transition_event_repository.get_user_page_transition_preference(user_id)
+        preferences.preferences['autoRedirectPreference'] = generate_auto_redirect_preferences(user_id)
+        d = preferences.to_dict(for_db=True)
+        d.pop('_id')
+        preferences_repository.update(str(preferences.id), d)
+    
 
-    click_events: Optional[list[ClickEvent]] = click_events_repository.get_user_quick_icons_events(user_id)
+    click_events: Optional[list[ClickEvent]] = click_event_repository.get_user_quick_icons_events(user_id)
     if click_events:
         requests.post(
             CAMUNDA_URL,

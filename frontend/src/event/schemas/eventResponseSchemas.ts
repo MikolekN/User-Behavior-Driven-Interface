@@ -8,7 +8,17 @@ const PreferenceSchema = z.object({
     user_id: requiredStringField(),
     preferences: z.object({
         quickIconsPreference: requiredStringField(),
-        pageTransitionPreference: z.array(requiredStringField())
+        pageTransitionPreference: z.array(requiredStringField()),
+        autoRedirectPreference: z.object({
+            accountForm: requiredStringField(),
+            accountFormEdit: requiredStringField(),
+            cardForm: requiredStringField(),
+            cardFormEdit: requiredStringField(),
+            cyclicPaymentForm: requiredStringField(),
+            cyclicPaymentFormEdit: requiredStringField(),
+            loanForm: requiredStringField(),
+            transferForm: requiredStringField()
+        })
     })
 });
 

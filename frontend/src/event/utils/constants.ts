@@ -42,8 +42,11 @@ export const SUBMIT_BUTTONS: Record<string, ElementInfo> = {
 
 export const FORMS: Record<string, ElementInfo> = {
     ACCOUNT: { id: "account-form" },
+    ACCOUNT_EDIT: { id: "account-form-edit" },
     CARD: { id: "card-form" },
+    CARD_EDIT: { id: "card-form-edit" },
     CYCLIC_PAYMENT: { id: "cyclic-payment-form" },
+    CYCLIC_PAYMENT_EDIT: { id: "cyclic-payment-form-edit" },
     LOAN: { id: "loan-form" },
     TRANSFER: { id: "transfer-form" }
 } as const;

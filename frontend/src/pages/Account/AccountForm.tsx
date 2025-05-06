@@ -17,12 +17,15 @@ import { ACCOUNT_TYPE_SELECT_OPTIONS } from '../constants';
 import { Account } from '../../components/utils/types/Account';
 import { FORMS, SUBMIT_BUTTONS } from '../../event/utils/constants';
 import { triggerCustomFormSubmitEvent } from '../../event/eventCollectors/clickEvents';
+import useAutoRedirectPreference from '../../hooks/useAutoRedirectPreference';
+import { PreferencesContext } from '../../event/context/PreferencesContext';
 
 const AccountForm = () => {
     const { t } = useTranslation();
     const { user, getUser } = useContext(UserContext);
     const { accountNumber } = useParams();
     const { account, setAccount, getAccount, createAccount, updateAccount } = useContext(AccountContext);
+    const { autoRedirectPreference } = useContext(PreferencesContext);
     const navigate = useNavigate();
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = useForm<AccountFormData>({
@@ -74,6 +77,9 @@ const AccountForm = () => {
         }
     }, [account, setAccountFormEditValues, setAccountFormDefaultValues]);
 
+    // calling custom hook to get AutoRedirect object
+    useAutoRedirectPreference();
+
     const getAccountRequestBody = (data: AccountFormData) => {
         return {
             name: data.accountName,
@@ -89,7 +95,7 @@ const AccountForm = () => {
             try {
                 await createAccount(requestBody);
                 triggerCustomFormSubmitEvent(FORMS.ACCOUNT.id);
-                navigate('/dashboard');
+                navigate(autoRedirectPreference?.accountForm ?? '/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();
@@ -98,7 +104,8 @@ const AccountForm = () => {
             try {
                 await updateAccount(accountNumber!, requestBody);
                 await getUser();
-                navigate('/dashboard');
+                triggerCustomFormSubmitEvent(FORMS.ACCOUNT_EDIT.id);
+                navigate(autoRedirectPreference?.accountFormEdit ?? '/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();
