@@ -17,6 +17,8 @@ import { AccountContext } from '../../context/AccountContext';
 import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
 import { FORMS, SUBMIT_BUTTONS } from '../../event/utils/constants';
 import { triggerCustomFormSubmitEvent } from '../../event/eventCollectors/clickEvents';
+import { PreferencesContext } from '../../event/context/PreferencesContext';
+import useAutoRedirectPreference from '../../hooks/useAutoRedirectPreference';
 
 const Transfer = () => {
     const { t } = useTranslation();
@@ -24,6 +26,7 @@ const Transfer = () => {
     const { getUser } = useContext(UserContext);
     const { createTransfer } = useContext(TransferContext);
     const { activeAccount } = useContext(AccountContext);
+    const { autoRedirectPreference } = useContext(PreferencesContext);
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<TransferFormData>({
         resolver: zodResolver(TransferFormDataSchema),
         defaultValues: {
@@ -34,6 +37,9 @@ const Transfer = () => {
         mode: 'onSubmit'
     });
     const navigate = useNavigate();
+    
+    // calling custom hook to get AutoRedirect object
+    useAutoRedirectPreference();
 
     const getTransferRequestBody = useCallback((data: TransferFormData) => ({
         recipient_account_number: data.recipientAccountNumber,
@@ -48,7 +54,7 @@ const Transfer = () => {
             await createTransfer(requestBody);
             await getUser();
             triggerCustomFormSubmitEvent(FORMS.TRANSFER.id);
-            navigate('/dashboard');
+            navigate(autoRedirectPreference?.transferForm ?? '/dashboard');
         } catch (error) {
             handleError(error);
             scrollToTop();

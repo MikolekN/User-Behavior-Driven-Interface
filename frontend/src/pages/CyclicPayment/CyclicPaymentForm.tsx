@@ -26,6 +26,8 @@ import { AccountContext } from '../../context/AccountContext';
 import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
 import { FORMS, SUBMIT_BUTTONS } from '../../event/utils/constants';
 import { triggerCustomFormSubmitEvent } from '../../event/eventCollectors/clickEvents';
+import useAutoRedirectPreference from '../../hooks/useAutoRedirectPreference';
+import { PreferencesContext } from '../../event/context/PreferencesContext';
 
 const CyclicPaymentsForm = () => {
     const { t } = useTranslation();
@@ -37,6 +39,7 @@ const CyclicPaymentsForm = () => {
     const { activeAccount } = useContext(AccountContext);
     const { cyclicPayment, setCyclicPayment, createCyclicPayment, getCyclicPayment,
         updateCyclicPayment } = useContext(CyclicPaymentContext);
+    const { autoRedirectPreference } = useContext(PreferencesContext);
 
     const { register, handleSubmit, formState: { errors, isSubmitting }, clearErrors, control, setValue } = useForm<CyclicPaymentFormData>({
         resolver: zodResolver(CyclicPaymentFormDataSchema),
@@ -96,6 +99,9 @@ const CyclicPaymentsForm = () => {
         }
     }, [cyclicPayment, setCyclicPaymentFormEditValues, setCyclicPaymentFormDefaultValues]);
 
+    // calling custom hook to get AutoRedirect object
+    useAutoRedirectPreference();
+
     const toLocalISOString = (date: Date) => {
         const localDate = new Date(date.getTime() - date.getTimezoneOffset() * MILISECONDS_IN_ONE_MINUTE);
         return localDate.toISOString();
@@ -120,7 +126,7 @@ const CyclicPaymentsForm = () => {
                 await createCyclicPayment(requestBody);
                 await getUser();
                 triggerCustomFormSubmitEvent(FORMS.CYCLIC_PAYMENT.id);
-                navigate('/dashboard');
+                navigate(autoRedirectPreference?.cyclicPaymentForm ?? '/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();
@@ -129,7 +135,8 @@ const CyclicPaymentsForm = () => {
             try {
                 await updateCyclicPayment(id!, requestBody);
                 await getUser();
-                navigate('/dashboard');
+                triggerCustomFormSubmitEvent(FORMS.CYCLIC_PAYMENT_EDIT.id);
+                navigate(autoRedirectPreference?.cyclicPaymentFormEdit ?? '/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();

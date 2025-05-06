@@ -20,6 +20,8 @@ import { AccountContext } from '../../context/AccountContext';
 import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
 import { FORMS, SUBMIT_BUTTONS } from '../../event/utils/constants';
 import { triggerCustomFormSubmitEvent } from '../../event/eventCollectors/clickEvents';
+import useAutoRedirectPreference from '../../hooks/useAutoRedirectPreference';
+import { PreferencesContext } from '../../event/context/PreferencesContext';
 
 const rangeSliderTheme: FlowbiteRangeSliderTheme = {
     "root": {
@@ -44,6 +46,7 @@ const Loan = () => {
     const { user, getUser } = useContext(UserContext)
     const { activeAccount } = useContext(AccountContext);
     const { createLoan } = useContext(TransferContext);
+    const { autoRedirectPreference } = useContext(PreferencesContext);
     const [ , setSliderValue ] = useState<number | null>(null);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, watch } = useForm<LoanFormData>({
@@ -65,6 +68,9 @@ const Loan = () => {
         }
     }, [user, inputAmount]);
 
+    // calling custom hook to get AutoRedirect object
+    useAutoRedirectPreference();
+
     const toggleAnswer = (index: number) => {
         setActiveIndex(activeIndex === index ? null : index);
     };
@@ -79,7 +85,7 @@ const Loan = () => {
             await createLoan(requestBody);
             await getUser();
             triggerCustomFormSubmitEvent(FORMS.LOAN.id);
-            navigate('/dashboard');
+            navigate(autoRedirectPreference?.loanForm ?? '/dashboard');
         } catch (error) {
             handleError(error);
             scrollToTop();
