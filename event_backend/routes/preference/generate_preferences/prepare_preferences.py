@@ -13,7 +13,7 @@ def prepare_preferences(user_obj_id: bson.ObjectId):
             user_id=user_obj_id,
             preferences={
                 "quickIconsPreference": BASE_QUICK_ICONS_PREFERENCE,
-                "pageTransitionPreference": [],
+                "shortcutPreference": [],
                 "autoRedirectPreference": DEFAULT_AUTO_REDIRECT_PREFERENCE
             }
         )

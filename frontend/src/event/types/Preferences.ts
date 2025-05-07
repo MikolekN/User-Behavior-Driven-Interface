@@ -10,7 +10,7 @@ interface AutoRedirectPreferenceData {
 }
 
 export interface Preferences {
-    pageTransitionPreference: string[];
+    shortcutPreference: string[];
     quickIconsPreference: string;
     autoRedirectPreference: AutoRedirectPreferenceData;
 }
@@ -23,7 +23,7 @@ export interface BackendPreferences {
 
 export const mapBackendPreferencesToUserPreferences = (preferencesBackendData: BackendPreferences): Preferences => {
     return {
-        pageTransitionPreference: preferencesBackendData.preferences.pageTransitionPreference,
+        shortcutPreference: preferencesBackendData.preferences.shortcutPreference,
         quickIconsPreference: preferencesBackendData.preferences.quickIconsPreference,
         autoRedirectPreference: preferencesBackendData.preferences.autoRedirectPreference
     };
