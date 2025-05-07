@@ -14,7 +14,7 @@ def prepare_preferences(user_obj_id: bson.ObjectId):
             preferences={
                 "quickIconsPreference": BASE_QUICK_ICONS_PREFERENCE,
                 "pageTransitionPreference": [],
-                "autoRedirectPreferences": DEFAULT_AUTO_REDIRECT_PREFERENCE
+                "autoRedirectPreference": DEFAULT_AUTO_REDIRECT_PREFERENCE
             }
         )
         preferences_repository.insert(preferences)
