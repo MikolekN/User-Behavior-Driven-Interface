@@ -1,0 +1,10 @@
+import bson
+
+from page_transition_event.page_transition_event_repository import PageTransitionEventRepository
+from preferences.preferences_repository import PreferencesRepository
+
+preferences_repository = PreferencesRepository()
+page_transitions_events_repository = PageTransitionEventRepository()
+
+def generate_shortcut_preferences(user_id: str):
+    return page_transitions_events_repository.get_user_page_transition_preference(user_id)

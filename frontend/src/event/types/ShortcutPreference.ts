@@ -6,12 +6,12 @@ export interface ShortcutPreference {
 
 export const mapBackendPreferencesToQuickIconsPreferences = (preferencesBackendData: BackendPreferences): ShortcutPreference => {
     return {
-        links: preferencesBackendData.preferences.pageTransitionPreference
+        links: preferencesBackendData.preferences.shortcutPreference
     };
 };
 
 export const getShortcutPreferencesFromUserPreferences = (userPreferences: Preferences): ShortcutPreference => {
     return {
-        links: userPreferences.pageTransitionPreference
+        links: userPreferences.shortcutPreference
     };
 };

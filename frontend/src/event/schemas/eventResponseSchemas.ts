@@ -8,7 +8,7 @@ const PreferenceSchema = z.object({
     user_id: requiredStringField(),
     preferences: z.object({
         quickIconsPreference: requiredStringField(),
-        pageTransitionPreference: z.array(requiredStringField()),
+        shortcutPreference: z.array(requiredStringField()),
         autoRedirectPreference: z.object({
             accountForm: requiredStringField(),
             accountFormEdit: requiredStringField(),

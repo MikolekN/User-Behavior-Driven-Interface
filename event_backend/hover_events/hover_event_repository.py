@@ -1,7 +1,9 @@
-from typing import Type
+from typing import Type, Optional
 
+import bson
 from shared import BaseRepository
 
+from constants import MIN_DURATION
 from hover_events.hover_event import HoverEvent
 
 
@@ -13,3 +15,18 @@ class HoverEventRepository(BaseRepository):
 
     def _entity_class(self) -> Type[HoverEvent]:
         return HoverEvent
+
+    def get_next_step_events(self, user_id: str) -> Optional[list[HoverEvent]]:
+        pipeline = [
+            {
+                "$match": {
+                    "user_id": bson.ObjectId(user_id),
+                    "event_type": "hover_event",
+                    "duration": {"$gt": MIN_DURATION}
+                }
+            }
+        ]
+        hover_events = super().aggregate(pipeline)
+        if hover_events:
+            return [HoverEvent.from_dict(hover_event) for hover_event in hover_events]
+        return None
