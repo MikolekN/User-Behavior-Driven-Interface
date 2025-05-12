@@ -83,7 +83,7 @@ const App = () => {
         <Suspense fallback={<DefaultLoadingSkeleton />}>
             <Layout>
                 <div className="hidden md:flex w-full h-screen">
-                    <div className="flex items-start justify-center w-1/4 h-fit mt-32">
+                    <div className="flex items-center justify-center w-1/4 md:h-auto">
                         <Shortcut />
                     </div>
                     <div className="flex items-center justify-center w-2/4">
