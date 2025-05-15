@@ -32,5 +32,6 @@ class HoverEvent(BaseEvent):
             page=data.get('page', None),
             element_id=data.get('element_id', None),
             end_timestamp=data.get('end_timestamp', None),
-            duration=data.get('duration', None)
+            duration=data.get('duration', None),
+            activity=data.get('activity', None)
         )

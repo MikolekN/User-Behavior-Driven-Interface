@@ -32,7 +32,7 @@ def generate_next_step_preferences(user_id: str):
 
     df = pd.DataFrame(all_events)
     df["case:concept:name"] = df["case_id"]
-    df["concept:name"] = df["page"] # TODO: set correct activity
+    df["concept:name"] = df["activity"]
     df["time:timestamp"] = df["start_timestamp"]
     df = df.sort_values(by=["case:concept:name", "time:timestamp"]),
 
