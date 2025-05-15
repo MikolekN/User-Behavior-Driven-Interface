@@ -36,6 +36,7 @@ def create_hover_event(user_id: str, data: dict) -> Response:
         element_id=data.get('element_id'),
         end_timestamp=data.get('end_timestamp'),
         duration=data.get('duration'),
+        activity=data.get('event_type') + " " + data.get('element_id')
     )
     hover_event_repository.insert(hover_event)
 
