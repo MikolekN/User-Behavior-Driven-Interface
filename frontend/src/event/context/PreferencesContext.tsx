@@ -1,11 +1,12 @@
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { getQuickIconsPreferencesFromUserPreferences, QuickIconsPreference } from "../types/QuickIconsPreference";
-import { generateUserPreferencesData, getUserPreferencesData } from "../service/eventService";
+import { generateUserPreferencesData, getUserPreferencesData, getNextStepPreferencesData } from "../service/eventService";
 import { User } from "../../components/utils/User";
 import { getShortcutPreferencesFromUserPreferences, ShortcutPreference } from "../types/ShortcutPreference";
 import { mapBackendPreferencesToUserPreferences, Preferences } from "../types/Preferences";
 import { UserContext } from "../../context/UserContext";
 import { AutoRedirectPreference, getAutoRedirectPreferencesFromUserPreferences } from "../types/AutoRedirectPreference";
+import { mapBackendPreferencesToQuickIconsPreferences, NextStepPreference } from "../types/NextStepPreference";
 
 
 interface PreferencesContextProps {
@@ -17,9 +18,12 @@ interface PreferencesContextProps {
     setShortcutPreference: React.Dispatch<React.SetStateAction<ShortcutPreference | null>>;
     autoRedirectPreference: AutoRedirectPreference | null;
     setAutoRedirectPreference: React.Dispatch<React.SetStateAction<AutoRedirectPreference | null>>;
+    nextStepPreference: NextStepPreference | null;
+    setNextStepPreference: React.Dispatch<React.SetStateAction<NextStepPreference | null>>;
     getQuickIconsPreference: () => void;
     getShortcutPreference: () => void;
     getAutoRedirectPreference: () => void;
+    getNextStepPreference: (user: User) => Promise<void>;
     getUserPreference: (user: User) => Promise<void>;
     generateUserPreference: (user: User) => Promise<void>;
 }
@@ -33,6 +37,9 @@ const defaultContextValue: PreferencesContextProps = {
     setShortcutPreference: () => {},
     autoRedirectPreference: null,
     setAutoRedirectPreference: () => {},
+    nextStepPreference: null,
+    setNextStepPreference: () => {},
+    getNextStepPreference: async () => {},
     getQuickIconsPreference: () => {},
     getShortcutPreference: () => {},
     getAutoRedirectPreference: () => {},
@@ -48,6 +55,7 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
     const [quickIconsPreference, setQuickIconsPreference] = useState<QuickIconsPreference | null>(null);
     const [shortcutPreference, setShortcutPreference] = useState<ShortcutPreference | null>(null);
     const [autoRedirectPreference, setAutoRedirectPreference] = useState<AutoRedirectPreference | null>(null);
+    const [nextStepPreference, setNextStepPreference] = useState<NextStepPreference | null>(null);
 
     const getQuickIconsPreference = useCallback((): void => {
         if (userPreferences) {
@@ -69,6 +77,14 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
             setAutoRedirectPreference(autoRedirectPreferencesData);
         }
     }, [userPreferences]);
+
+    const getNextStepPreference = useCallback(async (user: User): Promise<void> => {
+        const nextStepPreferenceBackendData = await getNextStepPreferencesData(user);
+        if (nextStepPreferenceBackendData) {
+            const frontendNextStepPreference: NextStepPreference = mapBackendPreferencesToQuickIconsPreferences(nextStepPreferenceBackendData);
+            setNextStepPreference(frontendNextStepPreference);
+        }
+    }, [nextStepPreference]);
 
     const getUserPreference = useCallback(async (user: User): Promise<void> => {
         const {preferences: generatedPreferencesBackendData} = await getUserPreferencesData(user);
@@ -93,7 +109,8 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
 
     const PreferencesContextValue = useMemo(() => ({
         userPreferences, setUserPreferences, quickIconsPreference, setQuickIconsPreference, getQuickIconsPreference, shortcutPreference, setShortcutPreference, 
-        getShortcutPreference, autoRedirectPreference, setAutoRedirectPreference,  getAutoRedirectPreference, getUserPreference, generateUserPreference
+        getShortcutPreference, autoRedirectPreference, setAutoRedirectPreference,  getAutoRedirectPreference, nextStepPreference, setNextStepPreference, getNextStepPreference,
+        getUserPreference, generateUserPreference
     }), [userPreferences, setUserPreferences, quickIconsPreference, setQuickIconsPreference, getQuickIconsPreference, shortcutPreference, setShortcutPreference, 
         getShortcutPreference, autoRedirectPreference, setAutoRedirectPreference, getAutoRedirectPreference, getUserPreference, generateUserPreference]);
 
