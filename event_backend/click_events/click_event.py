@@ -29,5 +29,6 @@ class ClickEvent(BaseEvent):
             event_type=data.get('event_type', None),
             page=data.get('page', None),
             element_id=data.get('element_id', None),
-            from_dropdown=data.get('from_dropdown', None)
+            from_dropdown=data.get('from_dropdown', None),
+            activity=data.get('activity', None)
         )
