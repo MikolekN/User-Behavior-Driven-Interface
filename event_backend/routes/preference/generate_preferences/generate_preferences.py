@@ -33,7 +33,7 @@ def generate_preferences(user_id) -> Response:
 
     generate_next_step_preferences(user_id)
 
-    generate_quick_icons_preferences(user_id)
+    preferences.preferences['quickIconsPreference'] = generate_quick_icons_preferences(user_id)
 
     d = preferences.to_dict(for_db=True)
     d.pop('_id')
