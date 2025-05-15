@@ -1,5 +1,3 @@
-import bson
-
 from page_transition_event.page_transition_event_repository import PageTransitionEventRepository
 from preferences.preferences_repository import PreferencesRepository
 

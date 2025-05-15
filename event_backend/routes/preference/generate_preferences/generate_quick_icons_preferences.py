@@ -10,14 +10,15 @@ from config import CAMUNDA_URL
 click_events_repository = ClickEventRepository()
 
 
-def generate_quick_icons_preferences(user_id: str, token_value:str):
-    click_events: Optional[list[ClickEvent]] = click_events_repository.get_user_quick_icons_events(user_id)
-    if click_events:
-        requests.post(
-            CAMUNDA_URL,
-            data=json.dumps({
-                "user_id": user_id,
-                "token": token_value,
-                "events": [click_event.to_dict() for click_event in click_events]
-            })
-        )
+def generate_quick_icons_preferences(user_id: str):
+    return click_events_repository.get_user_quick_icons_preference(user_id)
+    # click_events: Optional[list[ClickEvent]] = click_events_repository.get_user_quick_icons_events(user_id)
+    # if click_events:
+    #     requests.post(
+    #         CAMUNDA_URL,
+    #         data=json.dumps({
+    #             "user_id": user_id,
+    #             "token": token_value,
+    #             "events": [click_event.to_dict() for click_event in click_events]
+    #         })
+    #     )
