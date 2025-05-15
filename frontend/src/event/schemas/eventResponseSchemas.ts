@@ -22,6 +22,10 @@ const PreferenceSchema = z.object({
     })
 });
 
+const NextStepPreferenceSchema = z.object({
+    url: requiredStringField()
+})
+
 export const SendClickEventResponseSchema = z.object({
     message: requiredStringField()
 });
@@ -44,9 +48,17 @@ export const GetUserPreferencesResponseSchema = z.object({
     message: requiredStringField(),
     preferences: PreferenceSchema
 });
+
 export type GetUserPreferencesResponse = z.infer<typeof GetUserPreferencesResponseSchema>;
 
 export const GenerateUserPreferencesResponseSchema = z.object({
     message: requiredStringField()
 });
+
 export type GenerateUserPreferencesResponse = z.infer<typeof GenerateUserPreferencesResponseSchema>;
+
+export const  GetNextStepPreferencesResponseSchema = z.object({
+    nextStepPreference: NextStepPreferenceSchema
+});
+
+export type GetNextStepPreferencesResponce = z.infer<typeof GetNextStepPreferencesResponseSchema>;

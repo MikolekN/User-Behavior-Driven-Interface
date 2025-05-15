@@ -328,7 +328,14 @@
     "shortcut": {
         "tile": {
             "title": "Shortcut"
-        },
+        }
+    },
+    "nextStep": {
+        "tile": {
+            "title": "Next step"
+        }
+    },
+    "urls": {
         "/dashboard": "Dashboard",
         "/transfer": "Transfer",
         "/transactions/history": "Transfer history",
