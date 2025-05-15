@@ -329,7 +329,14 @@
     "shortcut": {
         "tile": {
             "title": "Na skróty"
-        },
+        }
+    },
+    "nextStep": {
+        "tile": {
+            "title": "Kolejny krok"
+        }
+    },
+    "urls": {
         "/dashboard": "Strona głowna",
         "/transfer": "Przelew",
         "/transactions/history": "Historia transferów",

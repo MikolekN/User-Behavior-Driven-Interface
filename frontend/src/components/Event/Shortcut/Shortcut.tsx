@@ -49,7 +49,7 @@ const Shortcut = () => {
                     {shortcutPreference?.links.map((link, index) => (
                         <div key={index} className="flex">
                             <Link to={`${link}`} className="m-2 hover:text-blue-700 hover:font-semibold dark:hover:text-blue-400">
-                                {t(`shortcut.${link}`)}
+                                {t(`urls.${link}`)}
                             </Link>
                             <img src={externalLink} alt="externalLink" width={16} height={16} />
                         </div>
@@ -60,9 +60,9 @@ const Shortcut = () => {
                 <Tile id="shortcut" title={t('shortcut.tile.title')}>
                     <div className="w-full flex justify-center flex-wrap">
                         {shortcutPreference?.links.map((link, index) => (
-                           <div key={index} className="flex">
+                           <div key={index} className="flex w-full justify-center">
                                 <Link to={`${link}`} className="m-2 hover:text-blue-700 hover:font-semibold dark:hover:text-blue-400">
-                                    {t(`shortcut.${link}`)}
+                                    {t(`urls.${link}`)}
                                 </Link>
                                 <img src={externalLink} alt="externalLink" width={16} height={16} />
                             </div>
