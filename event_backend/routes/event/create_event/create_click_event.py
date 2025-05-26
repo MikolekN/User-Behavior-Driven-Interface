@@ -35,7 +35,8 @@ def create_click_event(user_id: str, data: dict) -> Response:
         event_type=data.get('event_type'),
         page=data.get('page'),
         element_id=data.get('element_id'),
-        from_dropdown=data.get('from_dropdown')
+        from_dropdown=data.get('from_dropdown'),
+        activity=data.get('event_type') + " " + data.get('element_id')
     )
     click_event_repository.insert(click_event)
 

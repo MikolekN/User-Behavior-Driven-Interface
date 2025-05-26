@@ -8,7 +8,7 @@ const getClickEventData = (elementId: string, eventType: string): ClickEvent => 
 	return {
 		startTimestamp: new Date(),
 		eventType: eventType,
-		page: window.location.href,
+		page: window.location.pathname,
 		elementId: elementId,
 		fromDropdown: elementId.includes(DROPDOWN) ? true : false
 	}

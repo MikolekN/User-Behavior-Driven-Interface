@@ -16,6 +16,7 @@ class BaseEvent(BaseEntity, ABC):
     start_timestamp: Optional[datetime] = None
     event_type: Optional[str] = None
     page: Optional[str] = None
+    activity: Optional[str] = None
 
     def to_dict(self, for_db: bool = False) -> Dict[str, Any]:
         entity_dict = super().to_dict(for_db)

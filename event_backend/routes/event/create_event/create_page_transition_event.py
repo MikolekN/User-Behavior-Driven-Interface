@@ -34,7 +34,8 @@ def create_page_transition_event(user_id: str, data: dict) -> Response:
         event_type=data.get('event_type'),
         page=data.get('page'),
         next_page=data.get('next_page'),
-        time_spent=data.get('time_spent')
+        time_spent=data.get('time_spent'),
+        activity=data.get('event_type') + " " + data.get('next_page')
     )
     page_transition_event_repository.insert(page_transition_event)
 
