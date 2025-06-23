@@ -2,13 +2,14 @@ import { User } from "../../components/utils/User";
 import { sendClickEventData } from "../service/eventService";
 import { BackendClickEvent, ClickEvent } from "../types/Event";
 import { ALL_QUICK_ICONS_ELEMENTS, CLICK_EVENT_TYPE, DROPDOWN, ElementInfo } from "../utils/constants";
+import { getPageNameWithoutUrlIdentifiers } from "./utils";
 
 
 const getClickEventData = (elementId: string, eventType: string): ClickEvent => {
 	return {
 		startTimestamp: new Date(),
 		eventType: eventType,
-		page: window.location.pathname,
+		page: getPageNameWithoutUrlIdentifiers(window.location.pathname),
 		elementId: elementId,
 		fromDropdown: elementId.includes(DROPDOWN) ? true : false
 	}

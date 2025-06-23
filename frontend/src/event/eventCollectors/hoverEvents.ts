@@ -2,6 +2,7 @@ import { User } from "../../components/utils/User";
 import { sendHoverEventData } from "../service/eventService";
 import { BackendHoverEvent, HoverEvent } from "../types/Event";
 import { MAIN_MENU_ELEMENTS, ElementInfo, HOVER_EVENT_TYPE } from "../utils/constants";
+import { getPageNameWithoutUrlIdentifiers } from "./utils";
 
 
 const getHoverEventData = (elementId: string, duration: number | undefined): HoverEvent => {
@@ -11,7 +12,7 @@ const getHoverEventData = (elementId: string, duration: number | undefined): Hov
         eventType: HOVER_EVENT_TYPE,
         startTimestamp: new Date(),
         endTimestamp: new Date(),
-        page: window.location.pathname
+        page: getPageNameWithoutUrlIdentifiers(window.location.pathname)
     };
 };
 

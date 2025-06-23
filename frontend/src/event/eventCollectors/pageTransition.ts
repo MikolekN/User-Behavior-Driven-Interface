@@ -2,6 +2,7 @@ import { User } from "../../components/utils/User";
 import { sendPageTransitionEventData } from "../service/eventService";
 import { PageTransitionEvent, BackendPageTransitionEvent } from "../types/Event";
 import { PAGE_TRANSITION_EVENT_TYPE } from "../utils/constants";
+import { getPageNameWithoutUrlIdentifiers } from "./utils";
 
 const getPageTransitionEventData = (timeSpent: number | undefined, currentPagePath: string, nextPagePath: string): PageTransitionEvent => {
     return {
@@ -24,7 +25,7 @@ const mapPageTransitionEventToBackendRequestBody = (event: PageTransitionEvent):
 };
 
 let startTimestamp: number | null = null;
-let currentPagePath: string = window.location.pathname;
+let currentPagePath: string = getPageNameWithoutUrlIdentifiers(window.location.pathname);
 
 // Track page transitions
 const handlePageChange = (user: User | null, nextPagePath: string) => {
@@ -53,28 +54,28 @@ const handleNavigation = (user: User | null, url: string) => {
 // Start tracking
 export const startTracking = (user: User | null) => {
     startTimestamp = Date.now();
-    currentPagePath = window.location.pathname;
+    currentPagePath = getPageNameWithoutUrlIdentifiers(window.location.pathname);
 
     const originalPushState = history.pushState;
     const originalReplaceState = history.replaceState;
 
     history.pushState = function (...args) {
         originalPushState.apply(this, args);
-        handleNavigation(user, args[2] as string);
+        handleNavigation(user, getPageNameWithoutUrlIdentifiers(args[2] as string));
     };
 
     history.replaceState = function (...args) {
         originalReplaceState.apply(this, args);
-        handleNavigation(user, args[2] as string);
+        handleNavigation(user, getPageNameWithoutUrlIdentifiers(args[2] as string));
     };
 
     window.addEventListener("popstate", function (event) {
-        handleNavigation(user, document.location.pathname);
+        handleNavigation(user, getPageNameWithoutUrlIdentifiers(document.location.pathname));
     });
 
     return () => {
         window.removeEventListener("popstate", function (event) {
-            handleNavigation(user, document.location.pathname);
+            handleNavigation(user, getPageNameWithoutUrlIdentifiers(document.location.pathname));
         });
     };
 };
