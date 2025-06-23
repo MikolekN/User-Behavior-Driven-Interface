@@ -332,7 +332,7 @@
     },
     "nextStep": {
         "tile": {
-            "title": "Next step"
+            "title": "Proposed step"
         }
     },
     "urls": {
