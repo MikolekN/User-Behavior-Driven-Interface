@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" targetNamespace="http://www.signavio.com/bpmn20" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath">
+  <bpmn:process id="id28f3f7a4-b4d1-435e-a72a-3a657f104496" isClosed="true" isExecutable="true" processType="None">
+    <bpmn:task id="idb2ef9b29-ad0d-469a-8f75-10d816776775" name="page_transition_event /transactions">
+      <bpmn:incoming>id8eb522d5-fcd6-49b7-9d0c-302f7176a130</bpmn:incoming>
+      <bpmn:outgoing>id57db2e21-e396-4874-9df5-559d2f7f9084</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="ida5ab929f-25eb-4ca2-82c0-7ed4c6dd89a3" gatewayDirection="Unspecified" name="">
+      <bpmn:incoming>id57db2e21-e396-4874-9df5-559d2f7f9084</bpmn:incoming>
+      <bpmn:outgoing>id4a50793c-83a6-4065-a84a-3cb7fdddff32</bpmn:outgoing>
+      <bpmn:outgoing>id605159e9-2d37-408e-beb9-d2bc1c72f5a0</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="id3069140c-ea56-46ac-9896-85d19b7a8bc5" name="page_transition_event /cyclic-payments">
+      <bpmn:incoming>id605159e9-2d37-408e-beb9-d2bc1c72f5a0</bpmn:incoming>
+      <bpmn:outgoing>id8aebb855-53fb-405d-b021-c32e993b1af5</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="id61996918-56a1-40ad-8c31-0302ca5dfa36" gatewayDirection="Unspecified" name="">
+      <bpmn:incoming>id4a50793c-83a6-4065-a84a-3cb7fdddff32</bpmn:incoming>
+      <bpmn:incoming>id8aebb855-53fb-405d-b021-c32e993b1af5</bpmn:incoming>
+      <bpmn:outgoing>id1b1a13a1-5639-46c3-9e7e-275456192e24</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:startEvent id="id1c051e84-146e-4cb0-a187-d7fe209cedb7" isInterrupting="true" name="Start Event" parallelMultiple="false">
+      <bpmn:outgoing>id8eb522d5-fcd6-49b7-9d0c-302f7176a130</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="idda8bb79d-378a-4f70-bd7e-f51e654469b3" name="End Event">
+      <bpmn:incoming>id1b1a13a1-5639-46c3-9e7e-275456192e24</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="id8eb522d5-fcd6-49b7-9d0c-302f7176a130" name="" sourceRef="id1c051e84-146e-4cb0-a187-d7fe209cedb7" targetRef="idb2ef9b29-ad0d-469a-8f75-10d816776775"/>
+    <bpmn:sequenceFlow id="id1b1a13a1-5639-46c3-9e7e-275456192e24" name="" sourceRef="id61996918-56a1-40ad-8c31-0302ca5dfa36" targetRef="idda8bb79d-378a-4f70-bd7e-f51e654469b3"/>
+    <bpmn:sequenceFlow id="id8aebb855-53fb-405d-b021-c32e993b1af5" name="" sourceRef="id3069140c-ea56-46ac-9896-85d19b7a8bc5" targetRef="id61996918-56a1-40ad-8c31-0302ca5dfa36"/>
+    <bpmn:sequenceFlow id="id4a50793c-83a6-4065-a84a-3cb7fdddff32" name="" sourceRef="ida5ab929f-25eb-4ca2-82c0-7ed4c6dd89a3" targetRef="id61996918-56a1-40ad-8c31-0302ca5dfa36"/>
+    <bpmn:sequenceFlow id="id605159e9-2d37-408e-beb9-d2bc1c72f5a0" name="" sourceRef="ida5ab929f-25eb-4ca2-82c0-7ed4c6dd89a3" targetRef="id3069140c-ea56-46ac-9896-85d19b7a8bc5"/>
+    <bpmn:sequenceFlow id="id57db2e21-e396-4874-9df5-559d2f7f9084" name="" sourceRef="idb2ef9b29-ad0d-469a-8f75-10d816776775" targetRef="ida5ab929f-25eb-4ca2-82c0-7ed4c6dd89a3"/>
+  </bpmn:process>
+</bpmn:definitions>
