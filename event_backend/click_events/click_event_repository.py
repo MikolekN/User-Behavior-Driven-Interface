@@ -95,10 +95,10 @@ class ClickEventRepository(BaseRepository):
                 }
             },
             {"$group":
-                 {
-                     "_id": "$element_id",
-                     "count": {"$sum": 1}
-                 }
+                {
+                    "_id": "$element_id",
+                    "count": {"$sum": 1}
+                }
             },
             {"$sort": {"count": -1}},
             {"$limit": 1}

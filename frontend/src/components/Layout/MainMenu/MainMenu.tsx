@@ -7,11 +7,13 @@ import { Dropdown } from '../Dropdown';
 import { User } from '../../utils/User';
 import { blackTextTheme } from '../NavbarLinkBlackText';
 import { useTranslation } from 'react-i18next';
+import { PreferencesContext } from '../../../event/context/PreferencesContext';
 
 export const MainMenu = () => {
     const { t } = useTranslation();
     const { user } = useContext(UserContext);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+    const { userPreferences } = useContext(PreferencesContext);
 
     const handleDropdownState = useCallback((dropdownName: string | null) => {
         setActiveDropdown((prev) => (prev === dropdownName ? null : dropdownName));
@@ -76,6 +78,7 @@ export const MainMenu = () => {
                             onClick={() => handleDropdownState(option.key)}
                             closeDropdown={closeDropdown}
                             className="text-base font-normal text-black hover:text-black hover:font-semibold"
+                            pagesToHighlight = {userPreferences?.menuPriorityPreference.pagesToHighlight}
                         />
                         )
                     )

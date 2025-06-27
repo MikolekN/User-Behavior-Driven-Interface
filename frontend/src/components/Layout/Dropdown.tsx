@@ -11,9 +11,10 @@ interface DropdownProps {
     onClick: () => void;
     closeDropdown: () => void;
     className: string;
+    pagesToHighlight: string[] | undefined;
 }
 
-export const Dropdown: React.FC<DropdownProps> = ({ menu, isOpen, onClick, closeDropdown, className }) => {
+export const Dropdown: React.FC<DropdownProps> = ({ menu, isOpen, onClick, closeDropdown, className, pagesToHighlight }) => {
     const { t } = useTranslation();
     return (
         <li className={`${className} relative`}>
@@ -56,9 +57,18 @@ export const Dropdown: React.FC<DropdownProps> = ({ menu, isOpen, onClick, close
                     md:mt-2`}
             >
                 {menu.submenu.map((option) => (
-                    <Navbar.Link id={option.id} key={option.key} as={Link} to={option.path} theme={blackTextTheme} onClick={closeDropdown} className="block list-none text-center md:hover:font-semibold text-sm hover:bg-gray-200 hover:dark:bg-gray-600 font-normal hover:font-semibold md:p-2">
-                        {t('menu.' + menu.key + '.submenu.' + option.key)}
-                    </Navbar.Link>
+                    <div className='hover:bg-gray-200 dark:hover:bg-gray-500'>
+                        <Navbar.Link 
+                            id={option.id} 
+                            key={option.key} 
+                            as={Link} 
+                            to={option.path} 
+                            theme={blackTextTheme} 
+                            onClick={closeDropdown} 
+                            className={`block list-none text-center md:hover:font-semibold text-sm hover:bg-gray-200 hover:dark:bg-gray-600 font-normal hover:font-semibold md:p-2 ${pagesToHighlight != undefined && pagesToHighlight.includes(option.path) ? 'font-bold' : 'font-normal'}`}>
+                            {t('menu.' + menu.key + '.submenu.' + option.key)}
+                        </Navbar.Link>
+                    </div>
                 ))}
             </ul>
         </li>

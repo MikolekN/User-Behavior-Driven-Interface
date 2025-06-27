@@ -1,3 +1,4 @@
+import { getMenuStructureForGeneratePreferencesRequestBody } from "../../components/Layout/MainMenu/MainMenuData";
 import { User } from "../../components/utils/User";
 import { validateSchema } from "../../schemas/apiValidation/validator";
 import { EVENT_API_URL } from "../../services/constants";
@@ -74,6 +75,7 @@ export const generateUserPreferencesData = async (user: User): Promise<GenerateU
             'Content-Type': 'application/json',
             'Authorization': user.token!
         },
+        body: JSON.stringify(getMenuStructureForGeneratePreferencesRequestBody()),
         credentials: 'include'
     });
 

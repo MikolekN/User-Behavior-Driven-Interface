@@ -69,3 +69,29 @@ class PageTransitionEventRepository(BaseRepository):
             return PageTransitionEvent.from_dict(page_transition_events_after_form_submit[0])
         else:
             return None
+        
+    def get_top_visited_page_within_submenu_for_menu_priority(self, user_id: str, submenu_pages: dict) -> str:
+        pipeline = [
+            {
+                "$match": {
+                    "user_id": bson.ObjectId(user_id),
+                    "event_type": "page_transition_event",
+                    "next_page": {"$in": submenu_pages}
+                }
+            },
+            {"$group":
+                {
+                    "_id": "$next_page",
+                    "count": {"$sum": 1}
+                }
+            },
+            {"$sort": {"count": -1}},
+            {"$limit": 1}
+        ]
+    
+        top_visited_page = super().aggregate(pipeline)
+
+        if top_visited_page:
+            return top_visited_page[0]['_id']
+        else:
+            return None

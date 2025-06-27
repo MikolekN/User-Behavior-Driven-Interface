@@ -69,3 +69,18 @@ export const menuOptions: MenuOption[] = [
     },
     { id: MAIN_MENU.MENU_ADMIN_PANEL.id,  key: 'adminPanel', path: '/admin-panel', accessLevel: AccessLevels.Admin },
 ]
+
+export const getMenuStructureForGeneratePreferencesRequestBody = () => {
+    const menu: Record<string, Record<string, string>> = {};
+
+    menuOptions.forEach(option => {
+        if ('submenu' in option && Array.isArray(option.submenu)) {
+            menu[option.key] = {};
+            option.submenu.forEach(sub => {
+                menu[option.key][sub.key] = sub.path;
+            });
+        }
+    });
+    
+    return { menu };
+};

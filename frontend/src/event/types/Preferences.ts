@@ -9,10 +9,15 @@ interface AutoRedirectPreferenceData {
     transferForm: string;
 }
 
+interface MenuPriorityPreferenceData {
+    pagesToHighlight: string[];
+}
+
 export interface Preferences {
     shortcutPreference: string[];
     quickIconsPreference: string;
     autoRedirectPreference: AutoRedirectPreferenceData;
+    menuPriorityPreference: MenuPriorityPreferenceData;
 }
 
 
@@ -25,6 +30,7 @@ export const mapBackendPreferencesToUserPreferences = (preferencesBackendData: B
     return {
         shortcutPreference: preferencesBackendData.preferences.shortcutPreference,
         quickIconsPreference: preferencesBackendData.preferences.quickIconsPreference,
-        autoRedirectPreference: preferencesBackendData.preferences.autoRedirectPreference
+        autoRedirectPreference: preferencesBackendData.preferences.autoRedirectPreference,
+        menuPriorityPreference: preferencesBackendData.preferences.menuPriorityPreference
     };
 };
