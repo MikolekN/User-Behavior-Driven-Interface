@@ -16,7 +16,7 @@ const NextStep = () => {
         if (!user) return;
         const getNextStepPreferenceData = async () => {
             try {
-                await  getNextStepPreference(user);
+                await getNextStepPreference(user);
             } catch (error) {
                 handleError(error);
             }

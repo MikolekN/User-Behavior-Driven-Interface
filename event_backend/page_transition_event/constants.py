@@ -22,4 +22,4 @@ DEFAULT_AUTO_REDIRECT_PREFERENCE = {
 }
 
 FORM_SUBMIT_CLICK_EVENT_ELEMENT_IDS = ["account-form", "account-form-edit", "card-form", "card-form-edit",
-                                       "cyclic-payment-form", "cyclic-payment-form-edit", "loan-form", "transfer-form"]
+                                       "cyclic-payment-form", "cyclic-payment-form-edit", "loan-form", "transfer-form", "preferences-settings-form"]

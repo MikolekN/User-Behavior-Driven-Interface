@@ -30,5 +30,6 @@ def generate_auto_redirect_preferences(user_id: str) -> dict:
 
         auto_redirect_preference[element_id] = get_most_common_url_from_urls_dict(urls)
 
+    print(map_element_ids_to_frontend(auto_redirect_preference))
     return map_element_ids_to_frontend(auto_redirect_preference)
         

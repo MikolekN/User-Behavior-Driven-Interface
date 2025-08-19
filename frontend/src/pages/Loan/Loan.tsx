@@ -46,7 +46,7 @@ const Loan = () => {
     const { user, getUser } = useContext(UserContext)
     const { activeAccount } = useContext(AccountContext);
     const { createLoan } = useContext(TransferContext);
-    const { autoRedirectPreference } = useContext(PreferencesContext);
+    const { userPreferences } = useContext(PreferencesContext);
     const [ , setSliderValue ] = useState<number | null>(null);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, watch } = useForm<LoanFormData>({
@@ -85,7 +85,7 @@ const Loan = () => {
             await createLoan(requestBody);
             await getUser();
             triggerCustomFormSubmitEvent(FORMS.LOAN.id);
-            navigate(autoRedirectPreference?.loanForm ?? '/dashboard');
+            navigate(userPreferences?.autoRedirectPreference?.loanForm ?? '/dashboard');
         } catch (error) {
             handleError(error);
             scrollToTop();
