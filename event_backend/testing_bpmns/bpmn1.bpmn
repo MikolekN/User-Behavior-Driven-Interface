@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  targetNamespace="http://example.com/bpmn">
+  <bpmn:process id="straight-chain" isExecutable="false">
+
+    <bpmn:startEvent id="start" name="start">
+      <bpmn:outgoing>flow1</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="task_transactions" name="page_transition_event /transactions">
+      <bpmn:incoming>flow1</bpmn:incoming>
+      <bpmn:outgoing>flow2</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="task_cyclic" name="page_transition_event /cyclic-payments">
+      <bpmn:incoming>flow2</bpmn:incoming>
+      <bpmn:outgoing>flow3</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="end" name="end">
+      <bpmn:incoming>flow3</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="flow1" sourceRef="start" targetRef="task_transactions"/>
+    <bpmn:sequenceFlow id="flow2" sourceRef="task_transactions" targetRef="task_cyclic"/>
+    <bpmn:sequenceFlow id="flow3" sourceRef="task_cyclic" targetRef="end"/>
+
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="diagram1" name="Straight Chain Diagram">
+    <bpmndi:BPMNPlane bpmnElement="straight-chain" id="plane1">
+
+      <bpmndi:BPMNShape bpmnElement="start" id="start_gui">
+        <omgdc:Bounds height="36" width="54" x="0" y="60"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape bpmnElement="task_transactions" id="task_transactions_gui">
+        <omgdc:Bounds height="36" width="181" x="90" y="60"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape bpmnElement="task_cyclic" id="task_cyclic_gui">
+        <omgdc:Bounds height="36" width="202" x="300" y="60"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape bpmnElement="end" id="end_gui">
+        <omgdc:Bounds height="36" width="54" x="540" y="60"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="flow1_gui">
+        <omgdi:waypoint x="54" y="78"/>
+        <omgdi:waypoint x="90" y="78"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="flow2_gui">
+        <omgdi:waypoint x="271" y="78"/>
+        <omgdi:waypoint x="300" y="78"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="flow3_gui">
+        <omgdi:waypoint x="502" y="78"/>
+        <omgdi:waypoint x="540" y="78"/>
+      </bpmndi:BPMNEdge>
+
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

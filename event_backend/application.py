@@ -4,6 +4,7 @@ from flask_cors import CORS
 
 from routes.event.event_blueprint import event_blueprint
 from routes.preference.preference_blueprint import preference_blueprint
+from routes.processes.process_blueprint import process_blueprint
 
 
 def create_app():
@@ -13,6 +14,7 @@ def create_app():
 
     app.register_blueprint(event_blueprint)
     app.register_blueprint(preference_blueprint)
+    app.register_blueprint(process_blueprint)
 
     app.config.from_pyfile('config.py')
 

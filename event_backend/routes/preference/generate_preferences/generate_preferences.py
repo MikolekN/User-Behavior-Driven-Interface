@@ -7,7 +7,6 @@ from shared import create_simple_response
 from preferences.preferences_repository import PreferencesRepository
 from routes.helpers import validate_token
 from routes.preference.generate_preferences.generate_auto_redirect_preferences import generate_auto_redirect_preferences
-from routes.preference.generate_preferences.generate_next_step_preferences import generate_next_step_preferences
 from routes.preference.generate_preferences.generate_quick_icons_preferences import generate_quick_icons_preferences
 from routes.preference.generate_preferences.generate_shortcut_preferences import generate_shortcut_preferences
 from routes.preference.generate_preferences.prepare_preferences import prepare_preferences
@@ -30,8 +29,6 @@ def generate_preferences(user_id) -> Response:
     preferences.preferences['shortcutPreference'] = generate_shortcut_preferences(user_id)
 
     preferences.preferences['autoRedirectPreference'] = generate_auto_redirect_preferences(user_id)
-
-    generate_next_step_preferences(user_id)
 
     preferences.preferences['quickIconsPreference'] = generate_quick_icons_preferences(user_id)
 

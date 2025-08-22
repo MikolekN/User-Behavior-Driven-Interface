@@ -6,6 +6,15 @@ SESSION_COOKIE_SECURE = True  # Set to False if you're not using HTTPS
 # flask application should only be run in debug mode while in development and should never be used in production
 DEBUG_MODE=False
 
+APP_URL = ""
+
 # The base URL for the Camunda BPMN engine.
 # This should point to the endpoint where the Camunda REST API is hosted.
 CAMUNDA_URL = ""
+
+# TODO: write a description
+CLIENT_ID = ""
+CLIENT_SECRET = ""
+CLUSTER_ID = ""
+OPERATE_AUDIENCE = ""
+ZEEBE_AUDIENCE = ""
