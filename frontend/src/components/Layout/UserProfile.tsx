@@ -13,6 +13,7 @@ import LanguageDropdownItem from "../LanguageDropdownItem/LanguageDropdownItem";
 import NestedDropdownItem from "../NestedDropdownItem/NestedDropdownItem";
 import useHandleLogout from "../../hooks/useHandleLogout";
 import QuickIcons from "../Event/QuickIcons/QuickIcons";
+import { SettingsContext } from "../../context/SettingsContext";
 
 
 export const UserProfile = () => {
@@ -21,6 +22,7 @@ export const UserProfile = () => {
     const { getIcon } = useContext(UserIconContext);
     const { computedMode, toggleMode } = useThemeMode();
     const { handleLogout } = useHandleLogout();
+    const { settings } = useContext(SettingsContext); 
 
     const [iconSrc, setIconSrc] = useState<string | null>(null);
 
@@ -107,7 +109,8 @@ export const UserProfile = () => {
 
             {user && (
                 <>
-                    <QuickIcons />
+                    { settings?.preferencesSettings.isQuickIconsVisible &&
+                        <QuickIcons /> }
                     <Dropdown arrowIcon={false} inline placement="bottom"
                         label={
                             <>

@@ -9,6 +9,7 @@ export interface AutoRedirectPreference {
     cyclicPaymentFormEdit: string;
     loanForm: string;
     transferForm: string;
+    preferencesSettingsForm: string;
 }
 
 export const getAutoRedirectPreferencesFromUserPreferences= (userPreferences: Preferences): AutoRedirectPreference => {
@@ -20,6 +21,7 @@ export const getAutoRedirectPreferencesFromUserPreferences= (userPreferences: Pr
         cyclicPaymentForm: userPreferences.autoRedirectPreference.cyclicPaymentForm,
         cyclicPaymentFormEdit: userPreferences.autoRedirectPreference.cyclicPaymentFormEdit,
         loanForm: userPreferences.autoRedirectPreference.loanForm,
-        transferForm: userPreferences.autoRedirectPreference.transferForm
+        transferForm: userPreferences.autoRedirectPreference.transferForm,
+        preferencesSettingsForm: userPreferences.autoRedirectPreference.preferencesSettingsForm
     }
 }

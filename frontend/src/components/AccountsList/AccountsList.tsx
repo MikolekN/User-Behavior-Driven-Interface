@@ -210,7 +210,7 @@ const AccountsList = ({ accountsList }: AccountsListProps) => {
                                         {t('accountList.setActive')}
                                     </Button> : <></>  
                                 }
-                                <Link to={`/edit-cyclic-payment/${account.id}`} className="w-full mt-1">
+                                <Link to={`/edit-account/${account.accountNumber}`} className="w-full mt-1">
                                     <Button className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">{t('accountList.edit')}</Button>
                                 </Link>
                                 <Button onClick={() => handleDelete(account.accountNumber)} className="w-full bg-red-600 hover:bg-red-700 dark:bg-rose-950 dark:hover:bg-rose-900 mt-1">

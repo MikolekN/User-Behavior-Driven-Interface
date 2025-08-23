@@ -99,12 +99,12 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
     }, [setUserPreferences]);
 
     useEffect(() => {
-        const fetchAccount = async (): Promise<void> => {
+        const fetchUserPreferences = async (): Promise<void> => {
             if (!userPreferences) {
                 await getUserPreference(user!);
             }
         };
-        void fetchAccount();
+        void fetchUserPreferences();
     }, [getUserPreference, userPreferences]);
 
     const PreferencesContextValue = useMemo(() => ({

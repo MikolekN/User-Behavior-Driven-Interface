@@ -25,7 +25,7 @@ const AccountForm = () => {
     const { user, getUser } = useContext(UserContext);
     const { accountNumber } = useParams();
     const { account, setAccount, getAccount, createAccount, updateAccount } = useContext(AccountContext);
-    const { autoRedirectPreference } = useContext(PreferencesContext);
+    const { userPreferences } = useContext(PreferencesContext);
     const navigate = useNavigate();
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = useForm<AccountFormData>({
@@ -95,7 +95,7 @@ const AccountForm = () => {
             try {
                 await createAccount(requestBody);
                 triggerCustomFormSubmitEvent(FORMS.ACCOUNT.id);
-                navigate(autoRedirectPreference?.accountForm ?? '/dashboard');
+                navigate(userPreferences?.autoRedirectPreference?.accountForm ?? '/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();
@@ -105,7 +105,7 @@ const AccountForm = () => {
                 await updateAccount(accountNumber!, requestBody);
                 await getUser();
                 triggerCustomFormSubmitEvent(FORMS.ACCOUNT_EDIT.id);
-                navigate(autoRedirectPreference?.accountFormEdit ?? '/dashboard');
+                navigate(userPreferences?.autoRedirectPreference?.accountFormEdit ?? '/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();

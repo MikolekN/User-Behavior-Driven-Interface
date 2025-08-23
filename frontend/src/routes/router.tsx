@@ -21,6 +21,7 @@ import Accounts from '../pages/Accounts/Accounts';
 import AccountForm from '../pages/Account/AccountForm';
 import Cards from '../pages/Cards/Cards';
 import CardForm from '../pages/Card/CardForm';
+import Settings from '../pages/Settings/Settings';
 
 
 export const router = createBrowserRouter([
@@ -55,7 +56,8 @@ export const router = createBrowserRouter([
                     { path: '/edit-account/:accountNumber', element: <AccountForm key="edit" />},
                     { path: '/cards', element: <Cards /> },
                     { path: '/create-card', element: <CardForm key="create" /> },
-                    { path: '/edit-card/:cardNumber', element: <CardForm key="edit" /> }
+                    { path: '/edit-card/:cardNumber', element: <CardForm key="edit" /> },
+                    { path: '/settings', element: <Settings /> }
                 ]
             },
         ],

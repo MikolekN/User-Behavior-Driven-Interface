@@ -6,11 +6,13 @@ import { useContext, useEffect } from 'react';
 import { AccountContext } from '../../context/AccountContext';
 import ActiveAccountError from '../../components/ActiveAccountError/ActiveAccountError';
 import { UserContext } from '../../context/UserContext';
+import { SettingsContext } from '../../context/SettingsContext';
 
 const Dashboard = () => {
     const { t } = useTranslation();
     const { activeAccount, setActiveAccount, getActiveAccount } = useContext(AccountContext);
     const { user, getUser } = useContext(UserContext);
+    const {settings} = useContext(SettingsContext);
 
     useEffect(() => {
         const getUserActiveAccount = async () => {
@@ -29,6 +31,7 @@ const Dashboard = () => {
             <ActiveAccountError />
         ) : (
             <Tile id="dashboard" title={activeAccount!.accountName}>
+                {!settings}
                 <div className="flex flex-col md:flex-row p-1 md:p-5 justify-center items-center">
                     <div className="order-2 md:order-1 flex flex-col items-center min-w-fit">
                         <p>{t('dashboard.balance') + ': '}{activeAccount!.balance} {activeAccount!.currency}</p>

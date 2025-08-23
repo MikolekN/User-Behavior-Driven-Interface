@@ -11,10 +11,11 @@ interface DropdownProps {
     onClick: () => void;
     closeDropdown: () => void;
     className: string;
+    isMenuPriorityVisible: boolean | undefined;
     pagesToHighlight: string[] | undefined;
 }
 
-export const Dropdown: React.FC<DropdownProps> = ({ menu, isOpen, onClick, closeDropdown, className, pagesToHighlight }) => {
+export const Dropdown: React.FC<DropdownProps> = ({ menu, isOpen, onClick, closeDropdown, className, isMenuPriorityVisible, pagesToHighlight }) => {
     const { t } = useTranslation();
     return (
         <li className={`${className} relative`}>
@@ -65,7 +66,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ menu, isOpen, onClick, close
                             to={option.path} 
                             theme={blackTextTheme} 
                             onClick={closeDropdown} 
-                            className={`block list-none text-center md:hover:font-semibold text-sm hover:bg-gray-200 hover:dark:bg-gray-600 font-normal hover:font-semibold md:p-2 ${pagesToHighlight != undefined && pagesToHighlight.includes(option.path) ? 'font-bold' : 'font-normal'}`}>
+                            className={`block list-none text-center md:hover:font-semibold text-sm hover:bg-gray-200 hover:dark:bg-gray-600 font-normal hover:font-semibold md:p-2 ${isMenuPriorityVisible && pagesToHighlight != undefined && pagesToHighlight.includes(option.path) ? 'font-bold' : 'font-normal'}`}>
                             {t('menu.' + menu.key + '.submenu.' + option.key)}
                         </Navbar.Link>
                     </div>

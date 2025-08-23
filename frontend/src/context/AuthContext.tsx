@@ -3,6 +3,7 @@ import { UserContext } from './UserContext';
 import { loginUser, registerUser, logoutUser } from '../services/authService';
 import { AccountContext } from './AccountContext';
 import { PreferencesContext } from '../event/context/PreferencesContext';
+import { SettingsContext } from './SettingsContext';
 
 interface AuthContextProps {
     login: (email: string, password: string) => Promise<void>;
@@ -22,6 +23,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const { setUser, setLoading, getUser } = useContext(UserContext);
     const { setAccount } = useContext(AccountContext);
     const { setUserPreferences, generateUserPreference, getUserPreference, setShortcutPreference } = useContext(PreferencesContext);
+    const { setSettings, getSettings } = useContext(SettingsContext);
 
     const login = useCallback(async (email: string, password: string): Promise<void> => {
         setLoading(true);
@@ -31,9 +33,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         try {
             await generateUserPreference(userData);
             await getUserPreference(userData);
+            await getSettings(userData);
         } catch (error) {
             setUserPreferences(null);
             setShortcutPreference(null);
+            setSettings(null);
         }
         
         setLoading(false);

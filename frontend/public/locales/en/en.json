@@ -335,6 +335,19 @@
             "title": "Proposed step"
         }
     },
+    "preferencesSettingsForm": {
+        "tile": {
+            "title": "Preferences settings"
+        },
+        "areEventsCollected": "Switch events collecting",
+        "isNextStepVisible": "Switch Next Step",
+        "isShortcutVisible": "Switch Shortcut",
+        "isQuickIconsVisible": "Quick icons",
+        "isMenuPriorityVisible": "Menu priority",
+        "submit": "Submit",
+        "loading": "Loading...",
+        "alertInfo": "Disabling this option requires logging in to the application again for the change to take effect"
+    },
     "urls": {
         "/dashboard": "Dashboard",
         "/transfer": "Transfer",
@@ -452,7 +465,9 @@
             "senderAccountNotExist": "Sender's account not exist",
             "networkError": "The service is currently unavailable. Please try again later.",
             "invalidMonthlyAnalysisLimit": "Incorrect month range passed for monthly analysis",
-            "cardsNotExist": "User doesn't have any card"
+            "cardsNotExist": "User doesn't have any card",
+            "invalidUserId": "Invalid User Id format",
+            "settingsNotExist": "Settings for given user does not exist"
         },
         "zod": {
             "required": "The field is required",

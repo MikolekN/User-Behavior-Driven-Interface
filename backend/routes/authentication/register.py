@@ -1,7 +1,9 @@
 from http import HTTPStatus
 
+import bson
 from flask import Response, request
 
+from settings.generate_settings import generate_default_settings
 from routes.helpers import create_simple_response, hash_password, unauthenticated_required
 from users import UserRepository, User
 from users.requests.register_request import RegisterRequest
@@ -26,6 +28,8 @@ def register() -> Response:
         role='USER',
         user_icon=None
     )
-    user_repository.insert(user)
+    saved_user = user_repository.insert(user)
+    
+    generate_default_settings(bson.ObjectId(saved_user.id))
 
     return create_simple_response("registerSuccessful", HTTPStatus.CREATED)
