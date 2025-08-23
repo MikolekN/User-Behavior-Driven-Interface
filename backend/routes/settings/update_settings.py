@@ -18,7 +18,6 @@ def update_settings(user_id: str):
         return create_simple_response("invalidUserId", HTTPStatus.BAD_REQUEST)
     
     data = request.get_json()
-    print(data)
     error = UpdateSettingsRequest.validate_request(data)
     if error:
         return create_simple_response(error, HTTPStatus.BAD_REQUEST)
@@ -43,5 +42,5 @@ def update_settings(user_id: str):
     }
 
     updated_settings = settings_repository.update(str(settings.id), data_for_update)
-    print(updated_settings)
+
     return UpdateSettingsResponse.create_response("updatedSettingsSuccessfully", updated_settings.to_dict(), HTTPStatus.OK)
