@@ -18,7 +18,6 @@ def get_settings(user_id: str):
     user_obj_id = bson.ObjectId(user_id)
     
     settings = settings_repository.find_by_user(user_obj_id)
-    print("Settings - ", settings)
     if not settings:
         return create_simple_response("noSettings", HTTPStatus.NOT_FOUND)
 

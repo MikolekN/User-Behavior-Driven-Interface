@@ -31,11 +31,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const userData = await getUser();
         if (!userData) return;
         try {
-            console.log("weszlo");
             await generateUserPreference(userData);
-            console.log("weszlo");
             await getUserPreference(userData);
-            console.log("weszlo");
             await getSettings(userData);
         } catch (error) {
             setUserPreferences(null);

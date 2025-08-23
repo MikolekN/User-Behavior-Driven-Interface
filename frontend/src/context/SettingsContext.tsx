@@ -28,9 +28,7 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
     const [settings, setSettings] = useState<Settings | null>(null);
 
     const getSettings = useCallback(async (user: User): Promise<void> => {
-        console.log("weszlo");
         const { settings: backendSettingsData } = await getSettingsData(user);
-        console.log("backend data -> ", backendSettingsData)
         if (backendSettingsData) {
             const frontendSettingsData: Settings = mapBackendSettingsToSettings(backendSettingsData);
             setSettings(frontendSettingsData);
@@ -43,9 +41,7 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
 
     useEffect(() => {
         const fetchUserSettings = async (): Promise<void> => {
-            console.log("OK")
             if (!settings) {
-                console.log("OK 2")
                 await getSettings(user!);
             }
         };

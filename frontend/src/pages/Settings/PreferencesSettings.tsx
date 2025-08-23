@@ -15,7 +15,8 @@ import { triggerCustomFormSubmitEvent } from "../../event/eventCollectors/clickE
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/utils/Button";
 import { FORMS, SUBMIT_BUTTONS } from '../../event/utils/constants';
-import { toggleSwitchTheme } from '../../components/utils/themes/toggleSwitchTheme'
+import { toggleSwitchTheme } from '../../components/utils/themes/toggleSwitchTheme';
+import useAutoRedirectPreference from '../../hooks/useAutoRedirectPreference';
 
 
 const PreferencesSettings = () => {
@@ -24,7 +25,7 @@ const PreferencesSettings = () => {
     const { user } = useContext(UserContext);
     const { settings, updateSettings, getSettings } = useContext(SettingsContext);
 
-    const { userPreferences, getAutoRedirectPreference } = useContext(PreferencesContext);
+    const { userPreferences } = useContext(PreferencesContext);
 
     const { register, formState: { isSubmitting }, setValue } = useForm<PreferencesSettingsFormData>({
         resolver: zodResolver(PreferencesSettingsFormDataSchema),
@@ -83,20 +84,16 @@ const PreferencesSettings = () => {
         alert(t('preferencesSettingsForm.alertInfo'));
     };
 
+    // calling custom hook to get AutoRedirect object
+    useAutoRedirectPreference();
+
     const onSubmit = async () => {
-        console.log("OKOKOk")
         clearApiError();
         const requestBody = providePreferencesSettingsRequestBody();
-        console.log(requestBody);
         try {
             await updateSettings(user!, requestBody);
             await getSettings(user!);
-            //getAutoRedirectPreference();
-            // dodać ten formularz do listy formularzo-eventów
             triggerCustomFormSubmitEvent(FORMS.PREFERENCES_SETTINGS.id);
-            
-            // dodać obsługę tego formularza na backendzie
-            console.log(userPreferences?.autoRedirectPreference?.preferencesSettingsForm)
             navigate(userPreferences?.autoRedirectPreference?.preferencesSettingsForm ?? '/dashboard');
         } catch (error) {
             handleError(error);

@@ -41,7 +41,6 @@ def update_settings(user_id: str):
             }
         }
     }
-    print("dfu: ", data_for_update)
 
     updated_settings = settings_repository.update(str(settings.id), data_for_update)
     print(updated_settings)

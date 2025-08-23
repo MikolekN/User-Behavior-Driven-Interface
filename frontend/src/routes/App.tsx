@@ -47,9 +47,7 @@ const App = () => {
     });
 
     useEffect(() => {
-        console.log("otherEvent settings = ", settings);
         if (settings?.preferencesSettings.areEventsCollected === false) {
-            console.log("FALSE")
             return;
         }
 
@@ -67,18 +65,6 @@ const App = () => {
             };
         }
     }, [user, settings]);
-
-    // useEffect(() => {
-    //     console.log("pageTrans settings = ", settings);
-    //     if (settings?.preferencesSettings.areEventsCollected === false) {
-    //         return;
-    //     }
-    //     const startTrackingRef = startTracking(user);
-
-    //     return () => {
-    //         startTrackingRef();
-    //     };
-    // }, [user]);
 
 	if (isTabOpen) {
 		return (

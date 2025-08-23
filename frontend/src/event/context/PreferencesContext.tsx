@@ -90,7 +90,6 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
         const {preferences: generatedPreferencesBackendData} = await getUserPreferencesData(user);
         if (generatedPreferencesBackendData) {
             const frontendPreferencesData: Preferences = mapBackendPreferencesToUserPreferences(generatedPreferencesBackendData);
-            console.log(frontendPreferencesData)
             setUserPreferences(frontendPreferencesData);
         }
     }, []);

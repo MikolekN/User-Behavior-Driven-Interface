@@ -28,9 +28,8 @@ def register() -> Response:
         role='USER',
         user_icon=None
     )
-    user_repository.insert(user)
+    saved_user = user_repository.insert(user)
     
-    saved_user = user_repository.find_by_email(user.email)
     generate_default_settings(bson.ObjectId(saved_user.id))
 
     return create_simple_response("registerSuccessful", HTTPStatus.CREATED)
