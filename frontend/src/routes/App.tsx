@@ -10,11 +10,13 @@ import Shortcut from '../components/Event/Shortcut/Shortcut';
 import { setupMainMenuHoverEvents } from '../event/eventCollectors/hoverEvents';
 import { AuthContext } from '../context/AuthContext';
 import NextStep from '../components/Event/NextStep/NextStep';
+import { SettingsContext } from '../context/SettingsContext';
 
 const App = () => {
     const { user } = useContext(UserContext);
     const { logout } = useContext(AuthContext);
     const [isTabOpen, setIsTabOpen] = useState<boolean>(false);
+    const { settings } = useContext(SettingsContext);
 
     useEffect(() => {
         const uniqueTabId = Date.now().toString();
@@ -45,24 +47,24 @@ const App = () => {
     });
 
     useEffect(() => {
-        const userDropdownClickEvents = setupUserDropdownClickEvents(user);
-        const submitButtonsClickEvents = setupFormSucessfulSubmitButtonsClickEvents(user);
-        const mainMenuHoverEvents = setupMainMenuHoverEvents(user);
-        
-        return () => {
-            userDropdownClickEvents();
-            submitButtonsClickEvents();
-            mainMenuHoverEvents();
-        };
-    }, [user]);
+        if (settings?.preferencesSettings.areEventsCollected === false) {
+            return;
+        }
 
-    useEffect(() => {
-        const startTrackingRef = startTracking(user);
-
-        return () => {
-            startTrackingRef();
-        };
-    }, [user]);
+        if (settings?.preferencesSettings.areEventsCollected === true) {
+            const startTrackingRef = startTracking(user);
+            const userDropdownClickEvents = setupUserDropdownClickEvents(user);
+            const submitButtonsClickEvents = setupFormSucessfulSubmitButtonsClickEvents(user);
+            const mainMenuHoverEvents = setupMainMenuHoverEvents(user);
+            
+            return () => {
+                startTrackingRef();
+                userDropdownClickEvents();
+                submitButtonsClickEvents();
+                mainMenuHoverEvents();
+            };
+        }
+    }, [user, settings]);
 
 	if (isTabOpen) {
 		return (
@@ -85,18 +87,26 @@ const App = () => {
             <Layout>
                 <div className="hidden md:flex w-full h-screen">
                     <div className="flex items-center justify-center w-1/4 md:h-auto">
-                        <Shortcut />
+                        { settings?.preferencesSettings.isShortcutVisible && 
+                            <Shortcut /> 
+                        }
                     </div>
                     <div className="flex items-center justify-center w-2/4">
                         <Outlet />
                     </div>
                     <div className="flex items-center justify-center w-1/4 md:h-auto">
-                        <NextStep />
+                        { settings?.preferencesSettings.isNextStepVisible && 
+                            <NextStep />
+                        }
                     </div>
                 </div>
                 <div className="md:hidden flex flex-col justify-center items-center">
-                    <Shortcut />
-                    <NextStep />
+                    { settings?.preferencesSettings.isShortcutVisible &&
+                        <Shortcut />
+                    }
+                    { settings?.preferencesSettings.isNextStepVisible &&
+                        <NextStep />
+                    }
                     <Outlet />
                 </div>
             </Layout>

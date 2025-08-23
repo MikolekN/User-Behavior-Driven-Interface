@@ -27,7 +27,7 @@ const CardForm = () => {
     const { user, getUser } = useContext(UserContext);
     const { activeAccount } = useContext(AccountContext);
     const { card, setCard, getCard, createCard, updateCard } = useContext(CardContext);
-    const { autoRedirectPreference } = useContext(PreferencesContext);
+    const { userPreferences } = useContext(PreferencesContext);
     const { apiError, handleError, clearApiError } = useApiErrorHandler();
     const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = useForm<CardFormData>({
         resolver: zodResolver(CardFormDataSchema),
@@ -94,7 +94,7 @@ const CardForm = () => {
                 await createCard(requestBody);
                 await getUser();
                 triggerCustomFormSubmitEvent(FORMS.CARD.id);
-                navigate(autoRedirectPreference?.cardForm ?? '/dashboard');
+                navigate(userPreferences?.autoRedirectPreference?.cardForm ?? '/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();
@@ -104,7 +104,7 @@ const CardForm = () => {
                 await updateCard(cardNumber!, requestBody);
                 await getUser();
                 triggerCustomFormSubmitEvent(FORMS.CARD_EDIT.id);
-                navigate(autoRedirectPreference?.cardFormEdit ?? '/dashboard');
+                navigate(userPreferences?.autoRedirectPreference?.cardFormEdit ?? '/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();

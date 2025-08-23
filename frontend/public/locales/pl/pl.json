@@ -233,7 +233,6 @@
         "writeMessage": "Napisz wiadomość...",
         "welcomeMessage": "Witamy na czacie obsługi klienta! Nie wahaj się zadać pytań, a my chętnie Ci pomożemy.",
         "responseMessage": "Dziękujemy za wiadomość! Nasz zespół wkrótce się z Tobą skontaktuje."
-
     },
     "faq": {
         "tile": {
@@ -335,6 +334,19 @@
         "tile": {
             "title": "Proponowany krok"
         }
+    },
+        "preferencesSettingsForm": {
+        "tile": {
+            "title": "Ustawienia preferencji"
+        },
+        "areEventsCollected": "Zbieranie zdarzeń",
+        "isNextStepVisible": "Proponowany Krok",
+        "isShortcutVisible": "Na skróty",
+        "isQuickIconsVisible": "Quick icons",
+        "isMenuPriorityVisible": "Menu priority",
+        "submit": "Zapisz",
+        "loading": "Ładowanie...",
+        "alertInfo": "Wyłączenie tej opcji wymaga ponownego zalogowania się do aplikacji w celu zastosowania wprowadzonej zmiany"
     },
     "urls": {
         "/dashboard": "Strona głowna",
@@ -453,7 +465,9 @@
             "senderAccountNotExist": "Konto odbiorcy nie istnieje",
             "networkError": "Serwis jest aktualnie niedostępny. Spróbuj ponownie później.",
             "invalidMonthlyAnalysisLimit": "Przekazano niepoprawny zakres miesięcy do analizy miesięcznej",
-            "cardsNotExist": "Użytkownik nie posiada żadnej karty"
+            "cardsNotExist": "Użytkownik nie posiada żadnej karty",
+            "invalidUserId": "Niepoprawny format identyfikatora użytkownika",
+            "settingsNotExist": "Ustawienia dla danego użytkownika nie istnieją"
         },
         "zod": {
             "required": "Pole jest wymagane",

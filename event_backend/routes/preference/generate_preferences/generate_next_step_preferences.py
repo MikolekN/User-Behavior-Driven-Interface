@@ -28,6 +28,9 @@ def generate_next_step_preferences(user_id: str):
 
     all_events: List[Event] = click_events + hover_events + page_transition_events
 
+    if not all_events:
+        return
+
     all_events.sort(key=lambda event: event.start_timestamp)
 
     df = pd.DataFrame(all_events)

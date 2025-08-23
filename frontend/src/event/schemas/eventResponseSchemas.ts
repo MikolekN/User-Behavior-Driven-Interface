@@ -17,7 +17,8 @@ const PreferenceSchema = z.object({
             cyclicPaymentForm: requiredStringField(),
             cyclicPaymentFormEdit: requiredStringField(),
             loanForm: requiredStringField(),
-            transferForm: requiredStringField()
+            transferForm: requiredStringField(),
+            preferencesSettingsForm: requiredStringField()
         }),
         menuPriorityPreference: z.object({
             pagesToHighlight: z.array(requiredStringField())

@@ -26,7 +26,7 @@ const Transfer = () => {
     const { getUser } = useContext(UserContext);
     const { createTransfer } = useContext(TransferContext);
     const { activeAccount } = useContext(AccountContext);
-    const { autoRedirectPreference } = useContext(PreferencesContext);
+    const { userPreferences } = useContext(PreferencesContext);
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<TransferFormData>({
         resolver: zodResolver(TransferFormDataSchema),
         defaultValues: {
@@ -54,7 +54,7 @@ const Transfer = () => {
             await createTransfer(requestBody);
             await getUser();
             triggerCustomFormSubmitEvent(FORMS.TRANSFER.id);
-            navigate(autoRedirectPreference?.transferForm ?? '/dashboard');
+            navigate(userPreferences?.autoRedirectPreference?.transferForm ?? '/dashboard');
         } catch (error) {
             handleError(error);
             scrollToTop();

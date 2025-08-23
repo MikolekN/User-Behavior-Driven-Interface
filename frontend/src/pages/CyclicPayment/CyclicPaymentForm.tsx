@@ -39,7 +39,7 @@ const CyclicPaymentsForm = () => {
     const { activeAccount } = useContext(AccountContext);
     const { cyclicPayment, setCyclicPayment, createCyclicPayment, getCyclicPayment,
         updateCyclicPayment } = useContext(CyclicPaymentContext);
-    const { autoRedirectPreference } = useContext(PreferencesContext);
+    const { userPreferences } = useContext(PreferencesContext);
 
     const { register, handleSubmit, formState: { errors, isSubmitting }, clearErrors, control, setValue } = useForm<CyclicPaymentFormData>({
         resolver: zodResolver(CyclicPaymentFormDataSchema),
@@ -126,7 +126,7 @@ const CyclicPaymentsForm = () => {
                 await createCyclicPayment(requestBody);
                 await getUser();
                 triggerCustomFormSubmitEvent(FORMS.CYCLIC_PAYMENT.id);
-                navigate(autoRedirectPreference?.cyclicPaymentForm ?? '/dashboard');
+                navigate(userPreferences?.autoRedirectPreference?.cyclicPaymentForm ?? '/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();
@@ -136,7 +136,7 @@ const CyclicPaymentsForm = () => {
                 await updateCyclicPayment(id!, requestBody);
                 await getUser();
                 triggerCustomFormSubmitEvent(FORMS.CYCLIC_PAYMENT_EDIT.id);
-                navigate(autoRedirectPreference?.cyclicPaymentFormEdit ?? '/dashboard');
+                navigate(userPreferences?.autoRedirectPreference?.cyclicPaymentFormEdit ?? '/dashboard');
             } catch (error) {
                 handleError(error);
                 scrollToTop();

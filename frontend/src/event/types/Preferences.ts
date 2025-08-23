@@ -7,6 +7,7 @@ interface AutoRedirectPreferenceData {
     cyclicPaymentFormEdit: string;
     loanForm: string;
     transferForm: string;
+    preferencesSettingsForm: string;
 }
 
 interface MenuPriorityPreferenceData {
@@ -19,7 +20,6 @@ export interface Preferences {
     autoRedirectPreference: AutoRedirectPreferenceData;
     menuPriorityPreference: MenuPriorityPreferenceData;
 }
-
 
 export interface BackendPreferences {
     user_id: string;
