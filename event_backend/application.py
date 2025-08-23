@@ -1,6 +1,6 @@
-from shared import Database
 from flask import Flask
 from flask_cors import CORS
+from shared import Database
 
 from routes.event.event_blueprint import event_blueprint
 from routes.preference.preference_blueprint import preference_blueprint
@@ -19,6 +19,7 @@ def create_app():
     app.config.from_pyfile('config.py')
 
     return app
+
 
 app = create_app()
 

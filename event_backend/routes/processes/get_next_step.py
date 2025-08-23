@@ -11,6 +11,7 @@ from routes.helpers import validate_token
 
 model_repository = ModelRepository()
 
+
 def get_next_step(user_id: str) -> Response:
     if not isinstance(user_id, str) or not bson.ObjectId.is_valid(user_id):
         return create_simple_response("invalidUser", HTTPStatus.BAD_REQUEST)

@@ -8,4 +8,5 @@ process_blueprint = Blueprint('processes', __name__, url_prefix='/api/processes'
 
 process_blueprint.add_url_rule('/<user_id>', 'run_process_instance', run_process_instance, methods=['POST'])
 process_blueprint.add_url_rule('/<user_id>', 'get_next_step', get_next_step, methods=['GET'])
-process_blueprint.add_url_rule('/generate/<user_id>', 'generate_process_model', generate_process_model, methods=['POST'])
+process_blueprint.add_url_rule('/generate/<user_id>', 'generate_process_model', generate_process_model,
+                               methods=['POST'])

@@ -11,6 +11,7 @@ from routes.helpers import validate_token
 
 hover_event_repository = HoverEventRepository()
 
+
 def create_hover_event(user_id: str, data: dict) -> Response:
     error = CreateHoverEventRequest.validate_request(data)
     if error:

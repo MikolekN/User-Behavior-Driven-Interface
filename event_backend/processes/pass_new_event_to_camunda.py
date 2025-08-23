@@ -19,6 +19,7 @@ def pass_new_event_to_camunda(next_page, user_id):
     Database.initialise()
     asyncio.run(_pass_new_event_to_camunda(next_page, user_id))
 
+
 async def _pass_new_event_to_camunda(next_page: str, user_id: str) -> None:
     # RETRIEVE THE MODEL DATA FROM DATABASE
     model = get_model(bson.ObjectId(user_id))
@@ -33,7 +34,8 @@ async def _pass_new_event_to_camunda(next_page: str, user_id: str) -> None:
     instances: list = get_active_process_instances(model_id, operate_token, CLUSTER_ID)
     if not instances:
         # IF NO CURRENTLY RUNNING PROCESSES ARE ASSOCIATED WITH THE USER
-        print("\033[33mNo active process instances associated with the user found - attempting to start an instance.\033[0m")
+        print(
+            "\033[33mNo active process instances associated with the user found - attempting to start an instance.\033[0m")
 
         process_instance_definition = await create_process_instance(user_id)
         if not process_instance_definition:
@@ -100,4 +102,5 @@ async def _pass_new_event_to_camunda(next_page: str, user_id: str) -> None:
     else:
         message = "Navigate Other"
 
-    await publish_message(message=message, correlation_key=user_id, cluster_id=CLUSTER_ID, client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
+    await publish_message(message=message, correlation_key=user_id, cluster_id=CLUSTER_ID, client_id=CLIENT_ID,
+                          client_secret=CLIENT_SECRET)

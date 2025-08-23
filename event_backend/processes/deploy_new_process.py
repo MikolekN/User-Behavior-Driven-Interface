@@ -3,6 +3,7 @@ from pyzeebe.grpc_internals.types import DeployResourceResponse
 
 from config import CLIENT_ID, CLIENT_SECRET, CLUSTER_ID
 
+
 async def deploy_new_process(file_path: str) -> DeployResourceResponse:
     # CONNECT TO CAMUNDA
     channel = create_camunda_cloud_channel(

@@ -24,14 +24,13 @@ from processes.generate_transformed_bpmn import generate_transformed_bpmn
 from processes.parse_bpmn_structure import parse_bpmn_structure
 from processes.transform_structure import transform_structure
 
-
 model_repository = ModelRepository()
-
 
 
 def discover_process_model(user_id: str):
     Database.initialise()
     asyncio.run(_discover_process_model(user_id))
+
 
 async def _discover_process_model(user_id: str) -> None:
     bpmn_file_path = f"base_models/model_{user_id}"
@@ -42,7 +41,8 @@ async def _discover_process_model(user_id: str) -> None:
 
     # GATHER EVENTS
     page_transitions_events_repository = PageTransitionEventRepository()
-    page_transition_events: List[PageTransitionEvent] = page_transitions_events_repository.get_next_step_events(user_id) or []
+    page_transition_events: List[PageTransitionEvent] = page_transitions_events_repository.get_next_step_events(
+        user_id) or []
     page_transition_events.sort(key=lambda event: event.start_timestamp)
     if not page_transition_events:
         return

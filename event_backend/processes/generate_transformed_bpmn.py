@@ -8,7 +8,8 @@ from processes.helpers.generate_id import generate_id
 from processes.types.graph_element import GraphElement
 
 
-def generate_transformed_bpmn(transformed_map: Dict[str, GraphElement], user_id: str, output_bpmn_file_path: str, visits_map: Dict, verbose: bool = False) -> None:
+def generate_transformed_bpmn(transformed_map: Dict[str, GraphElement], user_id: str, output_bpmn_file_path: str,
+                              visits_map: Dict, verbose: bool = False) -> None:
     ET.register_namespace("bpmn", "http://www.omg.org/spec/BPMN/20100524/MODEL")
     ET.register_namespace("bpmndi", "http://www.omg.org/spec/BPMN/20100524/DI")
     ET.register_namespace("omgdc", "http://www.omg.org/spec/DD/20100524/DC")
@@ -100,17 +101,20 @@ def generate_transformed_bpmn(transformed_map: Dict[str, GraphElement], user_id:
         if elem.bpmn_element_type == "intermediateCatchEvent":
             ext_elements = ET.SubElement(elem_node, bpmn("extensionElements"))
             zeebe_props = ET.SubElement(ext_elements, zeebe("properties"))
-            url_value = "other" if elem.name == "Navigate Other" else elem.name.replace("Navigate ","/").lower().replace(" ", "-")
+            url_value = "other" if elem.name == "Navigate Other" else elem.name.replace("Navigate ",
+                                                                                        "/").lower().replace(" ", "-")
             gate = transformed_map.get(next(iter(elem.incoming_flows)))
             previous = transformed_map.get(next(iter(gate.incoming_flows)))
-            previous_url_value = "/dashboard" if previous.bpmn_element_type == "startEvent" else ''.join(("/", previous.name.lower().replace(" ", "-")))
+            previous_url_value = "/dashboard" if previous.bpmn_element_type == "startEvent" else ''.join(
+                ("/", previous.name.lower().replace(" ", "-")))
             if url_value != "other":
                 visits = str(visits_map.get(previous_url_value, {}).get(url_value, 0))
             else:
                 explicit_urls = list()
                 for explicit_ids in gate.outgoing_flows:
                     if explicit_ids != elem.id:
-                        explicit_urls.append(transformed_map.get(explicit_ids).name.replace("Navigate ","/").lower().replace(" ", "-"))
+                        explicit_urls.append(
+                            transformed_map.get(explicit_ids).name.replace("Navigate ", "/").lower().replace(" ", "-"))
                 visits = sum(v for k, v in visits_map.get(previous_url_value, {}).items() if k not in explicit_urls)
                 visits = str(visits)
             ET.SubElement(zeebe_props, zeebe("property"), {"name": "visits", "value": visits})

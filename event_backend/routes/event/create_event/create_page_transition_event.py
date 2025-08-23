@@ -13,6 +13,7 @@ from routes.helpers import validate_token
 
 page_transition_event_repository = PageTransitionEventRepository()
 
+
 def create_page_transition_event(user_id: str, data: dict) -> Response:
     error = CreatePageTransitionEventRequest.validate_request(data)
     if error:

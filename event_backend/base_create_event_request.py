@@ -3,11 +3,10 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Optional, Type
 
-import bson
 from shared import BaseRequest
 
-
 event_types = ['click_event', 'hover_event', 'page_transition_event']
+
 
 @dataclass
 class BaseCreateEventRequest(BaseRequest):

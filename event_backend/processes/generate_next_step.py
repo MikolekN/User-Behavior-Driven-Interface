@@ -9,10 +9,10 @@ from processes.helpers.get_access_token import get_access_token
 from processes.helpers.get_active_process_instances import get_active_process_instances
 from processes.helpers.get_flownodes_instances import get_flownodes_instances
 from processes.helpers.get_process_definition_xml import get_process_definition_xml
-from processes.types.step import Step
+from processes.types.next_step import NextStep
 
 
-def generate_next_step(user_id: str) -> Optional[Step]:
+def generate_next_step(user_id: str) -> Optional[NextStep]:
     # RETRIEVE THE MODEL DATA FROM DATABASE
     model = get_model(bson.ObjectId(user_id))
     if model is None or model.model_id is None:
@@ -94,13 +94,13 @@ def generate_next_step(user_id: str) -> Optional[Step]:
     ]
 
     next_step_data = max(filtered_steps, key=lambda x: x['visits'], default=None)
-    next_step = Step(
-        bpmn_element_id = next_step_data['message_event_id'],
-        message = next_step_data['message_event_name'],
-        visits = next_step_data['visits'],
-        url = next_step_data['url'],
-        previous_url = next_step_data['previous_url'],
-        probability = f"{(next_step_data['visits'] / sum_visits) * 100:.2f}%",
+    next_step = NextStep(
+        bpmn_element_id=next_step_data['message_event_id'],
+        message=next_step_data['message_event_name'],
+        visits=next_step_data['visits'],
+        next_page=next_step_data['url'],
+        page=next_step_data['previous_url'],
+        probability=f"{(next_step_data['visits'] / sum_visits) * 100:.2f}%",
     )
 
     return next_step

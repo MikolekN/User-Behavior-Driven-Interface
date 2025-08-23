@@ -7,6 +7,7 @@ from shared import create_simple_response, Token, TokenRepository
 
 token_repository = TokenRepository()
 
+
 def validate_token(token_value: str, user_obj_id: bson.ObjectId) -> Optional[Response]:
     if not token_value:
         return create_simple_response("missingToken", HTTPStatus.UNAUTHORIZED)

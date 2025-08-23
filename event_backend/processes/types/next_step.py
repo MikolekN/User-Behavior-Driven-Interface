@@ -3,12 +3,12 @@ from typing import Dict, Any
 
 
 @dataclass
-class Step:
+class NextStep:
     bpmn_element_id: str
     message: str
     visits: int
-    url: str
-    previous_url: str
+    next_page: str
+    page: str
     probability: str
 
     def to_dict(self) -> Dict[str, Any]:

@@ -42,6 +42,7 @@ async def create_process_instance(user_id: str) -> Optional[ProcessInstanceDefin
     process_instance_definition = await run_process_instance(model_id, user_id)
     return process_instance_definition
 
+
 async def cancel_process_instance(process_instance_key: int) -> None:
     # CONNECT TO CAMUNDA
     channel = create_camunda_cloud_channel(
@@ -56,6 +57,7 @@ async def cancel_process_instance(process_instance_key: int) -> None:
 
     # START/RUN THE PROCESS
     response: CancelProcessInstanceResponse = await client.cancel_process_instance(process_instance_key)
+
 
 async def run_process_instance(model_id: str, user_id: str) -> Optional[ProcessInstanceDefinition]:
     try:
@@ -80,5 +82,6 @@ async def run_process_instance(model_id: str, user_id: str) -> Optional[ProcessI
         print("\033[33mProcess definition not found.\033[0m")
         return None
 
-    process_instance = ProcessInstanceDefinition(response.bpmn_process_id, response.process_definition_key, response.process_instance_key)
+    process_instance = ProcessInstanceDefinition(response.bpmn_process_id, response.process_definition_key,
+                                                 response.process_instance_key)
     return process_instance

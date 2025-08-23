@@ -1,11 +1,4 @@
-import json
-from typing import Optional
-
-import requests
-
-from click_events.click_event import ClickEvent
 from click_events.click_event_repository import ClickEventRepository
-from config import CAMUNDA_URL
 
 click_events_repository = ClickEventRepository()
 
