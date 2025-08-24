@@ -58,6 +58,9 @@ async def _pass_new_event_to_camunda(next_page: str, user_id: str) -> None:
 
     # RETRIEVE THE CURRENTLY ACTIVE GATEWAY
     gateways = get_flownodes_instances(process_instance_key, operate_token, CLUSTER_ID)
+    if not gateways:
+        print("Wrong or no element to get next step from.")
+        return None
     current_gateway = gateways[0]
     current_gateway_id = current_gateway['flowNodeId']
 
