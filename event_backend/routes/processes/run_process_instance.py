@@ -16,10 +16,10 @@ async def run_process_instance(user_id: str) -> Response:
         return create_simple_response("invalidUser", HTTPStatus.BAD_REQUEST)
     user_obj_id = bson.ObjectId(user_id)
 
-    token_value = request.headers.get("Authorization")
-    invalid = validate_token(token_value, user_obj_id)
-    if invalid:
-        return invalid
+    # token_value = request.headers.get("Authorization")
+    # invalid = validate_token(token_value, user_obj_id)
+    # if invalid:
+    #     return invalid
 
     process_instance_definition = await create_process_instance(user_id)
     if not process_instance_definition:

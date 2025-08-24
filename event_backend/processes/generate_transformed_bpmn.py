@@ -87,7 +87,8 @@ def generate_transformed_bpmn(transformed_map: Dict[str, GraphElement], user_id:
             io_mapping = ET.SubElement(ext_elements, zeebe("ioMapping"))
             ET.SubElement(io_mapping, zeebe("input"), {"source": "noAuth", "target": "authentication.type"})
             ET.SubElement(io_mapping, zeebe("input"), {"source": "POST", "target": "method"})
-            ET.SubElement(io_mapping, zeebe("input"), {"source": f'="{APP_URL}" + userId', "target": "url"})
+            ET.SubElement(io_mapping, zeebe("input"),
+                          {"source": f'="{APP_URL}/api/processes/" + userId', "target": "url"})
             ET.SubElement(io_mapping, zeebe("input"), {"source": "=false", "target": "storeResponse"})
             ET.SubElement(io_mapping, zeebe("input"), {"source": "=20", "target": "connectionTimeoutInSeconds"})
             ET.SubElement(io_mapping, zeebe("input"), {"source": "=20", "target": "readTimeoutInSeconds"})
