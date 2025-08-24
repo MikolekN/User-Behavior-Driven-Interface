@@ -111,15 +111,15 @@ class ClickEventRepository(BaseRepository):
         if element_id.split('-')[0] == 'dropdown':
             element_id = 'quick-icons-' + '-'.join(element_id.split('-')[1:])
         return element_id
-    
+
     def get_form_submit_click_events(self, user_id: str, element_id: str) -> Optional[list[ClickEvent]]:
         pipeline = [
-                {"$match": {"user_id": bson.ObjectId(user_id), "event_type": "click_event", "element_id": element_id}},
-                {"$sort": {"start_timestamp": 1}}
-            ]
+            {"$match": {"user_id": bson.ObjectId(user_id), "event_type": "click_event", "element_id": element_id}},
+            {"$sort": {"start_timestamp": 1}}
+        ]
         form_submit_click_events = super().aggregate(pipeline)
 
         if form_submit_click_events:
             return [ClickEvent.from_dict(event) for event in form_submit_click_events]
-        else: 
+        else:
             return None

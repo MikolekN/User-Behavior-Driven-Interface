@@ -12,6 +12,7 @@ preferences_repository = PreferencesRepository()
 click_events_repository = ClickEventRepository()
 page_transition_event_repository = PageTransitionEventRepository()
 
+
 def receive_preferences(user_id) -> Response:
     if not isinstance(user_id, str) or not bson.ObjectId.is_valid(user_id):
         return create_simple_response("invalidUser", HTTPStatus.BAD_REQUEST)

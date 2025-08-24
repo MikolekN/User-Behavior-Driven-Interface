@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from multiprocessing import Process
 
 import bson
 from flask import Response, request
@@ -7,9 +8,11 @@ from shared import create_simple_response
 from page_transition_event.page_transition_event import PageTransitionEvent
 from page_transition_event.page_transition_event_repository import PageTransitionEventRepository
 from page_transition_event.requests.create_page_transition_event_request import CreatePageTransitionEventRequest
+from processes.pass_new_event_to_camunda import pass_new_event_to_camunda
 from routes.helpers import validate_token
 
 page_transition_event_repository = PageTransitionEventRepository()
+
 
 def create_page_transition_event(user_id: str, data: dict) -> Response:
     error = CreatePageTransitionEventRequest.validate_request(data)
@@ -38,5 +41,8 @@ def create_page_transition_event(user_id: str, data: dict) -> Response:
         activity=data.get('event_type') + " " + data.get('next_page')
     )
     page_transition_event_repository.insert(page_transition_event)
+
+    p = Process(target=pass_new_event_to_camunda, args=(page_transition_event.next_page, user_id))
+    p.start()
 
     return create_simple_response("pageTransitionEventCreatedSuccessfully", HTTPStatus.CREATED)

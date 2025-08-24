@@ -5,8 +5,9 @@ import bson
 from shared import BaseRepository
 
 from constants import MIN_TIME_SPENT
+from page_transition_event.constants import MAX_PAGE_TRANSITION_PREFERENCES_LINKS, \
+    PAGE_TRANSITION_PREFERENCES_EDIT_MAPPINGS
 from page_transition_event.page_mapper import map_page
-from page_transition_event.constants import MAX_PAGE_TRANSITION_PREFERENCES_LINKS, PAGE_TRANSITION_PREFERENCES_EDIT_MAPPINGS
 from page_transition_event.page_transition_event import PageTransitionEvent
 
 
@@ -53,12 +54,15 @@ class PageTransitionEventRepository(BaseRepository):
         ]
         page_transition_events = super().aggregate(pipeline)
         if page_transition_events:
-            return [PageTransitionEvent.from_dict(page_transition_event) for page_transition_event in page_transition_events]
+            return [PageTransitionEvent.from_dict(page_transition_event) for page_transition_event in
+                    page_transition_events]
         return None
 
-    def get_second_page_transition_event_after_form_submit(self, user_id: str, form_submit_timestamp: datetime) -> Optional[list[PageTransitionEvent]]:
+    def get_second_page_transition_event_after_form_submit(self, user_id: str, form_submit_timestamp: datetime) -> \
+            Optional[list[PageTransitionEvent]]:
         pipeline = [
-            {"$match": {"user_id": bson.ObjectId(user_id), "event_type": "page_transition_event", "start_timestamp": {"$gt": form_submit_timestamp}}},
+            {"$match": {"user_id": bson.ObjectId(user_id), "event_type": "page_transition_event",
+                        "start_timestamp": {"$gt": form_submit_timestamp}}},
             {"$sort": {"start_timestamp": 1}},
             {"$limit": 2},
             {"$skip": 1}
@@ -69,7 +73,7 @@ class PageTransitionEventRepository(BaseRepository):
             return PageTransitionEvent.from_dict(page_transition_events_after_form_submit[0])
         else:
             return None
-        
+
     def get_top_visited_page_within_submenu_for_menu_priority(self, user_id: str, submenu_pages: dict) -> str:
         pipeline = [
             {
@@ -88,7 +92,7 @@ class PageTransitionEventRepository(BaseRepository):
             {"$sort": {"count": -1}},
             {"$limit": 1}
         ]
-    
+
         top_visited_page = super().aggregate(pipeline)
 
         if top_visited_page:

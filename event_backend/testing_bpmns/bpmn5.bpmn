@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  targetNamespace="http://example.com/bpmn">
+  <bpmn:process id="multiple_xor_splits_joins" isExecutable="false">
+
+    <!-- Start Event -->
+    <bpmn:startEvent id="start" name="start">
+      <bpmn:outgoing>flow_start_to_task1</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <!-- Task 1 -->
+    <bpmn:task id="task1" name="Task 1">
+      <bpmn:incoming>flow_start_to_task1</bpmn:incoming>
+      <bpmn:outgoing>flow_task1_to_xor_split</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- XOR Split -->
+    <bpmn:exclusiveGateway id="xor_split" name="XOR Split">
+      <bpmn:incoming>flow_task1_to_xor_split</bpmn:incoming>
+      <bpmn:outgoing>flow_xor_split_to_branchA</bpmn:outgoing>
+      <bpmn:outgoing>flow_xor_split_to_branchB</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <!-- Branch A Task -->
+    <bpmn:task id="branchA_task" name="Branch A Task">
+      <bpmn:incoming>flow_xor_split_to_branchA</bpmn:incoming>
+      <bpmn:outgoing>flow_branchA_to_xor_join</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- Branch B Task -->
+    <bpmn:task id="branchB_task" name="Branch B Task">
+      <bpmn:incoming>flow_xor_split_to_branchB</bpmn:incoming>
+      <bpmn:outgoing>flow_branchB_to_xor_join</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- XOR Join -->
+    <bpmn:exclusiveGateway id="xor_join" name="XOR Join">
+      <bpmn:incoming>flow_branchA_to_xor_join</bpmn:incoming>
+      <bpmn:incoming>flow_branchB_to_xor_join</bpmn:incoming>
+      <bpmn:outgoing>flow_xor_join_to_task2</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <!-- Task 2 -->
+    <bpmn:task id="task2" name="Task 2">
+      <bpmn:incoming>flow_xor_join_to_task2</bpmn:incoming>
+      <bpmn:outgoing>flow_task2_to_end</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- End Event -->
+    <bpmn:endEvent id="end" name="end">
+      <bpmn:incoming>flow_task2_to_end</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <!-- Sequence Flows -->
+    <bpmn:sequenceFlow id="flow_start_to_task1" sourceRef="start" targetRef="task1"/>
+    <bpmn:sequenceFlow id="flow_task1_to_xor_split" sourceRef="task1" targetRef="xor_split"/>
+    <bpmn:sequenceFlow id="flow_xor_split_to_branchA" sourceRef="xor_split" targetRef="branchA_task"/>
+    <bpmn:sequenceFlow id="flow_xor_split_to_branchB" sourceRef="xor_split" targetRef="branchB_task"/>
+    <bpmn:sequenceFlow id="flow_branchA_to_xor_join" sourceRef="branchA_task" targetRef="xor_join"/>
+    <bpmn:sequenceFlow id="flow_branchB_to_xor_join" sourceRef="branchB_task" targetRef="xor_join"/>
+    <bpmn:sequenceFlow id="flow_xor_join_to_task2" sourceRef="xor_join" targetRef="task2"/>
+    <bpmn:sequenceFlow id="flow_task2_to_end" sourceRef="task2" targetRef="end"/>
+
+  </bpmn:process>
+
+  <!-- Diagram layout -->
+  <bpmndi:BPMNDiagram id="BPMNDiagram_multiple_xor_splits_joins">
+    <bpmndi:BPMNPlane bpmnElement="multiple_xor_splits_joins">
+
+      <bpmndi:BPMNShape bpmnElement="start" id="start_shape">
+        <omgdc:Bounds x="50" y="150" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape bpmnElement="task1" id="task1_shape">
+        <omgdc:Bounds x="130" y="130" width="120" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape bpmnElement="xor_split" id="xor_split_shape">
+        <omgdc:Bounds x="270" y="150" width="40" height="40"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape bpmnElement="branchA_task" id="branchA_task_shape">
+        <omgdc:Bounds x="350" y="90" width="120" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape bpmnElement="branchB_task" id="branchB_task_shape">
+        <omgdc:Bounds x="350" y="210" width="120" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape bpmnElement="xor_join" id="xor_join_shape">
+        <omgdc:Bounds x="510" y="150" width="40" height="40"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape bpmnElement="task2" id="task2_shape">
+        <omgdc:Bounds x="570" y="130" width="120" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape bpmnElement="end" id="end_shape">
+        <omgdc:Bounds x="720" y="150" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Sequence Flow Edges -->
+      <bpmndi:BPMNEdge bpmnElement="flow_start_to_task1" id="edge_flow_start_to_task1">
+        <omgdi:waypoint x="86" y="168"/>
+        <omgdi:waypoint x="130" y="155"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge bpmnElement="flow_task1_to_xor_split" id="edge_flow_task1_to_xor_split">
+        <omgdi:waypoint x="250" y="155"/>
+        <omgdi:waypoint x="270" y="170"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge bpmnElement="flow_xor_split_to_branchA" id="edge_flow_xor_split_to_branchA">
+        <omgdi:waypoint x="310" y="150"/>
+        <omgdi:waypoint x="350" y="115"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge bpmnElement="flow_xor_split_to_branchB" id="edge_flow_xor_split_to_branchB">
+        <omgdi:waypoint x="310" y="190"/>
+        <omgdi:waypoint x="350" y="235"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge bpmnElement="flow_branchA_to_xor_join" id="edge_flow_branchA_to_xor_join">
+        <omgdi:waypoint x="470" y="115"/>
+        <omgdi:waypoint x="510" y="170"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge bpmnElement="flow_branchB_to_xor_join" id="edge_flow_branchB_to_xor_join">
+        <omgdi:waypoint x="470" y="260"/>
+        <omgdi:waypoint x="510" y="170"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge bpmnElement="flow_xor_join_to_task2" id="edge_flow_xor_join_to_task2">
+        <omgdi:waypoint x="550" y="170"/>
+        <omgdi:waypoint x="570" y="155"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge bpmnElement="flow_task2_to_end" id="edge_flow_task2_to_end">
+        <omgdi:waypoint x="690" y="155"/>
+        <omgdi:waypoint x="720" y="168"/>
+      </bpmndi:BPMNEdge>
+
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

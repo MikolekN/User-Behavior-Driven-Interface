@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  targetNamespace="http://example.com/bpmn">
+  <bpmn:process id="linear_cycle_process" isExecutable="false">
+
+    <!-- Start Event -->
+    <bpmn:startEvent id="start" name="start">
+      <bpmn:outgoing>flow_start_to_transactions</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <!-- Task: transactions -->
+    <bpmn:task id="task_transactions" name="page_transition_event /transactions">
+      <bpmn:incoming>flow_start_to_transactions</bpmn:incoming>
+      <bpmn:incoming>flow_loans_to_transactions</bpmn:incoming>
+      <bpmn:outgoing>flow_transactions_to_cyclic</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- Task: cyclic-payments -->
+    <bpmn:task id="task_cyclic" name="page_transition_event /cyclic-payments">
+      <bpmn:incoming>flow_transactions_to_cyclic</bpmn:incoming>
+      <bpmn:outgoing>flow_cyclic_to_loans</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- Task: loans -->
+    <bpmn:task id="task_loans" name="page_transition_event /loans">
+      <bpmn:incoming>flow_cyclic_to_loans</bpmn:incoming>
+      <bpmn:outgoing>flow_loans_to_end</bpmn:outgoing>
+      <bpmn:outgoing>flow_loans_to_transactions</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- End Event -->
+    <bpmn:endEvent id="end" name="end">
+      <bpmn:incoming>flow_loans_to_end</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <!-- Sequence Flows -->
+    <bpmn:sequenceFlow id="flow_start_to_transactions" sourceRef="start" targetRef="task_transactions"/>
+    <bpmn:sequenceFlow id="flow_transactions_to_cyclic" sourceRef="task_transactions" targetRef="task_cyclic"/>
+    <bpmn:sequenceFlow id="flow_cyclic_to_loans" sourceRef="task_cyclic" targetRef="task_loans"/>
+    <bpmn:sequenceFlow id="flow_loans_to_end" sourceRef="task_loans" targetRef="end"/>
+    <bpmn:sequenceFlow id="flow_loans_to_transactions" sourceRef="task_loans" targetRef="task_transactions"/>
+
+  </bpmn:process>
+
+  <!-- Diagram Layout -->
+  <bpmndi:BPMNDiagram id="BPMNDiagram_linear_cycle">
+    <bpmndi:BPMNPlane id="BPMNPlane_linear_cycle" bpmnElement="linear_cycle_process">
+
+      <!-- Start Event -->
+      <bpmndi:BPMNShape id="shape_start" bpmnElement="start">
+        <omgdc:Bounds x="50" y="150" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Task Transactions -->
+      <bpmndi:BPMNShape id="shape_task_transactions" bpmnElement="task_transactions">
+        <omgdc:Bounds x="140" y="130" width="180" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Task Cyclic-payments -->
+      <bpmndi:BPMNShape id="shape_task_cyclic" bpmnElement="task_cyclic">
+        <omgdc:Bounds x="350" y="130" width="180" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Task Loans -->
+      <bpmndi:BPMNShape id="shape_task_loans" bpmnElement="task_loans">
+        <omgdc:Bounds x="560" y="130" width="180" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <!-- End Event -->
+      <bpmndi:BPMNShape id="shape_end" bpmnElement="end">
+        <omgdc:Bounds x="780" y="150" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Sequence Flows Edges -->
+      <bpmndi:BPMNEdge id="edge_flow_start_to_transactions" bpmnElement="flow_start_to_transactions">
+        <omgdi:waypoint x="86" y="168"/>
+        <omgdi:waypoint x="140" y="155"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="edge_flow_transactions_to_cyclic" bpmnElement="flow_transactions_to_cyclic">
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="350" y="155"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="edge_flow_cyclic_to_loans" bpmnElement="flow_cyclic_to_loans">
+        <omgdi:waypoint x="530" y="155"/>
+        <omgdi:waypoint x="560" y="155"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="edge_flow_loans_to_end" bpmnElement="flow_loans_to_end">
+        <omgdi:waypoint x="740" y="155"/>
+        <omgdi:waypoint x="780" y="168"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="edge_flow_loans_to_transactions" bpmnElement="flow_loans_to_transactions">
+        <omgdi:waypoint x="740" y="155"/>
+        <omgdi:waypoint x="660" y="155"/>
+        <omgdi:waypoint x="660" y="155"/>
+        <omgdi:waypoint x="660" y="180"/>
+        <omgdi:waypoint x="320" y="180"/>
+        <omgdi:waypoint x="320" y="180"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+        <omgdi:waypoint x="320" y="155"/>
+      </bpmndi:BPMNEdge>
+
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

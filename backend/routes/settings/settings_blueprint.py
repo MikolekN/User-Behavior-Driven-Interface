@@ -2,7 +2,7 @@
 
 from flask import Blueprint
 
-from backend.routes.settings.update_settings import update_settings
+from routes.settings.update_settings import update_settings
 from routes.settings.get_settings import get_settings
 
 

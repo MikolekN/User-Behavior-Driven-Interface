@@ -10,6 +10,7 @@ from routes.helpers import validate_token
 
 preferences_repository = PreferencesRepository()
 
+
 def get_preferences(user_id) -> Response:
     if not isinstance(user_id, str) or not bson.ObjectId.is_valid(user_id):
         return create_simple_response("invalidUser", HTTPStatus.BAD_REQUEST)
