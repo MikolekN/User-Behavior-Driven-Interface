@@ -1,12 +1,11 @@
 from http import HTTPStatus
 
 import bson
-from flask import Response, request
+from flask import Response
 from shared import create_simple_response
 
 from models.model_repository import ModelRepository
 from processes.run_process_instance import create_process_instance
-from routes.helpers import validate_token
 
 model_repository = ModelRepository()
 

@@ -1,7 +1,5 @@
-import xml
 import xml.etree.ElementTree as ET
 from typing import Dict
-from xml.dom.minidom import Element
 
 from config import APP_URL
 from processes.helpers.generate_id import generate_id
