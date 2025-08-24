@@ -64,7 +64,7 @@ async def _discover_process_model(user_id: str) -> None:
     log = log_converter.apply(df, variant=log_converter.Variants.TO_EVENT_LOG)
     log = log[0]
 
-    xes_exporter.apply(log, f"eventlog_{user_id}.xes")
+    xes_exporter.apply(log, f"{bpmn_file_path}.xes")
 
     net, im, fm = discover_petri_net_heuristics(
         log=log,
