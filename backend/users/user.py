@@ -1,10 +1,8 @@
 from dataclasses import dataclass
-from datetime import datetime
 from typing import Optional, Dict, Any
 
 import bson
 from flask_login import UserMixin
-
 from shared import BaseEntity
 
 

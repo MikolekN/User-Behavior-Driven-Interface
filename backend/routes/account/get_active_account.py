@@ -11,6 +11,7 @@ from users import User, UserRepository
 user_repository = UserRepository()
 account_repository = AccountRepository()
 
+
 @login_required
 def get_active_account() -> Response:
     user: User = user_repository.find_by_id(current_user.get_id())

@@ -4,7 +4,6 @@ import pytest
 
 from conftest import empty_user_data, missing_email_user_data, missing_password_user_data, invalid_email_user_data, \
     invalid_password_user_data, empty_email_user_data, empty_password_user_data
-from tests.constants import TEST_USER_EMAIL, TEST_USER_PASSWORD
 from utils import assert_json_response
 
 
@@ -12,6 +11,7 @@ def test_register_when_user_already_logged_in(client, test_user, valid_user_data
     with patch('flask_login.utils._get_user', return_value=test_user):
         response = client.post('/api/register', json=valid_user_data)
         assert_json_response(response, 409, "alreadyLogged")
+
 
 @pytest.mark.parametrize(
     "payload, expected_status, expected_message",
@@ -38,10 +38,12 @@ def test_register_validation_cases(client, payload, expected_status, expected_me
     response = client.post('/api/register', json=payload)
     assert_json_response(response, expected_status, expected_message)
 
+
 def test_register_when_user_already_exists(client, test_user, valid_user_data):
     with patch('users.user_repository.UserRepository.find_by_email', return_value=test_user):
         response = client.post('/api/register', json=valid_user_data)
         assert_json_response(response, 409, "userExist")
+
 
 def test_register_success(client, test_user, valid_user_data):
     with patch('users.user_repository.UserRepository.find_by_email', return_value=None), \

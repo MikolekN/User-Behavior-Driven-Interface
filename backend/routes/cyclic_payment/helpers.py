@@ -7,10 +7,12 @@ from users import UserRepository, User
 user_repository = UserRepository()
 account_repository = AccountRepository()
 
+
 def validate_object_id(oid: str) -> str | None:
     if not ObjectId.is_valid(oid):
         return "invalidObjectId"
     return None
+
 
 def prepare_cyclic_payment(cyclic_payment: CyclicPayment) -> dict:
     response_cyclic_payment = cyclic_payment.to_dict()

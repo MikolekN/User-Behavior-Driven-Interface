@@ -1,6 +1,5 @@
 import random
 from dataclasses import dataclass
-from datetime import datetime
 from typing import Optional, Dict, Any
 
 import bson
@@ -17,6 +16,7 @@ account_types = [
     'BANK',
     'other'
 ]
+
 
 @dataclass
 class Account(BaseEntity):

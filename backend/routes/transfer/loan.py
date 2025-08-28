@@ -45,12 +45,13 @@ def create_loan_transfer() -> Response:
         return create_simple_response("bankAccountNotExist", HTTPStatus.NOT_FOUND)
 
     transfer = Transfer(
-                        sender_account_number=bank_account.number,
-                        recipient_account_number=recipient_account.number,
-                        title=data['title'],
-                        amount=float(data['amount']))
+        sender_account_number=bank_account.number,
+        recipient_account_number=recipient_account.number,
+        title=data['title'],
+        amount=float(data['amount']))
     transfer_repository.insert(transfer)
 
-    account_repository.update(str(recipient_account.id), {'balance': add(float(recipient_account.balance), float(data['amount']))})
+    account_repository.update(str(recipient_account.id),
+                              {'balance': add(float(recipient_account.balance), float(data['amount']))})
 
     return create_simple_response("loanCreatedSuccessful", HTTPStatus.OK)

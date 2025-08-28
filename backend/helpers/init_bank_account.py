@@ -1,8 +1,5 @@
-from datetime import datetime
-
 from accounts import AccountRepository, Account
 from constants import BANK_ACCOUNT_NUMBER
-from users import UserRepository, User
 
 
 def init_bank_account() -> Account | None:

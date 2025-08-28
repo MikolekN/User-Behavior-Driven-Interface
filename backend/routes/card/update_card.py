@@ -3,7 +3,7 @@ from http import HTTPStatus
 from flask import Response, request
 from flask_login import login_required, current_user
 
-from accounts import AccountRepository, Account
+from accounts import AccountRepository
 from cards import Card, CardRepository
 from cards.requests.update_card_request import UpdateCardRequest
 from cards.responses.update_card_response import UpdateCardResponse

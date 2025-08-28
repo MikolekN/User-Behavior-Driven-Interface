@@ -12,6 +12,7 @@ user_repository = UserRepository()
 account_repository = AccountRepository()
 card_repository = CardRepository()
 
+
 @login_required
 def delete_account(account_number) -> Response:
     if not isinstance(account_number, str) or len(account_number) != 26 or not account_number.isdigit():

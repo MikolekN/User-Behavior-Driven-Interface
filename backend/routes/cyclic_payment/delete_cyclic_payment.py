@@ -15,6 +15,7 @@ user_repository = UserRepository()
 account_repository = AccountRepository()
 cyclic_payment_repository = CyclicPaymentRepository()
 
+
 @login_required
 def delete_cyclic_payment(id) -> Response:
     error = validate_object_id(id)
@@ -32,7 +33,8 @@ def delete_cyclic_payment(id) -> Response:
     if prevent_unauthorised_account_access(account):
         return create_simple_response("unauthorisedAccountAccess", HTTPStatus.UNAUTHORIZED)
 
-    account_repository.update(str(account.id), {'blockades': subtract(float(account.blockades), float(cyclic_payment.amount))})
+    account_repository.update(str(account.id),
+                              {'blockades': subtract(float(account.blockades), float(cyclic_payment.amount))})
 
     cyclic_payment_repository.delete(str(id))
 

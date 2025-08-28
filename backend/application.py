@@ -1,7 +1,7 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_login import LoginManager
 from flask_swagger_ui import get_swaggerui_blueprint
-from flask_cors import CORS
 from shared import Database
 
 from helpers import init_bank_account
@@ -22,6 +22,7 @@ def create_app():
 
     login_manager = LoginManager(app)
     login_manager.init_app(app)
+
     @login_manager.user_loader
     def load_user(id: str) -> User | None:
         user_repository = UserRepository()
@@ -44,6 +45,7 @@ def create_app():
 
     return app
 
+
 app = create_app()
 
 CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
@@ -53,7 +55,7 @@ API_URL = '/static/swagger/swagger.json'
 swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
     API_URL,
-    config={ 'app_name': "User-Behavior-Driven-Interface Backend API" }
+    config={'app_name': "User-Behavior-Driven-Interface Backend API"}
 )
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 

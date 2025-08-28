@@ -12,6 +12,7 @@ def test_get_account_not_logged_in(client):
     response = client.get(f'/api/accounts/{TEST_ACCOUNT_NUMBER}')
     assert response.status_code == HTTPStatus.UNAUTHORIZED
 
+
 @pytest.mark.parametrize(
     "payload, expected_status, expected_message",
     [
@@ -30,11 +31,13 @@ def test_get_account_validation_cases(client, payload, expected_status, expected
         response = client.get(f'/api/accounts/{payload}')
         assert_json_response(response, expected_status, expected_message)
 
+
 def test_get_account_not_exist(client, test_user, test_account):
     with patch('flask_login.utils._get_user', return_value=test_user), \
             patch('accounts.account_repository.AccountRepository.find_by_account_number', return_value=None):
         response = client.get(f'/api/accounts/{TEST_ACCOUNT_NUMBER}')
         assert_json_response(response, HTTPStatus.NOT_FOUND, "accountNotExist")
+
 
 def test_get_account_successful(client, test_user, test_account, test_account_dto):
     with patch('flask_login.utils._get_user', return_value=test_user), \

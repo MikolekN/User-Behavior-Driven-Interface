@@ -1,7 +1,5 @@
-from collections.abc import Mapping
-from datetime import datetime
 from http import HTTPStatus
-from typing import Any, Optional
+from typing import Any
 
 from flask import Response, request
 from flask_login import login_required, current_user
@@ -45,7 +43,7 @@ def get_all_user_transfers_yearly() -> Response:
     transfers = transfer_repository.find_transfers(query)
     if not transfers:
         response = set_missing_years([], int(data['start_year']),
-                                 int(data['end_year']))
+                                     int(data['end_year']))
         return AnalysisResponse.create_response("monthlyAnalysisSuccessful", response, HTTPStatus.OK)
 
     serialized_transfers = serialize_transfers(transfers, account)

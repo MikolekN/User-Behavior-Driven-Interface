@@ -1,12 +1,12 @@
-from collections.abc import Mapping
 from http import HTTPStatus
-from typing import Optional, Any
+from typing import Optional
 
 import bcrypt
 
 from users import User, UserRepository
 
 user_repository = UserRepository()
+
 
 def authenticate_user(email: str, password: str) -> tuple[Optional[User], Optional[str], Optional[HTTPStatus]]:
     user = user_repository.find_by_email(email)

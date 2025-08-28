@@ -21,4 +21,3 @@ class CreateTransferRequest(BaseRequest):
             return "negativeAmount"
 
         return None
-

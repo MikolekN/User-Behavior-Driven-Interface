@@ -15,6 +15,7 @@ user_repository = UserRepository()
 account_repository = AccountRepository()
 cyclic_payment_repository = CyclicPaymentRepository()
 
+
 @login_required
 def create_cyclic_payment() -> Response:
     data = request.get_json()

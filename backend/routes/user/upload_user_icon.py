@@ -13,6 +13,7 @@ from users import UserRepository, User
 
 user_repository = UserRepository()
 
+
 @login_required
 def upload_user_icon() -> Response:
     ensure_upload_folder_exists()
@@ -38,9 +39,11 @@ def upload_user_icon() -> Response:
 
     return create_simple_response("iconUploadSuccessful", HTTPStatus.OK)
 
+
 def ensure_upload_folder_exists() -> None:
     if not os.path.exists(UPLOAD_FOLDER):
         os.makedirs(UPLOAD_FOLDER)
+
 
 def validate_icon_file(request: Request) -> Response | FileStorage:
     if 'icon' not in request.files:
@@ -55,10 +58,12 @@ def validate_icon_file(request: Request) -> Response | FileStorage:
 
     return icon
 
+
 def remove_old_icon(user_data: dict) -> None:
     old_icon_path = user_data.get('user_icon')
     if old_icon_path and os.path.exists(old_icon_path):
         os.remove(old_icon_path)
+
 
 def process_and_save_icon(icon: FileStorage, save_path: str) -> None:
     image = Image.open(icon)

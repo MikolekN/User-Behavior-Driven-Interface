@@ -15,6 +15,7 @@ user_repository = UserRepository()
 account_repository = AccountRepository()
 cyclic_payment_repository = CyclicPaymentRepository()
 
+
 @login_required
 def get_cyclic_payment(id) -> Response:
     error = validate_object_id(id)
@@ -40,4 +41,5 @@ def get_cyclic_payment(id) -> Response:
     if not recipient_user:
         return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
 
-    return GetCyclicPaymentResponse.create_response("cyclicPaymentGetSuccessful", prepare_cyclic_payment(cyclic_payment), HTTPStatus.OK)
+    return GetCyclicPaymentResponse.create_response("cyclicPaymentGetSuccessful",
+                                                    prepare_cyclic_payment(cyclic_payment), HTTPStatus.OK)

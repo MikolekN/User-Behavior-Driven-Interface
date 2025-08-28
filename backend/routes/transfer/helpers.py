@@ -1,4 +1,3 @@
-from collections.abc import Mapping
 from datetime import datetime
 from typing import Any, Callable
 
@@ -71,21 +70,22 @@ def accumulate_transactions_income_and_outcome(transfers: list[dict]) -> dict[st
     return accumulated_groups
 
 
-def get_response_monthly(transfers: dict, start_month: int, end_month: int) -> list[dict[str, str | Any] | dict[str, int | str | Any]]:
+def get_response_monthly(transfers: dict, start_month: int, end_month: int) -> list[
+    dict[str, str | Any] | dict[str, int | str | Any]]:
     response = []
 
-    limited_months = months[start_month:end_month+1]
+    limited_months = months[start_month:end_month + 1]
 
     for idx, m in enumerate(limited_months):
-        if str(idx+start_month) in transfers:
+        if str(idx + start_month) in transfers:
             response.append({
-                'interval': months[idx+start_month],
-                'income': transfers[str(idx+start_month)]['income'],
-                'outcome': transfers[str(idx+start_month)]['outcome']
+                'interval': months[idx + start_month],
+                'income': transfers[str(idx + start_month)]['income'],
+                'outcome': transfers[str(idx + start_month)]['outcome']
             })
         else:
             response.append({
-                'interval': months[idx+start_month],
+                'interval': months[idx + start_month],
                 'income': 0,
                 'outcome': 0
             })

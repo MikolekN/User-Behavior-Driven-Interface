@@ -12,6 +12,7 @@ def test_create_account_not_logged_in(client):
     response = client.post(f'/api/accounts/')
     assert response.status_code == 401
 
+
 @pytest.mark.parametrize(
     "payload, expected_status, expected_message",
     [
@@ -40,10 +41,12 @@ def test_create_account_validation_cases(client, payload, expected_status, expec
         response = client.post('/api/accounts/', json=payload)
         assert_json_response(response, expected_status, expected_message)
 
+
 def test_create_account_user_not_exist(client, test_user, test_account, valid_account_data):
     with patch('flask_login.utils._get_user', return_value=test_user):
         response = client.post(f'/api/accounts/', json=valid_account_data)
         assert_json_response(response, HTTPStatus.NOT_FOUND, "userNotFound")
+
 
 def test_create_account_successful(client, test_user, test_account, valid_account_data):
     with patch('flask_login.utils._get_user', return_value=test_user), \

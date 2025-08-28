@@ -1,6 +1,5 @@
 from datetime import datetime
 
-
 # --- User constants --- #
 TEST_USER_ID = "67209cb58255eea645b444a4"
 TEST_USER_LOGIN = "test_user"

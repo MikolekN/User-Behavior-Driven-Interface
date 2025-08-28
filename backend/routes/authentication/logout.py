@@ -7,8 +7,8 @@ from shared import TokenRepository, delete_token
 
 from routes.helpers import create_simple_response
 
-
 token_repository = TokenRepository()
+
 
 @login_required
 def logout() -> Response:

@@ -3,7 +3,7 @@ from http import HTTPStatus
 from flask import Response
 from flask_login import login_required, current_user
 
-from accounts import Account, AccountRepository
+from accounts import AccountRepository
 from cards import Card, CardRepository
 from routes.helpers import create_simple_response
 from users import UserRepository, User
@@ -11,6 +11,7 @@ from users import UserRepository, User
 user_repository = UserRepository()
 account_repository = AccountRepository()
 card_repository = CardRepository()
+
 
 @login_required
 def delete_card(card_number) -> Response:

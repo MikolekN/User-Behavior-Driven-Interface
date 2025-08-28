@@ -5,7 +5,7 @@ from flask import Response, request
 from flask_login import login_required
 
 from accounts import Account, AccountRepository
-from cyclic_payments import CyclicPaymentRepository, CyclicPayment
+from cyclic_payments import CyclicPaymentRepository
 from cyclic_payments.requests.update_cyclic_payment_request import UpdateCyclicPaymentRequest
 from cyclic_payments.responses.update_cyclic_payment_response import UpdateCyclicPaymentResponse
 from helpers import add
@@ -17,6 +17,7 @@ from users import UserRepository, User
 user_repository = UserRepository()
 account_repository = AccountRepository()
 cyclic_payment_repository = CyclicPaymentRepository()
+
 
 @login_required
 def update_cyclic_payment(id) -> Response:
@@ -52,7 +53,8 @@ def update_cyclic_payment(id) -> Response:
     if issuer_account.get_available_funds() + float(cyclic_payment.amount) - float(data['amount']) < 0:
         return create_simple_response("userDontHaveEnoughMoney", HTTPStatus.BAD_REQUEST)
 
-    account_repository.update(str(issuer_account.id), {'blockades': add(float(issuer_account.blockades), float(cyclic_payment.amount))})
+    account_repository.update(str(issuer_account.id),
+                              {'blockades': add(float(issuer_account.blockades), float(cyclic_payment.amount))})
 
     data = {
         "issuer_id": issuer_account.id,
@@ -67,4 +69,5 @@ def update_cyclic_payment(id) -> Response:
     if not updated_cyclic_payment:
         return create_simple_response("cyclicPaymentNotExist", HTTPStatus.NOT_FOUND)
 
-    return UpdateCyclicPaymentResponse.create_response("cyclicPaymentUpdateSuccessful", prepare_cyclic_payment(updated_cyclic_payment), HTTPStatus.OK)
+    return UpdateCyclicPaymentResponse.create_response("cyclicPaymentUpdateSuccessful",
+                                                       prepare_cyclic_payment(updated_cyclic_payment), HTTPStatus.OK)

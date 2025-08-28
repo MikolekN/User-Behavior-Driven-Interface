@@ -10,6 +10,7 @@ from routes.helpers import create_simple_response
 
 account_repository = AccountRepository()
 
+
 @login_required
 def update_account(account_number) -> Response:
     if not isinstance(account_number, str) or len(account_number) != 26 or not account_number.isdigit():

@@ -1,6 +1,7 @@
 from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any, Optional
+
 from shared.base_request import BaseRequest
 
 
@@ -13,5 +14,5 @@ class UpdateSettingsRequest(BaseRequest):
         error = BaseRequest._validate_request(UpdateSettingsRequest, data)
         if error:
             return error
-        
+
         return None

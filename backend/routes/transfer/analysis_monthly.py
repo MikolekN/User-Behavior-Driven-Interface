@@ -1,14 +1,13 @@
-from collections.abc import Mapping
-from datetime import datetime
 from http import HTTPStatus
-from typing import Any, Optional
+from typing import Any
 
 from flask import Response, request
 from flask_login import login_required, current_user
 
 from accounts import Account, AccountRepository
 from routes.helpers import create_simple_response
-from routes.transfer.helpers import get_end_month, get_months_range, get_start_month, prepare_monthly_analysis_query, serialize_transfers, \
+from routes.transfer.helpers import get_end_month, get_months_range, get_start_month, prepare_monthly_analysis_query, \
+    serialize_transfers, \
     format_transfers_date, format_grouped_transfers, get_month_from_datetime, \
     accumulate_transactions_income_and_outcome, get_response_monthly
 from transfers import TransferRepository

@@ -1,8 +1,8 @@
-import bson
-from dataclasses import dataclass, field, asdict
-from typing import Optional, Dict, Any
+from dataclasses import dataclass, field
 from datetime import datetime
+from typing import Optional, Dict, Any
 
+import bson
 from shared import BaseEntity
 
 
@@ -23,7 +23,7 @@ class CyclicPayment(BaseEntity):
             cyclic_payment_dict['issuer_id'] = str(self.issuer_id)
             cyclic_payment_dict['recipient_id'] = str(self.recipient_id)
         return cyclic_payment_dict
-    
+
     @staticmethod
     def from_dict(data: Dict[str, Any]) -> 'CyclicPayment':
         return CyclicPayment(
@@ -37,7 +37,7 @@ class CyclicPayment(BaseEntity):
             start_date=data.get('start_date', None),
             interval=data.get('interval', '')
         )
-        
+
     def __repr__(self) -> str:
         return (f"CyclicPayment(_id={self._id!r}, "
                 f"created={self.created!r}, "

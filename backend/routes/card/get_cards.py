@@ -11,6 +11,7 @@ from users import UserRepository, User
 user_repository = UserRepository()
 card_repository = CardRepository()
 
+
 @login_required
 def get_cards() -> Response:
     user: User = user_repository.find_by_id(current_user.get_id())

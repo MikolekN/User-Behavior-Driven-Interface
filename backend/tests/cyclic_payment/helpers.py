@@ -7,5 +7,6 @@ def get_cyclic_payment(overrides=None):
         cyclic_payment_data.update(overrides)
     return cyclic_payment_data
 
+
 def get_cyclic_payment_not_valid():
     return INVALID_CYCLIC_PAYMENT

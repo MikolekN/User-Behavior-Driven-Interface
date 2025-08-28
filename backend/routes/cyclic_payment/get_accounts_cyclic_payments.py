@@ -14,6 +14,7 @@ user_repository = UserRepository()
 account_repository = AccountRepository()
 cyclic_payment_repository = CyclicPaymentRepository()
 
+
 @login_required
 def get_accounts_cyclic_payments() -> Response:
     user: User = user_repository.find_by_id(current_user.get_id())
@@ -37,4 +38,5 @@ def get_accounts_cyclic_payments() -> Response:
 
     cyclic_payment_dtos: list[dict] = [prepare_cyclic_payment(cyclic_payment) for cyclic_payment in cyclic_payments]
 
-    return GetAccountsCyclicPaymentsResponse.create_response("cyclicPaymentListGetSuccessful", cyclic_payment_dtos, HTTPStatus.OK)
+    return GetAccountsCyclicPaymentsResponse.create_response("cyclicPaymentListGetSuccessful", cyclic_payment_dtos,
+                                                             HTTPStatus.OK)

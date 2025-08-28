@@ -4,7 +4,6 @@ from flask import Response, request
 from flask_login import login_required, current_user
 
 from accounts import AccountRepository, Account
-
 from accounts.requests.create_account_request import CreateAccountRequest
 from routes.helpers import create_simple_response
 from users import UserRepository, User

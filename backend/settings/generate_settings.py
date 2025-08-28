@@ -1,10 +1,10 @@
-
 import bson
+
 from settings.settings import Settings
 from settings.settings_repository import SettingsRepository
 
-
 settings_repository = SettingsRepository()
+
 
 def generate_default_settings(user_obj_id: bson.ObjectId):
     settings = settings_repository.find_by_user(user_obj_id)

@@ -12,6 +12,7 @@ user_repository = UserRepository()
 account_repository = AccountRepository()
 card_repository = CardRepository()
 
+
 @login_required
 def delete_user() -> Response:
     user = user_repository.find_by_id(current_user.get_id())

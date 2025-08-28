@@ -4,16 +4,15 @@ from datetime import datetime
 from typing import Optional, Dict, Any
 
 import bson
-
 from shared import BaseEntity
 
 
 @dataclass
 class Card(BaseEntity):
-    name: Optional[str] = '' # cards name e.g. Credit cards A
-    holder_name: Optional[str] = '' # name on the cards e.g. John Smith
-    number: Optional[str] = '' # 16-digit card number
-    valid_thru: Optional[str] = '' # 'month/year' value
+    name: Optional[str] = ''  # cards name e.g. Credit cards A
+    holder_name: Optional[str] = ''  # name on the cards e.g. John Smith
+    number: Optional[str] = ''  # 16-digit card number
+    valid_thru: Optional[str] = ''  # 'month/year' value
     account: Optional[bson.ObjectId] = None
 
     @staticmethod

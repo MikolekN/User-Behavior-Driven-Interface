@@ -1,10 +1,7 @@
-
-
 from flask import Blueprint
 
-from routes.settings.update_settings import update_settings
 from routes.settings.get_settings import get_settings
-
+from routes.settings.update_settings import update_settings
 
 settings_blueprint = Blueprint('settings', __name__, url_prefix='/api/settings')
 
