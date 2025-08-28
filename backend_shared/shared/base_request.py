@@ -23,7 +23,7 @@ class BaseRequest:
             return "invalidRequestPayload"
 
         all_annotations = BaseRequest._get_all_annotations(dto_class)
-        
+
         required_fields: list[dict[str, Any]] = [
             {
                 "field_name": field_name,

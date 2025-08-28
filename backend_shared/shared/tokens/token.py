@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Optional, Dict, Any
 
 import bson
+
 from shared import BaseEntity
 
 

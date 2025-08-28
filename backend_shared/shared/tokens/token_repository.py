@@ -1,5 +1,7 @@
 from typing import Type, Optional
+
 import bson
+
 from shared import BaseRepository
 from shared.tokens.token import Token
 

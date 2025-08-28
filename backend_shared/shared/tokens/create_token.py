@@ -1,9 +1,11 @@
-import secrets, bson
+import bson
+import secrets
 
 from .token import Token
 from .token_repository import TokenRepository
 
 token_repository = TokenRepository()
+
 
 def create_token(user_id: bson.ObjectId) -> None:
     token = Token(

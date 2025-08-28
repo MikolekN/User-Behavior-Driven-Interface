@@ -1,11 +1,12 @@
+import os
+from typing import Any
+
 import pymongo
 from pymongo.collection import Collection
 from pymongo.database import Database as PyMongoDatabase
-from pymongo.results import InsertOneResult, InsertManyResult, DeleteResult, UpdateResult
 from pymongo.errors import ConnectionFailure
+from pymongo.results import InsertOneResult, InsertManyResult, DeleteResult, UpdateResult
 
-import os
-from typing import Any
 
 class Database:
     # For the purposes of this application these values are constant

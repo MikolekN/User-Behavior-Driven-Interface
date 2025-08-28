@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any, Optional
 from dataclasses import asdict, field, dataclass
 from datetime import datetime
+from typing import Dict, Any, Optional
+
 import bson
+
 
 @dataclass
 class BaseEntity(ABC):
