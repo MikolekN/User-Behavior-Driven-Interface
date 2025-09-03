@@ -1,5 +1,7 @@
 from pyzeebe import ZeebeClient, create_camunda_cloud_channel
 from pyzeebe.grpc_internals.types import DeployResourceResponse
+from pyzeebe.errors.zeebe_errors import ZeebeGatewayUnavailableError
+from pyzeebe.errors.process_errors import ProcessInvalidError
 
 from config import CLIENT_ID, CLIENT_SECRET, CLUSTER_ID
 
@@ -17,5 +19,10 @@ async def deploy_new_process(file_path: str) -> DeployResourceResponse:
     client = ZeebeClient(grpc_channel=channel)
 
     # DEPLOY THE PROCESS
-    process = await client.deploy_resource(file_path)
-    return process
+    try:
+        process = await client.deploy_resource(file_path)
+        return process
+    except ZeebeGatewayUnavailableError:
+        print("pyzeebe.errors.zeebe_errors.ZeebeGatewayUnavailableError")
+    except ProcessInvalidError:
+        print("pyzeebe.errors.process_errors.ProcessInvalidError")

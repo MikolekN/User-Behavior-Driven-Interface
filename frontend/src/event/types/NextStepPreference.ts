@@ -1,17 +1,23 @@
-interface NextStepPreferenceObject {
-    url: string;
+interface NextStepObject {
+    bpmn_element_id: string;
+    message: string;
+    page: string;
+    next_page: string;
+    probability: string;
+    visits: number;
 }
 
 export interface BackendNextStepPreference {
-    nextStepPreference: NextStepPreferenceObject;
+    message: string;
+    next_step: NextStepObject;
 };
 
 export interface NextStepPreference {
-    nextStepPreference: NextStepPreferenceObject;
+    nextPage: string;
 };
 
-export const mapBackendPreferencesToQuickIconsPreferences = (preferencesBackendData: BackendNextStepPreference): NextStepPreference => {
+export const mapBackendNextStepPreferenceToNextStepPreference = (preferencesBackendData: BackendNextStepPreference): NextStepPreference => {
     return {
-        nextStepPreference: preferencesBackendData.nextStepPreference
+        nextPage: preferencesBackendData.next_step.next_page
     };
 };
