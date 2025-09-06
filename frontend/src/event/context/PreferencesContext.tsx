@@ -1,12 +1,13 @@
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { getQuickIconsPreferencesFromUserPreferences, QuickIconsPreference } from "../types/QuickIconsPreference";
-import { generateUserPreferencesData, getUserPreferencesData, getNextStepPreferencesData } from "../service/eventService";
+import { generateUserPreferencesData, getUserPreferencesData } from "../service/eventService";
 import { User } from "../../components/utils/User";
 import { getShortcutPreferencesFromUserPreferences, ShortcutPreference } from "../types/ShortcutPreference";
 import { mapBackendPreferencesToUserPreferences, Preferences } from "../types/Preferences";
 import { UserContext } from "../../context/UserContext";
 import { AutoRedirectPreference, getAutoRedirectPreferencesFromUserPreferences } from "../types/AutoRedirectPreference";
-import { mapBackendPreferencesToQuickIconsPreferences, NextStepPreference } from "../types/NextStepPreference";
+import { mapBackendNextStepPreferenceToNextStepPreference, NextStepPreference } from "../types/NextStepPreference";
+import { getNextStep } from "../service/camundaConnector";
 
 
 interface PreferencesContextProps {
@@ -79,9 +80,9 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
     }, [userPreferences]);
 
     const getNextStepPreference = useCallback(async (user: User): Promise<void> => {
-        const nextStepPreferenceBackendData = await getNextStepPreferencesData(user);
+        const nextStepPreferenceBackendData = await getNextStep(user);
         if (nextStepPreferenceBackendData) {
-            const frontendNextStepPreference: NextStepPreference = mapBackendPreferencesToQuickIconsPreferences(nextStepPreferenceBackendData);
+            const frontendNextStepPreference: NextStepPreference = mapBackendNextStepPreferenceToNextStepPreference(nextStepPreferenceBackendData);
             setNextStepPreference(frontendNextStepPreference);
         }
     }, [nextStepPreference]);
@@ -112,7 +113,7 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
         getShortcutPreference, autoRedirectPreference, setAutoRedirectPreference,  getAutoRedirectPreference, nextStepPreference, setNextStepPreference, getNextStepPreference,
         getUserPreference, generateUserPreference
     }), [userPreferences, setUserPreferences, quickIconsPreference, setQuickIconsPreference, getQuickIconsPreference, shortcutPreference, setShortcutPreference, 
-        getShortcutPreference, autoRedirectPreference, setAutoRedirectPreference, getAutoRedirectPreference, getUserPreference, generateUserPreference]);
+        getShortcutPreference, autoRedirectPreference, setAutoRedirectPreference, getAutoRedirectPreference, nextStepPreference, setNextStepPreference, getUserPreference, generateUserPreference]);
 
     return (
         <PreferencesContext.Provider value={PreferencesContextValue}>

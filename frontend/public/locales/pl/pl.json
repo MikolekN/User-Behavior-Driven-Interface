@@ -1,3 +1,4 @@
+
 {
     "menu": {
         "home": "Start",
@@ -312,8 +313,8 @@
             "selectField": "Wybierz pole do zmiany",
             "new": "Nowa",
             "value": "wartość",
-            "login": "nazwa użytkownia",
-            "accountName": "nazwa konta",
+            "login": "Nazwa użytkownika",
+            "accountName": "Nazwa konta",
             "currency": "waluta",
             "submit": "Zmień",
             "loading": "Ładowanie..."
@@ -455,7 +456,7 @@
             "Failed to fetch": "Nieoczekiwany błąd serwera",
             "activeAccountNotSet": "Nie wybrano aktywnego konta",
             "invalidTypeFields": "Niepoprawny typ pola:",
-            "userNotFound": "Nie znaleziono użytkownia",
+            "userNotFound": "Nie znaleziono użytkownika",
             "accountCreatedSucessfully": "Konto utworzone pomyślnie",
             "accountNotExist": "Konto nie istnieje",
             "unauthorizedAccountAccess": "Nieautoryzowany dostęp do konta",
@@ -506,5 +507,15 @@
             "dec": "Grudzień"
         }
     },
-    "blockedTabInfo": "Przepraszamy, ale aplikacja nie pozwala na posiadanie więcej niż jednej aktywnej karty. Proszę zamknij tą kartę i zaloguj się ponownie"
+    "blockedTabInfo": "Przepraszamy, ale aplikacja nie pozwala na posiadanie więcej niż jednej aktywnej karty. Proszę zamknij tą kartę i zaloguj się ponownie",
+    "tooltipContent": {
+        "quick-icons-language-selector": "Przycisk zmiany języka",
+        "quick-icons-theme-toggle": "Przycisk zmiany motywu",
+        "quick-icons-login": "Zaloguj",
+        "quick-icons-logout": "Wyloguj",
+        "quick-icons-register": "Zarejestruj się",
+        "quick-icons-settings": "Ustawienia użytkownika",
+        "quick-icons-profile": "Ustawienia konta",
+        "profileIcon": "Konto użytkownika"
+    }
 }

@@ -1,8 +1,8 @@
-export interface ElementInfo {
+interface ElementProps {
     id: string;
 };
 
-export const QUICK_ICONS: Record<string, ElementInfo> = {
+export const QUICK_ICONS: Record<string, ElementProps> = {
     LANGUAGE_SELECTOR: { id: "quick-icons-language-selector" },
     THEME_TOGGLE: { id: "quick-icons-theme-toggle" },
     LOGIN: { id: "quick-icons-login" },
@@ -12,7 +12,7 @@ export const QUICK_ICONS: Record<string, ElementInfo> = {
     PROFILE: { id: "quick-icons-profile" },
 } as const;
   
-export const USER_DROPDOWN: Record<string, ElementInfo> = {
+export const USER_DROPDOWN: Record<string, ElementProps> = {
     LANGUAGE_SELECTOR: { id: "dropdown-language-selector" },
     THEME_TOGGLE: { id: "dropdown-theme-toggle" },
     LOGIN: { id: "dropdown-login" },
@@ -21,10 +21,10 @@ export const USER_DROPDOWN: Record<string, ElementInfo> = {
     SETTINGS: { id: "dropdown-settings" },
     PROFILE: { id: "dropdown-profile" },
 } as const;
-  
-export const QUICK_ICONS_ELEMENTS: ElementInfo[] = Object.values(QUICK_ICONS);
-export const USER_DROPDOWN_ELEMENTS: ElementInfo[] = Object.values(USER_DROPDOWN);
-export const ALL_QUICK_ICONS_ELEMENTS: ElementInfo[] = QUICK_ICONS_ELEMENTS.concat(USER_DROPDOWN_ELEMENTS);
+
+export const QUICK_ICONS_ELEMENTS: ElementProps[] = Object.values(QUICK_ICONS);
+export const USER_DROPDOWN_ELEMENTS: ElementProps[] = Object.values(USER_DROPDOWN);
+export const ALL_QUICK_ICONS_ELEMENTS: ElementProps[] = QUICK_ICONS_ELEMENTS.concat(USER_DROPDOWN_ELEMENTS);
 
 export const CLICK_EVENT_TYPE: string = "click_event";
 export const HOVER_EVENT_TYPE: string = "hover_event";
@@ -32,7 +32,7 @@ export const PAGE_TRANSITION_EVENT_TYPE: string = "page_transition_event";
 
 export const DROPDOWN: string = "dropdown";
 
-export const SUBMIT_BUTTONS: Record<string, ElementInfo> = {
+export const SUBMIT_BUTTONS: Record<string, ElementProps> = {
     ACCOUNT: { id: "submit-button-account" },
     CARD: { id: "submit-button-card" },
     CYCLIC_PAYMENT: { id: "submit-button-cyclic-payment" },
@@ -41,7 +41,7 @@ export const SUBMIT_BUTTONS: Record<string, ElementInfo> = {
     PREFERENCES_SETTINGS: {id: "submit-button-preferences-settings"}
 } as const;
 
-export const FORMS: Record<string, ElementInfo> = {
+export const FORMS: Record<string, ElementProps> = {
     ACCOUNT: { id: "account-form" },
     ACCOUNT_EDIT: { id: "account-form-edit" },
     CARD: { id: "card-form" },
@@ -53,9 +53,9 @@ export const FORMS: Record<string, ElementInfo> = {
     PREFERENCES_SETTINGS: {id: "preferences-settings-form"}
 } as const;
 
-export const SUBMIT_BUTTONS_ELEMENTS: ElementInfo[] = Object.values(SUBMIT_BUTTONS);
+export const SUBMIT_BUTTONS_ELEMENTS: ElementProps[] = Object.values(SUBMIT_BUTTONS);
 
-export const MAIN_MENU: Record<string, ElementInfo> = {
+export const MAIN_MENU: Record<string, ElementProps> = {
     MENU_HOME: { id: "menu-home" },
     MENU_LOGIN: { id: "menu-login" },
     MENU_REGISTER: { id: "menu-register" },
@@ -82,4 +82,4 @@ export const MAIN_MENU: Record<string, ElementInfo> = {
     MENU_ADMIN_PANEL: { id: "menu-admin-panel" }
 } as const;
 
-export const MAIN_MENU_ELEMENTS: ElementInfo[] = Object.values(MAIN_MENU);
+export const MAIN_MENU_ELEMENTS: ElementProps[] = Object.values(MAIN_MENU);

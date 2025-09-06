@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { QUICK_ICONS } from "../../../event/utils/constants";
 import { Link } from "react-router-dom";
-import { DarkThemeToggle, Dropdown } from "flowbite-react";
+import { DarkThemeToggle, Dropdown, useThemeMode } from "flowbite-react";
 import { LANGUAGES } from "../../../pages/constants";
 import useHandleLogout from "../../../hooks/useHandleLogout";
 import LanguageDropdownItem from "../../LanguageDropdownItem/LanguageDropdownItem";
@@ -12,6 +12,7 @@ import i18n from "../../../i18n";
 import { PreferencesContext } from "../../../event/context/PreferencesContext";
 import { UserContext } from "../../../context/UserContext";
 import useApiErrorHandler from "../../../hooks/useApiErrorHandler";
+import { Tooltip } from "flowbite-react";
 
 
 const QuickIcons = () => {
@@ -19,6 +20,7 @@ const QuickIcons = () => {
     const { handleError } = useApiErrorHandler();
     const { user } = useContext(UserContext);
     const { quickIconsPreference, getQuickIconsPreference } = useContext(PreferencesContext);
+    const { computedMode } = useThemeMode();
 
     useEffect(() => {
         if (!user) return;
@@ -70,7 +72,11 @@ const QuickIcons = () => {
 
     return (
         <div className="flex justify-center items-center">
-            {quickIconsPreference && quickIconsElements[quickIconsPreference.elementId]}
+            {quickIconsPreference && 
+                <Tooltip content={t(`tooltipContent.${quickIconsPreference.elementId}`)} style={computedMode === "light" ? "dark": "light"} placement="left" arrow={false}>
+                    {quickIconsElements[quickIconsPreference.elementId]}
+                </Tooltip>
+            }
         </div>
     );
 };

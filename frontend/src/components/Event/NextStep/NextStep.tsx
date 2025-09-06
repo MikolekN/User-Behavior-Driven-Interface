@@ -10,11 +10,12 @@ import { Link } from "react-router-dom";
 const NextStep = () => {
     const { handleError } = useApiErrorHandler();
     const { user } = useContext(UserContext);
-    const { userPreferences, nextStepPreference, getNextStepPreference } = useContext(PreferencesContext);
+    const { nextStepPreference, getNextStepPreference } = useContext(PreferencesContext);
 
     useEffect(() => {
         if (!user) return;
-        const getNextStepPreferenceData = async () => {
+
+        const fetchNextStep = async () => {
             try {
                 await getNextStepPreference(user);
             } catch (error) {
@@ -22,23 +23,20 @@ const NextStep = () => {
             }
         };
 
-        getNextStepPreferenceData();
-    }, [userPreferences]);
+        fetchNextStep();
 
-    if (nextStepPreference === null || nextStepPreference?.nextStepPreference?.url === "") {
-        return (
-            <></>
-        );
-    };
+        const intervalId = setInterval(fetchNextStep, 1000);
+        return () => clearInterval(intervalId);
+    }, []);
 
     return (
         <>
             <div className="hidden md:flex">
                 <Tile id="next-step" title={t('nextStep.tile.title')}>
                     <div className="flex">
-                        <Link to={`${nextStepPreference.nextStepPreference.url}`} className="m-2 hover:text-blue-700 hover:font-semibold dark:hover:text-blue-400 w-full">
+                        <Link to={`${nextStepPreference?.nextPage ? nextStepPreference.nextPage : "/dashboard"}`} className="m-2 hover:text-blue-700 hover:font-semibold dark:hover:text-blue-400 w-full">
                             <Button className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
-                                    {t(`urls.${nextStepPreference.nextStepPreference.url}`)}
+                                    {nextStepPreference?.nextPage ? t(`urls.${nextStepPreference.nextPage}`): t(`urls./dashboard`)}
                             </Button>
                         </Link>
                     </div>
@@ -47,9 +45,9 @@ const NextStep = () => {
             <div className="flex justify-center items-center md:hidden w-full">
                 <Tile id="next-step" title={t('nextStep.tile.title')}>
                     <div className="w-full flex justify-center flex-wrap">
-                        <Link to={`${nextStepPreference.nextStepPreference.url}`} className="m-2 hover:text-blue-700 hover:font-semibold dark:hover:text-blue-400 w-full">
+                        <Link to={`${nextStepPreference?.nextPage ? nextStepPreference.nextPage : "/dashboard"}`} className="m-2 hover:text-blue-700 hover:font-semibold dark:hover:text-blue-400 w-full">
                             <Button className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
-                                    {t(`urls.${nextStepPreference.nextStepPreference.url}`)}
+                                    {nextStepPreference?.nextPage ? t(`urls.${nextStepPreference.nextPage}`): t(`urls./dashboard`)}
                             </Button>
                         </Link>
                     </div>

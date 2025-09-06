@@ -11,6 +11,7 @@ import { setupMainMenuHoverEvents } from '../event/eventCollectors/hoverEvents';
 import { AuthContext } from '../context/AuthContext';
 import NextStep from '../components/Event/NextStep/NextStep';
 import { SettingsContext } from '../context/SettingsContext';
+import { generateProcessModel, runProcessInstance } from '../event/service/camundaConnector';
 
 const App = () => {
     const { user } = useContext(UserContext);
@@ -65,6 +66,37 @@ const App = () => {
             };
         }
     }, [user, settings]);
+
+    const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+
+    useEffect(() => {
+        if (!user) return;
+
+        const prepareCamunda = async () => {
+            try {
+                await runProcessInstance(user);
+                await generateProcessModel(user);
+            } catch (error) {
+                console.error("Error while preparing Camunda connection: ", error);
+                try {
+                    await generateProcessModel(user);
+                    let success = false;
+                    while (!success) {
+                        try {
+                            await runProcessInstance(user);
+                            success = true;
+                        } catch (err) {
+                            await delay(1000);
+                        }
+                    }
+                } catch (error) {
+                    console.error("Unexpected error: ", error);
+                }
+            }
+        };
+
+        prepareCamunda();
+    }, [user]);
 
 	if (isTabOpen) {
 		return (

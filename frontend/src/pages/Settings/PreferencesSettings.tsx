@@ -50,7 +50,6 @@ const PreferencesSettings = () => {
     const [isShortcutVisible, setIsShortcutVisible] = useState(settings.preferencesSettings.isShortcutVisible);
     const [isQuickIconsVisible, setIsQuickIconsVisible] = useState(settings.preferencesSettings.isQuickIconsVisible);
     const [isMenuPriorityVisible, setIsMenuPriorityVisible] = useState(settings.preferencesSettings.isMenuPriorityVisible);
-    const [areTogglesDisabled, setAreTogglesDisabled] = useState(settings.preferencesSettings.areEventsCollected === false ? true : false);
 
     const providePreferencesSettingsRequestBody = () => {
         return {
@@ -68,20 +67,8 @@ const PreferencesSettings = () => {
     }
 
     const handleAreEventsCollectedToggle = () => {
-        
-        if (areEventsCollected === true) {
-            setIsNextStepVisible(false);
-            setIsShortcutVisible(false);
-            setIsQuickIconsVisible(false);
-            setIsMenuPriorityVisible(false);
-            setAreTogglesDisabled(true);
-        } else {
-            setAreTogglesDisabled(false);
-        }
-        
-        setValue('areEventsCollected', true);
+        setValue('areEventsCollected', !areEventsCollected);
         setAreEventsCollected(!areEventsCollected); 
-        alert(t('preferencesSettingsForm.alertInfo'));
     };
 
     // calling custom hook to get AutoRedirect object
@@ -109,10 +96,10 @@ const PreferencesSettings = () => {
                 }
             </div>
             <ToggleSwitch {...register('areEventsCollected')} label={t('preferencesSettingsForm.areEventsCollected')} checked={areEventsCollected} onChange={() => handleAreEventsCollectedToggle()} theme={toggleSwitchTheme} />
-            <ToggleSwitch {...register('isNextStepVisible')} label={t('preferencesSettingsForm.isNextStepVisible')} checked={isNextStepVisible} onChange={() => {setValue('isNextStepVisible', true); setIsNextStepVisible(!isNextStepVisible)}} theme={toggleSwitchTheme} disabled={areTogglesDisabled} />
-            <ToggleSwitch {...register('isShortcutVisible')} label={t('preferencesSettingsForm.isShortcutVisible')} checked={isShortcutVisible} onChange={() => {setValue('isShortcutVisible', true); setIsShortcutVisible(!isShortcutVisible)}} theme={toggleSwitchTheme} disabled={areTogglesDisabled} />
-            <ToggleSwitch {...register('isQuickIconsVisible')} label={t('preferencesSettingsForm.isQuickIconsVisible')} checked={isQuickIconsVisible} onChange={() => {setValue('isQuickIconsVisible', true); setIsQuickIconsVisible(!isQuickIconsVisible)}} theme={toggleSwitchTheme} disabled={areTogglesDisabled} />
-            <ToggleSwitch {...register('isMenuPriorityVisible')} label={t('preferencesSettingsForm.isMenuPriorityVisible')} checked={isMenuPriorityVisible} onChange={() => {setValue('isMenuPriorityVisible', true); setIsMenuPriorityVisible(!isMenuPriorityVisible)}} theme={toggleSwitchTheme} disabled={areTogglesDisabled} />
+            <ToggleSwitch {...register('isNextStepVisible')} label={t('preferencesSettingsForm.isNextStepVisible')} checked={isNextStepVisible} onChange={() => {setValue('isNextStepVisible', true); setIsNextStepVisible(!isNextStepVisible)}} theme={toggleSwitchTheme} />
+            <ToggleSwitch {...register('isShortcutVisible')} label={t('preferencesSettingsForm.isShortcutVisible')} checked={isShortcutVisible} onChange={() => {setValue('isShortcutVisible', true); setIsShortcutVisible(!isShortcutVisible)}} theme={toggleSwitchTheme} />
+            <ToggleSwitch {...register('isQuickIconsVisible')} label={t('preferencesSettingsForm.isQuickIconsVisible')} checked={isQuickIconsVisible} onChange={() => {setValue('isQuickIconsVisible', true); setIsQuickIconsVisible(!isQuickIconsVisible)}} theme={toggleSwitchTheme} />
+            <ToggleSwitch {...register('isMenuPriorityVisible')} label={t('preferencesSettingsForm.isMenuPriorityVisible')} checked={isMenuPriorityVisible} onChange={() => {setValue('isMenuPriorityVisible', true); setIsMenuPriorityVisible(!isMenuPriorityVisible)}} theme={toggleSwitchTheme} />
             <Button id={SUBMIT_BUTTONS.PREFERENCES_SETTINGS.id} isSubmitting={isSubmitting} onSubmit={onSubmit} className="w-full dark:bg-slate-900 dark:hover:bg-slate-800">
                 {isSubmitting ? t('preferencesSettingsForm.loading') : t('preferencesSettingsForm.submit')}
             </Button>
