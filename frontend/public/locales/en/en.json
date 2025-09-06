@@ -514,6 +514,7 @@
         "quick-icons-logout": "Logout",
         "quick-icons-register": "Register",
         "quick-icons-settings": "User settings",
-        "quick-icons-profile": "Profile settings"
+        "quick-icons-profile": "Profile settings",
+        "profileIcon": "User account"
     }
 }

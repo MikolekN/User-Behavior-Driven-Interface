@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Dropdown, Avatar, DarkThemeToggle, useThemeMode } from "flowbite-react";
+import { Dropdown, Avatar, DarkThemeToggle, useThemeMode, Tooltip } from "flowbite-react";
 import { UserContext } from '../../context/UserContext';
 import { UserIconContext } from '../../context/UserIconContext';
 import { useTranslation } from "react-i18next";
@@ -49,9 +49,11 @@ export const UserProfile = () => {
             {!user && (
                 <Dropdown arrowIcon={false} inline placement="bottom"
                     label={
-                        <svg  className="w-10 h-10 text-gray-800 dark:text-gray-400 rounded-full hover:bg-gray-200 hover:dark:bg-gray-700 transition ease-in-out duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="2 2 20 20">
-                            <path fillRule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clipRule="evenodd"/>
-                        </svg>
+                        <Tooltip content={t('tooltipContent.profileIcon')} style={computedMode === "light" ? "dark": "light"} placement="left" arrow={false}>
+                            <svg  className="w-10 h-10 text-gray-800 dark:text-gray-400 rounded-full hover:bg-gray-200 hover:dark:bg-gray-700 transition ease-in-out duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="2 2 20 20">
+                                <path fillRule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clipRule="evenodd"/>
+                            </svg>
+                        </Tooltip>
                     }
                 >
                     <Dropdown.Item id={USER_DROPDOWN.THEME_TOGGLE.id} onClick={toggleMode} className='bg-transparent text-black font-normal hover:font-semibold hover:text-black px-3'>
@@ -83,7 +85,7 @@ export const UserProfile = () => {
                     }
                     <Dropdown arrowIcon={false} inline placement="bottom"
                         label={
-                            <>
+                            <Tooltip content={t('tooltipContent.profileIcon')} style={computedMode === "light" ? "dark": "light"} placement="left" arrow={false}>
                                 {!iconSrc ? (
                                     <svg className="w-10 h-10 text-gray-800 dark:text-gray-400 rounded-full hover:bg-gray-200 hover:dark:bg-gray-700 transition ease-in-out duration-300"
                                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="2 2 20 20">
@@ -92,7 +94,7 @@ export const UserProfile = () => {
                                 ) : (
                                     <Avatar alt="User profile icon" img={iconSrc || undefined} rounded className="rounded-full hover:bg-gray-200 hover:dark:bg-gray-700 transition ease-in-out duration-300"/>
                                 )}
-                            </>
+                            </Tooltip>
                         }
                     >
                         <Dropdown.Header className="flex flex-col justify-center items-center">
