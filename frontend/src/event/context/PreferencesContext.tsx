@@ -81,10 +81,8 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
 
     const getNextStepPreference = useCallback(async (user: User): Promise<void> => {
         const nextStepPreferenceBackendData = await getNextStep(user);
-        console.log("nextStep ENDPOINT RES: ", nextStepPreferenceBackendData)
         if (nextStepPreferenceBackendData) {
             const frontendNextStepPreference: NextStepPreference = mapBackendNextStepPreferenceToNextStepPreference(nextStepPreferenceBackendData);
-            console.log("frontendNextStepPreference - ", frontendNextStepPreference)
             setNextStepPreference(frontendNextStepPreference);
         }
     }, [nextStepPreference]);
