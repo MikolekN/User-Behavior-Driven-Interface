@@ -5,7 +5,7 @@ from flask import Response, request
 from flask_login import login_required
 from shared import create_simple_response
 
-from backend.settings.responses.get_settings_response import GetSettingsResponse
+from settings.responses.get_settings_response import GetSettingsResponse
 from settings.settings_repository import SettingsRepository
 
 

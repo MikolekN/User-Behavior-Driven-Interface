@@ -45,7 +45,7 @@ export const UserProfile = () => {
     }, [user, getIcon, user?.icon, computedMode]);
 
     return (
-        <div className="flex order-3 md:order-4 space-x-2">
+        <div className="flex order-3 md:order-3 space-x-2">
             {!user && (
                 <Dropdown arrowIcon={false} inline placement="bottom"
                     label={
