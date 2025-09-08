@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from accounts import AccountRepository, Account
-from constants import BANK_ACCOUNT_NUMBER
+from constants import BANK_ACCOUNT_NUMBER, BANK_NAME
 from users import UserRepository, User
 
 
@@ -12,7 +12,7 @@ def init_bank_account() -> Account | None:
         return None
 
     account: Account = Account(
-        name='BankName',
+        name=BANK_NAME,
         number=BANK_ACCOUNT_NUMBER,
         type='BANK',
         blockades=0,

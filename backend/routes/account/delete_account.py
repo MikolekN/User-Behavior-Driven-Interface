@@ -21,6 +21,9 @@ def delete_account(account_number) -> Response:
     if not account:
         return create_simple_response("accountNotExist", HTTPStatus.NOT_FOUND)
 
+    if account.user is None:
+        return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
+
     user: User = user_repository.find_by_id(str(account.user))
     if not user:
         return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)

@@ -5,6 +5,7 @@ from flask import Response, request
 from flask_login import login_required, current_user
 
 from accounts import AccountRepository, Account
+from backend.constants import BANK_ACCOUNT_NUMBER
 from cyclic_payments import CyclicPayment, CyclicPaymentRepository
 from cyclic_payments.requests.create_cyclic_payment_request import CreateCyclicPaymentRequest
 from helpers import add
@@ -34,13 +35,14 @@ def create_cyclic_payment() -> Response:
     if not account:
         return create_simple_response("accountNotExist", HTTPStatus.NOT_FOUND)
 
-    recipient_account = account_repository.find_by_account_number(data['recipient_account_number'])
+    recipient_account: Account = account_repository.find_by_account_number(data['recipient_account_number'])
     if not recipient_account:
         return create_simple_response("accountNotExist", HTTPStatus.NOT_FOUND)
 
-    recipient_user: User = user_repository.find_by_id(str(recipient_account.user))
-    if not recipient_user:
-        return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
+    if recipient_account.number != BANK_ACCOUNT_NUMBER:
+        recipient_user: User = user_repository.find_by_id(str(recipient_account.user))
+        if not recipient_user:
+            return create_simple_response("userNotExist", HTTPStatus.NOT_FOUND)
 
     if account.get_available_funds() - float(data['amount']) < 0:
         return create_simple_response("accountDontHaveEnoughMoney", HTTPStatus.BAD_REQUEST)

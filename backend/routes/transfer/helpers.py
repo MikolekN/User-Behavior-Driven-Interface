@@ -6,7 +6,7 @@ from bson import ObjectId
 from flask_login import current_user
 
 from accounts import Account, AccountRepository
-from constants import MONTHS_IN_YEAR
+from constants import BANK_NAME, MONTHS_IN_YEAR
 from transfers import Transfer, TransferRepository
 from users import UserRepository
 
@@ -31,14 +31,18 @@ def serialize_transfer(transfer: Transfer, account: Account) -> dict[str, Any]:
     transfer_dict['income'] = is_income
 
     transfer_to_account = account_repository.find_by_account_number_full(transfer.recipient_account_number)
-    transfer_to_user = user_repository.find_by_id_full(str(transfer_to_account.user))
+    if transfer_to_account.user:
+        transfer_to_user = user_repository.find_by_id_full(str(transfer_to_account.user))
 
     transfer_from_account = account_repository.find_by_account_number_full(transfer.sender_account_number)
     if transfer_from_account.user:
         transfer_from_user = user_repository.find_by_id_full(str(transfer_from_account.user))
-        transfer_dict['issuer_name'] = transfer_to_user.login if is_income else transfer_from_user.login
+        if transfer_to_account.user is not None:
+            transfer_dict['issuer_name'] = transfer_to_user.login if is_income else transfer_from_user.login
+        else:
+            transfer_dict['issuer_name'] = BANK_NAME if is_income else transfer_from_user.login
     else:
-        transfer_dict['issuer_name'] = transfer_to_user.login
+        transfer_dict['issuer_name'] = transfer_to_user.login if transfer_to_account.user is not None else BANK_NAME
 
     return sanitize_transfer_dict(transfer_dict)
 
