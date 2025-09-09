@@ -3,20 +3,24 @@ import { requiredStringField } from '../common/commonValidators';
 
 // GetLogin
 
-export const UserData = z.object({
+const UserData = z.object({
     _id: requiredStringField(),
     login: requiredStringField(),
     email: requiredStringField().email(),
     active_account: z.string().nullable(),
     created: requiredStringField(),
     is_deleted: z.boolean(),
-    role: requiredStringField(),
-    token: z.string().nullable()
+    role: requiredStringField()
 });
+
+const GetUserData = UserData.extend({
+    token: requiredStringField()
+});
+
 
 export const GetUserResponseSchema = z.object({
     message: requiredStringField(),
-    user: UserData
+    user: GetUserData
 });
 
 export type GetUserResponse = z.infer<typeof GetUserResponseSchema>;

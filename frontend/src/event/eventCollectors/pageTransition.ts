@@ -36,7 +36,7 @@ const handlePageChange = (user: User | null, nextPagePath: string) => {
     const endTimestamp: number = Date.now();
     const timeSpent: number | undefined = startTimestamp ? (endTimestamp - startTimestamp) : undefined;
 
-    if (timeSpent === 0 || currentPagePath === nextPagePath) return; // filter redirect from page to the same page and autoredirects with time equal to 0 ms
+    if (timeSpent === 0 || currentPagePath === nextPagePath || nextPagePath === "/") return; // filter redirect from page to the same page and autoredirects with time equal to 0 ms
 
     const pageTransitionEventEvent: PageTransitionEvent = getPageTransitionEventData(timeSpent, currentPagePath, nextPagePath)
     const requestBody: BackendPageTransitionEvent = mapPageTransitionEventToBackendRequestBody(pageTransitionEventEvent);

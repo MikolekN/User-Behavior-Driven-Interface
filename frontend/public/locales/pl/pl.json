@@ -137,7 +137,7 @@
         "transferInterval": "Interwał przelewu",
         "title": "Tytuł cyklicznego przelewu",
         "amount": "Kwota",
-        "submit": "Utwórz płatnośc cykliczną",
+        "submit": "Utwórz płatność cykliczną",
         "edit": "Edytuj płatność cykliczną",
         "loading": "Ładowanie...",
         "selectInterval": "-- wybierz interwał --"
@@ -478,7 +478,7 @@
             "loanInvalidAmountFormat": "Nieprawidłowy format kwoty. Podaj kwotę w tysiącach",
             "amountLowerThan": "Wprowadzona kwota nie może być mniejsza niż",
             "amountBiggerThan": "Wprowadzona kwota nie może być większa niż",
-            "password": "Hasło musi posiadać conajmniej 8 znaków, w tym małą literę, wielką literę i liczbę",
+            "password": "Hasło musi posiadać conajmniej 8 znaków, w tym małą literę, wielką literę, liczbę oraz znak specjalny",
             "confirmPassword": "Wprowadzone hasła nie pasują",
             "invalidAccountNumber": "Nieprawidłowy numer konta",
             "invalidFieldSelected": "Wybrano nieprawidłowe pole",
