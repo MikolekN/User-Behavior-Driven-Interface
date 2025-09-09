@@ -108,6 +108,8 @@ def generate_transformed_bpmn(transformed_map: Dict[str, GraphElement], user_id:
                 ("/", previous.name.lower().replace(" ", "-")))
             if url_value != "other":
                 visits = str(visits_map.get(previous_url_value, {}).get(url_value, 0))
+                if url_value == "/history":
+                    visits = str(visits_map.get(previous_url_value, {}).get("/transactions/history", 0))
             else:
                 explicit_urls = list()
                 for explicit_ids in gate.outgoing_flows:

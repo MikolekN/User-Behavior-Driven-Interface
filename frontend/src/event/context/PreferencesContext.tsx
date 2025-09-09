@@ -83,6 +83,8 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
         const nextStepPreferenceBackendData = await getNextStep(user);
         if (nextStepPreferenceBackendData) {
             const frontendNextStepPreference: NextStepPreference = mapBackendNextStepPreferenceToNextStepPreference(nextStepPreferenceBackendData);
+            if(frontendNextStepPreference.nextPage === "/history")
+                frontendNextStepPreference.nextPage = "/transactions/history";
             setNextStepPreference(frontendNextStepPreference);
         }
     }, [nextStepPreference]);

@@ -36,6 +36,7 @@ def generate_preferences(user_id) -> Response:
     preferences.preferences['shortcutPreference'] = generate_shortcut_preferences(user_id)
 
     preferences.preferences['autoRedirectPreference'] = generate_auto_redirect_preferences(user_id)
+    preferences.preferences['autoRedirectPreference']["transferForm"] = "/transactions/history"
 
     preferences.preferences['quickIconsPreference'] = generate_quick_icons_preferences(user_id)
 

@@ -102,6 +102,8 @@ async def _pass_new_event_to_camunda(next_page: str, user_id: str) -> None:
 
     if next_page in urls:
         message = map_url_to_name[next_page]
+    elif next_page == "/transactions/history":
+        message = "Navigate History"
     else:
         message = "Navigate Other"
 

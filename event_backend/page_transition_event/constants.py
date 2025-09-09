@@ -18,7 +18,7 @@ DEFAULT_AUTO_REDIRECT_PREFERENCE = {
     "cyclicPaymentForm": DEFAULT_AUTO_REDIRECT_URL,
     "cyclicPaymentFormEdit": DEFAULT_AUTO_REDIRECT_URL,
     "loanForm": DEFAULT_AUTO_REDIRECT_URL,
-    "transferForm": DEFAULT_AUTO_REDIRECT_URL
+    "transferForm": "/transactions/history",
 }
 
 FORM_SUBMIT_CLICK_EVENT_ELEMENT_IDS = ["account-form", "account-form-edit", "card-form", "card-form-edit",

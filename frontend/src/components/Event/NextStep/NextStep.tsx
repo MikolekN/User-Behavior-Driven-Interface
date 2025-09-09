@@ -25,7 +25,7 @@ const NextStep = () => {
 
         fetchNextStep();
 
-        const intervalId = setInterval(fetchNextStep, 1000);
+        const intervalId = setInterval(fetchNextStep, 2000);
         return () => clearInterval(intervalId);
     }, []);
 
