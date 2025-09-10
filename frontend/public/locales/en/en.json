@@ -477,7 +477,7 @@
             "loanInvalidAmountFormat": "Invalid amount format. Enter the amount in thousands",
             "amountLowerThan": "The entered amount cannot be less than",
             "amountBiggerThan": "The entered amount cannot be greater than",
-            "password": "The password must be at least 8 characters long, including a lowercase letter, an uppercase letter, and a number",
+            "password": "The password must be at least 8 characters long, including a lowercase letter, an uppercase letter, a number and a specal character",
             "confirmPassword": "The entered passwords do not match",
             "invalidAccountNumber": "Invalid account number",
             "invalidFieldSelected": "Invalid field selected",
